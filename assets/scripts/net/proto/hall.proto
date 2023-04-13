@@ -1,0 +1,36 @@
+syntax = "proto3";
+package hall.proto;
+
+// Description:
+message LoginDTO {
+  string appChannel = 1;
+  string appName = 2;
+  string appVersion = 3;
+  int32 appResVersion = 4;
+  string bundleId = 5;
+  string code = 6;
+  string devId = 7;
+  string invitationCode = 8;
+  string invitationType = 9;
+  string mobile = 10;
+  string platform = 11;
+  int32 productId = 12;
+  string userId = 13;
+  string sessionId = 14;
+  string appsflyerId = 15;
+
+}
+
+// Description:
+message LoginVO {
+  string userId = 1;
+  string nickName = 2;
+  string headPic = 3;
+  string sessionId = 4;
+  string phone = 5;
+  int32 accountType = 6;
+  int64 firstDay = 7;
+  bool first = 8;
+
+}
+
