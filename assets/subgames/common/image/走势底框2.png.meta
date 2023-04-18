@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "f391b80d-67c4-4b5c-ac9b-e01a2881e481",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 32,
+  "height": 38,
+  "platformSettings": {},
+  "subMetas": {
+    "走势底框2": {
+      "ver": "1.0.6",
+      "uuid": "5919baf9-0c0e-4514-80ad-88671a1fbcd0",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "f391b80d-67c4-4b5c-ac9b-e01a2881e481",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 32,
+      "height": 38,
+      "rawWidth": 32,
+      "rawHeight": 38,
+      "borderTop": 8,
+      "borderBottom": 13,
+      "borderLeft": 9,
+      "borderRight": 11,
+      "subMetas": {}
+    }
+  }
+}

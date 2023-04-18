@@ -7,10 +7,6 @@ class SoundMgr {
     private currEffectId: number = -1;
     private currMusicId: number = -1;
 
-    constructor() {
-        this.init();
-    }
-
     init() {
         let volume = this.getVolumeToLocal();
         if (volume) {

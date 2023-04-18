@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "78c7af07-ce5f-4e3b-a77a-1ee1f1ba144d",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 173,
+  "height": 44,
+  "platformSettings": {},
+  "subMetas": {
+    "总投注额_黄": {
+      "ver": "1.0.6",
+      "uuid": "e6d4eab4-f6c4-4fe1-b892-23ed00450e2f",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "78c7af07-ce5f-4e3b-a77a-1ee1f1ba144d",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 173,
+      "height": 44,
+      "rawWidth": 173,
+      "rawHeight": 44,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

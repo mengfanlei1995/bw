@@ -1,4 +1,4 @@
-import SysConfig from "../config/SysConfig";
+import SysConfig from "../data/SysConfig";
 
 class LogUtil {
 

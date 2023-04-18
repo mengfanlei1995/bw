@@ -1,7 +1,7 @@
 import CommonUtil from "./CommonUtil";
 
-class ListenerMgr extends cc.Component {
-    
+class ListenerMgr {
+
     private cbMap: Map<string, Function> = new Map<string, Function>();
     private keySuff: number = 1;
 

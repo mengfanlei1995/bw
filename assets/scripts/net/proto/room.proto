@@ -1,0 +1,1054 @@
+syntax = "proto3";
+package pb.room;
+
+// Description:
+message LuckyDiceGameInfoVo {
+  // 下注信息
+  repeated OddsInfoVo oddsInfoList = 1;
+  // 游戏开奖结果信息
+  repeated LuckyDiceWinDto gameResultList = 2;
+  int32 gameNum = 3;
+  string bankerId = 4;
+  string currOptUserId = 5;
+  int32 totalOptSeconds = 6;
+  int32 leftOptSeconds = 7;
+  int64 dealCardMilliseconds = 8;
+  int32 leftPaiNum = 9;
+  string qiPai = 10;
+  int32 turnType = 11;
+
+}
+
+// Description:
+message LBBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  LuckyBallGameInfoVo gameInfo = 4;
+
+}
+
+// Description:
+message LuckyDiceWinDto {
+  int32 gameNum = 1;
+  int32 id = 2;
+  repeated int32 dices = 3;
+  int32 controlSingleState = 4;
+
+}
+
+// Description:
+message LuckyBallRoomInfoVo {
+  int32 roomState = 1;
+  string roomId = 2;
+  string lastMsgId = 3;
+  string currMsgId = 4;
+  string userId = 5;
+  bool playing = 6;
+  int32 gameType = 7;
+  int32 roomType = 8;
+  int32 roomLevel = 9;
+  int32 baseMultiple = 10;
+  int32 maxGameNum = 11;
+  int32 currGameNum = 12;
+
+}
+
+// Description:
+message DTDoEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // 
+  DragonAndTigerRoomInfoVo roomInfo = 3;
+  // 
+  DragonAndTigerGameInfoVo gameInfo = 4;
+  repeated PointBetCoinsNotifyVo betList = 5;
+  map<int32, int64> betCoinMap = 6;
+  map<int32, int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// Description:
+message Dice3DoEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  repeated int64 betCoinList = 3;
+  int32 onlinePlayers = 4;
+  map<int32, int64> betSelfCoinMap = 5;
+  map<int32, int64> betCoinMap = 6;
+  repeated PointBetCoinsNotifyVo betList = 7;
+  // Description:
+  Dice3GameInfoVo gameInfo = 8;
+  // Description:
+  Dice3RoomInfoVo roomInfo = 9;
+
+}
+
+// 
+message RoomUserVo {
+  int64 winCoins = 1;
+  // 当前局数
+  int32 roundCount = 2;
+  // 胜率
+  int32 winRate = 3;
+  // 用户状态：0-桌下, 1-桌上
+  int32 userInTableState = 4;
+  int32 seatNo = 5;
+  string userId = 6;
+  int32 status = 7;
+  string nickName = 8;
+  string portrait = 9;
+  int32 vipLevel = 10;
+  int64 balanceCoins = 11;
+  bool autoPlay = 12;
+  int32 autoPlayTimes = 13;
+  int32 playNums = 14;
+  int32 maxPlayNums = 15;
+  string extra = 16;
+  // 用户赢的局数，重进房间后刷新
+  int32 winRoundCount = 17;
+  // 玩家总赢钱，退出房间时清空
+  int64 totalWinCoins = 18;
+  // 玩家类型 REAL_PERSON(0, "真人"), ROBOT(1, "机器人"), PLATFROM(2, "系统");
+  int32 userType = 19;
+  // 所有游戏累计输赢金额
+  int64 winBalance = 20;
+  int64 loseBalance = 21;
+
+}
+
+// Description:
+message RYBBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // 
+  RedYellowBlueGameInfoVo gameInfo = 4;
+
+}
+
+// 
+message DragonAndTigerRoomInfoVo {
+  int32 roomState = 1;
+  string roomId = 2;
+  string lastMsgId = 3;
+  string currMsgId = 4;
+  string userId = 5;
+  bool playing = 6;
+  int32 gameType = 7;
+  int32 roomType = 8;
+  int32 roomLevel = 9;
+  int32 baseMultiple = 10;
+  int32 maxGameNum = 11;
+  int32 currGameNum = 12;
+
+}
+
+// Description:
+message JhandiMundaRoomInfoVo {
+  int32 roomState = 1;
+  string roomId = 2;
+  string lastMsgId = 3;
+  string currMsgId = 4;
+  string userId = 5;
+  bool playing = 6;
+  int32 gameType = 7;
+  int32 roomType = 8;
+  int32 roomLevel = 9;
+  int32 baseMultiple = 10;
+  int32 maxGameNum = 11;
+  int32 currGameNum = 12;
+
+}
+
+// Description:
+message TeenPattiWarPokerResultDto {
+  // 牌组
+  repeated string pais = 1;
+  // 牌组的属性；见 TeenPattiWarConstant
+  int32 paisAttr = 2;
+
+}
+
+// Description:
+message TeenPattiWarRoomInfoVo {
+  int32 roomState = 1;
+  string roomId = 2;
+  string lastMsgId = 3;
+  string currMsgId = 4;
+  string userId = 5;
+  bool playing = 6;
+  int32 gameType = 7;
+  int32 roomType = 8;
+  int32 roomLevel = 9;
+  int32 baseMultiple = 10;
+  int32 maxGameNum = 11;
+  int32 currGameNum = 12;
+
+}
+
+// Description:
+message LuckyDiceRoomInfoVo {
+  int32 roomState = 1;
+  string roomId = 2;
+  string lastMsgId = 3;
+  string currMsgId = 4;
+  string userId = 5;
+  bool playing = 6;
+  int32 gameType = 7;
+  int32 roomType = 8;
+  int32 roomLevel = 9;
+  int32 baseMultiple = 10;
+  int32 maxGameNum = 11;
+  int32 currGameNum = 12;
+}
+
+// 
+message RedYellowBlueWinDto {
+  int32 gameNum = 1;
+  int32 id = 2;
+  int32 reelIndex = 3;
+  int32 controlSingleState = 4;
+
+}
+
+// Description:
+message RYBSendDrawMsgGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message RoomRecordParam {
+  int32 page = 1;
+  int32 gameType = 2;
+  int32 dateType = 3;
+  int32 winLost = 4;
+  string userId = 5;
+  string sessionId = 6;
+  string s_deviceid = 7;
+  string s_platform = 8;
+  string ip = 9;
+  string s_cid = 10;
+  string media_id = 11;
+  string utm_campaign = 12;
+  string s_model = 13;
+  string s_version = 14;
+  string s_access = 15;
+  string s_sWidth = 16;
+  string s_carrier = 17;
+  string s_osVersion = 18;
+  string s_brand = 19;
+  string s_sHeight = 20;
+  int32 vipLevel = 21;
+  int32 vipVp = 22;
+  int32 totalPayment = 23;
+  int32 userType = 24;
+  string firstLoginTime = 25;
+
+}
+
+// Description:
+message LDSendDrawMsgVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  LDSendDrawMsgGameInfoVO gameInfo = 3;
+  repeated RoomUserVo userInfoList = 4;
+  // Description:
+  LuckyDiceWinDto gameResult = 5;
+
+}
+
+// Description:
+message LBDoEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // Description:
+  LuckyBallRoomInfoVo roomInfo = 3;
+  // Description:
+  LuckyBallGameInfoVo gameInfo = 4;
+  map<int32, int64> betCoinMap = 5;
+  repeated PointBetCoinsNotifyVo betList = 6;
+  map<int32, int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// Description:
+message JhandiMundaWinIdRateDto {
+  int32 id = 1;
+  double rate = 2;
+  int32 count = 3;
+
+}
+
+// Description:
+message DTBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // 
+  DragonAndTigerGameInfoVo gameInfo = 4;
+
+}
+
+// Description:
+message Dice3GameInfoVo {
+  // 下注信息
+  repeated OddsInfoVo OddsInfoList = 1;
+  // 游戏开奖结果信息
+  repeated Dice3WinDto gameResultList = 2;
+  int32 gameNum = 3;
+  string bankerId = 4;
+  string currOptUserId = 5;
+  int32 totalOptSeconds = 6;
+  int32 leftOptSeconds = 7;
+  int64 dealCardMilliseconds = 8;
+  int32 leftPaiNum = 9;
+  string qiPai = 10;
+  int32 turnType = 11;
+
+}
+
+// Description:
+message LBSendDrawMsgVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  LBSendDrawMsgGameInfoVO gameInfo = 3;
+  repeated RoomUserVo userInfoList = 4;
+  // Description:
+  LuckyBallWinDto gameResult = 5;
+
+}
+
+// Description:
+message TPSendDrawMsgGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// 
+message RoomUserDto {
+  int32 seatNo = 1;
+  string userId = 2;
+  int32 status = 3;
+  string nickName = 4;
+  string portrait = 5;
+  int32 vipLevel = 6;
+  int64 balanceCoins = 7;
+  bool autoPlay = 8;
+  int32 autoPlayTimes = 9;
+  int32 playNums = 10;
+  int32 maxPlayNums = 11;
+  string extra = 12;
+  // 当前局数
+  int32 roundCount = 13;
+  // 用户赢的局数，重进房间后刷新
+  int32 winRoundCount = 14;
+  // 玩家总赢钱，退出房间时清空
+  int64 totalWinCoins = 15;
+  // 玩家类型 REAL_PERSON(0, "真人"), ROBOT(1, "机器人"), PLATFROM(2, "系统");
+  int32 userType = 16;
+  // 所有游戏累计输赢金额
+  int64 winBalance = 17;
+  int64 loseBalance = 18;
+
+}
+
+// Description:
+message JMDoEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // Description:
+  JhandiMundaRoomInfoVo roomInfo = 3;
+  // Description:
+  JhandiMundaGameInfoVo gameInfo = 4;
+  repeated PointBetCoinsNotifyVo betList = 5;
+  map<int32, int64> betCoinMap = 6;
+  map<int32, int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// Description:
+message PokerKingGameInfoVo {
+  // 下注信息
+  repeated OddsInfoVo oddsInfoList = 1;
+  // 游戏开奖结果信息
+  repeated PokerKingWinDto gameResultList = 2;
+  int32 gameNum = 3;
+  string bankerId = 4;
+  string currOptUserId = 5;
+  int32 totalOptSeconds = 6;
+  int32 leftOptSeconds = 7;
+  int64 dealCardMilliseconds = 8;
+  int32 leftPaiNum = 9;
+  string qiPai = 10;
+  int32 turnType = 11;
+
+}
+
+// 
+message OddsInfoVo {
+  // 下注id
+  int32 betId = 1;
+  // 赔率
+  double odds = 2;
+
+}
+
+// Description:
+message KickUserVO {
+  int32 notifyType = 1;
+  int32 gameType = 2;
+  string roomId = 3;
+  string lastMsgId = 4;
+  string currMsgId = 5;
+
+}
+
+// Description:
+message TeenPattiWarGameInfoVo {
+  // 下注信息
+  repeated TeenPattiWarOddsInfoVo oddsInfoList = 1;
+  // 游戏开奖结果信息
+  repeated TeenPattiWarWinDto gameResultList = 2;
+  int32 gameNum = 3;
+  string bankerId = 4;
+  string currOptUserId = 5;
+  int32 totalOptSeconds = 6;
+  int32 leftOptSeconds = 7;
+  int64 dealCardMilliseconds = 8;
+  int32 leftPaiNum = 9;
+  string qiPai = 10;
+  int32 turnType = 11;
+
+}
+
+// Description:
+message DTSendDrawMsgGameInfoVO {
+  int32 leftOptSeconds = 1;
+  repeated DragonAndTigerPokerResultDto pokerResultList = 2;
+  int32 gameNum = 3;
+  int32 onlinePlayers = 4;
+
+}
+
+// Description:
+message TeenPattiWarOddsInfoVo {
+  map<int32, int32> luckyHitRate = 1;
+  // 下注id
+  int32 betId = 2;
+  // 赔率
+  double odds = 3;
+
+}
+
+// Description:
+message Dice3SendDrawMsgVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  Dice3SendDrawMsgGameInfoVO gameInfo = 3;
+  repeated RoomUserVo userInfoList = 4;
+  // Description:
+  Dice3WinDto gameResult = 5;
+
+}
+
+// Description:
+message NotifyBetVO {
+  map<int32, int64> betCoinMap = 1;
+  int32 notifyType = 2;
+  repeated PointBetCoinsNotifyVo betList = 3;
+
+}
+
+// Description:
+message TPSendDrawMsgVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  TPSendDrawMsgGameInfoVO gameInfo = 3;
+  repeated RoomUserVo userInfoList = 4;
+  // Description:
+  TeenPattiWarWinDto gameResult = 5;
+
+}
+
+// Description:
+message LBSendDrawMsgGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message TPDoEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // Description:
+  TeenPattiWarRoomInfoVo roomInfo = 3;
+  // Description:
+  TeenPattiWarGameInfoVo gameInfo = 4;
+  repeated PointBetCoinsNotifyVo betList = 5;
+  map<int32, int64> betCoinMap = 6;
+  map<int32, int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// Description:
+message Dice3RoomInfoVo {
+  int32 roomState = 1;
+  string roomId = 2;
+  string lastMsgId = 3;
+  string currMsgId = 4;
+  string userId = 5;
+  bool playing = 6;
+  int32 gameType = 7;
+  int32 roomType = 8;
+  int32 roomLevel = 9;
+  int32 baseMultiple = 10;
+  int32 maxGameNum = 11;
+  int32 currGameNum = 12;
+
+}
+
+// Description:
+message RYBDoEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // 
+  RedYellowBlueRoomInfoVo roomInfo = 3;
+  // 
+  RedYellowBlueGameInfoVo gameInfo = 4;
+  repeated PointBetCoinsNotifyVo betList = 5;
+  map<int32, int64> betCoinMap = 6;
+  map<int32, int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// Description:
+message TeenPattiWarWinDto {
+  int32 gameNum = 1;
+  repeated int32 id = 2;
+  // Description:
+  TeenPattiWarPokerResultDto king = 3;
+  // Description:
+  TeenPattiWarPokerResultDto queen = 4;
+  int32 controlSingleState = 5;
+
+}
+
+// Description:
+message PointBetCoinsNotifyVo {
+  int64 betCoins = 1;
+  int32 betId = 2;
+
+}
+
+// Description:
+message JhandiMundaWinDto {
+  int32 gameNum = 1;
+  repeated JhandiMundaWinIdRateDto idRates = 2;
+  repeated int32 dices = 3;
+  int32 controlSingleState = 4;
+
+}
+
+// 
+message GameInfoVo {
+  int32 gameNum = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+
+}
+
+// Description:
+message PKSendDrawMsgVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  PKSendDrawMsgGameInfoVO gameInfo = 3;
+  repeated RoomUserVo userInfoList = 4;
+  // Description:
+  PokerKingWinDto gameResult = 5;
+
+}
+
+// Description:
+message PKSendDrawMsgGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// 
+message RoomInfoVo {
+  string roomId = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  string userId = 4;
+  bool playing = 5;
+  int32 gameType = 6;
+  int32 roomType = 7;
+  int32 roomLevel = 8;
+  int32 baseMultiple = 9;
+  int32 maxGameNum = 10;
+  int32 currGameNum = 11;
+
+}
+
+// Description:
+message NotifyEnterRoomVO {
+  int32 notifyType = 1;
+  string userId = 2;
+  int32 gameType = 3;
+  string roomId = 4;
+  string lastMsgId = 5;
+  string currMsgId = 6;
+  // 
+  RoomInfoVo roomInfo = 7;
+  repeated RoomUserDto roomUserList = 8;
+  // 
+  GameInfoVo gameInfo = 9;
+  repeated GameUserVo gameUserList = 10;
+  repeated RoomUserVo roomUserVoList = 11;
+
+}
+
+// Description:
+message PKBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  PokerKingGameInfoVo gameInfo = 4;
+
+}
+
+// Description:
+message LDSendDrawMsgGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// 
+message RedYellowBlueRoomInfoVo {
+  int32 roomState = 1;
+  string roomId = 2;
+  string lastMsgId = 3;
+  string currMsgId = 4;
+  string userId = 5;
+  bool playing = 6;
+  int32 gameType = 7;
+  int32 roomType = 8;
+  int32 roomLevel = 9;
+  int32 baseMultiple = 10;
+  int32 maxGameNum = 11;
+  int32 currGameNum = 12;
+
+}
+
+// Description:
+message PokerKingRoomInfoVo {
+  int32 roomState = 1;
+  string roomId = 2;
+  string lastMsgId = 3;
+  string currMsgId = 4;
+  string userId = 5;
+  bool playing = 6;
+  int32 gameType = 7;
+  int32 roomType = 8;
+  int32 roomLevel = 9;
+  int32 baseMultiple = 10;
+  int32 maxGameNum = 11;
+  int32 currGameNum = 12;
+
+}
+
+// Description:
+message LDBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  LuckyDiceGameInfoVo gameInfo = 4;
+
+}
+
+// 
+message OptDto {
+  int32 optType = 1;
+  string useShouPai = 2;
+  string useQiPai = 3;
+  int32 priority = 4;
+  string extra = 5;
+
+}
+
+// Description:
+message JhandiMundaGameInfoVo {
+  // 下注信息
+  repeated OddsInfoVo oddsInfoList = 1;
+  // 游戏开奖结果信息
+  repeated JhandiMundaWinDto gameResultList = 2;
+  int32 gameNum = 3;
+  string bankerId = 4;
+  string currOptUserId = 5;
+  int32 totalOptSeconds = 6;
+  int32 leftOptSeconds = 7;
+  int64 dealCardMilliseconds = 8;
+  int32 leftPaiNum = 9;
+  string qiPai = 10;
+  int32 turnType = 11;
+
+}
+
+// Description:
+message TPBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  TeenPattiWarGameInfoVo gameInfo = 4;
+
+}
+
+// Description:
+message DragonAndTigerWinUserDto {
+  int32 gameNum = 1;
+  // 
+  DragonAndTigerPokerResultDto dragon = 2;
+  // 
+  DragonAndTigerPokerResultDto tiger = 3;
+  int32 battleIdEnum = 4;
+  int32 controlSingleState = 5;
+
+}
+
+// 
+message GameUserVo {
+  string userId = 1;
+  int32 seatNo = 2;
+  string shouPai = 3;
+  string hitoutPai = 4;
+  int64 score = 5;
+  int64 coins = 6;
+  int64 balanceCoins = 7;
+  repeated OptDto optList = 8;
+
+}
+
+// Description:
+message JMSendDrawMsgGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message RoomRecordResponse {
+
+}
+
+// 
+message RedYellowBlueGameInfoVo {
+  // 下注信息
+  repeated OddsInfoVo OddsInfoList = 1;
+  // 游戏开奖结果信息
+  repeated RedYellowBlueWinDto gameResultList = 2;
+  int32 gameNum = 3;
+  string bankerId = 4;
+  string currOptUserId = 5;
+  int32 totalOptSeconds = 6;
+  int32 leftOptSeconds = 7;
+  int64 dealCardMilliseconds = 8;
+  int32 leftPaiNum = 9;
+  string qiPai = 10;
+  int32 turnType = 11;
+
+}
+
+// Description:
+message PKDoEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // Description:
+  PokerKingRoomInfoVo roomInfo = 3;
+  // Description:
+  PokerKingGameInfoVo gameInfo = 4;
+  repeated PointBetCoinsNotifyVo betList = 5;
+  map<int32, int64> betCoinMap = 6;
+  map<int32, int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// 
+message DragonAndTigerGameInfoVo {
+  // 龙，虎当前局的牌信息 龙，虎各一张牌
+  repeated DragonAndTigerPokerResultDto pokerResultList = 1;
+  // 下注信息
+  repeated OddsInfoVo OddsInfoList = 2;
+  // 游戏开奖结果信息
+  repeated int32 gameResultList = 3;
+  // 游戏开奖结果信息
+  repeated DragonAndTigerWinUserDto gameResultWinUserDtoList = 4;
+  int32 diPaiCount = 5;
+  int32 qiPaiCount = 6;
+  int32 gameNum = 7;
+  string bankerId = 8;
+  string currOptUserId = 9;
+  int32 totalOptSeconds = 10;
+  int32 leftOptSeconds = 11;
+  int64 dealCardMilliseconds = 12;
+  int32 leftPaiNum = 13;
+  string qiPai = 14;
+  int32 turnType = 15;
+
+}
+
+// Description:
+message DTSendDrawMsgVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  repeated DragonAndTigerWinnerVo headWinnerList = 3;
+  // Description:
+  DTSendDrawMsgGameInfoVO gameInfo = 4;
+  repeated RoomUserVo userInfoList = 5;
+  int32 gameResult = 6;
+
+}
+
+// Description:
+message JMSendDrawMsgVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  JMSendDrawMsgGameInfoVO gameInfo = 3;
+  repeated RoomUserVo userInfoList = 4;
+  // Description:
+  JhandiMundaWinDto gameResult = 5;
+
+}
+
+// Description:
+message PokerKingWinDto {
+  int32 gameNum = 1;
+  repeated int32 id = 2;
+  string poker = 3;
+  int32 controlSingleState = 4;
+
+}
+
+// Description:
+message JMBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  JhandiMundaGameInfoVo gameInfo = 4;
+
+}
+
+// 
+message DragonAndTigerWinnerVo {
+
+}
+
+// 
+message RoomOptParam {
+  int32 optType = 1;
+  int32 gameType = 2;
+  int32 roundType = 3;
+  string roomId = 4;
+  int32 roomType = 5;
+  int32 roomLevel = 6;
+  string useShouPai = 7;
+  string useQiPai = 8;
+  int64 betCoins = 9;
+  int32 clientAutoPlay = 10;
+  int32 boxLocation = 11;
+  int32 fairyTalesFreeGame = 12;
+  int32 riseOrLose = 13;
+  int32 connectIndex = 14;
+  repeated int32 jackpotRateList = 15;
+  int32 betId = 16;
+  int32 userCount = 17;
+  int32 gameNum = 18;
+  int32 layer = 19;
+  int64 bankerAmount = 20;
+  string userId = 21;
+  string sessionId = 22;
+  string s_deviceid = 23;
+  string s_platform = 24;
+  string ip = 25;
+  string s_cid = 26;
+  string media_id = 27;
+  string utm_campaign = 28;
+  string s_model = 29;
+  string s_version = 30;
+  string s_access = 31;
+  string s_sWidth = 32;
+  string s_carrier = 33;
+  string s_osVersion = 34;
+  string s_brand = 35;
+  string s_sHeight = 36;
+  int32 vipLevel = 37;
+  int32 vipVp = 38;
+  int32 totalPayment = 39;
+  int32 userType = 40;
+  string firstLoginTime = 41;
+
+}
+
+// Description:
+message Dice3NotifyBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  Dice3GameInfoVo gameInfo = 4;
+
+}
+
+// 通用分页信息
+message BaseParam {
+  string userId = 1;
+  string sessionId = 2;
+  string s_deviceid = 3;
+  string s_platform = 4;
+  string ip = 5;
+  string s_cid = 6;
+  string media_id = 7;
+  string utm_campaign = 8;
+  string s_model = 9;
+  string s_version = 10;
+  string s_access = 11;
+  string s_sWidth = 12;
+  string s_carrier = 13;
+  string s_osVersion = 14;
+  string s_brand = 15;
+  string s_sHeight = 16;
+  int32 vipLevel = 17;
+  int32 vipVp = 18;
+  int32 totalPayment = 19;
+  int32 userType = 20;
+  string firstLoginTime = 21;
+
+}
+
+// Description:
+message RYBSendDrawMsgVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  RYBSendDrawMsgGameInfoVO gameInfo = 3;
+  repeated RoomUserVo userInfoList = 4;
+  // 
+  RedYellowBlueWinDto gameResult = 5;
+
+}
+
+// Description:
+message LDDoEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // Description:
+  LuckyDiceRoomInfoVo roomInfo = 3;
+  // Description:
+  LuckyDiceGameInfoVo gameInfo = 4;
+  repeated PointBetCoinsNotifyVo betList = 5;
+  map<int32, int64> betCoinMap = 6;
+  map<int32, int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// Description:
+message Dice3WinDto {
+  int32 gameNum = 1;
+  int32 id = 2;
+  repeated int32 dices = 3;
+  int32 controlSingleState = 4;
+
+}
+
+// Description:
+message LuckyBallWinDto {
+  int32 gameNum = 1;
+  repeated int32 id = 2;
+  int32 ball = 3;
+  int32 controlSingleState = 4;
+
+}
+
+// 
+message DragonAndTigerPokerResultDto {
+  int32 id = 1;
+  string point = 2;
+
+}
+
+// Description:
+message Dice3SendDrawMsgGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message LuckyBallGameInfoVo {
+  // 下注信息
+  repeated OddsInfoVo oddsInfoList = 1;
+  // 游戏开奖结果信息
+  repeated LuckyBallWinDto gameResultList = 2;
+  int32 gameNum = 3;
+  string bankerId = 4;
+  string currOptUserId = 5;
+  int32 totalOptSeconds = 6;
+  int32 leftOptSeconds = 7;
+  int64 dealCardMilliseconds = 8;
+  int32 leftPaiNum = 9;
+  string qiPai = 10;
+  int32 turnType = 11;
+
+}
+
+// Description:
+message RoomPageRecordResponse {
+  int64 total = 1;
+  repeated RoomRecordResponse records = 2;
+
+}
+

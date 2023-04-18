@@ -4,16 +4,17 @@ import UIWindow from "../../UIWindow";
 const { ccclass, property } = cc._decorator;
 
 export class DialogOptions {
-    word: string = ''
-    type: number = DialogType.OnlyOkBtn
-    okCb: Function = null
-    okTxt: string
-    cancelCb: Function = null
-    cancelTxt: string
-    closeCb: Function = null
-    showCb: Function = null
-    hideCb: Function = null
-    hAlign: number = 0
+    word?: string = ''
+    type?: number = DialogType.OnlyOkBtn
+    okCb?: Function = null
+    okTxt?: string
+    cancelCb?: Function = null
+    cancelTxt?: string
+    closeCb?: Function = null
+    showCb?: Function = null
+    hideCb?: Function = null
+    hAlign?: number = 0
+    title?: string = ''
 }
 
 export enum DialogType {
@@ -47,6 +48,8 @@ export default class DiaLog extends UIWindow {
     lblLeft: cc.Label = null
     @property({ type: cc.Label, displayName: "居右提示语" },)
     lblRight: cc.Label = null
+    @property({ type: cc.Label, displayName: "标题" },)
+    lblTitle: cc.Label = null
     /**水平对齐方式 */
     hAlign: number = 0;
 
@@ -65,6 +68,9 @@ export default class DiaLog extends UIWindow {
 
     showWord(word) {
         let lblWord: cc.Label | cc.RichText = null;
+        this.lblCenter.node.active = false
+        this.lblLeft.node.active = false
+        this.lblRight.node.active = false
         switch (this.hAlign) {
             case 0:
                 this.lblCenter.node.active = true
@@ -85,9 +91,11 @@ export default class DiaLog extends UIWindow {
     }
 
     showTipsWithOkBtn(options: DialogOptions) {
-        let { word, okCb, okTxt, cancelCb, closeCb, showCb, hideCb, hAlign } = options;
+        let { word, okCb, okTxt, cancelCb, closeCb, showCb, hideCb, hAlign, title } = options;
         this.hAlign = hAlign;
         this.okBtn.active = true;
+        this.okBtn.x = 0;
+        title && (this.lblTitle.string = title)
         okTxt && (this.okBtn.children[0].getComponent(cc.Label).string = okTxt)
         this.cancelBtn.active = false;
         let lblWord: cc.Label | cc.RichText = this.showWord(word)
@@ -100,9 +108,10 @@ export default class DiaLog extends UIWindow {
     }
 
     showTipsWithOkCancelBtn(options: DialogOptions) {
-        let { word, okCb, okTxt, cancelCb, cancelTxt, closeCb, showCb, hideCb, hAlign } = options;
+        let { word, okCb, okTxt, cancelCb, cancelTxt, closeCb, showCb, hideCb, hAlign, title } = options;
         this.hAlign = hAlign;
         this.okBtn.active = true;
+        title && (this.lblTitle.string = title)
         okTxt && (this.okBtn.children[0].getComponent(cc.Label).string = okTxt)
         this.cancelBtn.active = true;
         cancelTxt && (this.cancelBtn.children[0].getComponent(cc.Label).string = cancelTxt)
@@ -116,9 +125,10 @@ export default class DiaLog extends UIWindow {
     }
 
     showTipsWithOnlyCloseBtn(options: DialogOptions) {
-        let { word, okCb, okTxt, cancelCb, cancelTxt, closeCb, showCb, hideCb, hAlign } = options;
+        let { word, okCb, okTxt, cancelCb, cancelTxt, closeCb, showCb, hideCb, hAlign, title } = options;
         this.hAlign = hAlign;
         this.okBtn.active = false;
+        title && (this.lblTitle.string = title)
         okTxt && (this.okBtn.children[0].getComponent(cc.Label).string = okTxt)
         this.cancelBtn.active = false;
         cancelTxt && (this.cancelBtn.children[0].getComponent(cc.Label).string = cancelTxt)

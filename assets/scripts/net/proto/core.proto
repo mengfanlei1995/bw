@@ -1,0 +1,36 @@
+syntax = "proto3";
+package pb.core;
+
+// Description:
+message GameUserWalletNotifyVO {
+  string userId = 1;
+  string type = 2;
+  int64 time = 3;
+  int64 deposit = 4;
+  int64 withdraw = 5;
+  int64 balance = 6;
+  int64 free = 7;
+  int64 bonus = 8;
+
+}
+
+// Description:
+message WalletVO {
+  int64 depositBalance = 1;
+  int64 withdrawBalance = 2;
+  int64 totalCashBalance = 3;
+  int64 freeBalance = 4;
+
+}
+
+// Description:
+message BaseUserInfoVO {
+  string userId = 1;
+  string nickName = 2;
+  string headPic = 3;
+  string phone = 4;
+  // Description:
+  WalletVO walletVO = 5;
+
+}
+

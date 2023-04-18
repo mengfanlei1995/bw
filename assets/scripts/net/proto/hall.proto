@@ -1,5 +1,44 @@
 syntax = "proto3";
-package hall.proto;
+package pb.hall;
+
+// Description:
+message UserUpdateNicknameDTO {
+  string nickname = 1;
+
+}
+
+// Description:
+message HomepageResponse {
+  // Description:
+  HomepageUserInfoResponse userInfo = 1;
+  repeated PictureResponse rotationPictures = 2;
+  map<string,bool> redDot = 3;
+
+}
+
+// Description:
+message LoginVO {
+  string userId = 1;
+  string nickName = 2;
+  string headPic = 3;
+  string sessionId = 4;
+  string phone = 5;
+  int32 accountType = 6;
+  int64 firstDay = 7;
+  bool first = 8;
+
+}
+
+// Description:
+message HomepageUserInfoResponse {
+  double bonus = 1;
+  int32 vipLevel = 2;
+  int32 club = 3;
+  bool recharge = 4;
+  bool brokeCoupon = 5;
+  string invitationCode = 6;
+
+}
 
 // Description:
 message LoginDTO {
@@ -22,15 +61,59 @@ message LoginDTO {
 }
 
 // Description:
-message LoginVO {
-  string userId = 1;
-  string nickName = 2;
-  string headPic = 3;
-  string sessionId = 4;
-  string phone = 5;
-  int32 accountType = 6;
-  int64 firstDay = 7;
-  bool first = 8;
+message HomepageGameVO {
+  repeated HomepageGamesResponse games = 1;
+
+}
+
+// Description:
+message HomepageGamesResponse {
+  string roomId = 1;
+  string gameType = 2;
+  string gameImgUrl = 3;
+  string gameIconUrl = 4;
+  string remoteUrl = 5;
+  string version = 6;
+  bool download = 7;
+  int32 state = 8;
+  int32 select = 9;
+  int64 minIn = 10;
+  int32 flag = 11;
+
+}
+
+// Description:
+message HomepageGameDTO {
+  int32 productId = 1;
+  string appVersion = 2;
+  int32 appResVersion = 3;
+
+}
+
+// Description:
+message UserUpdateHeadPicDTO {
+  // 头像编号
+  string headpic = 1;
+
+}
+
+// Created by IntelliJ IDEA 2020.1.2
+message PictureResponse {
+  // id
+  int32 id = 1;
+  // 图片链接
+  string pictureUrl = 2;
+  // 跳转页面地址
+  string skipPage = 3;
+  // 0不跳转、1app内跳转、2app外跳转、3弹窗
+  int32 skipType = 4;
+  string activityId = 5;
+  // 跳转扩展数据
+  string skipData = 6;
+  // 调整扩展参数
+  string skipParams = 7;
+  // 红点
+  bool redDot = 8;
 
 }
 

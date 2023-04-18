@@ -1,0 +1,62 @@
+
+get.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+light_circle
+  rotate: false
+  xy: 2, 223
+  size: 74, 74
+  orig: 78, 78
+  offset: 2, 2
+  index: -1
+light_front
+  rotate: false
+  xy: 352, 277
+  size: 92, 91
+  orig: 102, 108
+  offset: 5, 8
+  index: -1
+light_line_crude
+  rotate: false
+  xy: 447, 372
+  size: 60, 135
+  orig: 72, 160
+  offset: 6, 13
+  index: -1
+light_line_fine
+  rotate: false
+  xy: 352, 370
+  size: 93, 137
+  orig: 103, 153
+  offset: 4, 9
+  index: -1
+light_point
+  rotate: false
+  xy: 2, 299
+  size: 209, 208
+  orig: 249, 249
+  offset: 20, 21
+  index: -1
+light_point2
+  rotate: false
+  xy: 213, 369
+  size: 137, 138
+  orig: 148, 147
+  offset: 6, 4
+  index: -1
+light_radiation
+  rotate: false
+  xy: 213, 275
+  size: 69, 92
+  orig: 75, 97
+  offset: 3, 2
+  index: -1
+light_star
+  rotate: false
+  xy: 447, 312
+  size: 58, 58
+  orig: 71, 71
+  offset: 7, 6
+  index: -1

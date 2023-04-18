@@ -1,17 +1,17 @@
+import UIScene from "../uiform/UIScene";
 import LogUtil from "./LogUtil";
 
 class BundleUtil {
 
     /**当前使用bundle */
-    public _usedBundle: cc.AssetManager.Bundle = null;
-    public get usedBundle(): cc.AssetManager.Bundle {
-        return this._usedBundle;
+    private _usedBundle: Map<string, cc.AssetManager.Bundle> = new Map();
+
+    private setUsedBundle(bundleName: string, bundle: cc.AssetManager.Bundle): void {
+        if (!this.getUsedBundle(bundleName)) this._usedBundle.set(bundleName, bundle);
     }
-    public set usedBundle(_bundle: cc.AssetManager.Bundle) {
-        if (this._usedBundle) {
-            this.removeBundle();
-        }
-        this._usedBundle = _bundle;
+
+    public getUsedBundle(bundleName: string): cc.AssetManager.Bundle {
+        return this._usedBundle.get(bundleName) || null;
     }
 
     /**加载bundle */
@@ -27,43 +27,28 @@ class BundleUtil {
     public getBundle(bundleName: string, version?: string): Promise<cc.AssetManager.Bundle> {
         return new Promise(async resolve => {
             bundleName = bundleName.toLowerCase()
-            let bundle: cc.AssetManager.Bundle = cc.assetManager.getBundle(bundleName);
+            let bundle: cc.AssetManager.Bundle = this.getUsedBundle(bundleName);
             if (!bundle) {
                 bundle = await this.loadBundle(bundleName, version ? { version } : null);
-                bundle && (this.usedBundle = bundle)
+                bundle && (this.setUsedBundle(bundleName, bundle))
             }
             resolve(bundle || null);
         })
     }
 
     /*
-     * 加载bundle 资源 
-     */
-    public loadBundleSync<T extends cc.Asset>(url: string, onProgress?: (completedCount: number, totalCount: number, item: any) => void): Promise<T> {
-        if (!this.usedBundle) {
-            LogUtil.warn("请先加载bundle!!!");
-            return;
-        }
-        let bundle: cc.AssetManager.Bundle = this.usedBundle;
-        return new Promise(resolve => {
-            bundle.load(url, onProgress, (err: Error, asset: T) => {
-                resolve(err ? null : asset);
-            })
-        })
-    }
-
-    /*
      *加载bundle 资源 
      */
-    public loadResSync<T extends cc.Asset>(url: string, onProgress?: (completedCount: number, totalCount: number, item: any) => void): Promise<T> {
-        if (!this.usedBundle) {
-            LogUtil.warn("请先加载bundle!!!");
+    public loadResSync<T extends cc.Asset>(bundleName: string, url: string, onProgress?: (completedCount: number, totalCount: number, item: any) => void): Promise<T> {
+        let bundle: cc.AssetManager.Bundle = this.getUsedBundle(bundleName);
+        if (!bundle) {
+            LogUtil.warn("bundle不存在!!!");
             return;
         }
-        let bundle: cc.AssetManager.Bundle = this.usedBundle;
         return new Promise(resolve => {
             if (bundle) {
                 bundle.load(url, onProgress, (err: Error, asset: T) => {
+                    asset.isValid && (this.addRef(asset))
                     resolve(err ? null : asset);
                 })
             } else resolve(null);
@@ -71,44 +56,44 @@ class BundleUtil {
     }
 
     /**加载bundle scene */
-    public loadBundleScene(sceneName: string, onProgress?: (completedCount: number, totalCount: number, item: any) => void): void {
-        if (!this.usedBundle) {
-            LogUtil.warn("请先加载bundle!!!");
+    public loadBundleScene(bundleName: string, sceneName: string, onProgress?: (completedCount: number, totalCount: number, item: any) => void): void {
+        let bundle: cc.AssetManager.Bundle = this.getUsedBundle(bundleName);
+        if (!bundle) {
+            LogUtil.warn("bundle不存在!!!");
             return;
         }
-        let bundle: cc.AssetManager.Bundle = this.usedBundle;
         bundle.loadScene(sceneName, onProgress, (err: Error, scene: cc.SceneAsset) => {
             scene && cc.director.runScene(scene)
         })
     }
 
-    public clearBundle() {
-        if (!this.usedBundle) {
-            LogUtil.warn("请先加载bundle!!!");
+    public clearBundle(bundleName: string): void {
+        let bundle: cc.AssetManager.Bundle = this.getUsedBundle(bundleName);
+        if (!bundle) {
+            LogUtil.warn("bundle不存在!!!");
             return;
         }
-        let bundle: cc.AssetManager.Bundle = this.usedBundle;
-        this.releaseBundle();
-        this.removeBundle();
+        // this.releaseBundle(bundle);
+        this.removeBundle(bundle);
+        this._usedBundle.delete(bundleName);
+    }
+
+    public clearAllBundle(): void {
+        if (this._usedBundle.size == 0) return;
+        this._usedBundle.forEach(bundle => {
+            // this.releaseBundle(bundle);
+            this.removeBundle(bundle);
+        })
+        this._usedBundle.clear();
     }
 
     /**移除bnudle */
-    public removeBundle(): void {
-        if (!this.usedBundle) {
-            LogUtil.warn("请先加载bundle!!!");
-            return;
-        }
-        let bundle: cc.AssetManager.Bundle = this.usedBundle;
+    private removeBundle(bundle: cc.AssetManager.Bundle): void {
         cc.assetManager.removeBundle(bundle);
     }
 
     /**释放bundle所有资源 */
-    public releaseBundle(): void {
-        if (!this.usedBundle) {
-            LogUtil.warn("请先加载bundle!!!");
-            return;
-        }
-        let bundle: cc.AssetManager.Bundle = this.usedBundle;
+    private releaseBundle(bundle: cc.AssetManager.Bundle): void {
         bundle.releaseAll();
     }
 
@@ -121,21 +106,12 @@ class BundleUtil {
         })
     }
 
-    /**
-      * 加载bundle 资源 
-      * type  cc.Prefab cc.SpriteFrame 等
-    */
-    public preLoadBundleDirSync(url: string, type: typeof cc.Asset, onProgress?: (completedCount: number, totalCount: number, item: any) => void): Promise<boolean> {
-        if (!this.usedBundle) {
-            LogUtil.warn("请先加载bundle!!!");
-            return;
-        }
-        let bundle: cc.AssetManager.Bundle = this.usedBundle;
-        return new Promise(resolve => {
-            bundle.preloadDir(url, type, onProgress, (err: Error, items: cc.AssetManager.RequestItem[]) => {
-                resolve(err ? false : true);
-            })
-        })
+    /**增加引用计数 统一放在当前运行场景来统一管理 场景销毁 统一释放*/
+    private addRef(asset: cc.Asset) {
+        if (!cc.isValid(asset)) return;
+        let scene: cc.Node = cc.find('Canvas');
+        let script: UIScene = scene.getComponent(cc.director.getScene().name);
+        script?.addAssets(asset);
     }
 }
 

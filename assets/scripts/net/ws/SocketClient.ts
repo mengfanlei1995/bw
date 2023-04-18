@@ -1,4 +1,5 @@
-import SysConfig from "../../config/SysConfig";
+import { SocketEvent } from "../../enum/SocketEnum";
+import EventMgr from "../../mgr/EventMgr";
 import UIMgr from "../../uiform/UIMgr";
 import AssetUtil from "../../utils/AssetUtil";
 import LogUtil from "../../utils/LogUtil";
@@ -49,7 +50,7 @@ class SocketClient implements ISocket {
         this.SocketState = this.SocketState_Connected
         UIMgr.hideLoading();
         this.sendHeart();
-        SendMgr.sendLogin();
+        EventMgr.emit(SocketEvent.WS_CONNECTED)
     }
 
     private sendHeart(): void {
@@ -84,12 +85,14 @@ class SocketClient implements ISocket {
     public onmessage(event: MessageEvent): void {
         let recvData: Uint8Array = new Uint8Array(<ArrayBuffer>event.data);
         let data: ExternalMessage = decodeExternalMessage(recvData);
-        LogUtil.log("onmessage", data)
+        if (data.cmdMerge != 0) LogUtil.log("onmessage", data)
         HandleMgr.packageHandler(data.cmdMerge, data.responseStatus, data.data);
         //返回错误
         if (data.responseStatus != 0) {
             data.validMsg && UIMgr.showToast(data.validMsg);
         }
+        //处理推送消息
+        // EventMgr.emit();
     }
 
     //关闭close

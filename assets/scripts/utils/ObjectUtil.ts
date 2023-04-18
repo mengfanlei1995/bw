@@ -1,3 +1,4 @@
+import LogUtil from "./LogUtil";
 
 /**
  * 对象工具
@@ -7,7 +8,7 @@ class ObjectUtil {
      * 判断指定的值是否为对象
      * @param value 值
      */
-    public  isObject(value: any): boolean {
+    public isObject(value: any): boolean {
         return Object.prototype.toString.call(value) === '[object Object]';
     }
 
@@ -15,7 +16,7 @@ class ObjectUtil {
      * 深拷贝
      * @param target 目标
      */
-    public  deepCopy(target: any): any {
+    public deepCopy(target: any): any {
         if (target == null || typeof target !== 'object') {
             return target;
         }
@@ -46,14 +47,14 @@ class ObjectUtil {
             return result;
         }
 
-        console.warn(`不支持的类型：${result}`);
+        LogUtil.warn(`不支持的类型：${result}`);
     }
 
     /**
      * 拷贝对象
      * @param target 目标
      */
-    public  copy(target: object): object {
+    public copy(target: object): object {
         return Object.assign({}, target)
     }
 }

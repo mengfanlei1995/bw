@@ -1,9 +1,14 @@
-import SysConfig from "../../config/SysConfig";
+import SysConfig from "../../data/SysConfig";
+import { REPORT_EVT } from "../../enum/DeskEnum";
 import EventMgr from "../../mgr/EventMgr";
+import LangMgr from "../../mgr/LangMgr";
 import SoundMgr from "../../mgr/SoundMgr";
 import StorageMgr from "../../mgr/StorageMgr";
+import { ChannelConfig, WhiteConfig } from "../../model/ServerConfig";
+import { Login_GuestCmd, Login_SessionCmd } from "../../net/CmdData";
 import SendMgr from "../../net/SendMgr";
 import CommonUtil from "../../utils/CommonUtil";
+import JsbUitl from "../../utils/JsbUitl";
 import UIMgr from "../UIMgr";
 import UIScene from "../UIScene";
 import { DialogType } from "../ui/common/DiaLog";
@@ -14,10 +19,10 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class HotUpdate extends UIScene {
 
-    @property({ displayName: 'project.manifest', type: cc.Asset, })
+    @property({ displayName: 'project.manifest', type: cc.Asset })
     manifest: cc.Asset = null;
 
-    @property({ displayName: '版本号', type: cc.Label, })
+    @property({ displayName: '版本号', type: cc.Label })
     versionLabel: cc.Label = null;
 
     @property({ displayName: '热更新进度条', type: cc.Node })
@@ -49,7 +54,7 @@ export default class HotUpdate extends UIScene {
             let { device_id, apkVersion } = SysConfig.systemInfo
             /**设备号存在，并且只更新白名单，并且该设备号在白名单，则需要更新 */
             let whiteConfig: WhiteConfig = config.whiteConfig;
-            let whiteChannelConfig: ChannelConfig = whiteConfig.config || new ChannelConfig(SysConfig.Version);
+            let whiteChannelConfig: ChannelConfig = whiteConfig.config || new ChannelConfig(SysConfig.version);
             let inWhite: boolean = device_id && whiteConfig.users && whiteConfig.users.indexOf(device_id) !== -1
             let whiteChannelSwitchOn: boolean = !!whiteChannelConfig.switch
             //走白名单的设备
@@ -66,7 +71,7 @@ export default class HotUpdate extends UIScene {
             //其它正常玩家
             else {
                 //console.log(`其它正常玩家走通用配置:`)
-                let normalConfig: ChannelConfig = config.commonConfig || new ChannelConfig(SysConfig.Version);
+                let normalConfig: ChannelConfig = config.commonConfig || new ChannelConfig(SysConfig.version);
 
                 const { mode, force, ver } = normalConfig
 
@@ -296,9 +301,9 @@ export default class HotUpdate extends UIScene {
     _enterGame() {
         if (!StorageMgr.firstStart) {
             StorageMgr.firstStart = 1;
-            SendMgr.ykLogin();
+            SendMgr.sendLogin(null, Login_GuestCmd);
         } else {
-            SendMgr.sessionLogin()
+            SendMgr.sendLogin(null, Login_SessionCmd);
         }
     }
 

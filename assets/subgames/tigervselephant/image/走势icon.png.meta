@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "86ff747d-5540-43c6-ae98-96d35454ed00",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 69,
+  "height": 72,
+  "platformSettings": {},
+  "subMetas": {
+    "走势icon": {
+      "ver": "1.0.6",
+      "uuid": "f1a6e9d4-cb0f-47f7-a3b8-3ad55104d71e",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "86ff747d-5540-43c6-ae98-96d35454ed00",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 69,
+      "height": 72,
+      "rawWidth": 69,
+      "rawHeight": 72,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

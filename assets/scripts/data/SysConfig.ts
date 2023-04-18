@@ -1,0 +1,129 @@
+import { HALL_EVT } from "../enum/DeskEnum";
+import EventMgr from "../mgr/EventMgr";
+
+class SysConfig {
+    /**调试模式 */
+    readonly isDebug: number = 1;
+    /**带有af统计的默认渠道值 */
+    readonly defaultChannel: string = 'Organic';
+    /**是否是测试环境 */
+    readonly isTest: number = 0;
+    /**包的时区，根据包运营的国家，配置相应的值 */
+    readonly pkgTimeZone: string = 'Asia/Kolkata';
+    /**包名，也就是网络请求的主域名 */
+    readonly pkgName: string = 'luckywinner.website';
+    /**当前最新版本 */
+    readonly version: string = '1.2.1';
+    /**app名字 */
+    readonly appName: string = "Lucky Winner";
+    /**ISO货币编号 356印度卢比 */
+    readonly currencyCode: string = '356';
+    /**从原生端获取的信息，用此变量存储，便于使用 */
+    systemInfo: AppSysInfo = {};
+    /**是否在游戏中 */
+    isSettling: boolean = false;
+
+    set settling(isSettling: boolean) {
+        this.isSettling = isSettling;
+        EventMgr.emit(HALL_EVT.GOLD_CHANGE);
+    }
+
+    readonly GameIDConfig: GameIDConfig = {
+        WheelofForune: '300200',
+        LuckyBall: '400300',
+        LuckyDice: '400100',
+        TigerVSElephant: '300100',
+        PokeKing: '400400',
+        Dice3: '400200',
+        JhandiMunda: '400600',
+        TeenPattiWar: '400500'
+    }
+
+}
+
+
+export default new SysConfig();
+
+export interface GameIDConfig {
+    WheelofForune: string
+    LuckyBall: string
+    LuckyDice: string
+    TigerVSElephant: string
+    PokeKing: string
+    Dice3: string
+    JhandiMunda: string
+    TeenPattiWar: string
+}
+
+export interface afLaunchData {
+    afid?: string;
+    redirect_response_data?: string
+    adgroup_id?: string
+    engmnt_source?: string
+    retargeting_conversion_type?: string
+    is_incentivized?: boolean
+    orig_cost?: number
+    is_first_launch?: boolean
+    af_click_lookback?: string
+    af_web_dp?: string
+    af_cpi?: string
+    iscache?: boolean
+    click_time?: string
+    af_android_url?: string
+    is_branded_link?: string
+    match_type?: string
+    adset?: string
+    af_channel?: string
+    campaign_id?: string
+    shortlink?: string
+    install_time?: string
+    media_source?: string
+    agency?: string
+    af_message?: string
+    af_siteid?: string
+    af_status?: string
+    af_sub1?: string
+    cost_cents_USD?: number
+    af_sub5?: string
+    af_sub4?: string
+    af_sub3?: string
+    af_sub2?: string
+    adset_id?: string
+    esp_name?: string
+    campaign?: string
+    http_referrer?: string
+    is_universal_link?: string
+    is_retargeting?: boolean
+    adgroup?: string
+    ic?: string
+    ict?: string
+    source?: string
+    agent?: string
+}
+
+export interface AppSysInfo {
+    apkVersion?: string;//原生端版本号
+    timezone?: string //时区
+    channelInfo?: any; //包渠道号
+    device_id?: string //'', //设备标识
+    imei?: string //"", //国际移动设备识别码
+    mac?: string //"", //mac地址
+    android_id?: string //"",
+    sim_id?: string //"", //sim卡id
+    os_name?: string //"", //操作系统名称
+    os_version?: string //"", //操作系统版本
+    os_language?: string //"",
+    device_brand?: string //"",
+    device_model?: string //"", //设备型号
+    screen_height?: number //"",
+    screen_width?: number //"",
+    carrier?: string //"", //运营商 
+    location?: string //"{"latitude"?:"22.543503","longitude"?:"113.935249"}"
+    network_type?: string
+    bar_height?: number
+    isPieScreen?: boolean //是否异形屏
+    oaid?: string, //匿名设备标识符
+    appName?: string //游戏名称
+    afUid?: string //接入af后，获取afuid,
+    app_package_name?: string //包名
+}

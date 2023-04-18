@@ -13,7 +13,7 @@ export default class Toast extends UIScreen {
     bg: cc.Node = null;
 
     updateMsg(msg: string, seconds: number = 0.8) {
-        cc.tween(this.node).delay(seconds).to(0.6, { opacity: 0 }, { easing: 'easeOutCubic' }).call(
+        cc.tween(this.node).delay(seconds).to(0.6, { opacity: 0 }).call(
             () => {
                 let index = UIMgr.allToast.indexOf(this.node)
                 if (index != -1) {

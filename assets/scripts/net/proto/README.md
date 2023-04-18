@@ -5,7 +5,7 @@ It generates completely self-contained code without any dependencies.
 Install it using npm:
 
 ```
-npm install pbjs
+npm install pbjs -g
 ```
 
 Unlike other JavaScript implementations, this library doesn't write out default values.

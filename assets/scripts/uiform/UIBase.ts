@@ -6,27 +6,31 @@ const { ccclass, property } = cc._decorator;
 export default class UIBase extends cc.Component {
 
     /**ui类型 */
-    protected UIType: number;
+    public UIType: number;
 
     /**ui名字 */
-    protected UIName: string;
+    public UIName: string;
 
     onLoad() {
+
+    }
+
+    public onShow(params: any) {
 
     }
 
     /**
      * UI 打开动画
      */
-    protected async showTween(): Promise<any> {
+    public async showTween(): Promise<any> {
 
     }
 
     /**
      * UI 关闭动画
      */
-    protected async hideTween(): Promise<any> {
-        
+    public async hideTween(): Promise<any> {
+
     }
 
     start() {

@@ -1,0 +1,20 @@
+
+RYB_chouma.png
+size: 256,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+light
+  rotate: false
+  xy: 0, 90
+  size: 143, 143
+  orig: 143, 143
+  offset: 0, 0
+  index: -1
+under
+  rotate: false
+  xy: 0, 0
+  size: 88, 88
+  orig: 88, 88
+  offset: 0, 0
+  index: -1

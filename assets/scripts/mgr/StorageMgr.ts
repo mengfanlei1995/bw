@@ -1,4 +1,4 @@
-import SysConfig from "../config/SysConfig";
+import SysConfig from "../data/SysConfig";
 import CommonUtil from "../utils/CommonUtil";
 
 const StorageKey = cc.Enum({
@@ -37,6 +37,7 @@ const StorageKey = cc.Enum({
     INVATECODE: 'INVATECODE',
     INVATETYPE: 'INVATETYPE',
     MEDIAID: 'MEDIAID',
+    AFID: 'AFID',
     /**提现信息 */
     WITHDRAW: "WITHDRAW",
     /**进入过大厅了，下次断网情况下，如果该缓存存在，则表示该马甲包不需要走开关 */
@@ -74,7 +75,7 @@ class StorageMgr {
         this.saveItem(StorageKey.LANG, _lang);
     }
     public get lang(): string {
-        return this.loadItem(StorageKey.LANG);
+        return this.loadItem(StorageKey.LANG) || 'en';
     }
 
     /**
@@ -114,6 +115,13 @@ class StorageMgr {
     }
     public get mediaId(): string {
         return this.loadItem(StorageKey.MEDIAID) || SysConfig.defaultChannel;
+    }
+
+    public set afId(afId: string) {
+        this.saveItem(StorageKey.AFID, afId);
+    }
+    public get afId(): string {
+        return this.loadItem(StorageKey.AFID) || '';
     }
 
     /**玩家设备号 */
@@ -303,7 +311,7 @@ class StorageMgr {
             this.openAddCashTimes = 0;
             this.clickAddCashTimes = 0;
         }
-        this.lastTime = Date.now()
+        this.lastTime = Date.now();
     }
 
     /**
@@ -319,9 +327,6 @@ class StorageMgr {
 
 
     public logout() {
-        /* for(var o in StorageKey) {
-            this.saveItem(StorageKey[o], '');
-        } */
         this.userId = ''
         this.sessionId = ''
         this.nickName = ''

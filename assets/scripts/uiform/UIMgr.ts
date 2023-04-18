@@ -1,5 +1,7 @@
 import AssetUtil from "../utils/AssetUtil";
+import BundleUtil from "../utils/BundleUtil";
 import LogUtil from "../utils/LogUtil";
+import UIBase from "./UIBase";
 import DiaLog, { DialogOptions, DialogType } from "./ui/common/DiaLog";
 import Toast from "./ui/common/Toast";
 
@@ -34,21 +36,25 @@ class UIMgr {
      * @param target 父节点
      * @returns 
      */
-    public async show(url: string, name: string, isRepeat: boolean = false, target?: cc.Node): Promise<cc.Node> {
+    public async show(url: string, name: string, params: any = null, isRepeat: boolean = false, target?: cc.Node): Promise<cc.Node> {
         let node: cc.Node = this.nodeMap.get(name) || null;
         if (!isRepeat && cc.isValid(node)) {
             LogUtil.warn("节点已存在场景中!!!");
             return node;
         }
         let prefab: cc.Prefab = this.assetMap.get(name) || null;
-        if (!prefab.isValid) prefab = await this.getPrefab(url);
-        if (!prefab.isValid) {
-            console.error("资源不存在！");
+        if (!cc.isValid(prefab)) prefab = await this.getPrefab(url);
+        if (!cc.isValid(prefab)) {
+            LogUtil.error("资源不存在！");
             return null;
         }
         let parent: cc.Node = target ? target : cc.find('Canvas');
         node = cc.instantiate(prefab);
-        node.getComponent(name)!.UIName = name;
+        let script: UIBase = node.getComponent(name);
+        if (script) {
+            script.UIName = name;
+            script.onShow(params);
+        }
         node.parent = parent;
         this.assetMap.set(name, prefab);
         this.nodeMap.set(name, node);
@@ -116,8 +122,8 @@ class UIMgr {
             )
 
             let prefab: cc.Prefab = await this.getPrefab('prefab/common/Toast');
-            if (!prefab.isValid) {
-                console.error("资源不存在！");
+            if (!cc.isValid(prefab)) {
+                LogUtil.error("资源不存在！");
                 return;
             }
             let toast: cc.Node = cc.instantiate(prefab);
@@ -158,7 +164,7 @@ class UIMgr {
      * ----> closeCb: '对话框关闭按钮点击事件',
      * ----> showCb: '对话框显示完毕后的回调',
      */
-    public async showDialog(options: any) {
+    public async showDialog(options: DialogOptions) {
         let defOptions: DialogOptions = {
             word: '',
             type: DialogType.OnlyOkBtn,
@@ -169,7 +175,8 @@ class UIMgr {
             closeCb: null,
             showCb: null,
             hideCb: null,
-            hAlign: 0
+            hAlign: 0,
+            title: ''
         }
         options = Object.assign(defOptions, options)
         let layer: cc.Node = await this.show('prefab/common/DiaLog', 'DiaLog');
@@ -200,5 +207,35 @@ class UIMgr {
     public hideDialog() {
         this.hide('DiaLog');
     }
+
+    /**进入游戏 */
+    public async enterGame(bundleName: string, sceneName: string) {
+        //先加载公共bundle
+        await BundleUtil.getBundle('common');
+        //加载游戏bundle
+        let bundle: cc.AssetManager.Bundle = await BundleUtil.getBundle(bundleName);
+        if (!bundle) {
+            LogUtil.error('bundleName error');
+            BundleUtil.clearAllBundle();
+            return;
+        }
+        BundleUtil.loadBundleScene(bundleName, sceneName);
+    }
+
+    /**回到大厅 */
+    public goHall() {
+        cc.director.loadScene('Hall');
+    }
+
+    /**login界面 */
+    public goLogin() {
+        cc.director.loadScene('Login');
+    }
+
+    /**热更新界面 */
+    public goHotUpdate() {
+        cc.director.loadScene('HotUpdate');
+    }
+
 }
 export default new UIMgr();

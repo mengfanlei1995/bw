@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "fe87c513-a336-429a-b3d7-65603fec56c9",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 750,
+  "height": 998,
+  "platformSettings": {},
+  "subMetas": {
+    "牌桌": {
+      "ver": "1.0.6",
+      "uuid": "94062af3-ffc9-4e73-b52c-3e865b049cf3",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "fe87c513-a336-429a-b3d7-65603fec56c9",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 750,
+      "height": 998,
+      "rawWidth": 750,
+      "rawHeight": 998,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}
