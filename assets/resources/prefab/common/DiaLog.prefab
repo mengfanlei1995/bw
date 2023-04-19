@@ -729,7 +729,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 450,
-      "height": 30.240000000000002
+      "height": 37.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -741,7 +741,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        90,
+        25,
         0,
         0,
         0,
@@ -783,7 +783,7 @@
     "_string": "Label",
     "_N$string": "Label",
     "_fontSize": 24,
-    "_lineHeight": 24,
+    "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -792,7 +792,7 @@
     "_styleFlags": 0,
     "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
-    "_N$verticalAlign": 0,
+    "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 3,
     "_N$cacheMode": 0,
@@ -837,7 +837,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 450,
-      "height": 30.240000000000002
+      "height": 37.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -849,7 +849,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        90,
+        25,
         0,
         0,
         0,
@@ -891,7 +891,7 @@
     "_string": "Label",
     "_N$string": "Label",
     "_fontSize": 24,
-    "_lineHeight": 24,
+    "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -900,7 +900,7 @@
     "_styleFlags": 0,
     "_underlineHeight": 0,
     "_N$horizontalAlign": 0,
-    "_N$verticalAlign": 0,
+    "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 3,
     "_N$cacheMode": 0,
@@ -945,7 +945,7 @@
     "_contentSize": {
       "__type__": "cc.Size",
       "width": 450,
-      "height": 30.240000000000002
+      "height": 37.8
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -957,7 +957,7 @@
       "ctor": "Float64Array",
       "array": [
         0,
-        90,
+        25,
         0,
         0,
         0,
@@ -999,7 +999,7 @@
     "_string": "Label",
     "_N$string": "Label",
     "_fontSize": 24,
-    "_lineHeight": 24,
+    "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": null,
     "_isSystemFontUsed": true,
@@ -1008,7 +1008,7 @@
     "_styleFlags": 0,
     "_underlineHeight": 0,
     "_N$horizontalAlign": 2,
-    "_N$verticalAlign": 0,
+    "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 3,
     "_N$cacheMode": 0,

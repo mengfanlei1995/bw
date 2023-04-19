@@ -5,7 +5,7 @@ export const Login_PhoneCmd: number = 2;
 export const Login_SessionCmd: number = 3;
 //用户
 export const UserCmd: number = 2;
-export const User_InfoCmd: number = 1;
+// export const User_InfoCmd: number = 1;
 export const User_ChangeHeadCmd: number = 2;
 export const User_ChangeNameCmd: number = 3;
 //大厅信息

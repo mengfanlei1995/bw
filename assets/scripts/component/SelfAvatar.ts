@@ -21,6 +21,8 @@ export default class SelfAvatar extends cc.Component {
     }
 
     async updateHeadpic() {
-        this.node.getComponent(cc.Sprite).spriteFrame = await AssetUtil.loadResSync<cc.SpriteFrame>(`avatar/${UserData.userInfo.headPic || '1'}`, false);
+        let texture: cc.Texture2D = await AssetUtil.loadResSync<cc.Texture2D>(`avatar/${UserData.userInfo.headPic || '1'}`, false);
+        var spriteFrame: cc.SpriteFrame = new cc.SpriteFrame(texture);
+        this.node.getComponent(cc.Sprite).spriteFrame = spriteFrame;
     }
 }

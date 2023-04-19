@@ -5,6 +5,7 @@ import { SYS_CONST } from "../enum/SysEventEnum";
 import EventMgr from "../mgr/EventMgr";
 import LangMgr from "../mgr/LangMgr";
 import StorageMgr from "../mgr/StorageMgr";
+import { Login_SessionCmd } from "../net/CmdData";
 import SendMgr from "../net/SendMgr";
 import UIMgr from "../uiform/UIMgr";
 import { DialogType } from "../uiform/ui/common/DiaLog";
@@ -99,7 +100,6 @@ class JsbUitl {
     public initInfo(): void {
         if (this.jsbInited) return;
         this.jsbInited = true
-
         if (cc.sys.isNative) {
             let sysInfo: AppSysInfo = this.getSystemInfoSync();
             let { device_id } = sysInfo;
@@ -252,7 +252,7 @@ class JsbUitl {
             cc.game.on(SYS_CONST.ON_SHOW, async () => {
                 EventMgr.emit(HALL_EVT.DESK_RELOAD)
                 EventMgr.emit(REPORT_EVT.STARTONLINE);
-                SendMgr.sendGetUserInfo();
+                SendMgr.sendLogin({}, Login_SessionCmd);
             });
         } else {
             try {
@@ -274,7 +274,7 @@ class JsbUitl {
                 cc.game.on(cc.game.EVENT_SHOW, () => {
                     EventMgr.emit(HALL_EVT.DESK_RELOAD)
                     EventMgr.emit(REPORT_EVT.STARTONLINE);
-                    SendMgr.sendGetUserInfo();
+                    SendMgr.sendLogin({}, Login_SessionCmd);
                 });
             } catch (e) { }
         }

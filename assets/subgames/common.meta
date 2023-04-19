@@ -3,7 +3,7 @@
   "uuid": "d3cf5195-3499-42bd-8b8d-7efa198bcb57",
   "importer": "folder",
   "isBundle": true,
-  "bundleName": "",
+  "bundleName": "common",
   "priority": 1,
   "compressionType": {},
   "optimizeHotUpdate": {},

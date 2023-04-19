@@ -3,14 +3,14 @@ import UserData from "../data/UserData";
 import StorageMgr from "../mgr/StorageMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, ExitRoomCmd, Hall_InfoCmd, JoinRoomCmd, RecordListCmd } from "./CmdData";
+import { BetCmd, ExitRoomCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, RecordListCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
-import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd, User_InfoCmd } from "./CmdData";
+import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage, encodeExternalMessage } from "./proto/ExternalMessage";
 import { BaseUserInfoVO, decodeBaseUserInfoVO } from "./proto/core";
-import { decodeHomepageGameVO } from "./proto/hall";
+import { HomepageResponse, decodeHomepageGameVO, decodeHomepageResponse } from "./proto/hall";
 import { encodeUserUpdateHeadPicDTO } from "./proto/hall";
 import { UserUpdateNicknameDTO } from "./proto/hall";
 import { HomepageUserInfoResponse } from "./proto/hall";
@@ -75,26 +75,12 @@ class SendMgr {
     public async sendLogin(params: LoginDTO = {}, loginType: number = Login_GuestCmd): Promise<LoginVO> {
         params = Object.assign(loginCommonParams(), params);
         return new Promise<LoginVO>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, loginType), encodeLoginDTO(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, loginType), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
                 if (code === 0) {
-                    let info: LoginVO = decodeLoginVO(data);
-                    StorageMgr.sessionId = info.sessionId;
-                    this.sendGetUserInfo();
-                }
-                resolve(code == 0 ? decodeLoginVO(data) : null);
-            })
-        })
-    }
-
-    /**获取用户信息 */
-    public async sendGetUserInfo(): Promise<boolean> {
-        return new Promise<boolean>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(UserCmd, User_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
-                if (code === 0) {
-                    let userInfo: BaseUserInfoVO = decodeBaseUserInfoVO(data);
+                    let userInfo: LoginVO = decodeLoginVO(data);
                     UserData.initUserInfo(userInfo);
                 }
-                resolve(code === 0);
+                resolve(code == 0 ? decodeLoginVO(data) : null);
             })
         })
     }
@@ -124,10 +110,10 @@ class SendMgr {
     }
 
     /**大厅信息查询 */
-    public async sendHallInfo(): Promise<HomepageUserInfoResponse> {
-        return new Promise<HomepageUserInfoResponse>(resolve => {
+    public async sendHallInfo(): Promise<HomepageResponse> {
+        return new Promise<HomepageResponse>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(HallCmd, Hall_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
-                resolve(code === 0 ? decodeHomepageUserInfoResponse(data) : null);
+                resolve(code === 0 ? decodeHomepageResponse(data) : null);
             })
         })
     }
@@ -140,7 +126,7 @@ class SendMgr {
             appResVersion: 0
         }
         return new Promise<HomepageGameVO>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(HallCmd, Hall_InfoCmd), encodeHomepageGameDTO(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(HallCmd, Hall_GameListCmd), encodeHomepageGameDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodeHomepageGameVO(data) : null);
             })
         })

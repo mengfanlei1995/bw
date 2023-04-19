@@ -29,4 +29,7 @@ export default class UIScene extends UIBase {
         this.UIType = UIType.SCENE;
     }
 
+    update(deltaTime: number): void {
+    }
+
 }

@@ -25,7 +25,7 @@ class SocketClient implements ISocket {
         this.SocketState = this.SocketState_NoConnect;
     }
 
-    public async connect(ws: string = "ws://192.168.124.13:1005/websocket"): Promise<void> {
+    public async connect(ws: string = "ws://16.163.128.21/websocket"): Promise<void> {
         if (this.SocketState != this.SocketState_Connected) {
             if (cc.sys.isNative) {
                 let cacert: cc.Asset = await AssetUtil.loadResSync<cc.Asset>("ssl/cacert", false);

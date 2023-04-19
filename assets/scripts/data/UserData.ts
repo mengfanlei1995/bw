@@ -1,5 +1,5 @@
 import StorageMgr from "../mgr/StorageMgr";
-import { BaseUserInfoVO } from "../net/proto/core";
+import { LoginVO } from "../net/proto/hall";
 import LongUtil from "../utils/LongUtil";
 
 class UserData {
@@ -7,15 +7,19 @@ class UserData {
     /**玩家信息 */
     userInfo: UserInfo = {};
 
-    initUserInfo(userInfo: BaseUserInfoVO) {
-        let { userId, nickName, headPic, phone, walletVO } = userInfo;
+    initUserInfo(userInfo: LoginVO) {
+        let { userId, nickName, headPic, phone, accountType, firstDay, first, walletVO, sessionId } = userInfo;
         let { depositBalance, withdrawBalance, totalCashBalance, freeBalance } = walletVO;
         this.userInfo.userId = userId;
         this.userInfo.nickName = nickName;
         this.userInfo.headPic = headPic;
         this.userInfo.phone = phone;
+        this.userInfo.accountType = accountType;
+        this.userInfo.firstDay = LongUtil.longToNumber(firstDay);
+        this.userInfo.first = first;
         StorageMgr.phone = phone;
         StorageMgr.userId = userId;
+        StorageMgr.sessionId = sessionId;
         let walletInfo: WalletInfo = {};
         walletInfo.depositBalance = LongUtil.longToNumber(depositBalance);
         walletInfo.withdrawBalance = LongUtil.longToNumber(withdrawBalance);
@@ -33,7 +37,11 @@ interface UserInfo {
     userId?: string;
     nickName?: string;
     headPic?: string;
+    sessionId?: string;
     phone?: string;
+    accountType?: number;
+    firstDay?: number;
+    first?: boolean;
     walletInfo?: WalletInfo;
 }
 
@@ -43,4 +51,3 @@ interface WalletInfo {
     totalCashBalance?: number;
     freeBalance?: number;
 }
-

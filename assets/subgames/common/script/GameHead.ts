@@ -39,7 +39,9 @@ export default class GameHead extends UIScreen {
         // 1
         roomLevel: 1,
         // 1
-        roomType: 1
+        roomType: 1,
+        //userid
+        userId: StorageMgr.userId
     }
 
     public onShow(data: any): void {
@@ -77,7 +79,7 @@ export default class GameHead extends UIScreen {
 
     private async onBackClick(e: cc.Event.EventTouch) {
         SendMgr.sendExitRoom(this.optData, this.gameCmd);
-        this.hide();
+        // this.hide();
         UIMgr.goHall();
     }
 

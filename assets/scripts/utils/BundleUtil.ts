@@ -26,7 +26,7 @@ class BundleUtil {
     /**获取Bundle */
     public getBundle(bundleName: string, version?: string): Promise<cc.AssetManager.Bundle> {
         return new Promise(async resolve => {
-            bundleName = bundleName.toLowerCase()
+            // bundleName = bundleName.toLowerCase()
             let bundle: cc.AssetManager.Bundle = this.getUsedBundle(bundleName);
             if (!bundle) {
                 bundle = await this.loadBundle(bundleName, version ? { version } : null);
@@ -81,7 +81,7 @@ class BundleUtil {
     public clearAllBundle(): void {
         if (this._usedBundle.size == 0) return;
         this._usedBundle.forEach(bundle => {
-            // this.releaseBundle(bundle);
+            this.releaseBundle(bundle);
             this.removeBundle(bundle);
         })
         this._usedBundle.clear();

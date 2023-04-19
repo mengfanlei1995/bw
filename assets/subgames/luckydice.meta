@@ -3,7 +3,7 @@
   "uuid": "95d39d0e-1012-448a-b1c5-c83d139b9dc3",
   "importer": "folder",
   "isBundle": true,
-  "bundleName": "",
+  "bundleName": "LuckyDice",
   "priority": 2,
   "compressionType": {},
   "optimizeHotUpdate": {},

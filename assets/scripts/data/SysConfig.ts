@@ -1,5 +1,8 @@
 import { HALL_EVT } from "../enum/DeskEnum";
 import EventMgr from "../mgr/EventMgr";
+import { Dice3Cmd, JhandiMundaCmd, LuckyBallCmd, LuckyDiceCmd, PokerKingCmd, TPWarCmd, WhellOfForuneCmd } from "../net/CmdData";
+import { HomepageGamesResponse } from "../net/proto/hall";
+import LongUtil from "../utils/LongUtil";
 
 class SysConfig {
     /**调试模式 */
@@ -15,7 +18,7 @@ class SysConfig {
     /**当前最新版本 */
     readonly version: string = '1.2.1';
     /**app名字 */
-    readonly appName: string = "Lucky Winner";
+    readonly appName: string = "Big Winner";
     /**ISO货币编号 356印度卢比 */
     readonly currencyCode: string = '356';
     /**从原生端获取的信息，用此变量存储，便于使用 */
@@ -38,11 +41,52 @@ class SysConfig {
         JhandiMunda: '400600',
         TeenPattiWar: '400500'
     }
+    /**大厅游戏列表 */
+    public gameList: GameListInfo[] = [];
+
+    public setGameList(games: HomepageGamesResponse[]) {
+        for (let i = 0; i < games.length; i++) {
+            let _data: GameListInfo = {};
+            let minIn = LongUtil.longToNumber(games[i].minIn);
+            _data.minIn = minIn;
+            _data.roomId = games[i].roomId;
+            _data.gameType = games[i].gameType;
+            _data.gameImgUrl = games[i].gameImgUrl;
+            _data.gameIconUrl = games[i].gameIconUrl;
+            _data.remoteUrl = games[i].remoteUrl;
+            _data.version = games[i].version;
+            _data.download = games[i].download;
+            _data.state = games[i].state;
+            _data.select = games[i].select;
+            _data.flag = games[i].flag;
+            _data.file = games[i].file;
+            _data.name = games[i].name;
+            _data.cmd = games[i].cmd;
+            this.gameList.push(_data);
+        }
+    }
 
 }
 
 
 export default new SysConfig();
+
+export interface GameListInfo {
+    roomId?: string;
+    gameType?: string;
+    gameImgUrl?: string;
+    gameIconUrl?: string;
+    remoteUrl?: string;
+    version?: string;
+    download?: boolean;
+    state?: number;
+    select?: number;
+    minIn?: number;
+    flag?: number;
+    file?: string;
+    name?: string;
+    cmd?: number;
+}
 
 export interface GameIDConfig {
     WheelofForune: string

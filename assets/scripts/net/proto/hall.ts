@@ -45,67 +45,31 @@ function _decodeUserUpdateNicknameDTO(bb: ByteBuffer): UserUpdateNicknameDTO {
   return message;
 }
 
-export interface HomepageResponse {
-  userInfo?: HomepageUserInfoResponse;
-  rotationPictures?: PictureResponse[];
-  redDot?: { [key: string]: boolean };
+export interface UserUpdateHeadPicDTO {
+  headpic?: string;
 }
 
-export function encodeHomepageResponse(message: HomepageResponse): Uint8Array {
+export function encodeUserUpdateHeadPicDTO(message: UserUpdateHeadPicDTO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeHomepageResponse(message, bb);
+  _encodeUserUpdateHeadPicDTO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeHomepageResponse(message: HomepageResponse, bb: ByteBuffer): void {
-  // optional HomepageUserInfoResponse userInfo = 1;
-  let $userInfo = message.userInfo;
-  if ($userInfo !== undefined) {
+function _encodeUserUpdateHeadPicDTO(message: UserUpdateHeadPicDTO, bb: ByteBuffer): void {
+  // optional string headpic = 1;
+  let $headpic = message.headpic;
+  if ($headpic !== undefined) {
     writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeHomepageUserInfoResponse($userInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated PictureResponse rotationPictures = 2;
-  let array$rotationPictures = message.rotationPictures;
-  if (array$rotationPictures !== undefined) {
-    for (let value of array$rotationPictures) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodePictureResponse(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<string, bool> redDot = 3;
-  let map$redDot = message.redDot;
-  if (map$redDot !== undefined) {
-    for (let key in map$redDot) {
-      let nested = popByteBuffer();
-      let value = map$redDot[key];
-      writeVarint32(nested, 10);
-      writeString(nested, key);
-      writeVarint32(nested, 16);
-      writeByte(nested, value ? 1 : 0);
-      writeVarint32(bb, 26);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
+    writeString(bb, $headpic);
   }
 }
 
-export function decodeHomepageResponse(binary: Uint8Array): HomepageResponse {
-  return _decodeHomepageResponse(wrapByteBuffer(binary));
+export function decodeUserUpdateHeadPicDTO(binary: Uint8Array): UserUpdateHeadPicDTO {
+  return _decodeUserUpdateHeadPicDTO(wrapByteBuffer(binary));
 }
 
-function _decodeHomepageResponse(bb: ByteBuffer): HomepageResponse {
-  let message: HomepageResponse = {} as any;
+function _decodeUserUpdateHeadPicDTO(bb: ByteBuffer): UserUpdateHeadPicDTO {
+  let message: UserUpdateHeadPicDTO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -114,50 +78,9 @@ function _decodeHomepageResponse(bb: ByteBuffer): HomepageResponse {
       case 0:
         break end_of_message;
 
-      // optional HomepageUserInfoResponse userInfo = 1;
+      // optional string headpic = 1;
       case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.userInfo = _decodeHomepageUserInfoResponse(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated PictureResponse rotationPictures = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.rotationPictures || (message.rotationPictures = []);
-        values.push(_decodePictureResponse(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional map<string, bool> redDot = 3;
-      case 3: {
-        let values = message.redDot || (message.redDot = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: string | undefined;
-        let value: boolean | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readString(bb, readVarint32(bb));
-              break;
-            }
-            case 2: {
-              value = !!readByte(bb);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: redDot");
-        values[key] = value;
-        bb.limit = outerLimit;
+        message.headpic = readString(bb, readVarint32(bb));
         break;
       }
 
@@ -169,87 +92,135 @@ function _decodeHomepageResponse(bb: ByteBuffer): HomepageResponse {
   return message;
 }
 
-export interface LoginVO {
-  userId?: string;
-  nickName?: string;
-  headPic?: string;
-  sessionId?: string;
-  phone?: string;
-  accountType?: number;
-  firstDay?: Long;
-  first?: boolean;
+export interface HomepageGamesResponse {
+  roomId?: string;
+  gameType?: string;
+  gameImgUrl?: string;
+  gameIconUrl?: string;
+  remoteUrl?: string;
+  version?: string;
+  download?: boolean;
+  state?: number;
+  select?: number;
+  minIn?: Long;
+  flag?: number;
+  file?: string;
+  name?: string;
+  cmd?: number;
 }
 
-export function encodeLoginVO(message: LoginVO): Uint8Array {
+export function encodeHomepageGamesResponse(message: HomepageGamesResponse): Uint8Array {
   let bb = popByteBuffer();
-  _encodeLoginVO(message, bb);
+  _encodeHomepageGamesResponse(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeLoginVO(message: LoginVO, bb: ByteBuffer): void {
-  // optional string userId = 1;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
+function _encodeHomepageGamesResponse(message: HomepageGamesResponse, bb: ByteBuffer): void {
+  // optional string roomId = 1;
+  let $roomId = message.roomId;
+  if ($roomId !== undefined) {
     writeVarint32(bb, 10);
-    writeString(bb, $userId);
+    writeString(bb, $roomId);
   }
 
-  // optional string nickName = 2;
-  let $nickName = message.nickName;
-  if ($nickName !== undefined) {
+  // optional string gameType = 2;
+  let $gameType = message.gameType;
+  if ($gameType !== undefined) {
     writeVarint32(bb, 18);
-    writeString(bb, $nickName);
+    writeString(bb, $gameType);
   }
 
-  // optional string headPic = 3;
-  let $headPic = message.headPic;
-  if ($headPic !== undefined) {
+  // optional string gameImgUrl = 3;
+  let $gameImgUrl = message.gameImgUrl;
+  if ($gameImgUrl !== undefined) {
     writeVarint32(bb, 26);
-    writeString(bb, $headPic);
+    writeString(bb, $gameImgUrl);
   }
 
-  // optional string sessionId = 4;
-  let $sessionId = message.sessionId;
-  if ($sessionId !== undefined) {
+  // optional string gameIconUrl = 4;
+  let $gameIconUrl = message.gameIconUrl;
+  if ($gameIconUrl !== undefined) {
     writeVarint32(bb, 34);
-    writeString(bb, $sessionId);
+    writeString(bb, $gameIconUrl);
   }
 
-  // optional string phone = 5;
-  let $phone = message.phone;
-  if ($phone !== undefined) {
+  // optional string remoteUrl = 5;
+  let $remoteUrl = message.remoteUrl;
+  if ($remoteUrl !== undefined) {
     writeVarint32(bb, 42);
-    writeString(bb, $phone);
+    writeString(bb, $remoteUrl);
   }
 
-  // optional int32 accountType = 6;
-  let $accountType = message.accountType;
-  if ($accountType !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($accountType));
+  // optional string version = 6;
+  let $version = message.version;
+  if ($version !== undefined) {
+    writeVarint32(bb, 50);
+    writeString(bb, $version);
   }
 
-  // optional int64 firstDay = 7;
-  let $firstDay = message.firstDay;
-  if ($firstDay !== undefined) {
+  // optional bool download = 7;
+  let $download = message.download;
+  if ($download !== undefined) {
     writeVarint32(bb, 56);
-    writeVarint64(bb, $firstDay);
+    writeByte(bb, $download ? 1 : 0);
   }
 
-  // optional bool first = 8;
-  let $first = message.first;
-  if ($first !== undefined) {
+  // optional int32 state = 8;
+  let $state = message.state;
+  if ($state !== undefined) {
     writeVarint32(bb, 64);
-    writeByte(bb, $first ? 1 : 0);
+    writeVarint64(bb, intToLong($state));
+  }
+
+  // optional int32 select = 9;
+  let $select = message.select;
+  if ($select !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($select));
+  }
+
+  // optional int64 minIn = 10;
+  let $minIn = message.minIn;
+  if ($minIn !== undefined) {
+    writeVarint32(bb, 80);
+    writeVarint64(bb, $minIn);
+  }
+
+  // optional int32 flag = 11;
+  let $flag = message.flag;
+  if ($flag !== undefined) {
+    writeVarint32(bb, 88);
+    writeVarint64(bb, intToLong($flag));
+  }
+
+  // optional string file = 12;
+  let $file = message.file;
+  if ($file !== undefined) {
+    writeVarint32(bb, 98);
+    writeString(bb, $file);
+  }
+
+  // optional string name = 13;
+  let $name = message.name;
+  if ($name !== undefined) {
+    writeVarint32(bb, 106);
+    writeString(bb, $name);
+  }
+
+  // optional int32 cmd = 14;
+  let $cmd = message.cmd;
+  if ($cmd !== undefined) {
+    writeVarint32(bb, 112);
+    writeVarint64(bb, intToLong($cmd));
   }
 }
 
-export function decodeLoginVO(binary: Uint8Array): LoginVO {
-  return _decodeLoginVO(wrapByteBuffer(binary));
+export function decodeHomepageGamesResponse(binary: Uint8Array): HomepageGamesResponse {
+  return _decodeHomepageGamesResponse(wrapByteBuffer(binary));
 }
 
-function _decodeLoginVO(bb: ByteBuffer): LoginVO {
-  let message: LoginVO = {} as any;
+function _decodeHomepageGamesResponse(bb: ByteBuffer): HomepageGamesResponse {
+  let message: HomepageGamesResponse = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -258,51 +229,87 @@ function _decodeLoginVO(bb: ByteBuffer): LoginVO {
       case 0:
         break end_of_message;
 
-      // optional string userId = 1;
+      // optional string roomId = 1;
       case 1: {
-        message.userId = readString(bb, readVarint32(bb));
+        message.roomId = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional string nickName = 2;
+      // optional string gameType = 2;
       case 2: {
-        message.nickName = readString(bb, readVarint32(bb));
+        message.gameType = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional string headPic = 3;
+      // optional string gameImgUrl = 3;
       case 3: {
-        message.headPic = readString(bb, readVarint32(bb));
+        message.gameImgUrl = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional string sessionId = 4;
+      // optional string gameIconUrl = 4;
       case 4: {
-        message.sessionId = readString(bb, readVarint32(bb));
+        message.gameIconUrl = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional string phone = 5;
+      // optional string remoteUrl = 5;
       case 5: {
-        message.phone = readString(bb, readVarint32(bb));
+        message.remoteUrl = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional int32 accountType = 6;
+      // optional string version = 6;
       case 6: {
-        message.accountType = readVarint32(bb);
+        message.version = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional int64 firstDay = 7;
+      // optional bool download = 7;
       case 7: {
-        message.firstDay = readVarint64(bb, /* unsigned */ false);
+        message.download = !!readByte(bb);
         break;
       }
 
-      // optional bool first = 8;
+      // optional int32 state = 8;
       case 8: {
-        message.first = !!readByte(bb);
+        message.state = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 select = 9;
+      case 9: {
+        message.select = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 minIn = 10;
+      case 10: {
+        message.minIn = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 flag = 11;
+      case 11: {
+        message.flag = readVarint32(bb);
+        break;
+      }
+
+      // optional string file = 12;
+      case 12: {
+        message.file = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string name = 13;
+      case 13: {
+        message.name = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 cmd = 14;
+      case 14: {
+        message.cmd = readVarint32(bb);
         break;
       }
 
@@ -314,71 +321,55 @@ function _decodeLoginVO(bb: ByteBuffer): LoginVO {
   return message;
 }
 
-export interface HomepageUserInfoResponse {
-  bonus?: number;
-  vipLevel?: number;
-  club?: number;
-  recharge?: boolean;
-  brokeCoupon?: boolean;
-  invitationCode?: string;
+export interface LoginWalletVO {
+  depositBalance?: Long;
+  withdrawBalance?: Long;
+  totalCashBalance?: Long;
+  freeBalance?: Long;
 }
 
-export function encodeHomepageUserInfoResponse(message: HomepageUserInfoResponse): Uint8Array {
+export function encodeLoginWalletVO(message: LoginWalletVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeHomepageUserInfoResponse(message, bb);
+  _encodeLoginWalletVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeHomepageUserInfoResponse(message: HomepageUserInfoResponse, bb: ByteBuffer): void {
-  // optional double bonus = 1;
-  let $bonus = message.bonus;
-  if ($bonus !== undefined) {
-    writeVarint32(bb, 9);
-    writeDouble(bb, $bonus);
+function _encodeLoginWalletVO(message: LoginWalletVO, bb: ByteBuffer): void {
+  // optional int64 depositBalance = 1;
+  let $depositBalance = message.depositBalance;
+  if ($depositBalance !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $depositBalance);
   }
 
-  // optional int32 vipLevel = 2;
-  let $vipLevel = message.vipLevel;
-  if ($vipLevel !== undefined) {
+  // optional int64 withdrawBalance = 2;
+  let $withdrawBalance = message.withdrawBalance;
+  if ($withdrawBalance !== undefined) {
     writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($vipLevel));
+    writeVarint64(bb, $withdrawBalance);
   }
 
-  // optional int32 club = 3;
-  let $club = message.club;
-  if ($club !== undefined) {
+  // optional int64 totalCashBalance = 3;
+  let $totalCashBalance = message.totalCashBalance;
+  if ($totalCashBalance !== undefined) {
     writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($club));
+    writeVarint64(bb, $totalCashBalance);
   }
 
-  // optional bool recharge = 4;
-  let $recharge = message.recharge;
-  if ($recharge !== undefined) {
+  // optional int64 freeBalance = 4;
+  let $freeBalance = message.freeBalance;
+  if ($freeBalance !== undefined) {
     writeVarint32(bb, 32);
-    writeByte(bb, $recharge ? 1 : 0);
-  }
-
-  // optional bool brokeCoupon = 5;
-  let $brokeCoupon = message.brokeCoupon;
-  if ($brokeCoupon !== undefined) {
-    writeVarint32(bb, 40);
-    writeByte(bb, $brokeCoupon ? 1 : 0);
-  }
-
-  // optional string invitationCode = 6;
-  let $invitationCode = message.invitationCode;
-  if ($invitationCode !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $invitationCode);
+    writeVarint64(bb, $freeBalance);
   }
 }
 
-export function decodeHomepageUserInfoResponse(binary: Uint8Array): HomepageUserInfoResponse {
-  return _decodeHomepageUserInfoResponse(wrapByteBuffer(binary));
+export function decodeLoginWalletVO(binary: Uint8Array): LoginWalletVO {
+  return _decodeLoginWalletVO(wrapByteBuffer(binary));
 }
 
-function _decodeHomepageUserInfoResponse(bb: ByteBuffer): HomepageUserInfoResponse {
-  let message: HomepageUserInfoResponse = {} as any;
+function _decodeLoginWalletVO(bb: ByteBuffer): LoginWalletVO {
+  let message: LoginWalletVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -387,39 +378,172 @@ function _decodeHomepageUserInfoResponse(bb: ByteBuffer): HomepageUserInfoRespon
       case 0:
         break end_of_message;
 
-      // optional double bonus = 1;
+      // optional int64 depositBalance = 1;
       case 1: {
-        message.bonus = readDouble(bb);
+        message.depositBalance = readVarint64(bb, /* unsigned */ false);
         break;
       }
 
-      // optional int32 vipLevel = 2;
+      // optional int64 withdrawBalance = 2;
       case 2: {
-        message.vipLevel = readVarint32(bb);
+        message.withdrawBalance = readVarint64(bb, /* unsigned */ false);
         break;
       }
 
-      // optional int32 club = 3;
+      // optional int64 totalCashBalance = 3;
       case 3: {
-        message.club = readVarint32(bb);
+        message.totalCashBalance = readVarint64(bb, /* unsigned */ false);
         break;
       }
 
-      // optional bool recharge = 4;
+      // optional int64 freeBalance = 4;
       case 4: {
-        message.recharge = !!readByte(bb);
+        message.freeBalance = readVarint64(bb, /* unsigned */ false);
         break;
       }
 
-      // optional bool brokeCoupon = 5;
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface PictureResponse {
+  id?: number;
+  pictureUrl?: string;
+  skipPage?: string;
+  skipType?: number;
+  activityId?: string;
+  skipData?: string;
+  skipParams?: string;
+  redDot?: boolean;
+}
+
+export function encodePictureResponse(message: PictureResponse): Uint8Array {
+  let bb = popByteBuffer();
+  _encodePictureResponse(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodePictureResponse(message: PictureResponse, bb: ByteBuffer): void {
+  // optional int32 id = 1;
+  let $id = message.id;
+  if ($id !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($id));
+  }
+
+  // optional string pictureUrl = 2;
+  let $pictureUrl = message.pictureUrl;
+  if ($pictureUrl !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $pictureUrl);
+  }
+
+  // optional string skipPage = 3;
+  let $skipPage = message.skipPage;
+  if ($skipPage !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $skipPage);
+  }
+
+  // optional int32 skipType = 4;
+  let $skipType = message.skipType;
+  if ($skipType !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($skipType));
+  }
+
+  // optional string activityId = 5;
+  let $activityId = message.activityId;
+  if ($activityId !== undefined) {
+    writeVarint32(bb, 42);
+    writeString(bb, $activityId);
+  }
+
+  // optional string skipData = 6;
+  let $skipData = message.skipData;
+  if ($skipData !== undefined) {
+    writeVarint32(bb, 50);
+    writeString(bb, $skipData);
+  }
+
+  // optional string skipParams = 7;
+  let $skipParams = message.skipParams;
+  if ($skipParams !== undefined) {
+    writeVarint32(bb, 58);
+    writeString(bb, $skipParams);
+  }
+
+  // optional bool redDot = 8;
+  let $redDot = message.redDot;
+  if ($redDot !== undefined) {
+    writeVarint32(bb, 64);
+    writeByte(bb, $redDot ? 1 : 0);
+  }
+}
+
+export function decodePictureResponse(binary: Uint8Array): PictureResponse {
+  return _decodePictureResponse(wrapByteBuffer(binary));
+}
+
+function _decodePictureResponse(bb: ByteBuffer): PictureResponse {
+  let message: PictureResponse = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 id = 1;
+      case 1: {
+        message.id = readVarint32(bb);
+        break;
+      }
+
+      // optional string pictureUrl = 2;
+      case 2: {
+        message.pictureUrl = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string skipPage = 3;
+      case 3: {
+        message.skipPage = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 skipType = 4;
+      case 4: {
+        message.skipType = readVarint32(bb);
+        break;
+      }
+
+      // optional string activityId = 5;
       case 5: {
-        message.brokeCoupon = !!readByte(bb);
+        message.activityId = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional string invitationCode = 6;
+      // optional string skipData = 6;
       case 6: {
-        message.invitationCode = readString(bb, readVarint32(bb));
+        message.skipData = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string skipParams = 7;
+      case 7: {
+        message.skipParams = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional bool redDot = 8;
+      case 8: {
+        message.redDot = !!readByte(bb);
         break;
       }
 
@@ -674,167 +798,71 @@ function _decodeLoginDTO(bb: ByteBuffer): LoginDTO {
   return message;
 }
 
-export interface HomepageGameVO {
-  games?: HomepageGamesResponse[];
+export interface HomepageUserInfoResponse {
+  bonus?: number;
+  vipLevel?: number;
+  club?: number;
+  recharge?: boolean;
+  brokeCoupon?: boolean;
+  invitationCode?: string;
 }
 
-export function encodeHomepageGameVO(message: HomepageGameVO): Uint8Array {
+export function encodeHomepageUserInfoResponse(message: HomepageUserInfoResponse): Uint8Array {
   let bb = popByteBuffer();
-  _encodeHomepageGameVO(message, bb);
+  _encodeHomepageUserInfoResponse(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeHomepageGameVO(message: HomepageGameVO, bb: ByteBuffer): void {
-  // repeated HomepageGamesResponse games = 1;
-  let array$games = message.games;
-  if (array$games !== undefined) {
-    for (let value of array$games) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeHomepageGamesResponse(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-}
-
-export function decodeHomepageGameVO(binary: Uint8Array): HomepageGameVO {
-  return _decodeHomepageGameVO(wrapByteBuffer(binary));
-}
-
-function _decodeHomepageGameVO(bb: ByteBuffer): HomepageGameVO {
-  let message: HomepageGameVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated HomepageGamesResponse games = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.games || (message.games = []);
-        values.push(_decodeHomepageGamesResponse(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
+function _encodeHomepageUserInfoResponse(message: HomepageUserInfoResponse, bb: ByteBuffer): void {
+  // optional double bonus = 1;
+  let $bonus = message.bonus;
+  if ($bonus !== undefined) {
+    writeVarint32(bb, 9);
+    writeDouble(bb, $bonus);
   }
 
-  return message;
-}
-
-export interface HomepageGamesResponse {
-  roomId?: string;
-  gameType?: string;
-  gameImgUrl?: string;
-  gameIconUrl?: string;
-  remoteUrl?: string;
-  version?: string;
-  download?: boolean;
-  state?: number;
-  select?: number;
-  minIn?: Long;
-  flag?: number;
-}
-
-export function encodeHomepageGamesResponse(message: HomepageGamesResponse): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeHomepageGamesResponse(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeHomepageGamesResponse(message: HomepageGamesResponse, bb: ByteBuffer): void {
-  // optional string roomId = 1;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $roomId);
+  // optional int32 vipLevel = 2;
+  let $vipLevel = message.vipLevel;
+  if ($vipLevel !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($vipLevel));
   }
 
-  // optional string gameType = 2;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $gameType);
+  // optional int32 club = 3;
+  let $club = message.club;
+  if ($club !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($club));
   }
 
-  // optional string gameImgUrl = 3;
-  let $gameImgUrl = message.gameImgUrl;
-  if ($gameImgUrl !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $gameImgUrl);
+  // optional bool recharge = 4;
+  let $recharge = message.recharge;
+  if ($recharge !== undefined) {
+    writeVarint32(bb, 32);
+    writeByte(bb, $recharge ? 1 : 0);
   }
 
-  // optional string gameIconUrl = 4;
-  let $gameIconUrl = message.gameIconUrl;
-  if ($gameIconUrl !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $gameIconUrl);
+  // optional bool brokeCoupon = 5;
+  let $brokeCoupon = message.brokeCoupon;
+  if ($brokeCoupon !== undefined) {
+    writeVarint32(bb, 40);
+    writeByte(bb, $brokeCoupon ? 1 : 0);
   }
 
-  // optional string remoteUrl = 5;
-  let $remoteUrl = message.remoteUrl;
-  if ($remoteUrl !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $remoteUrl);
-  }
-
-  // optional string version = 6;
-  let $version = message.version;
-  if ($version !== undefined) {
+  // optional string invitationCode = 6;
+  let $invitationCode = message.invitationCode;
+  if ($invitationCode !== undefined) {
     writeVarint32(bb, 50);
-    writeString(bb, $version);
-  }
-
-  // optional bool download = 7;
-  let $download = message.download;
-  if ($download !== undefined) {
-    writeVarint32(bb, 56);
-    writeByte(bb, $download ? 1 : 0);
-  }
-
-  // optional int32 state = 8;
-  let $state = message.state;
-  if ($state !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($state));
-  }
-
-  // optional int32 select = 9;
-  let $select = message.select;
-  if ($select !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($select));
-  }
-
-  // optional int64 minIn = 10;
-  let $minIn = message.minIn;
-  if ($minIn !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, $minIn);
-  }
-
-  // optional int32 flag = 11;
-  let $flag = message.flag;
-  if ($flag !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($flag));
+    writeString(bb, $invitationCode);
   }
 }
 
-export function decodeHomepageGamesResponse(binary: Uint8Array): HomepageGamesResponse {
-  return _decodeHomepageGamesResponse(wrapByteBuffer(binary));
+export function decodeHomepageUserInfoResponse(binary: Uint8Array): HomepageUserInfoResponse {
+  return _decodeHomepageUserInfoResponse(wrapByteBuffer(binary));
 }
 
-function _decodeHomepageGamesResponse(bb: ByteBuffer): HomepageGamesResponse {
-  let message: HomepageGamesResponse = {} as any;
+function _decodeHomepageUserInfoResponse(bb: ByteBuffer): HomepageUserInfoResponse {
+  let message: HomepageUserInfoResponse = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -843,69 +871,39 @@ function _decodeHomepageGamesResponse(bb: ByteBuffer): HomepageGamesResponse {
       case 0:
         break end_of_message;
 
-      // optional string roomId = 1;
+      // optional double bonus = 1;
       case 1: {
-        message.roomId = readString(bb, readVarint32(bb));
+        message.bonus = readDouble(bb);
         break;
       }
 
-      // optional string gameType = 2;
+      // optional int32 vipLevel = 2;
       case 2: {
-        message.gameType = readString(bb, readVarint32(bb));
+        message.vipLevel = readVarint32(bb);
         break;
       }
 
-      // optional string gameImgUrl = 3;
+      // optional int32 club = 3;
       case 3: {
-        message.gameImgUrl = readString(bb, readVarint32(bb));
+        message.club = readVarint32(bb);
         break;
       }
 
-      // optional string gameIconUrl = 4;
+      // optional bool recharge = 4;
       case 4: {
-        message.gameIconUrl = readString(bb, readVarint32(bb));
+        message.recharge = !!readByte(bb);
         break;
       }
 
-      // optional string remoteUrl = 5;
+      // optional bool brokeCoupon = 5;
       case 5: {
-        message.remoteUrl = readString(bb, readVarint32(bb));
+        message.brokeCoupon = !!readByte(bb);
         break;
       }
 
-      // optional string version = 6;
+      // optional string invitationCode = 6;
       case 6: {
-        message.version = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool download = 7;
-      case 7: {
-        message.download = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 state = 8;
-      case 8: {
-        message.state = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 select = 9;
-      case 9: {
-        message.select = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 minIn = 10;
-      case 10: {
-        message.minIn = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 flag = 11;
-      case 11: {
-        message.flag = readVarint32(bb);
+        message.invitationCode = readString(bb, readVarint32(bb));
         break;
       }
 
@@ -992,31 +990,99 @@ function _decodeHomepageGameDTO(bb: ByteBuffer): HomepageGameDTO {
   return message;
 }
 
-export interface UserUpdateHeadPicDTO {
-  headpic?: string;
+export interface LoginVO {
+  userId?: string;
+  nickName?: string;
+  headPic?: string;
+  sessionId?: string;
+  phone?: string;
+  accountType?: number;
+  firstDay?: Long;
+  first?: boolean;
+  walletVO?: LoginWalletVO;
 }
 
-export function encodeUserUpdateHeadPicDTO(message: UserUpdateHeadPicDTO): Uint8Array {
+export function encodeLoginVO(message: LoginVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeUserUpdateHeadPicDTO(message, bb);
+  _encodeLoginVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeUserUpdateHeadPicDTO(message: UserUpdateHeadPicDTO, bb: ByteBuffer): void {
-  // optional string headpic = 1;
-  let $headpic = message.headpic;
-  if ($headpic !== undefined) {
+function _encodeLoginVO(message: LoginVO, bb: ByteBuffer): void {
+  // optional string userId = 1;
+  let $userId = message.userId;
+  if ($userId !== undefined) {
     writeVarint32(bb, 10);
-    writeString(bb, $headpic);
+    writeString(bb, $userId);
+  }
+
+  // optional string nickName = 2;
+  let $nickName = message.nickName;
+  if ($nickName !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $nickName);
+  }
+
+  // optional string headPic = 3;
+  let $headPic = message.headPic;
+  if ($headPic !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $headPic);
+  }
+
+  // optional string sessionId = 4;
+  let $sessionId = message.sessionId;
+  if ($sessionId !== undefined) {
+    writeVarint32(bb, 34);
+    writeString(bb, $sessionId);
+  }
+
+  // optional string phone = 5;
+  let $phone = message.phone;
+  if ($phone !== undefined) {
+    writeVarint32(bb, 42);
+    writeString(bb, $phone);
+  }
+
+  // optional int32 accountType = 6;
+  let $accountType = message.accountType;
+  if ($accountType !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, intToLong($accountType));
+  }
+
+  // optional int64 firstDay = 7;
+  let $firstDay = message.firstDay;
+  if ($firstDay !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, $firstDay);
+  }
+
+  // optional bool first = 8;
+  let $first = message.first;
+  if ($first !== undefined) {
+    writeVarint32(bb, 64);
+    writeByte(bb, $first ? 1 : 0);
+  }
+
+  // optional LoginWalletVO walletVO = 9;
+  let $walletVO = message.walletVO;
+  if ($walletVO !== undefined) {
+    writeVarint32(bb, 74);
+    let nested = popByteBuffer();
+    _encodeLoginWalletVO($walletVO, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
   }
 }
 
-export function decodeUserUpdateHeadPicDTO(binary: Uint8Array): UserUpdateHeadPicDTO {
-  return _decodeUserUpdateHeadPicDTO(wrapByteBuffer(binary));
+export function decodeLoginVO(binary: Uint8Array): LoginVO {
+  return _decodeLoginVO(wrapByteBuffer(binary));
 }
 
-function _decodeUserUpdateHeadPicDTO(bb: ByteBuffer): UserUpdateHeadPicDTO {
-  let message: UserUpdateHeadPicDTO = {} as any;
+function _decodeLoginVO(bb: ByteBuffer): LoginVO {
+  let message: LoginVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -1025,9 +1091,59 @@ function _decodeUserUpdateHeadPicDTO(bb: ByteBuffer): UserUpdateHeadPicDTO {
       case 0:
         break end_of_message;
 
-      // optional string headpic = 1;
+      // optional string userId = 1;
       case 1: {
-        message.headpic = readString(bb, readVarint32(bb));
+        message.userId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string nickName = 2;
+      case 2: {
+        message.nickName = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string headPic = 3;
+      case 3: {
+        message.headPic = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string sessionId = 4;
+      case 4: {
+        message.sessionId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string phone = 5;
+      case 5: {
+        message.phone = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 accountType = 6;
+      case 6: {
+        message.accountType = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 firstDay = 7;
+      case 7: {
+        message.firstDay = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional bool first = 8;
+      case 8: {
+        message.first = !!readByte(bb);
+        break;
+      }
+
+      // optional LoginWalletVO walletVO = 9;
+      case 9: {
+        let limit = pushTemporaryLength(bb);
+        message.walletVO = _decodeLoginWalletVO(bb);
+        bb.limit = limit;
         break;
       }
 
@@ -1039,87 +1155,37 @@ function _decodeUserUpdateHeadPicDTO(bb: ByteBuffer): UserUpdateHeadPicDTO {
   return message;
 }
 
-export interface PictureResponse {
-  id?: number;
-  pictureUrl?: string;
-  skipPage?: string;
-  skipType?: number;
-  activityId?: string;
-  skipData?: string;
-  skipParams?: string;
-  redDot?: boolean;
+export interface HomepageGameVO {
+  games?: HomepageGamesResponse[];
 }
 
-export function encodePictureResponse(message: PictureResponse): Uint8Array {
+export function encodeHomepageGameVO(message: HomepageGameVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodePictureResponse(message, bb);
+  _encodeHomepageGameVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodePictureResponse(message: PictureResponse, bb: ByteBuffer): void {
-  // optional int32 id = 1;
-  let $id = message.id;
-  if ($id !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($id));
-  }
-
-  // optional string pictureUrl = 2;
-  let $pictureUrl = message.pictureUrl;
-  if ($pictureUrl !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $pictureUrl);
-  }
-
-  // optional string skipPage = 3;
-  let $skipPage = message.skipPage;
-  if ($skipPage !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $skipPage);
-  }
-
-  // optional int32 skipType = 4;
-  let $skipType = message.skipType;
-  if ($skipType !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($skipType));
-  }
-
-  // optional string activityId = 5;
-  let $activityId = message.activityId;
-  if ($activityId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $activityId);
-  }
-
-  // optional string skipData = 6;
-  let $skipData = message.skipData;
-  if ($skipData !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $skipData);
-  }
-
-  // optional string skipParams = 7;
-  let $skipParams = message.skipParams;
-  if ($skipParams !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $skipParams);
-  }
-
-  // optional bool redDot = 8;
-  let $redDot = message.redDot;
-  if ($redDot !== undefined) {
-    writeVarint32(bb, 64);
-    writeByte(bb, $redDot ? 1 : 0);
+function _encodeHomepageGameVO(message: HomepageGameVO, bb: ByteBuffer): void {
+  // repeated HomepageGamesResponse games = 1;
+  let array$games = message.games;
+  if (array$games !== undefined) {
+    for (let value of array$games) {
+      writeVarint32(bb, 10);
+      let nested = popByteBuffer();
+      _encodeHomepageGamesResponse(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
   }
 }
 
-export function decodePictureResponse(binary: Uint8Array): PictureResponse {
-  return _decodePictureResponse(wrapByteBuffer(binary));
+export function decodeHomepageGameVO(binary: Uint8Array): HomepageGameVO {
+  return _decodeHomepageGameVO(wrapByteBuffer(binary));
 }
 
-function _decodePictureResponse(bb: ByteBuffer): PictureResponse {
-  let message: PictureResponse = {} as any;
+function _decodeHomepageGameVO(bb: ByteBuffer): HomepageGameVO {
+  let message: HomepageGameVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -1128,51 +1194,136 @@ function _decodePictureResponse(bb: ByteBuffer): PictureResponse {
       case 0:
         break end_of_message;
 
-      // optional int32 id = 1;
+      // repeated HomepageGamesResponse games = 1;
       case 1: {
-        message.id = readVarint32(bb);
+        let limit = pushTemporaryLength(bb);
+        let values = message.games || (message.games = []);
+        values.push(_decodeHomepageGamesResponse(bb));
+        bb.limit = limit;
         break;
       }
 
-      // optional string pictureUrl = 2;
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface HomepageResponse {
+  userInfo?: HomepageUserInfoResponse;
+  rotationPictures?: PictureResponse[];
+  redDot?: { [key: string]: boolean };
+}
+
+export function encodeHomepageResponse(message: HomepageResponse): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeHomepageResponse(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeHomepageResponse(message: HomepageResponse, bb: ByteBuffer): void {
+  // optional HomepageUserInfoResponse userInfo = 1;
+  let $userInfo = message.userInfo;
+  if ($userInfo !== undefined) {
+    writeVarint32(bb, 10);
+    let nested = popByteBuffer();
+    _encodeHomepageUserInfoResponse($userInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated PictureResponse rotationPictures = 2;
+  let array$rotationPictures = message.rotationPictures;
+  if (array$rotationPictures !== undefined) {
+    for (let value of array$rotationPictures) {
+      writeVarint32(bb, 18);
+      let nested = popByteBuffer();
+      _encodePictureResponse(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<string, bool> redDot = 3;
+  let map$redDot = message.redDot;
+  if (map$redDot !== undefined) {
+    for (let key in map$redDot) {
+      let nested = popByteBuffer();
+      let value = map$redDot[key];
+      writeVarint32(nested, 10);
+      writeString(nested, key);
+      writeVarint32(nested, 16);
+      writeByte(nested, value ? 1 : 0);
+      writeVarint32(bb, 26);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeHomepageResponse(binary: Uint8Array): HomepageResponse {
+  return _decodeHomepageResponse(wrapByteBuffer(binary));
+}
+
+function _decodeHomepageResponse(bb: ByteBuffer): HomepageResponse {
+  let message: HomepageResponse = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional HomepageUserInfoResponse userInfo = 1;
+      case 1: {
+        let limit = pushTemporaryLength(bb);
+        message.userInfo = _decodeHomepageUserInfoResponse(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated PictureResponse rotationPictures = 2;
       case 2: {
-        message.pictureUrl = readString(bb, readVarint32(bb));
+        let limit = pushTemporaryLength(bb);
+        let values = message.rotationPictures || (message.rotationPictures = []);
+        values.push(_decodePictureResponse(bb));
+        bb.limit = limit;
         break;
       }
 
-      // optional string skipPage = 3;
+      // optional map<string, bool> redDot = 3;
       case 3: {
-        message.skipPage = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 skipType = 4;
-      case 4: {
-        message.skipType = readVarint32(bb);
-        break;
-      }
-
-      // optional string activityId = 5;
-      case 5: {
-        message.activityId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string skipData = 6;
-      case 6: {
-        message.skipData = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string skipParams = 7;
-      case 7: {
-        message.skipParams = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool redDot = 8;
-      case 8: {
-        message.redDot = !!readByte(bb);
+        let values = message.redDot || (message.redDot = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: string | undefined;
+        let value: boolean | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readString(bb, readVarint32(bb));
+              break;
+            }
+            case 2: {
+              value = !!readByte(bb);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: redDot");
+        values[key] = value;
+        bb.limit = outerLimit;
         break;
       }
 

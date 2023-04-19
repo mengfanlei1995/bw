@@ -209,17 +209,17 @@ class UIMgr {
     }
 
     /**进入游戏 */
-    public async enterGame(bundleName: string, sceneName: string) {
+    public async enterGame(name: string) {
         //先加载公共bundle
         await BundleUtil.getBundle('common');
         //加载游戏bundle
-        let bundle: cc.AssetManager.Bundle = await BundleUtil.getBundle(bundleName);
+        let bundle: cc.AssetManager.Bundle = await BundleUtil.getBundle(name);
         if (!bundle) {
             LogUtil.error('bundleName error');
             BundleUtil.clearAllBundle();
             return;
         }
-        BundleUtil.loadBundleScene(bundleName, sceneName);
+        BundleUtil.loadBundleScene(name, name);
     }
 
     /**回到大厅 */
