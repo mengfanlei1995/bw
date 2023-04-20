@@ -159,7 +159,7 @@ export default class UIGame extends UIScene {
             let node: cc.Node = this.betChoiceList[i].node;
             let lb_chips: cc.Label = cc.find("lb_chips", node).getComponent(cc.Label);
             lb_chips.string = `${this.longToNumber(betCoinList[i]) / 100}`;
-            this.betNums[i] = betCoinList[i] / 100;
+            this.betNums[i] = this.longToNumber(betCoinList[i]) / 100;
         }
     }
 
@@ -375,6 +375,10 @@ export default class UIGame extends UIScene {
             btn.node.getChildByName("circleSkel").active = (this.isBetTime && i == this.betIndex)
         }
         this.drawTimeBetMask.active = !this.isBetTime
+    }
+
+    isReturn(gameNum) {
+        return !cc.isValid(this.node) || gameNum != this.gameNum;
     }
 
     //====================点击事件=================

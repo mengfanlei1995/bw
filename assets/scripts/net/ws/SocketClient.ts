@@ -1,8 +1,10 @@
+import UserData from "../../data/UserData";
 import { SocketEvent } from "../../enum/SocketEnum";
 import EventMgr from "../../mgr/EventMgr";
 import UIMgr from "../../uiform/UIMgr";
 import AssetUtil from "../../utils/AssetUtil";
 import LogUtil from "../../utils/LogUtil";
+import { Login_SessionCmd } from "../CmdData";
 import HandleMgr from "../HandleMgr";
 import SendMgr from "../SendMgr";
 import { ExternalMessage, decodeExternalMessage } from "../proto/ExternalMessage";
@@ -24,6 +26,9 @@ class SocketClient implements ISocket {
     constructor() {
         this.SocketState = this.SocketState_NoConnect;
     }
+
+    //ws://16.163.128.21/websocket
+    //ws://65.2.121.34/websocket
 
     public async connect(ws: string = "ws://16.163.128.21/websocket"): Promise<void> {
         if (this.SocketState != this.SocketState_Connected) {
@@ -47,10 +52,11 @@ class SocketClient implements ISocket {
 
     public onopen(event: Event): void {
         LogUtil.log("onopen", event);
-        this.SocketState = this.SocketState_Connected
+        this.SocketState = this.SocketState_Connected;
         UIMgr.hideLoading();
         this.sendHeart();
-        EventMgr.emit(SocketEvent.WS_CONNECTED)
+        if (UserData.userInfo.userId) SendMgr.sendLogin({}, Login_SessionCmd);
+        EventMgr.emit(SocketEvent.WS_CONNECTED);
     }
 
     private sendHeart(): void {
@@ -86,13 +92,14 @@ class SocketClient implements ISocket {
         let recvData: Uint8Array = new Uint8Array(<ArrayBuffer>event.data);
         let data: ExternalMessage = decodeExternalMessage(recvData);
         if (data.cmdMerge != 0) LogUtil.log("onmessage", data)
-        HandleMgr.packageHandler(data.cmdMerge, data.responseStatus, data.data);
+        let call = HandleMgr.packageHandler(data.cmdMerge, data.responseStatus, data.data);
         //返回错误
         if (data.responseStatus != 0) {
             data.validMsg && UIMgr.showToast(data.validMsg);
+        } else {
+            //处理推送消息  暂时先拿不到相应的函数发送推送
+            if (!call && data.cmdMerge != 0) EventMgr.emit(SocketEvent.WS_MSG_PUSH, { mergeCmd: data.cmdMerge, code: data.responseStatus, data: data.data });
         }
-        //处理推送消息
-        // EventMgr.emit();
     }
 
     //关闭close

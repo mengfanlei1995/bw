@@ -3,7 +3,7 @@ import UserData from "../data/UserData";
 import StorageMgr from "../mgr/StorageMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, ExitRoomCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, RecordListCmd } from "./CmdData";
+import { BetCmd, ExitRoomCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, RecordListCmd, User_InfoCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
 import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
@@ -66,7 +66,6 @@ class SendMgr {
         this.send(_data, null);
     }
 
-
     /**
      * 登陆
      * @param params 登陆数据
@@ -74,6 +73,7 @@ class SendMgr {
      */
     public async sendLogin(params: LoginDTO = {}, loginType: number = Login_GuestCmd): Promise<LoginVO> {
         params = Object.assign(loginCommonParams(), params);
+        if (!params.sessionId) return;
         return new Promise<LoginVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, loginType), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
                 if (code === 0) {
@@ -81,6 +81,19 @@ class SendMgr {
                     UserData.initUserInfo(userInfo);
                 }
                 resolve(code == 0 ? decodeLoginVO(data) : null);
+            })
+        })
+    }
+
+    /**获取用户信息 */
+    public async sendGetUserInfo(): Promise<boolean> {
+        return new Promise<boolean>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(UserCmd, User_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
+                if (code === 0) {
+                    let userInfo: LoginVO = decodeLoginVO(data);
+                    UserData.initUserInfo(userInfo);
+                }
+                resolve(code === 0);
             })
         })
     }

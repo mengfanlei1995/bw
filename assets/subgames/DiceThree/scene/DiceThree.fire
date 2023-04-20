@@ -8099,7 +8099,7 @@
     },
     "component": "",
     "_componentId": "1cdce3PFvlLZJCOshRuuM6n",
-    "handler": "",
+    "handler": "onBetChipClick",
     "customEventData": ""
   },
   {

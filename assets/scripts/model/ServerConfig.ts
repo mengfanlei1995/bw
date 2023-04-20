@@ -31,3 +31,9 @@ export class ChannelConfig {
         this.force = 0
     }
 }
+
+export interface SocketPushConfig {
+    mergeCmd: number;
+    code: number;
+    data: Uint8Array;
+}

@@ -28,9 +28,10 @@ class HandleMgr {
     }
 
     //消息分发
-    public packageHandler(mergeCmd: number, code: number, data: Uint8Array) {
+    public packageHandler(mergeCmd: number, code: number, data: Uint8Array): NetCallFunc {
         let callFunc = this.getHandler(mergeCmd);
         callFunc && callFunc(code, data);
+        return callFunc;
     }
 
     /**清除回调*/

@@ -3,6 +3,7 @@ import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
 import { Login_PhoneCmd } from "../../net/CmdData";
 import SendMgr from "../../net/SendMgr";
+import CocosUtil from "../../utils/CocosUtil";
 import JsbUitl from "../../utils/JsbUitl";
 import LogUtil from "../../utils/LogUtil";
 import RegexUtil from "../../utils/RegexUtil";
@@ -35,8 +36,30 @@ export default class Login extends UIScene {
     @property(cc.Button)
     btn_otp: cc.Button = null;
 
+    @property(cc.Layout)
+    content: cc.Layout = null;
+
     //验证码倒计时
     private second: number = 60;
+
+    onLoad(): void {
+        this.resetContent();
+    }
+
+    async resetContent() {
+        this.content.node.opacity = 0;
+        let spacing: number = 10;
+        let height: number = 1001;
+        await CocosUtil.sleepSync(0.01);
+        let childCount: number = this.content.node.childrenCount;
+        let realHeight: number = this.content.node.height;
+        let padding: number = (realHeight - height) / (childCount + 1);
+        spacing += padding;
+        this.content.paddingTop = padding;
+        this.content.paddingBottom = padding;
+        this.content.spacingY = spacing;
+        this.content.node.opacity = 255;
+    }
 
     onFacebookLogin(e: cc.Event.EventTouch) {
         EventMgr.emit(REPORT_EVT.CLICK, {

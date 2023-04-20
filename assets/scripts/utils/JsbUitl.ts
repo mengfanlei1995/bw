@@ -1,4 +1,5 @@
 import SysConfig, { AppSysInfo, afLaunchData } from "../data/SysConfig";
+import UserData from "../data/UserData";
 import { APPS_FLYER, HALL_EVT, REPORT_EVT } from "../enum/DeskEnum";
 import { FirebaseEvent } from "../enum/FirebaseEnum";
 import { SYS_CONST } from "../enum/SysEventEnum";
@@ -252,7 +253,7 @@ class JsbUitl {
             cc.game.on(SYS_CONST.ON_SHOW, async () => {
                 EventMgr.emit(HALL_EVT.DESK_RELOAD)
                 EventMgr.emit(REPORT_EVT.STARTONLINE);
-                SendMgr.sendLogin({}, Login_SessionCmd);
+                SendMgr.sendGetUserInfo();
             });
         } else {
             try {
@@ -272,9 +273,9 @@ class JsbUitl {
                     EventMgr.emit(REPORT_EVT.BACKGROUND);
                 });
                 cc.game.on(cc.game.EVENT_SHOW, () => {
-                    EventMgr.emit(HALL_EVT.DESK_RELOAD)
+                    EventMgr.emit(HALL_EVT.DESK_RELOAD);
                     EventMgr.emit(REPORT_EVT.STARTONLINE);
-                    SendMgr.sendLogin({}, Login_SessionCmd);
+                    SendMgr.sendGetUserInfo();
                 });
             } catch (e) { }
         }

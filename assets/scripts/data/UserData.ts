@@ -1,3 +1,5 @@
+import { HALL_EVT } from "../enum/DeskEnum";
+import EventMgr from "../mgr/EventMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import { LoginVO } from "../net/proto/hall";
 import LongUtil from "../utils/LongUtil";
@@ -19,13 +21,14 @@ class UserData {
         this.userInfo.first = first;
         StorageMgr.phone = phone;
         StorageMgr.userId = userId;
-        StorageMgr.sessionId = sessionId;
+        sessionId && (StorageMgr.sessionId = sessionId);
         let walletInfo: WalletInfo = {};
         walletInfo.depositBalance = LongUtil.longToNumber(depositBalance);
         walletInfo.withdrawBalance = LongUtil.longToNumber(withdrawBalance);
         walletInfo.totalCashBalance = LongUtil.longToNumber(totalCashBalance);
         walletInfo.freeBalance = LongUtil.longToNumber(freeBalance);
         this.userInfo.walletInfo = walletInfo;
+        EventMgr.emit(HALL_EVT.GOLD_CHANGE);
         console.log(this.userInfo)
     }
 

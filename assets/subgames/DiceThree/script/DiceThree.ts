@@ -1,14 +1,17 @@
 import SysConfig from "../../../scripts/data/SysConfig";
 import UserData from "../../../scripts/data/UserData";
 import { HALL_EVT, REPORT_EVT } from "../../../scripts/enum/DeskEnum";
+import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
 import LangMgr from "../../../scripts/mgr/LangMgr";
 import PoolMgr from "../../../scripts/mgr/PoolMgr";
 import SoundMgr from "../../../scripts/mgr/SoundMgr";
 import StorageMgr from "../../../scripts/mgr/StorageMgr";
-import { Dice3Cmd } from "../../../scripts/net/CmdData";
+import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
+import { Dice3Cmd, Push_Dice3Cmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_SystemCmd, Push_System_TackOutCmd } from "../../../scripts/net/CmdData";
+import CmdMgr from "../../../scripts/net/CmdMgr";
 import SendMgr from "../../../scripts/net/SendMgr";
-import { Dice3DoEnterRoomVO, decodeDice3DoEnterRoomVO } from "../../../scripts/net/proto/room";
+import { Dice3DoEnterRoomVO, Dice3NotifyBeginBetVO, Dice3SendDrawMsgVO, NotifyBetVO, decodeDice3DoEnterRoomVO, decodeDice3NotifyBeginBetVO, decodeDice3SendDrawMsgVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import UIMgr from "../../../scripts/uiform/UIMgr";
@@ -64,7 +67,7 @@ export default class DiceThree extends UIGame {
         this.gameId = SysConfig.GameIDConfig.Dice3;
         this.gameCmd = Dice3Cmd;
         this.selfChipsSourcePos = this.chipsProductAreaNode.convertToNodeSpaceAR(
-            this.avatarNode.convertToWorldSpaceAR(this.avatarNode.getPosition()))
+            this.avatarNode.convertToWorldSpaceAR(this.avatarNode.getPosition()));
         this.chipsSourcePos = this.chipsSourceNode.getPosition();
         this.initAreaPos();
         this.timeLeftLabel.string = "--";
@@ -73,10 +76,12 @@ export default class DiceThree extends UIGame {
 
     onEnable(): void {
         EventMgr.on(HALL_EVT.DESK_RELOAD, this.onEventShow, this);
+        EventMgr.on(SocketEvent.WS_MSG_PUSH, this.onRecvGameData, this)
     }
 
     onDisable(): void {
         EventMgr.off(HALL_EVT.DESK_RELOAD, this.onEventShow, this);
+        EventMgr.off(SocketEvent.WS_MSG_PUSH, this.onRecvGameData, this)
         SysConfig.settling = false;
         PoolMgr.clear();
     }
@@ -208,9 +213,7 @@ export default class DiceThree extends UIGame {
             .start()
     }
 
-    isReturn(gameNum) {
-        return !cc.isValid(this.node) || gameNum != this.gameNum;
-    }
+
 
     /**
      * 开奖
@@ -365,6 +368,174 @@ export default class DiceThree extends UIGame {
         this.statusWaitingSkel.node.active = !this.isBetTime
     }
 
+    gameStart(data: Uint8Array) {
+        let info: Dice3NotifyBeginBetVO = decodeDice3NotifyBeginBetVO(data);
+        let { gameInfo } = info;
+        console.log('gameStart', info);
+        this.curTime = gameInfo?.leftOptSeconds;
+        this.gameNum = gameInfo?.gameNum;
+        this.gameResultList = gameInfo.gameResultList;
+        this.isBetTime = true;
+        this.reset();
+        this.statusTipSkel.setAnimation(0, "start", false);
+        this.timeTipLabel.string = LangMgr.sentence("e0320");
+        this.updateChipsCircleSkel();
+    }
+
+    tackOut() {
+        UIMgr.goHall();
+        UIMgr.showDialog({
+            word: LangMgr.sentence('e0056'),
+            type: DialogType.OnlyOkBtn
+        })
+    }
+
+    gameBet(data: Uint8Array) {
+        if (!this.isBetTime || this.curTime <= 0) return;
+        let info: NotifyBetVO = decodeNotifyBetVO(data);
+        console.log('gameBet', info);
+        // betList betCoinMap
+        let { betCoinMap, betList } = info;
+        if (betCoinMap) {
+            if (betCoinMap["1"] != null && Number(this.indiumChipsNumLabel.string) < this.longToNumber(betCoinMap["1"]) / 100) this.betScaleAnim(this.indiumChipsNumLabel, this.longToNumber(betCoinMap["1"]) / 100)
+            if (betCoinMap["2"] != null && Number(this.greenChipsNumLabel.string) < this.longToNumber(betCoinMap["2"]) / 100) this.betScaleAnim(this.greenChipsNumLabel, this.longToNumber(betCoinMap["2"]) / 100)
+            if (betCoinMap["3"] != null && Number(this.yellowChipsNumLabel.string) < this.longToNumber(betCoinMap["3"]) / 100) this.betScaleAnim(this.yellowChipsNumLabel, this.longToNumber(betCoinMap["3"]) / 100)
+        }
+        if (betList && betList.length > 0) {
+            SoundMgr.playEffect('audio/betchips')
+            for (let i = 0; i < betList.length; i++) {
+                this.flyChips(false, `${betList[i].betId}`, this.longToNumber(betList[i].betCoins) / 100);
+            }
+        }
+    }
+
+    gameEnd(data: Uint8Array) {
+        let info: Dice3SendDrawMsgVO = decodeDice3SendDrawMsgVO(data);
+        console.log('gameEnd', info);
+        let { gameInfo, gameResult, userInfoList } = info;
+        this.curTime = gameInfo?.leftOptSeconds
+        let { dices, id } = gameResult;
+        if (this.gameResultList.length >= 50) this.gameResultList.shift();
+        this.gameResultList.push(gameResult)
+        this.isBetTime = false
+        this.timeTipLabel.string = LangMgr.sentence("e0321");
+        this.statusTipSkel.setAnimation(0, "stop", false)
+        this.chipsProductAreaNode.zIndex = 1;
+        this.diceSkel.node.zIndex = 2;
+        if (userInfoList && userInfoList.length > 0) {
+            for (let i = 0; i < userInfoList.length; i++) {
+                if (userInfoList[i].userId == StorageMgr.userId) {
+                    this.winBonus = this.longToNumber(userInfoList[i].winCoins) / 100;
+                    break;
+                }
+            }
+        }
+        this.diceSkel.setAnimation(0, "dice_1", false)
+        let gameNum = this.gameNum;
+        this.diceSkel.setCompleteListener(() => {
+            if (this.diceSkel.animation == "dice_1" && gameInfo.gameNum == gameNum) {
+                this.diceSkel.setAnimation(0, "dice_2", true)
+            }
+        })
+        this.updateChipsCircleSkel()
+        this.scheduleOnce(this.openAward.bind(this, dices, `${id}`), 3)
+        this.setOnLineNumber(gameInfo?.onlinePlayers);
+    }
+
+    /**
+     * 服务器推送消息
+     * @param data 
+     */
+    onRecvGameData(info: SocketPushConfig) {
+        let { mergeCmd, code, data } = info;
+        let cmd: number = CmdMgr.getCmd(mergeCmd);
+        let subCmd: number = CmdMgr.getSubCmd(mergeCmd);
+        if (cmd == Push_SystemCmd && subCmd == Push_System_TackOutCmd) {
+            this.tackOut();
+            return;
+        }
+        if (cmd != Push_Dice3Cmd) {
+            return;
+        }
+        switch (subCmd) {
+            case Push_Game_BetCmd:
+                this.gameBet(data);
+                break;
+            case Push_Game_StartCmd:
+                this.gameStart(data);
+                break;
+            case Push_Game_EndCmd:
+                this.gameEnd(data);
+                break;
+        }
+        // let { notifyType, currMsgId, gameInfo, lastMsgId, gameResult, betCoinMap, betList, userInfoList } = data
+        // switch (notifyType) {
+        //     case GamePushEnum.GameStart:
+        //         //currMsgId, gameInfo, lastMsgId 
+        //         this.curTime = gameInfo?.leftOptSeconds
+        //         this.gameNum = gameInfo?.gameNum;
+        //         this.gameResultList = gameInfo.gameResultList;
+        //         this.isBetTime = true
+        //         this.reset();
+        //         this.statusTipSkel.setAnimation(0, "start", false)
+        //         this.timeTipLabel.string = LangMgr.sentence("e0320");
+        //         this.updateChipsCircleSkel()
+        //         break;
+        //     case GamePushEnum.GameEnd:
+        //         // gameInfo, gameResult 
+        //         this.curTime = gameInfo?.leftOptSeconds
+        //         let { dices, id } = gameResult
+        //         if (this.gameResultList.length >= 50) this.gameResultList.shift();
+        //         this.gameResultList.push(gameResult)
+        //         this.isBetTime = false
+        //         this.timeTipLabel.string = LangMgr.sentence("e0321");
+        //         this.statusTipSkel.setAnimation(0, "stop", false)
+        //         this.chipsProductAreaNode.zIndex = 1;
+        //         this.diceSkel.node.zIndex = 2;
+        //         if (userInfoList && userInfoList.length > 0) {
+        //             for (let i = 0; i < userInfoList.length; i++) {
+        //                 if (userInfoList[i].userId == UserGlobalData.userId) {
+        //                     this.winBonus = userInfoList[i].winCoins / 100;
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //         this.diceSkel.setAnimation(0, "dice_1", false)
+        //         let gameNum = this.gameNum;
+        //         this.diceSkel.setCompleteListener(() => {
+        //             if (this.diceSkel.animation == "dice_1" && gameInfo.gameNum == gameNum) {
+        //                 this.diceSkel.setAnimation(0, "dice_2", true)
+        //             }
+        //         })
+        //         this.updateChipsCircleSkel()
+        //         this.scheduleOnce(this.openAward.bind(this, dices, `${id}`), 3)
+        //         this.setOnLineNumber(gameInfo?.onlinePlayers);
+        //         break;
+        //     case GamePushEnum.TakeOut:
+        //         SceneMgr.back();
+        //         DialogMgr.showDialog({
+        //             word: LangMgr.sentence('e0056'),
+        //             type: DialogType.OnlyOkBtn,
+        //         })
+        //         break;
+        //     case GamePushEnum.GameBet:
+        //         if (!this.isBetTime || this.curTime <= 0) return;
+        //         // betList betCoinMap
+        //         if (betCoinMap) {
+        //             if (betCoinMap["1"] != null && Number(this.indiumChipsNumLabel.string) < betCoinMap["1"] / 100) this.betScaleAnim(this.indiumChipsNumLabel, betCoinMap["1"] / 100)
+        //             if (betCoinMap["2"] != null && Number(this.greenChipsNumLabel.string) < betCoinMap["2"] / 100) this.betScaleAnim(this.greenChipsNumLabel, betCoinMap["2"] / 100)
+        //             if (betCoinMap["3"] != null && Number(this.yellowChipsNumLabel.string) < betCoinMap["3"] / 100) this.betScaleAnim(this.yellowChipsNumLabel, betCoinMap["3"] / 100)
+        //         }
+        //         if (betList && betList.length > 0) {
+        //             SoundMgr.playEffect('audio/betchips')
+        //             for (let i = 0; i < betList.length; i++) {
+        //                 this.flyChips(false, `${betList[i].betId}`, betList[i].betCoins / 100);
+        //             }
+        //         }
+        //         break;
+        // }
+
+    }
 
 
     onRecordClick(e: cc.Event.EventTouch) {

@@ -5,7 +5,7 @@ export const Login_PhoneCmd: number = 2;
 export const Login_SessionCmd: number = 3;
 //用户
 export const UserCmd: number = 2;
-// export const User_InfoCmd: number = 1;
+export const User_InfoCmd: number = 1;
 export const User_ChangeHeadCmd: number = 2;
 export const User_ChangeNameCmd: number = 3;
 //大厅信息
@@ -33,3 +33,59 @@ export const PokerKingCmd: number = 11;
 export const WhellOfForuneCmd: number = 12;
 //TPWar
 export const TPWarCmd: number = 13;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//推送
+//钱包
+export const Push_WalletCmd: number = 1004;
+export const Push_Wallet_ChangeCmd: number = 1;
+
+//system
+export const Push_SystemCmd: number = 1005;
+export const Push_System_TackOutCmd: number = 1;
+
+//游戏推送
+//下注
+export const Push_Game_BetCmd: number = 1;
+//开始
+export const Push_Game_StartCmd: number = 2;
+//结束
+export const Push_Game_EndCmd: number = 3;
+
+
+//dice3
+export const Push_Dice3Cmd: number = 1006;
+//龙虎
+export const Push_TigerVsElephantCmd: number = 1007;
+//JhandiMunda
+export const Push_JhandiMundaCmd: number = 1008;
+//LuckyBall
+export const Push_LuckyBallCmd: number = 1009;
+//LuckyDice
+export const Push_LuckyDiceCmd: number = 1010;
+//PokerKing
+export const Push_PokerKingCmd: number = 1011;
+//WhellOfForune
+export const Push_WhellOfForuneCmd: number = 1012;
+//TPWar
+export const Push_TPWarCmd: number = 1013;
