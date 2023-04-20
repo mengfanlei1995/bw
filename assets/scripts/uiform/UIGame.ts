@@ -8,8 +8,9 @@ import PoolMgr from "../mgr/PoolMgr";
 import SoundMgr from "../mgr/SoundMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import SendMgr from "../net/SendMgr";
-import { RoomOptParam } from "../net/proto/room";
+import { PointBetCoinsNotifyVo, RoomOptParam } from "../net/proto/room";
 import BundleUtil from "../utils/BundleUtil";
+import CocosUtil from "../utils/CocosUtil";
 import LongUtil, { LongType } from "../utils/LongUtil";
 import UIBundleMgr from "./UIBundleMgr";
 import UIMgr from "./UIMgr";
@@ -21,13 +22,20 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class UIGame extends UIScene {
 
+
+    @property({ tooltip: '筹码区域', type: cc.Node })
+    chipsAreaNode: cc.Node[] = [];
+    @property({ tooltip: '筹码总数', type: cc.Label })
+    chipsNumLabel: cc.Label[] = [];
+    @property({ tooltip: '中奖框', type: cc.Node })
+    awardNode: cc.Node[] = [];
+    @property({ tooltip: 'g自己下注筹码数', type: cc.Label })
+    selfBetChipsNumLabel: cc.Label[] = [];
+
     @property({ tooltip: '筹码预制', type: cc.Prefab })
     chipPrefab: cc.Prefab = null;
-
     @property({ tooltip: '在线人数', type: cc.Label })
     lbOnLine: cc.Label = null;
-
-    //=============== 下注筹码选择区域组件=====================
     @property({ tooltip: "下注选择按钮", type: cc.Button })
     betChoiceList: cc.Button[] = Array<cc.Button>()
     @property({ tooltip: '封苍下注蒙版', type: cc.Node })
@@ -52,7 +60,6 @@ export default class UIGame extends UIScene {
     tailGasPrefab: cc.Prefab = null;
     @property({ tooltip: '赢金币动画', type: cc.Label })
     winBonusAni: cc.Label = null;
-    //=============== 历史记录组件=====================
     @property({ tooltip: '开奖记录', type: cc.Node })
     recordLayoutNode: cc.Node = null;
     @property({ tooltip: '筹码生成区域', type: cc.Node })
@@ -118,9 +125,23 @@ export default class UIGame extends UIScene {
         userId: StorageMgr.userId
     }
 
-    onLoad(): void {
+    _start(): void {
         this.statusTipSkel.node.zIndex = 3;
         this.statusWaitingSkel.node.zIndex = 3;
+        this.chipsSourcePos = this.chipsSourceNode.getPosition();
+        this.initAreaPos();
+        this.timeLeftLabel.string = "--";
+        this.scheduleOnce(() => {
+            this.selfChipsSourcePos = this.chipsProductAreaNode.convertToNodeSpaceAR(
+                this.avatarNode.convertToWorldSpaceAR(this.avatarNode.getPosition()));
+        }, 0.01)
+    }
+
+    _onDisable(): void {
+        SysConfig.settling = false;
+        PoolMgr.clear();
+        UIBundleMgr.hideAll();
+        BundleUtil.clearAllBundle();
     }
 
     async enterRoom(): Promise<Uint8Array> {
@@ -172,30 +193,52 @@ export default class UIGame extends UIScene {
     }
 
     /**
-      * 下注筹码
-      * @param lryIndex 
-      * @param chipNumArray 
-    */
-    flyChips(isSelf: boolean, areaType: string, chipNum: number) {
+     * 下注筹码
+     * @param lryIndex 
+     * @param chipNumArray 
+     */
+    async flyChips(isSelf: boolean, areaType: string[], chipNum: number[]) {
+        // SoundMgr.playEffect('audio/betchips');
         this.getChipsSkel.node.active = true;
         if (!isSelf) this.getChipsSkel.setAnimation(0, "chu", false);
-        let targetAreaNode: cc.Node = this.getChipsAreaNode(areaType);
-        let targetPos = this.areaPosMap[`${areaType}`];
-        let targetW: number = targetAreaNode.width;
-        let targetH: number = targetAreaNode.height;
         let moveTime: number = isSelf ? 0.2 : 0.5;
-        let node = this.productChipsNode(chipNum, areaType, this.betNums);
-        this.chipsProductAreaNode.addChild(node);
         let sourcePos = isSelf ? this.selfChipsSourcePos : this.chipsSourcePos;
-        node.position = cc.v3(sourcePos);
-        let x = Math.random() * targetW - targetW / 2;
-        let y = Math.random() * targetH - targetH / 2;
-        targetPos = targetPos.add(cc.v2(x, y));
-        cc.tween(node).delay(0.005).parallel(
-            cc.tween().to(moveTime, { scale: 0.6 }, { easing: 'sineInOut' }),
-            cc.tween().to(moveTime, { position: targetPos }, { easing: 'sineInOut' })
-        ).start()
-        this.checkAreaChipNum(areaType, 1);
+        for (let i = 0; i < areaType.length; i++) {
+            await CocosUtil.sleepSync(i * 0.01);
+            if (!cc.isValid(this.node) || this.curTime <= 0) return;
+            let targetAreaNode: cc.Node = this.getChipsAreaNode(areaType[i]);
+            let targetPos = this.areaPosMap[`${areaType[i]}`];
+            let targetW: number = targetAreaNode.width;
+            let targetH: number = targetAreaNode.height;
+            let node = this.productChipsNode(chipNum[i], areaType[i], this.betNums);
+            this.chipsProductAreaNode.addChild(node);
+            node.position = cc.v3(sourcePos);
+            let x = Math.random() * targetW - targetW / 2;
+            let y = Math.random() * targetH - targetH / 2;
+            targetPos = targetPos.add(cc.v2(x, y));
+            cc.tween(node).parallel(
+                cc.tween().to(moveTime, { scale: 0.6 }, { easing: 'sineInOut' }),
+                cc.tween().to(moveTime, { position: targetPos }, { easing: 'sineInOut' })
+            ).start()
+            this.checkAreaChipNum(areaType[i], 1);
+        }
+    }
+
+    initChips(betList: PointBetCoinsNotifyVo[]) {
+        for (let i = 0; i < betList.length; i++) {
+            let areaType: string = `${betList[i].betId}`;
+            let chipNum: number = this.longToNumber(betList[i].betCoins);
+            let node = this.productChipsNode(chipNum, areaType, this.betNums);
+            this.chipsProductAreaNode.addChild(node);
+            let targetAreaNode: cc.Node = this.getChipsAreaNode(areaType);
+            let targetPos = this.areaPosMap[`${areaType}`];
+            let targetW: number = targetAreaNode.width;
+            let targetH: number = targetAreaNode.height;
+            let x = Math.random() * targetW - targetW / 2;
+            let y = Math.random() * targetH - targetH / 2;
+            targetPos = targetPos.add(cc.v2(x, y));
+            node.position = cc.v3(targetPos);
+        }
     }
 
 
@@ -346,10 +389,10 @@ export default class UIGame extends UIScene {
         }
         this.optData.betCoins = this.numberToLong(chips * 100);
         this.optData.gameNum = this.gameNum;
-        this.optData.betId = +areaType
+        this.optData.betId = +areaType;
         this.optData.optType = 18;
-        let result: any = await SendMgr.sendBet(this.optData, this.gameCmd);
-        if (result != null) {
+        let result: boolean = await SendMgr.sendBet(this.optData, this.gameCmd);
+        if (result) {
             EventMgr.emit(REPORT_EVT.CLICK, {
                 element_id: "btn_bet",
                 element_name: "成功下注",
@@ -357,12 +400,12 @@ export default class UIGame extends UIScene {
                 element_position: '',
                 element_content: 'diceThree',
             });
-            SoundMgr.playEffect('audio/betchips')
-            this.flyChips(true, areaType, chips)
-            let selfBetLbNum: number = Number(selfBetLabel.string)
+            // SoundMgr.playEffect('audio/betchips');
+            this.flyChips(true, [areaType], [chips]);
+            let selfBetLbNum: number = Number(selfBetLabel.string);
             if (!selfBetLbNum) selfBetLbNum = 0;
             selfBetLabel.string = `${selfBetLbNum + chips}`;
-            let chipsLbNum: number = Number(chipsLabel.string)
+            let chipsLbNum: number = Number(chipsLabel.string);
             if (!chipsLbNum) chipsLbNum = 0;
             chipsLabel.string = `${chipsLbNum + chips}`;
         }
@@ -381,6 +424,129 @@ export default class UIGame extends UIScene {
         return !cc.isValid(this.node) || gameNum != this.gameNum;
     }
 
+    initAreaPos() {
+        for (let i = 1; i <= this.chipsAreaNode.length; i++) {
+            let targetAreaNode: cc.Node = this.getChipsAreaNode(`${i}`);
+            let targetPos = this.chipsProductAreaNode.convertToNodeSpaceAR(
+                targetAreaNode.convertToWorldSpaceAR(targetAreaNode.getPosition()));
+            this.areaPosMap[`${i}`] = targetPos;
+        }
+    }
+
+    getChipsAreaNode(areaType: string): cc.Node {
+        return this.chipsAreaNode[+areaType - 1];
+    }
+
+    initRoomInfo(info) {
+        let { betCoinList, betCoinMap, betList, betSelfCoinMap, gameInfo, roomInfo, onlinePlayers } = info;
+        if (betList && betList.length > 0) {
+            this.initChips(betList);
+        }
+        if (betCoinList) this.initChipsNum(betCoinList);
+        let { gameNum, gameResultList, leftOptSeconds } = gameInfo;
+        let { roomId, roomState } = roomInfo;
+        this.gameResultList = gameResultList;
+        for (let i = 1; i <= this.chipsNumLabel.length; i++) {
+            if (betCoinMap && betCoinMap[`${i}`] != null && Number(this.chipsNumLabel[i - 1].string) < this.longToNumber(betCoinMap[`${i}`]) / 100) this.chipsNumLabel[i - 1].string = `${this.longToNumber(betCoinMap[`${i}`]) / 100}`;
+            if (betSelfCoinMap && betSelfCoinMap[`${i}`] != null) this.selfBetChipsNumLabel[i - 1].string = `${this.longToNumber(betSelfCoinMap[`${i}`]) / 100}`;
+        }
+        this.optData.roomId = roomId;
+        this.gameNum = gameNum;
+        this.curTime = leftOptSeconds;
+        this.isBetTime = roomState == 3;
+        this.unschedule(this.countDownTime);
+        this.countDownTime();
+        this.schedule(this.countDownTime, 1);
+        if (this.isBetTime) {
+            if (this.isFirstInto) this.statusTipSkel.setAnimation(0, "start", false);
+            this.timeTipLabel.string = LangMgr.sentence("e0320");
+        } else {
+            this.timeTipLabel.string = LangMgr.sentence("e0321");
+        }
+        this.statusWaitingSkel.node.active = !this.isBetTime;
+        this.updateChipsCircleSkel();
+        this.isFirstInto = false;
+        this.setOnLineNumber(onlinePlayers);
+    }
+
+    reset() {
+        SysConfig.settling = false;
+        this.recordLayoutNode.getComponent(cc.Layout).enabled = true;
+        this.winBonus = 0;
+        for (let i = 0; i < this.awardNode.length; i++) {
+            this.awardNode[i].active = false;
+            this.selfBetChipsNumLabel[i].string = LangMgr.sentence("e0319");;
+            this.chipsNumLabel[i].string = "0";
+        }
+        let chipsProductAreaNode: cc.Node = this.chipsProductAreaNode;
+        if (chipsProductAreaNode.childrenCount > 0) {
+            chipsProductAreaNode.children.forEach((node) => {
+                node.destroy();
+            })
+        }
+        this.statusWaitingSkel.node.active = !this.isBetTime;
+    }
+
+    gameStart(info) {
+        let { gameInfo } = info;
+        this.curTime = gameInfo?.leftOptSeconds;
+        this.gameNum = gameInfo?.gameNum;
+        this.gameResultList = gameInfo.gameResultList;
+        this.statusTipSkel.setAnimation(0, "start", false);
+        this.timeTipLabel.string = LangMgr.sentence("e0320");
+        this.updateChipsCircleSkel();
+    }
+
+    gameBet(info) {
+        // betList betCoinMap
+        let { betCoinMap, betList } = info;
+        if (betCoinMap) {
+            for (let i = 1; i <= this.chipsNumLabel.length; i++) {
+                let betCoin: number = this.longToNumber(betCoinMap[`${i}`]) / 100;
+                if (betCoinMap[`${i}`] && Number(this.chipsNumLabel[i - 1].string) < betCoin) this.betScaleAnim(this.chipsNumLabel[i - 1], betCoin);
+            }
+        }
+        if (betList && betList.length > 0) {
+            let betIds: string[] = [];
+            let betCoins: number[] = [];
+            for (let i = 0; i < betList.length; i++) {
+                betIds.push(`${betList[i].betId}`);
+                betCoins.push(this.longToNumber(betList[i].betCoins) / 100);
+                // this.flyChips(false, `${betList[i].betId}`, this.longToNumber(betList[i].betCoins) / 100);
+            }
+            this.flyChips(false, betIds, betCoins);
+        }
+    }
+
+    gameEnd(info) {
+        let { gameInfo, gameResult, userInfoList } = info;
+        this.curTime = gameInfo?.leftOptSeconds
+        if (this.gameResultList.length >= 50) this.gameResultList.shift();
+        this.gameResultList.push(gameResult)
+        this.isBetTime = false;
+        this.timeTipLabel.string = LangMgr.sentence("e0321");
+        this.statusTipSkel.setAnimation(0, "stop", false)
+        this.chipsProductAreaNode.zIndex = 1;
+        if (userInfoList && userInfoList.length > 0) {
+            for (let i = 0; i < userInfoList.length; i++) {
+                if (userInfoList[i].userId == StorageMgr.userId) {
+                    this.winBonus = this.longToNumber(userInfoList[i].winCoins) / 100;
+                    break;
+                }
+            }
+        }
+        this.updateChipsCircleSkel()
+        this.setOnLineNumber(gameInfo?.onlinePlayers);
+    }
+
+    tackOut() {
+        UIMgr.goHall();
+        UIMgr.showDialog({
+            word: LangMgr.sentence('e0056'),
+            type: DialogType.OnlyOkBtn
+        })
+    }
+
     //====================点击事件=================
 
     onBetChipClick(e: cc.Event.EventTouch) {
@@ -389,33 +555,32 @@ export default class UIGame extends UIScene {
         this.updateChipsCircleSkel()
     }
 
-    onAddCashClick(e: cc.Event.EventTouch) {
-        FixedMgr.open(UIConfig.AddCash.prefab)
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_addcash_byGame",
-            element_name: "游戏房间中间充值按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: 'diceThree',
-        });
+    onAreaClick(e: cc.Event.EventTouch, type: string) {
+        this.buyBetChips(type, this.selfBetChipsNumLabel[+type - 1], this.chipsNumLabel[+type - 1]);
     }
 
-
-    onDestroy(): void {
-        UIBundleMgr.hideAll();
-        BundleUtil.clearAllBundle();
+    onAddCashClick(e: cc.Event.EventTouch) {
+        // FixedMgr.open(UIConfig.AddCash.prefab)
+        // EventMgr.emit(REPORT_EVT.CLICK, {
+        //     element_id: "btn_addcash_byGame",
+        //     element_name: "游戏房间中间充值按钮",
+        //     element_type: "button",
+        //     element_position: '',
+        //     element_content: 'diceThree',
+        // });
     }
 
     /**
-    * 生产筹码
-    * @param value 
-    * @returns 
-    */
-    public productChipsNode(value: number, areaType: string, betNums: number[]) {
-        let node = PoolMgr.getNode(this.chipPrefab)
+     * 生产筹码
+     * @param value 
+     * @param areaType
+     * @param betNums
+     * @returns cc.Node
+     */
+    public productChipsNode(value: number, areaType: string, betNums: number[]): cc.Node {
+        let node: cc.Node = PoolMgr.getNode(this.chipPrefab)
         node.getComponent(Chip).init(value, areaType, betNums)
-        return node
+        return node;
     }
-
 
 }

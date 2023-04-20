@@ -1,5 +1,7 @@
 
+import BundleUtil from "../utils/BundleUtil";
 import UIBase from "./UIBase";
+import UIBundleMgr from "./UIBundleMgr";
 import UIMgr, { UIType } from "./UIMgr";
 
 const { ccclass, property } = cc._decorator;
@@ -18,18 +20,15 @@ export default class UIScene extends UIBase {
         }
     }
 
+    onLoad() {
+        this.UIType = UIType.SCENE;
+    }
+
     onDestroy() {
         this.assets.forEach(asset => {
             asset.decRef();
         });
         UIMgr.hideAll();
-    }
-
-    onLoad(): void {
-        this.UIType = UIType.SCENE;
-    }
-
-    update(deltaTime: number): void {
     }
 
 }

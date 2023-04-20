@@ -2,15 +2,41 @@ syntax = "proto3";
 package pb.hall;
 
 // Description:
+message HomepageResponse {
+  // Description:
+  HomepageUserInfoResponse userInfo = 1;
+  repeated PictureResponse rotationPictures = 2;
+  map<string,bool> redDot = 3;
+
+}
+
+// Description:
 message UserUpdateNicknameDTO {
   string nickname = 1;
 
 }
 
 // Description:
-message UserUpdateHeadPicDTO {
-  // 头像编号
-  string headpic = 1;
+message HomepageGameDTO {
+  int32 productId = 1;
+  string appVersion = 2;
+  int32 appResVersion = 3;
+
+}
+
+// Description:
+message LoginVO {
+  string userId = 1;
+  string nickName = 2;
+  string headPic = 3;
+  string sessionId = 4;
+  string phone = 5;
+  int32 accountType = 6;
+  int64 firstDay = 7;
+  bool first = 8;
+  int32 gameVersion = 9;
+  // Description:
+  LoginWalletVO walletVO = 10;
 
 }
 
@@ -30,6 +56,12 @@ message HomepageGamesResponse {
   string file = 12;
   string name = 13;
   int32 cmd = 14;
+
+}
+
+// Description:
+message HomepageGameVO {
+  repeated HomepageGamesResponse games = 1;
 
 }
 
@@ -63,6 +95,24 @@ message PictureResponse {
 }
 
 // Description:
+message HomepageUserInfoResponse {
+  double bonus = 1;
+  int32 vipLevel = 2;
+  int32 club = 3;
+  bool recharge = 4;
+  bool brokeCoupon = 5;
+  string invitationCode = 6;
+
+}
+
+// Description:
+message UserUpdateHeadPicDTO {
+  // 头像编号
+  string headpic = 1;
+
+}
+
+// Description:
 message LoginDTO {
   string appChannel = 1;
   string appName = 2;
@@ -79,55 +129,6 @@ message LoginDTO {
   string userId = 13;
   string sessionId = 14;
   string appsflyerId = 15;
-
-}
-
-// Description:
-message HomepageUserInfoResponse {
-  double bonus = 1;
-  int32 vipLevel = 2;
-  int32 club = 3;
-  bool recharge = 4;
-  bool brokeCoupon = 5;
-  string invitationCode = 6;
-
-}
-
-// Description:
-message HomepageGameDTO {
-  int32 productId = 1;
-  string appVersion = 2;
-  int32 appResVersion = 3;
-
-}
-
-// Description:
-message LoginVO {
-  string userId = 1;
-  string nickName = 2;
-  string headPic = 3;
-  string sessionId = 4;
-  string phone = 5;
-  int32 accountType = 6;
-  int64 firstDay = 7;
-  bool first = 8;
-  // Description:
-  LoginWalletVO walletVO = 9;
-
-}
-
-// Description:
-message HomepageGameVO {
-  repeated HomepageGamesResponse games = 1;
-
-}
-
-// Description:
-message HomepageResponse {
-  // Description:
-  HomepageUserInfoResponse userInfo = 1;
-  repeated PictureResponse rotationPictures = 2;
-  map<string,bool> redDot = 3;
 
 }
 

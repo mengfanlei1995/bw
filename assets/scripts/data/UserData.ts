@@ -1,17 +1,16 @@
 import { HALL_EVT } from "../enum/DeskEnum";
 import EventMgr from "../mgr/EventMgr";
 import StorageMgr from "../mgr/StorageMgr";
+import { LoginWalletVO } from "../net/proto/hall";
 import { LoginVO } from "../net/proto/hall";
 import LongUtil from "../utils/LongUtil";
-
 class UserData {
 
     /**玩家信息 */
     userInfo: UserInfo = {};
 
     initUserInfo(userInfo: LoginVO) {
-        let { userId, nickName, headPic, phone, accountType, firstDay, first, walletVO, sessionId } = userInfo;
-        let { depositBalance, withdrawBalance, totalCashBalance, freeBalance } = walletVO;
+        let { userId, nickName, headPic, phone, accountType, firstDay, first, walletVO, gameVersion, sessionId } = userInfo;
         this.userInfo.userId = userId;
         this.userInfo.nickName = nickName;
         this.userInfo.headPic = headPic;
@@ -21,15 +20,21 @@ class UserData {
         this.userInfo.first = first;
         StorageMgr.phone = phone;
         StorageMgr.userId = userId;
+        gameVersion && (this.userInfo.gameVersion = gameVersion);
         sessionId && (StorageMgr.sessionId = sessionId);
+        this.initWalletInfo(walletVO);
+        EventMgr.emit(HALL_EVT.GOLD_CHANGE);
+        console.log(this.userInfo)
+    }
+
+    initWalletInfo(walletVO: LoginWalletVO) {
+        let { depositBalance, withdrawBalance, totalCashBalance, freeBalance } = walletVO;
         let walletInfo: WalletInfo = {};
         walletInfo.depositBalance = LongUtil.longToNumber(depositBalance);
         walletInfo.withdrawBalance = LongUtil.longToNumber(withdrawBalance);
         walletInfo.totalCashBalance = LongUtil.longToNumber(totalCashBalance);
         walletInfo.freeBalance = LongUtil.longToNumber(freeBalance);
         this.userInfo.walletInfo = walletInfo;
-        EventMgr.emit(HALL_EVT.GOLD_CHANGE);
-        console.log(this.userInfo)
     }
 
 }
@@ -45,6 +50,7 @@ interface UserInfo {
     accountType?: number;
     firstDay?: number;
     first?: boolean;
+    gameVersion?: number;
     walletInfo?: WalletInfo;
 }
 

@@ -60,11 +60,11 @@ export const TPWarCmd: number = 13;
 export const Push_WalletCmd: number = 1004;
 export const Push_Wallet_ChangeCmd: number = 1;
 
-//system
-export const Push_SystemCmd: number = 1005;
-export const Push_System_TackOutCmd: number = 1;
-
 //游戏推送
+export const Push_GameCmd: number = 1005;
+export const Push_Game_TackOutCmd: number = 1;
+
+
 //下注
 export const Push_Game_BetCmd: number = 1;
 //开始

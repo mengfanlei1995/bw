@@ -10,21 +10,19 @@ class LongUtil {
 
     /**Long  to number*/
     public longToNumber(data: LongType): number {
-        let { low, high, unsigned } = data;
-        let long = new Long(low, high, unsigned);
+        let long = new Long(data?.low || 0, data?.high || 0, data?.unsigned || false);
         return long.toNumber();
     }
 
     /**Long  to string*/
     public longToString(data: LongType): string {
-        let { low, high, unsigned } = data;
-        let long = new Long(low, high, unsigned);
+        let long = new Long(data?.low || 0, data?.high || 0, data?.unsigned || false);
         return long.toString();
     }
 
     /**number to Long */
     public numberToLong(value: number): LongType {
-        return new Long(value, 0, false);
+        return new Long(value || 0, 0, false);
     }
 
 }

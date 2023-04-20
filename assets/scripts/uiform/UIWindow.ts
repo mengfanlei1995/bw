@@ -15,7 +15,7 @@ export default class UIWindow extends UIBase {
     /**
      * UI 打开动画
      */
-    protected async showTween() {
+    public async showTween() {
         return new Promise(resolve => {
             this.node.scale = 0.5;
             cc.tween(this.node)
@@ -30,7 +30,7 @@ export default class UIWindow extends UIBase {
     /**
      * UI 关闭动画
      */
-    protected async hideTween() {
+    public async hideTween() {
         return new Promise(resolve => {
             cc.tween(this.node)
                 .to(0.5, { scale: 0.5 }, { easing: 'backIn' })

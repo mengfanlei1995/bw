@@ -81,7 +81,7 @@ class BundleUtil {
     public clearAllBundle(): void {
         if (this._usedBundle.size == 0) return;
         this._usedBundle.forEach(bundle => {
-            this.releaseBundle(bundle);
+            // this.releaseBundle(bundle);
             this.removeBundle(bundle);
         })
         this._usedBundle.clear();

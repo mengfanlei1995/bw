@@ -11,10 +11,6 @@ export default class UIBase extends cc.Component {
     /**ui名字 */
     public UIName: string;
 
-    onLoad() {
-
-    }
-
     public onShow(params: any) {
 
     }
@@ -33,18 +29,9 @@ export default class UIBase extends cc.Component {
 
     }
 
-    start() {
-
-    }
-
     async hide() {
         await this.hideTween();
         UIMgr.hide(this.UIName);
-    }
-
-
-    update(deltaTime: number) {
-
     }
 
 }

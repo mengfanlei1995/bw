@@ -25,6 +25,7 @@ export default class SelfBalance extends cc.Component {
 
     updateBalance() {
         if (SysConfig.isSettling) return;
-        this.node.getComponent(cc.Label).string = `${this.str}${UserData.userInfo.walletInfo.totalCashBalance}`;
+        let bonus: number = UserData.userInfo.gameVersion == 3 ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance;
+        this.node.getComponent(cc.Label).string = `${this.str}${bonus / 100}`;
     }
 }

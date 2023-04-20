@@ -8,10 +8,10 @@ import PoolMgr from "../../../scripts/mgr/PoolMgr";
 import SoundMgr from "../../../scripts/mgr/SoundMgr";
 import StorageMgr from "../../../scripts/mgr/StorageMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
-import { Dice3Cmd, Push_Dice3Cmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_SystemCmd, Push_System_TackOutCmd } from "../../../scripts/net/CmdData";
+import { Dice3Cmd, Push_Dice3Cmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_GameCmd, Push_Game_TackOutCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
 import SendMgr from "../../../scripts/net/SendMgr";
-import { Dice3DoEnterRoomVO, Dice3NotifyBeginBetVO, Dice3SendDrawMsgVO, NotifyBetVO, decodeDice3DoEnterRoomVO, decodeDice3NotifyBeginBetVO, decodeDice3SendDrawMsgVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
+import { Dice3DoEnterRoomVO, Dice3NotifyBeginBetVO, Dice3SendDrawMsgVO, Dice3WinDto, NotifyBetVO, decodeDice3DoEnterRoomVO, decodeDice3NotifyBeginBetVO, decodeDice3SendDrawMsgVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import UIMgr from "../../../scripts/uiform/UIMgr";
@@ -24,53 +24,19 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class DiceThree extends UIGame {
 
-
     @property({ tooltip: '骰子动画', type: sp.Skeleton })
     diceSkel: sp.Skeleton = null;
-    //=============== 红黄蓝组件=====================
-    @property({ tooltip: '绿色筹码区域', type: cc.Node })
-    greenChipsAreaNode: cc.Node = null;
-    @property({ tooltip: '绿色筹码总数', type: cc.Label })
-    greenChipsNumLabel: cc.Label = null;
-    @property({ tooltip: '绿色中奖框', type: cc.Node })
-    greenAwardNode: cc.Node = null;
-    @property({ tooltip: 'green自己下注筹码数', type: cc.Label })
-    greenSelfBetChipsNumLabel: cc.Label = null;
-    @property({ tooltip: '紫色筹码区域', type: cc.Node })
-    indiumChipsAreaNode: cc.Node = null;
-    @property({ tooltip: '紫色筹码总数', type: cc.Label })
-    indiumChipsNumLabel: cc.Label = null;
-    @property({ tooltip: '紫色中奖框', type: cc.Node })
-    indiumAwardNode: cc.Node = null;
-    @property({ tooltip: '紫色自己下注筹码数', type: cc.Label })
-    indiumSelfBetChipsNumLabel: cc.Label = null;
-    @property({ tooltip: '黄色筹码区域', type: cc.Node })
-    yellowChipsAreaNode: cc.Node = null;
-    @property({ tooltip: '黄色筹码总数', type: cc.Label })
-    yellowChipsNumLabel: cc.Label = null;
-    @property({ tooltip: '黄色中奖框', type: cc.Node })
-    yellowAwardNode: cc.Node = null;
-    @property({ tooltip: 'yellow自己下注筹码数', type: cc.Label })
-    yellowSelfBetChipsNumLabel: cc.Label = null;
     @property({ tooltip: "绿色", type: cc.SpriteFrame })
-    greenSpriteFrame: cc.SpriteFrame = null
+    greenSpriteFrame: cc.SpriteFrame = null;
     @property({ tooltip: "红色", type: cc.SpriteFrame })
-    indiumSpriteFrame: cc.SpriteFrame = null
+    indiumSpriteFrame: cc.SpriteFrame = null;
     @property({ tooltip: "黄色", type: cc.SpriteFrame })
-    yellowSpriteFrame: cc.SpriteFrame = null
+    yellowSpriteFrame: cc.SpriteFrame = null;
 
-    private readonly INDIUM_ID: string = "1";
-    private readonly GREEN_ID: string = "2";
-    private readonly YELLOW_ID: string = "3";
-
-    onLoad(): void {
+    start(): void {
         this.gameId = SysConfig.GameIDConfig.Dice3;
         this.gameCmd = Dice3Cmd;
-        this.selfChipsSourcePos = this.chipsProductAreaNode.convertToNodeSpaceAR(
-            this.avatarNode.convertToWorldSpaceAR(this.avatarNode.getPosition()));
-        this.chipsSourcePos = this.chipsSourceNode.getPosition();
-        this.initAreaPos();
-        this.timeLeftLabel.string = "--";
+        this._start();
         this._enterRoom();
     }
 
@@ -80,69 +46,28 @@ export default class DiceThree extends UIGame {
     }
 
     onDisable(): void {
+        this._onDisable();
         EventMgr.off(HALL_EVT.DESK_RELOAD, this.onEventShow, this);
         EventMgr.off(SocketEvent.WS_MSG_PUSH, this.onRecvGameData, this)
-        SysConfig.settling = false;
-        PoolMgr.clear();
     }
 
     async _enterRoom(): Promise<void> {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
         let data: Dice3DoEnterRoomVO = decodeDice3DoEnterRoomVO(info);
-        console.log(data)
+        console.log('_enterRoom', data)
         if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
-        this.initRoomInfo(data);
-    }
-
-    initAreaPos() {
-        for (let i = 1; i <= 3; i++) {
-            let targetAreaNode: cc.Node = this.getChipsAreaNode(`${i}`);
-            let targetPos = this.chipsProductAreaNode.convertToNodeSpaceAR(
-                targetAreaNode.convertToWorldSpaceAR(targetAreaNode.getPosition()));
-            this.areaPosMap[`${i}`] = targetPos;
-        }
+        this._initRoomInfo(data);
     }
 
     //初始化房间信息
-    initRoomInfo(info: Dice3DoEnterRoomVO) {
-        let { betCoinList, betCoinMap, betList, betSelfCoinMap, gameInfo, roomInfo, onlinePlayers } = info;
-        if (betCoinList) this.initChipsNum(betCoinList);
-        let { gameNum, gameResultList, leftOptSeconds } = gameInfo;
-        let { roomId, roomState } = roomInfo;
-        this.gameResultList = gameResultList;
-        this.initRecordHistroy(gameResultList);
-        if (betCoinMap) {
-            if (betCoinMap["1"] != null && Number(this.indiumChipsNumLabel.string) < this.longToNumber(betCoinMap["1"]) / 100) this.indiumChipsNumLabel.string = `${this.longToNumber(betCoinMap["1"]) / 100}`;
-            if (betCoinMap["2"] != null && Number(this.greenChipsNumLabel.string) < this.longToNumber(betCoinMap["2"]) / 100) this.greenChipsNumLabel.string = `${this.longToNumber(betCoinMap["2"]) / 100}`;
-            if (betCoinMap["3"] != null && Number(this.yellowChipsNumLabel.string) < this.longToNumber(betCoinMap["3"]) / 100) this.yellowChipsNumLabel.string = `${this.longToNumber(betCoinMap["3"]) / 100}`;
-        }
-        if (betSelfCoinMap) {
-            if (betSelfCoinMap["1"] != null) this.indiumSelfBetChipsNumLabel.string = `${this.longToNumber(betSelfCoinMap["1"]) / 100}`;
-            if (betSelfCoinMap["2"] != null) this.greenSelfBetChipsNumLabel.string = `${this.longToNumber(betSelfCoinMap["2"]) / 100}`;
-            if (betSelfCoinMap["3"] != null) this.yellowSelfBetChipsNumLabel.string = `${this.longToNumber(betSelfCoinMap["3"]) / 100}`;
-        }
-        this.optData.roomId = roomId;
-        this.gameNum = gameNum;
-        this.curTime = leftOptSeconds;
-        this.isBetTime = roomState == 3;
-        this.unschedule(this.countDownTime);
-        this.countDownTime();
-        this.schedule(this.countDownTime, 1);
-        if (this.isBetTime) {
-            if (this.isFirstInto) this.statusTipSkel.setAnimation(0, "start", false);
-            this.timeTipLabel.string = LangMgr.sentence("e0320");
-        } else {
-            this.timeTipLabel.string = LangMgr.sentence("e0321");
-        }
-        this.statusWaitingSkel.node.active = !this.isBetTime;
-        this.updateChipsCircleSkel();
-        this.isFirstInto = false;
-        this.setOnLineNumber(onlinePlayers);
+    _initRoomInfo(info: Dice3DoEnterRoomVO) {
+        this.initRecordHistroy(info.gameInfo.gameResultList);
+        this.initRoomInfo(info);
     }
 
     /**初始化历史记录 */
-    private initRecordHistroy(gameResultList: GameResultInfo[]) {
+    private initRecordHistroy(gameResultList: Dice3WinDto[]) {
         this.recordLayoutNode.removeAllChildren()
         if (gameResultList.length > 15) gameResultList = gameResultList.slice(gameResultList.length - 15, gameResultList.length)
         for (let i = 0; i < gameResultList.length; i++) {
@@ -158,14 +83,14 @@ export default class DiceThree extends UIGame {
     }
 
     onEventShow() {
-        this.reset();
+        this._reset();
         this._enterRoom();
     }
 
     /**添加开奖记录 */
     async addAwardRecord(array: number[]) {
-        let recordNode: cc.Node = this.recordLayoutNode
-        let childCount: number = recordNode.childrenCount
+        let recordNode: cc.Node = this.recordLayoutNode;
+        let childCount: number = recordNode.childrenCount;
         if (childCount >= 15) {
             this.lastNode.active = false;
             recordNode.getComponent(cc.Layout).enabled = false;
@@ -176,23 +101,23 @@ export default class DiceThree extends UIGame {
                 cc.tween(box).to(1, { x: x }).start()
             }
         }
-        let sum: number = array[0] + array[1] + array[2]
+        let sum: number = array[0] + array[1] + array[2];
         let tailGas: cc.Node = cc.instantiate(this.tailGasPrefab);
         tailGas.name = "tailGas";
-        recordNode.addChild(tailGas)
-        let node = this.productBallNode(array)
-        recordNode.addChild(node)
+        recordNode.addChild(tailGas);
+        let node = this.productBallNode(array);
+        recordNode.addChild(node);
         let pos;
         let time = 1;
         if (array[0] == array[1] && array[0] == array[2]) {
-            pos = cc.v3(30, -220, 0)
+            pos = cc.v3(30, -220, 0);
         } else {
             if (sum <= 10) {
-                pos = cc.v3(-130, -485, 0)
-                time = 2.5
+                pos = cc.v3(-130, -485, 0);
+                time = 2.5;
             } else {
                 time = 2;
-                pos = cc.v3(200, -485, 0)
+                pos = cc.v3(200, -485, 0);
             }
         }
         node.position = pos;
@@ -236,13 +161,7 @@ export default class DiceThree extends UIGame {
         this.diceSkel.setCompleteListener(() => {
             if (this.isReturn(gameNum)) return;
             if (this.diceSkel.animation == "dice_3") {
-                if (id == this.GREEN_ID) {
-                    this.greenAwardNode.active = true;
-                } else if (id == this.INDIUM_ID) {
-                    this.indiumAwardNode.active = true;
-                } else {
-                    this.yellowAwardNode.active = true;
-                }
+                this.awardNode[+id - 1].active = true;
                 for (let i = 1; i < 4; i++) {
                     if (i.toString() != id) {
                         this.flyCenterArea(i.toString())
@@ -275,7 +194,7 @@ export default class DiceThree extends UIGame {
     }
 
     /**筹码飞向玩家动画 */
-    flyPlayerArea(id) {
+    flyPlayerArea(id: string) {
         this.flyChipsProductSource()
         let chipsArray: number[] = [];
         function checkChipsNum(num: number) {
@@ -294,24 +213,21 @@ export default class DiceThree extends UIGame {
             return;
         }
         for (let i = 0; i < chipsArray.length; i++) {
-            let pos;
-            if (id == this.GREEN_ID) {
-                let x = Math.random() * this.greenChipsAreaNode.width - this.greenChipsAreaNode.width / 2
-                let y = Math.random() * this.greenChipsAreaNode.height - this.greenChipsAreaNode.height / 2
+            let pos: cc.Vec3;
+            let chipsAreaNode: cc.Node = this.chipsAreaNode[+id - 1];
+            let x = Math.random() * chipsAreaNode.width - chipsAreaNode.width / 2;
+            let y = Math.random() * chipsAreaNode.height - chipsAreaNode.height / 2;
+            if (id == '2') {
                 pos = cc.v3(0 + x, -20 + y, 0)
             } else {
-                if (id == this.INDIUM_ID) {
-                    let x = Math.random() * this.indiumChipsAreaNode.width - this.indiumChipsAreaNode.width / 2
-                    let y = Math.random() * this.indiumChipsAreaNode.height - this.indiumChipsAreaNode.height / 2
+                if (id == '1') {
                     pos = cc.v3(-165 + x, -300 + y, 0)
                 } else {
-                    let x = Math.random() * this.yellowChipsAreaNode.width - this.yellowChipsAreaNode.width / 2
-                    let y = Math.random() * this.yellowChipsAreaNode.height - this.yellowChipsAreaNode.height / 2
                     pos = cc.v3(165 + x, -300 + y, 0)
                 }
             }
-            let node = this.productChipsNode(chipsArray[i], "", this.betNums)
-            this.chipsProductAreaNode.addChild(node)
+            let node = this.productChipsNode(chipsArray[i], "", this.betNums);
+            this.chipsProductAreaNode.addChild(node);
             node.position = pos;
             cc.tween(node).to(0.6, { position: cc.v3(this.selfChipsSourcePos.x, this.selfChipsSourcePos.y, 0) }, { easing: 'sineInOut' })
                 .call(() => {
@@ -332,114 +248,40 @@ export default class DiceThree extends UIGame {
         }
     }
 
-
-    getChipsAreaNode(areaType: string) {
-        let targetAreaNode: cc.Node
-        if (areaType == this.GREEN_ID) {
-            targetAreaNode = this.greenChipsAreaNode
-        } else if (areaType == this.INDIUM_ID) {
-            targetAreaNode = this.indiumChipsAreaNode
-        } else {
-            targetAreaNode = this.yellowChipsAreaNode
-        }
-        return targetAreaNode
-    }
-
-    reset() {
-        SysConfig.settling = false;
-        this.recordLayoutNode.getComponent(cc.Layout).enabled = true;
+    _reset() {
         this.diceSkel.setAnimation(0, "dice_0", false);
-        this.winBonus = 0;
-        this.greenAwardNode.active = false;
-        this.indiumAwardNode.active = false;
-        this.yellowAwardNode.active = false;
-        this.greenSelfBetChipsNumLabel.string = LangMgr.sentence("e0319");;
-        this.indiumSelfBetChipsNumLabel.string = LangMgr.sentence("e0319");;
-        this.yellowSelfBetChipsNumLabel.string = LangMgr.sentence("e0319");;
-        this.greenChipsNumLabel.string = "0";
-        this.indiumChipsNumLabel.string = "0";
-        this.yellowChipsNumLabel.string = "0";
-        let chipsProductAreaNode: cc.Node = this.chipsProductAreaNode;
-        if (chipsProductAreaNode.childrenCount > 0) {
-            chipsProductAreaNode.children.forEach((node) => {
-                node.destroy();
-            })
-        }
-        this.statusWaitingSkel.node.active = !this.isBetTime
-    }
-
-    gameStart(data: Uint8Array) {
-        let info: Dice3NotifyBeginBetVO = decodeDice3NotifyBeginBetVO(data);
-        let { gameInfo } = info;
-        console.log('gameStart', info);
-        this.curTime = gameInfo?.leftOptSeconds;
-        this.gameNum = gameInfo?.gameNum;
-        this.gameResultList = gameInfo.gameResultList;
-        this.isBetTime = true;
         this.reset();
-        this.statusTipSkel.setAnimation(0, "start", false);
-        this.timeTipLabel.string = LangMgr.sentence("e0320");
-        this.updateChipsCircleSkel();
     }
 
-    tackOut() {
-        UIMgr.goHall();
-        UIMgr.showDialog({
-            word: LangMgr.sentence('e0056'),
-            type: DialogType.OnlyOkBtn
-        })
+    _gameStart(data: Uint8Array) {
+        let info: Dice3NotifyBeginBetVO = decodeDice3NotifyBeginBetVO(data);
+        console.log('_gameStart', info);
+        this.isBetTime = true;
+        this._reset();
+        this.gameStart(info);
     }
 
-    gameBet(data: Uint8Array) {
+    _gameBet(data: Uint8Array) {
         if (!this.isBetTime || this.curTime <= 0) return;
         let info: NotifyBetVO = decodeNotifyBetVO(data);
-        console.log('gameBet', info);
-        // betList betCoinMap
-        let { betCoinMap, betList } = info;
-        if (betCoinMap) {
-            if (betCoinMap["1"] != null && Number(this.indiumChipsNumLabel.string) < this.longToNumber(betCoinMap["1"]) / 100) this.betScaleAnim(this.indiumChipsNumLabel, this.longToNumber(betCoinMap["1"]) / 100)
-            if (betCoinMap["2"] != null && Number(this.greenChipsNumLabel.string) < this.longToNumber(betCoinMap["2"]) / 100) this.betScaleAnim(this.greenChipsNumLabel, this.longToNumber(betCoinMap["2"]) / 100)
-            if (betCoinMap["3"] != null && Number(this.yellowChipsNumLabel.string) < this.longToNumber(betCoinMap["3"]) / 100) this.betScaleAnim(this.yellowChipsNumLabel, this.longToNumber(betCoinMap["3"]) / 100)
-        }
-        if (betList && betList.length > 0) {
-            SoundMgr.playEffect('audio/betchips')
-            for (let i = 0; i < betList.length; i++) {
-                this.flyChips(false, `${betList[i].betId}`, this.longToNumber(betList[i].betCoins) / 100);
-            }
-        }
+        this.gameBet(info);
     }
 
-    gameEnd(data: Uint8Array) {
+    _gameEnd(data: Uint8Array) {
         let info: Dice3SendDrawMsgVO = decodeDice3SendDrawMsgVO(data);
-        console.log('gameEnd', info);
-        let { gameInfo, gameResult, userInfoList } = info;
-        this.curTime = gameInfo?.leftOptSeconds
+        console.log('_gameEnd', info);
+        let { gameInfo, gameResult } = info;
         let { dices, id } = gameResult;
-        if (this.gameResultList.length >= 50) this.gameResultList.shift();
-        this.gameResultList.push(gameResult)
-        this.isBetTime = false
-        this.timeTipLabel.string = LangMgr.sentence("e0321");
-        this.statusTipSkel.setAnimation(0, "stop", false)
-        this.chipsProductAreaNode.zIndex = 1;
         this.diceSkel.node.zIndex = 2;
-        if (userInfoList && userInfoList.length > 0) {
-            for (let i = 0; i < userInfoList.length; i++) {
-                if (userInfoList[i].userId == StorageMgr.userId) {
-                    this.winBonus = this.longToNumber(userInfoList[i].winCoins) / 100;
-                    break;
-                }
-            }
-        }
-        this.diceSkel.setAnimation(0, "dice_1", false)
         let gameNum = this.gameNum;
+        this.diceSkel.setAnimation(0, "dice_1", false)
         this.diceSkel.setCompleteListener(() => {
             if (this.diceSkel.animation == "dice_1" && gameInfo.gameNum == gameNum) {
                 this.diceSkel.setAnimation(0, "dice_2", true)
             }
         })
-        this.updateChipsCircleSkel()
-        this.scheduleOnce(this.openAward.bind(this, dices, `${id}`), 3)
-        this.setOnLineNumber(gameInfo?.onlinePlayers);
+        this.scheduleOnce(this.openAward.bind(this, dices, `${id}`), 3);
+        this.gameEnd(info);
     }
 
     /**
@@ -450,7 +292,7 @@ export default class DiceThree extends UIGame {
         let { mergeCmd, code, data } = info;
         let cmd: number = CmdMgr.getCmd(mergeCmd);
         let subCmd: number = CmdMgr.getSubCmd(mergeCmd);
-        if (cmd == Push_SystemCmd && subCmd == Push_System_TackOutCmd) {
+        if (cmd == Push_GameCmd && subCmd == Push_Game_TackOutCmd) {
             this.tackOut();
             return;
         }
@@ -459,99 +301,19 @@ export default class DiceThree extends UIGame {
         }
         switch (subCmd) {
             case Push_Game_BetCmd:
-                this.gameBet(data);
+                this._gameBet(data);
                 break;
             case Push_Game_StartCmd:
-                this.gameStart(data);
+                this._gameStart(data);
                 break;
             case Push_Game_EndCmd:
-                this.gameEnd(data);
+                this._gameEnd(data);
                 break;
         }
-        // let { notifyType, currMsgId, gameInfo, lastMsgId, gameResult, betCoinMap, betList, userInfoList } = data
-        // switch (notifyType) {
-        //     case GamePushEnum.GameStart:
-        //         //currMsgId, gameInfo, lastMsgId 
-        //         this.curTime = gameInfo?.leftOptSeconds
-        //         this.gameNum = gameInfo?.gameNum;
-        //         this.gameResultList = gameInfo.gameResultList;
-        //         this.isBetTime = true
-        //         this.reset();
-        //         this.statusTipSkel.setAnimation(0, "start", false)
-        //         this.timeTipLabel.string = LangMgr.sentence("e0320");
-        //         this.updateChipsCircleSkel()
-        //         break;
-        //     case GamePushEnum.GameEnd:
-        //         // gameInfo, gameResult 
-        //         this.curTime = gameInfo?.leftOptSeconds
-        //         let { dices, id } = gameResult
-        //         if (this.gameResultList.length >= 50) this.gameResultList.shift();
-        //         this.gameResultList.push(gameResult)
-        //         this.isBetTime = false
-        //         this.timeTipLabel.string = LangMgr.sentence("e0321");
-        //         this.statusTipSkel.setAnimation(0, "stop", false)
-        //         this.chipsProductAreaNode.zIndex = 1;
-        //         this.diceSkel.node.zIndex = 2;
-        //         if (userInfoList && userInfoList.length > 0) {
-        //             for (let i = 0; i < userInfoList.length; i++) {
-        //                 if (userInfoList[i].userId == UserGlobalData.userId) {
-        //                     this.winBonus = userInfoList[i].winCoins / 100;
-        //                     break;
-        //                 }
-        //             }
-        //         }
-        //         this.diceSkel.setAnimation(0, "dice_1", false)
-        //         let gameNum = this.gameNum;
-        //         this.diceSkel.setCompleteListener(() => {
-        //             if (this.diceSkel.animation == "dice_1" && gameInfo.gameNum == gameNum) {
-        //                 this.diceSkel.setAnimation(0, "dice_2", true)
-        //             }
-        //         })
-        //         this.updateChipsCircleSkel()
-        //         this.scheduleOnce(this.openAward.bind(this, dices, `${id}`), 3)
-        //         this.setOnLineNumber(gameInfo?.onlinePlayers);
-        //         break;
-        //     case GamePushEnum.TakeOut:
-        //         SceneMgr.back();
-        //         DialogMgr.showDialog({
-        //             word: LangMgr.sentence('e0056'),
-        //             type: DialogType.OnlyOkBtn,
-        //         })
-        //         break;
-        //     case GamePushEnum.GameBet:
-        //         if (!this.isBetTime || this.curTime <= 0) return;
-        //         // betList betCoinMap
-        //         if (betCoinMap) {
-        //             if (betCoinMap["1"] != null && Number(this.indiumChipsNumLabel.string) < betCoinMap["1"] / 100) this.betScaleAnim(this.indiumChipsNumLabel, betCoinMap["1"] / 100)
-        //             if (betCoinMap["2"] != null && Number(this.greenChipsNumLabel.string) < betCoinMap["2"] / 100) this.betScaleAnim(this.greenChipsNumLabel, betCoinMap["2"] / 100)
-        //             if (betCoinMap["3"] != null && Number(this.yellowChipsNumLabel.string) < betCoinMap["3"] / 100) this.betScaleAnim(this.yellowChipsNumLabel, betCoinMap["3"] / 100)
-        //         }
-        //         if (betList && betList.length > 0) {
-        //             SoundMgr.playEffect('audio/betchips')
-        //             for (let i = 0; i < betList.length; i++) {
-        //                 this.flyChips(false, `${betList[i].betId}`, betList[i].betCoins / 100);
-        //             }
-        //         }
-        //         break;
-        // }
-
     }
-
 
     onRecordClick(e: cc.Event.EventTouch) {
-        WindowMgr.open(UIConfig.DiceThreeHistory.prefab, this.gameResultList)
-    }
-
-    onGreenAreaClick(e: cc.Event.EventTouch) {
-        this.buyBetChips(this.GREEN_ID, this.greenSelfBetChipsNumLabel, this.greenChipsNumLabel)
-    }
-
-    onIndiumAreaClick(e: cc.Event.EventTouch) {
-        this.buyBetChips(this.INDIUM_ID, this.indiumSelfBetChipsNumLabel, this.indiumChipsNumLabel)
-    }
-
-    onYellowAreaClick(e: cc.Event.EventTouch) {
-        this.buyBetChips(this.YELLOW_ID, this.yellowSelfBetChipsNumLabel, this.yellowChipsNumLabel)
+        // WindowMgr.open(UIConfig.DiceThreeHistory.prefab, this.gameResultList)
     }
 
     onPlayerListClick() {
@@ -559,7 +321,7 @@ export default class DiceThree extends UIGame {
     }
 
     /**
-     * 生产红黄蓝球
+     * 创建记录节点
      * @param value 
      * @returns 
      */
