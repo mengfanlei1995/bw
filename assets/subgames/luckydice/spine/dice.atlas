@@ -1,0 +1,62 @@
+
+dice.png
+size: 940,229
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tex/dc_dish
+  rotate: false
+  xy: 317, 15
+  size: 278, 212
+  orig: 278, 212
+  offset: 0, 0
+  index: -1
+tex/dc_lid
+  rotate: true
+  xy: 2, 11
+  size: 216, 313
+  orig: 230, 344
+  offset: 0, 1
+  index: -1
+tex/ds0001
+  rotate: true
+  xy: 597, 118
+  size: 109, 114
+  orig: 128, 128
+  offset: 8, 8
+  index: -1
+tex/ds0002
+  rotate: true
+  xy: 713, 118
+  size: 109, 114
+  orig: 128, 128
+  offset: 8, 8
+  index: -1
+tex/ds0003
+  rotate: false
+  xy: 829, 113
+  size: 109, 114
+  orig: 128, 128
+  offset: 8, 8
+  index: -1
+tex/ds0004
+  rotate: true
+  xy: 597, 7
+  size: 109, 114
+  orig: 128, 128
+  offset: 8, 8
+  index: -1
+tex/ds0005
+  rotate: false
+  xy: 713, 2
+  size: 109, 114
+  orig: 128, 128
+  offset: 8, 8
+  index: -1
+tex/ds0006
+  rotate: true
+  xy: 824, 2
+  size: 109, 114
+  orig: 128, 128
+  offset: 8, 8
+  index: -1

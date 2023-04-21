@@ -1,0 +1,97 @@
+
+CardsFx.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tex/cardbase
+  rotate: false
+  xy: 819, 51
+  size: 139, 188
+  orig: 139, 188
+  offset: 0, 0
+  index: -1
+tex/cardbg2
+  rotate: false
+  xy: 663, 41
+  size: 139, 188
+  orig: 139, 188
+  offset: 0, 0
+  index: -1
+tex/f_00000
+  rotate: false
+  xy: 2, 102
+  size: 284, 330
+  orig: 300, 351
+  offset: 9, 16
+  index: -1
+tex/t
+  rotate: false
+  xy: 663, 231
+  size: 154, 201
+  orig: 154, 201
+  offset: 0, 0
+  index: -1
+tex/xz_00001
+  rotate: false
+  xy: 415, 18
+  size: 123, 205
+  orig: 150, 228
+  offset: 17, 13
+  index: -1
+tex/xz_00002
+  rotate: false
+  xy: 288, 218
+  size: 63, 214
+  orig: 150, 228
+  offset: 47, 9
+  index: -1
+tex/xz_00003
+  rotate: false
+  xy: 353, 220
+  size: 60, 212
+  orig: 150, 228
+  offset: 40, 10
+  index: -1
+tex/xz_00004
+  rotate: false
+  xy: 540, 20
+  size: 121, 205
+  orig: 150, 228
+  offset: 9, 13
+  index: -1
+tex/xz_00005
+  rotate: false
+  xy: 819, 241
+  size: 140, 191
+  orig: 150, 228
+  offset: 4, 20
+  index: -1
+tex/xz_00006
+  rotate: false
+  xy: 538, 227
+  size: 123, 205
+  orig: 150, 228
+  offset: 17, 13
+  index: -1
+tex/xz_00007
+  rotate: false
+  xy: 350, 4
+  size: 63, 212
+  orig: 150, 228
+  offset: 47, 10
+  index: -1
+tex/xz_00008
+  rotate: false
+  xy: 288, 2
+  size: 60, 214
+  orig: 150, 228
+  offset: 40, 9
+  index: -1
+tex/xz_00009
+  rotate: false
+  xy: 415, 225
+  size: 121, 207
+  orig: 150, 228
+  offset: 9, 12
+  index: -1

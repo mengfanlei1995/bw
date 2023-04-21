@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "e923f173-3041-4338-af9a-3ad2133e81cd",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 2048,
+  "height": 2048,
+  "platformSettings": {},
+  "subMetas": {
+    "TeenPattiWar": {
+      "ver": "1.0.6",
+      "uuid": "a8b546c2-4e99-4e52-aedc-10987b05132d",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "e923f173-3041-4338-af9a-3ad2133e81cd",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -435.5,
+      "offsetY": 21.5,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 1173,
+      "height": 2001,
+      "rawWidth": 2048,
+      "rawHeight": 2048,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

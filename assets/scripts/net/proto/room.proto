@@ -90,8 +90,6 @@ message Dice3DoEnterRoomVO {
 // 
 message RoomUserVo {
   int64 winCoins = 1;
-  // 当前局数
-  int32 roundCount = 2;
   // 胜率
   int32 winRate = 3;
   // 用户状态：0-桌下, 1-桌上
@@ -108,16 +106,46 @@ message RoomUserVo {
   int32 playNums = 14;
   int32 maxPlayNums = 15;
   string extra = 16;
+  // 当前局数
+  int32 roundCount = 17;
   // 用户赢的局数，重进房间后刷新
-  int32 winRoundCount = 17;
+  int32 winRoundCount = 18;
   // 玩家总赢钱，退出房间时清空
-  int64 totalWinCoins = 18;
+  int64 totalWinCoins = 19;
   // 玩家类型 REAL_PERSON(0, "真人"), ROBOT(1, "机器人"), PLATFROM(2, "系统");
-  int32 userType = 19;
+  int32 userType = 20;
   // 所有游戏累计输赢金额
-  int64 winBalance = 20;
-  int64 loseBalance = 21;
+  int64 winBalance = 21;
+  int64 loseBalance = 22;
 
+//  int64 winCoins = 1;
+//  // 胜率
+//  int32 winRate = 2;
+//  // 用户状态：0-桌下, 1-桌上
+//  int32 userInTableState = 3;
+//  int32 seatNo = 4;
+//  string userId = 5;
+//  int32 status = 6;
+//  string nickName = 7;
+//  string portrait = 8;
+//  int32 vipLevel = 9;
+//  int64 balanceCoins = 10;
+//  bool autoPlay = 11;
+//  int32 autoPlayTimes = 12;
+//  int32 playNums = 13;
+//  int32 maxPlayNums = 14;
+//  string extra = 15;
+//  // 当前局数
+//  int32 roundCount = 16;
+//  // 用户赢的局数，重进房间后刷新
+//  int32 winRoundCount = 17;
+//  // 玩家总赢钱，退出房间时清空
+//  int64 totalWinCoins = 18;
+//  // 玩家类型 REAL_PERSON(0, "真人"), ROBOT(1, "机器人"), PLATFROM(2, "系统");
+//  int32 userType = 19;
+//  // 所有游戏累计输赢金额
+//  int64 winBalance = 20;
+//  int64 loseBalance = 21;
 }
 
 // Description:
@@ -881,7 +909,11 @@ message JMBeginBetVO {
 
 // 
 message DragonAndTigerWinnerVo {
-
+  string userId = 1;
+  string nickName = 2;
+  string portrait = 3;
+  int32 vipLevel = 4;
+  int64 winCoins = 5;
 }
 
 // 

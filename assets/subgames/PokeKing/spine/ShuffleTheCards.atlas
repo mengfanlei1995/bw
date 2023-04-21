@@ -1,0 +1,97 @@
+
+ShuffleTheCards.png
+size: 2048,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tex/3tao
+  rotate: true
+  xy: 0, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/4
+  rotate: true
+  xy: 167, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/5
+  rotate: true
+  xy: 334, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/6
+  rotate: true
+  xy: 501, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/7
+  rotate: true
+  xy: 668, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/8
+  rotate: true
+  xy: 835, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/9
+  rotate: true
+  xy: 1002, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/A
+  rotate: true
+  xy: 1169, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/J
+  rotate: true
+  xy: 1336, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/Q
+  rotate: true
+  xy: 1503, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/h
+  rotate: true
+  xy: 1837, 84
+  size: 35, 165
+  orig: 35, 165
+  offset: 0, 0
+  index: -1
+tex/k0
+  rotate: true
+  xy: 1670, 0
+  size: 119, 165
+  orig: 119, 165
+  offset: 0, 0
+  index: -1
+tex/ky
+  rotate: true
+  xy: 1837, 15
+  size: 67, 89
+  orig: 67, 89
+  offset: 0, 0
+  index: -1

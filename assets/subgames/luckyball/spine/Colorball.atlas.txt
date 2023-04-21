@@ -1,0 +1,139 @@
+
+Colorball.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+tex/Ball
+  rotate: false
+  xy: 975, 0
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball1
+  rotate: false
+  xy: 1079, 372
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball11
+  rotate: false
+  xy: 1219, 128
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball12
+  rotate: false
+  xy: 1219, 6
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball13
+  rotate: false
+  xy: 1323, 372
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball2
+  rotate: false
+  xy: 1079, 250
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball3
+  rotate: false
+  xy: 1097, 128
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball4
+  rotate: false
+  xy: 1097, 6
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball5
+  rotate: false
+  xy: 1201, 372
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball8
+  rotate: false
+  xy: 1201, 250
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball_empty
+  rotate: false
+  xy: 975, 122
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball_x1
+  rotate: false
+  xy: 1323, 250
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball_x3
+  rotate: false
+  xy: 1341, 128
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/Ball_x5
+  rotate: false
+  xy: 1341, 6
+  size: 120, 120
+  orig: 120, 120
+  offset: 0, 0
+  index: -1
+tex/t2
+  rotate: false
+  xy: 562, 18
+  size: 152, 59
+  orig: 152, 59
+  offset: 0, 0
+  index: -1
+tex/tq
+  rotate: false
+  xy: 562, 79
+  size: 411, 413
+  orig: 413, 417
+  offset: 2, 0
+  index: -1
+tex/tt
+  rotate: true
+  xy: 0, 23
+  size: 469, 560
+  orig: 469, 596
+  offset: 0, 36
+  index: -1
+tex/tts
+  rotate: true
+  xy: 975, 244
+  size: 248, 102
+  orig: 252, 113
+  offset: 2, 2
+  index: -1
+tex/yz
+  rotate: false
+  xy: 716, 26
+  size: 116, 51
+  orig: 122, 54
+  offset: 3, 1
+  index: -1

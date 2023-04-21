@@ -29,7 +29,7 @@ export default class UIGame extends UIScene {
     chipsNumLabel: cc.Label[] = [];
     @property({ tooltip: '中奖框', type: cc.Node })
     awardNode: cc.Node[] = [];
-    @property({ tooltip: 'g自己下注筹码数', type: cc.Label })
+    @property({ tooltip: '自己下注筹码数', type: cc.Label })
     selfBetChipsNumLabel: cc.Label[] = [];
 
     @property({ tooltip: '筹码预制', type: cc.Prefab })
@@ -96,6 +96,7 @@ export default class UIGame extends UIScene {
     protected gameId: string = '';
     protected gameCmd: number = 0;
     protected waitingAction: cc.Tween;
+    protected isReload: boolean = false;
 
     protected numberToLong(value: number): LongType {
         return LongUtil.numberToLong(value);
@@ -125,7 +126,17 @@ export default class UIGame extends UIScene {
         userId: StorageMgr.userId
     }
 
+    fixedBg(root: cc.Node) {
+        let distance: number = SysConfig?.systemInfo?.isPieScreen ? 50 : 0;
+        if (cc.isValid(root) && distance) {
+            let bg: cc.Node = root.children[0]
+            if (bg.getComponent(cc.Widget).enabled)
+                bg.getComponent(cc.Widget).top = -50;
+        }
+    }
+
     _start(): void {
+        this.fixedBg(this.node);
         this.statusTipSkel.node.zIndex = 3;
         this.statusWaitingSkel.node.zIndex = 3;
         this.chipsSourcePos = this.chipsSourceNode.getPosition();
@@ -167,7 +178,7 @@ export default class UIGame extends UIScene {
             this.curTime = 0;
         }
         let time = parseInt(`${this.curTime / 1000}`);
-        this.timeLeftLabel.string = `${time}`
+        this.timeLeftLabel.string = `${time}`;
     }
 
     setOnLineNumber(onlinePlayers: number) {
@@ -200,11 +211,11 @@ export default class UIGame extends UIScene {
     async flyChips(isSelf: boolean, areaType: string[], chipNum: number[]) {
         // SoundMgr.playEffect('audio/betchips');
         this.getChipsSkel.node.active = true;
-        if (!isSelf) this.getChipsSkel.setAnimation(0, "chu", false);
-        let moveTime: number = isSelf ? 0.2 : 0.5;
+        let moveTime: number = isSelf ? 0.2 : 0.4;
         let sourcePos = isSelf ? this.selfChipsSourcePos : this.chipsSourcePos;
         for (let i = 0; i < areaType.length; i++) {
             await CocosUtil.sleepSync(i * 0.01);
+            if (!isSelf) this.getChipsSkel.setAnimation(0, "chu", false);
             if (!cc.isValid(this.node) || this.curTime <= 0) return;
             let targetAreaNode: cc.Node = this.getChipsAreaNode(areaType[i]);
             let targetPos = this.areaPosMap[`${areaType[i]}`];
@@ -228,7 +239,7 @@ export default class UIGame extends UIScene {
         for (let i = 0; i < betList.length; i++) {
             let areaType: string = `${betList[i].betId}`;
             let chipNum: number = this.longToNumber(betList[i].betCoins);
-            let node = this.productChipsNode(chipNum, areaType, this.betNums);
+            let node = this.productChipsNode(chipNum / 100, areaType, this.betNums);
             this.chipsProductAreaNode.addChild(node);
             let targetAreaNode: cc.Node = this.getChipsAreaNode(areaType);
             let targetPos = this.areaPosMap[`${areaType}`];
@@ -238,6 +249,7 @@ export default class UIGame extends UIScene {
             let y = Math.random() * targetH - targetH / 2;
             targetPos = targetPos.add(cc.v2(x, y));
             node.position = cc.v3(targetPos);
+            this.checkAreaChipNum(areaType, 1);
         }
     }
 
@@ -375,8 +387,9 @@ export default class UIGame extends UIScene {
      * @returns 
      */
     async buyBetChips(areaType: string, selfBetLabel: cc.Label, chipsLabel: cc.Label) {
-        let chips = this.betNums[this.betIndex]
-        if (chips > UserData.userInfo.walletInfo.totalCashBalance) {
+        let chips = this.betNums[this.betIndex];
+        let bonus: number = UserData.userInfo.gameVersion == 3 ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance
+        if (chips * 100 > bonus) {
             // if (StorageMgr.clickAddCashTimes < 2) {
             //     StorageMgr.clickAddCashTimes++;
             // }
@@ -392,7 +405,7 @@ export default class UIGame extends UIScene {
         this.optData.betId = +areaType;
         this.optData.optType = 18;
         let result: boolean = await SendMgr.sendBet(this.optData, this.gameCmd);
-        if (result) {
+        if (result && cc.isValid(this.node)) {
             EventMgr.emit(REPORT_EVT.CLICK, {
                 element_id: "btn_bet",
                 element_name: "成功下注",
@@ -402,9 +415,11 @@ export default class UIGame extends UIScene {
             });
             // SoundMgr.playEffect('audio/betchips');
             this.flyChips(true, [areaType], [chips]);
-            let selfBetLbNum: number = Number(selfBetLabel.string);
-            if (!selfBetLbNum) selfBetLbNum = 0;
-            selfBetLabel.string = `${selfBetLbNum + chips}`;
+            if (selfBetLabel) {
+                let selfBetLbNum: number = Number(selfBetLabel.string);
+                if (!selfBetLbNum) selfBetLbNum = 0;
+                selfBetLabel.string = `${selfBetLbNum + chips}`;
+            }
             let chipsLbNum: number = Number(chipsLabel.string);
             if (!chipsLbNum) chipsLbNum = 0;
             chipsLabel.string = `${chipsLbNum + chips}`;
@@ -447,8 +462,8 @@ export default class UIGame extends UIScene {
         let { roomId, roomState } = roomInfo;
         this.gameResultList = gameResultList;
         for (let i = 1; i <= this.chipsNumLabel.length; i++) {
-            if (betCoinMap && betCoinMap[`${i}`] != null && Number(this.chipsNumLabel[i - 1].string) < this.longToNumber(betCoinMap[`${i}`]) / 100) this.chipsNumLabel[i - 1].string = `${this.longToNumber(betCoinMap[`${i}`]) / 100}`;
-            if (betSelfCoinMap && betSelfCoinMap[`${i}`] != null) this.selfBetChipsNumLabel[i - 1].string = `${this.longToNumber(betSelfCoinMap[`${i}`]) / 100}`;
+            if (this.chipsNumLabel[i - 1] && betCoinMap && betCoinMap[`${i}`] != null && Number(this.chipsNumLabel[i - 1].string) < this.longToNumber(betCoinMap[`${i}`]) / 100) this.chipsNumLabel[i - 1].string = `${this.longToNumber(betCoinMap[`${i}`]) / 100}`;
+            if (this.selfBetChipsNumLabel[i - 1] && betSelfCoinMap && betSelfCoinMap[`${i}`] != null) this.selfBetChipsNumLabel[i - 1].string = `${this.longToNumber(betSelfCoinMap[`${i}`]) / 100}`;
         }
         this.optData.roomId = roomId;
         this.gameNum = gameNum;
@@ -469,13 +484,61 @@ export default class UIGame extends UIScene {
         this.setOnLineNumber(onlinePlayers);
     }
 
+    /**筹码飞向玩家动画 */
+    flyPlayerArea(id: string, posArray: cc.Vec3[]) {
+        this.flyChipsProductSource();
+        let chipsArray: number[] = [];
+        function checkChipsNum(num: number) {
+            if (num < 2) return;
+            let array: number[] = [5000, 1000, 500, 100, 10, 2];
+            for (let i = 0; i < array.length; i++) {
+                if (num >= array[i]) {
+                    chipsArray.push(array[i]);
+                    return checkChipsNum(num - array[i]);
+                }
+            }
+        }
+        checkChipsNum(this.winBonus);
+        if (chipsArray.length == 0) {
+            SysConfig.settling = false;
+            return;
+        }
+        for (let i = 0; i < chipsArray.length; i++) {
+            let chipsAreaNode: cc.Node = this.chipsAreaNode[+id - 1];
+            let x = Math.random() * chipsAreaNode.width - chipsAreaNode.width / 2;
+            let y = Math.random() * chipsAreaNode.height - chipsAreaNode.height / 2;
+            let pos: cc.Vec3 = posArray[+id - 1];
+            pos.add(cc.v3(x, y, 0));
+            let node = this.productChipsNode(chipsArray[i], "", this.betNums);
+            this.chipsProductAreaNode.addChild(node);
+            node.position = pos;
+            cc.tween(node).to(0.6, { position: cc.v3(this.selfChipsSourcePos.x, this.selfChipsSourcePos.y, 0) }, { easing: 'sineInOut' })
+                .call(() => {
+                    PoolMgr.setNode(node)
+                    if (i == chipsArray.length - 1) {
+                        SysConfig.settling = false;
+                        this.winBonusAni.string = `+${this.winBonus}`
+                        let node: cc.Node = this.winBonusAni.node;
+                        node.opacity = 0;
+                        node.y = 0;
+                        cc.tween(node).to(0.5, { opacity: 255, y: 70 }, { easing: 'sineInOut' })
+                            .delay(0.3)
+                            .to(0.5, { opacity: 0 })
+                            .start()
+                    }
+                })
+                .start()
+        }
+    }
+
     reset() {
+        this.isReload = false;
         SysConfig.settling = false;
-        this.recordLayoutNode.getComponent(cc.Layout).enabled = true;
+        this.recordLayoutNode && (this.recordLayoutNode.getComponent(cc.Layout).enabled = true);
         this.winBonus = 0;
         for (let i = 0; i < this.awardNode.length; i++) {
             this.awardNode[i].active = false;
-            this.selfBetChipsNumLabel[i].string = LangMgr.sentence("e0319");;
+            this.selfBetChipsNumLabel[i].string = LangMgr.sentence("e0319");
             this.chipsNumLabel[i].string = "0";
         }
         let chipsProductAreaNode: cc.Node = this.chipsProductAreaNode;
@@ -495,6 +558,8 @@ export default class UIGame extends UIScene {
         this.statusTipSkel.setAnimation(0, "start", false);
         this.timeTipLabel.string = LangMgr.sentence("e0320");
         this.updateChipsCircleSkel();
+        let time = parseInt(`${this.curTime / 1000}`);
+        this.timeLeftLabel.string = `${time}`;
     }
 
     gameBet(info) {
@@ -537,6 +602,8 @@ export default class UIGame extends UIScene {
         }
         this.updateChipsCircleSkel()
         this.setOnLineNumber(gameInfo?.onlinePlayers);
+        let time = parseInt(`${this.curTime / 1000}`);
+        this.timeLeftLabel.string = `${time}`;
     }
 
     tackOut() {

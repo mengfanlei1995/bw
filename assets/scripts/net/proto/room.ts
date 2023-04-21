@@ -1131,7 +1131,6 @@ function _decodeDice3DoEnterRoomVO(bb: ByteBuffer): Dice3DoEnterRoomVO {
 
 export interface RoomUserVo {
   winCoins?: Long;
-  roundCount?: number;
   winRate?: number;
   userInTableState?: number;
   seatNo?: number;
@@ -1146,6 +1145,7 @@ export interface RoomUserVo {
   playNums?: number;
   maxPlayNums?: number;
   extra?: string;
+  roundCount?: number;
   winRoundCount?: number;
   totalWinCoins?: Long;
   userType?: number;
@@ -1165,13 +1165,6 @@ function _encodeRoomUserVo(message: RoomUserVo, bb: ByteBuffer): void {
   if ($winCoins !== undefined) {
     writeVarint32(bb, 8);
     writeVarint64(bb, $winCoins);
-  }
-
-  // optional int32 roundCount = 2;
-  let $roundCount = message.roundCount;
-  if ($roundCount !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($roundCount));
   }
 
   // optional int32 winRate = 3;
@@ -1272,38 +1265,45 @@ function _encodeRoomUserVo(message: RoomUserVo, bb: ByteBuffer): void {
     writeString(bb, $extra);
   }
 
-  // optional int32 winRoundCount = 17;
+  // optional int32 roundCount = 17;
+  let $roundCount = message.roundCount;
+  if ($roundCount !== undefined) {
+    writeVarint32(bb, 136);
+    writeVarint64(bb, intToLong($roundCount));
+  }
+
+  // optional int32 winRoundCount = 18;
   let $winRoundCount = message.winRoundCount;
   if ($winRoundCount !== undefined) {
-    writeVarint32(bb, 136);
+    writeVarint32(bb, 144);
     writeVarint64(bb, intToLong($winRoundCount));
   }
 
-  // optional int64 totalWinCoins = 18;
+  // optional int64 totalWinCoins = 19;
   let $totalWinCoins = message.totalWinCoins;
   if ($totalWinCoins !== undefined) {
-    writeVarint32(bb, 144);
+    writeVarint32(bb, 152);
     writeVarint64(bb, $totalWinCoins);
   }
 
-  // optional int32 userType = 19;
+  // optional int32 userType = 20;
   let $userType = message.userType;
   if ($userType !== undefined) {
-    writeVarint32(bb, 152);
+    writeVarint32(bb, 160);
     writeVarint64(bb, intToLong($userType));
   }
 
-  // optional int64 winBalance = 20;
+  // optional int64 winBalance = 21;
   let $winBalance = message.winBalance;
   if ($winBalance !== undefined) {
-    writeVarint32(bb, 160);
+    writeVarint32(bb, 168);
     writeVarint64(bb, $winBalance);
   }
 
-  // optional int64 loseBalance = 21;
+  // optional int64 loseBalance = 22;
   let $loseBalance = message.loseBalance;
   if ($loseBalance !== undefined) {
-    writeVarint32(bb, 168);
+    writeVarint32(bb, 176);
     writeVarint64(bb, $loseBalance);
   }
 }
@@ -1325,12 +1325,6 @@ function _decodeRoomUserVo(bb: ByteBuffer): RoomUserVo {
       // optional int64 winCoins = 1;
       case 1: {
         message.winCoins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 roundCount = 2;
-      case 2: {
-        message.roundCount = readVarint32(bb);
         break;
       }
 
@@ -1418,32 +1412,38 @@ function _decodeRoomUserVo(bb: ByteBuffer): RoomUserVo {
         break;
       }
 
-      // optional int32 winRoundCount = 17;
+      // optional int32 roundCount = 17;
       case 17: {
+        message.roundCount = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 winRoundCount = 18;
+      case 18: {
         message.winRoundCount = readVarint32(bb);
         break;
       }
 
-      // optional int64 totalWinCoins = 18;
-      case 18: {
+      // optional int64 totalWinCoins = 19;
+      case 19: {
         message.totalWinCoins = readVarint64(bb, /* unsigned */ false);
         break;
       }
 
-      // optional int32 userType = 19;
-      case 19: {
+      // optional int32 userType = 20;
+      case 20: {
         message.userType = readVarint32(bb);
         break;
       }
 
-      // optional int64 winBalance = 20;
-      case 20: {
+      // optional int64 winBalance = 21;
+      case 21: {
         message.winBalance = readVarint64(bb, /* unsigned */ false);
         break;
       }
 
-      // optional int64 loseBalance = 21;
-      case 21: {
+      // optional int64 loseBalance = 22;
+      case 22: {
         message.loseBalance = readVarint64(bb, /* unsigned */ false);
         break;
       }
@@ -10165,6 +10165,11 @@ function _decodeJMBeginBetVO(bb: ByteBuffer): JMBeginBetVO {
 }
 
 export interface DragonAndTigerWinnerVo {
+  userId?: string;
+  nickName?: string;
+  portrait?: string;
+  vipLevel?: number;
+  winCoins?: Long;
 }
 
 export function encodeDragonAndTigerWinnerVo(message: DragonAndTigerWinnerVo): Uint8Array {
@@ -10174,6 +10179,40 @@ export function encodeDragonAndTigerWinnerVo(message: DragonAndTigerWinnerVo): U
 }
 
 function _encodeDragonAndTigerWinnerVo(message: DragonAndTigerWinnerVo, bb: ByteBuffer): void {
+  // optional string userId = 1;
+  let $userId = message.userId;
+  if ($userId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $userId);
+  }
+
+  // optional string nickName = 2;
+  let $nickName = message.nickName;
+  if ($nickName !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $nickName);
+  }
+
+  // optional string portrait = 3;
+  let $portrait = message.portrait;
+  if ($portrait !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $portrait);
+  }
+
+  // optional int32 vipLevel = 4;
+  let $vipLevel = message.vipLevel;
+  if ($vipLevel !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($vipLevel));
+  }
+
+  // optional int64 winCoins = 5;
+  let $winCoins = message.winCoins;
+  if ($winCoins !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, $winCoins);
+  }
 }
 
 export function decodeDragonAndTigerWinnerVo(binary: Uint8Array): DragonAndTigerWinnerVo {
@@ -10189,6 +10228,36 @@ function _decodeDragonAndTigerWinnerVo(bb: ByteBuffer): DragonAndTigerWinnerVo {
     switch (tag >>> 3) {
       case 0:
         break end_of_message;
+
+      // optional string userId = 1;
+      case 1: {
+        message.userId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string nickName = 2;
+      case 2: {
+        message.nickName = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string portrait = 3;
+      case 3: {
+        message.portrait = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 vipLevel = 4;
+      case 4: {
+        message.vipLevel = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 winCoins = 5;
+      case 5: {
+        message.winCoins = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
 
       default:
         skipUnknownField(bb, tag & 7);

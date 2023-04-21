@@ -36,7 +36,7 @@ class SocketClient implements ISocket {
     //ws://16.163.128.21/websocket 测试服
     //ws://65.2.121.34/websocket 正式服
 
-    public async connect(ws: string = "ws://192.168.124.13:1005/websocket"): Promise<void> {
+    public async connect(ws: string = "ws://16.163.128.21/websocket"): Promise<void> {
         if (this.SocketState != this.SocketState_Connected) {
             if (cc.sys.isNative) {
                 let cacert: cc.Asset = await AssetUtil.loadResSync<cc.Asset>("ssl/cacert", false);
@@ -97,10 +97,10 @@ class SocketClient implements ISocket {
     public onmessage(event: MessageEvent): void {
         let recvData: Uint8Array = new Uint8Array(<ArrayBuffer>event.data);
         let data: ExternalMessage = decodeExternalMessage(recvData);
-        // if (data.cmdMerge != 0) LogUtil.log("onmessage", data)
         let call = HandleMgr.packageHandler(data.cmdMerge, data.responseStatus, data.data);
         //返回错误
         if (data.responseStatus != 0) {
+            if (data.cmdMerge != 0) LogUtil.log("onmessage", data)
             data.validMsg && UIMgr.showToast(data.validMsg);
         } else {
             //处理推送消息  暂时先拿不到相应的函数发送推送

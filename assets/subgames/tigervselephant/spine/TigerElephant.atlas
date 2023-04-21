@@ -1,0 +1,160 @@
+
+TigerElephant.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+ee
+  rotate: false
+  xy: 509, 202
+  size: 245, 232
+  orig: 256, 256
+  offset: 6, 12
+  index: -1
+gdg
+  rotate: false
+  xy: 260, 187
+  size: 247, 247
+  orig: 256, 256
+  offset: 4, 5
+  index: -1
+gq
+  rotate: false
+  xy: 2, 178
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+hbody
+  rotate: false
+  xy: 2, 32
+  size: 336, 144
+  orig: 336, 144
+  offset: 0, 0
+  index: -1
+hhead
+  rotate: false
+  xy: 909, 536
+  size: 119, 121
+  orig: 119, 121
+  offset: 0, 0
+  index: -1
+hleg1
+  rotate: false
+  xy: 340, 2
+  size: 206, 183
+  orig: 206, 183
+  offset: 0, 0
+  index: -1
+hleg2
+  rotate: false
+  xy: 838, 36
+  size: 155, 169
+  orig: 155, 169
+  offset: 0, 0
+  index: -1
+hleg3
+  rotate: false
+  xy: 1016, 851
+  size: 114, 159
+  orig: 114, 159
+  offset: 0, 0
+  index: -1
+hleg4
+  rotate: false
+  xy: 1038, 711
+  size: 93, 138
+  orig: 93, 138
+  offset: 0, 0
+  index: -1
+s
+  rotate: false
+  xy: 756, 207
+  size: 96, 100
+  orig: 103, 105
+  offset: 3, 3
+  index: -1
+v
+  rotate: false
+  xy: 854, 210
+  size: 96, 97
+  orig: 103, 105
+  offset: 3, 4
+  index: -1
+x1
+  rotate: false
+  xy: 2, 436
+  size: 506, 574
+  orig: 506, 605
+  offset: 0, 31
+  index: -1
+xbody
+  rotate: false
+  xy: 548, 4
+  size: 288, 196
+  orig: 289, 196
+  offset: 1, 0
+  index: -1
+xear
+  rotate: false
+  xy: 1030, 550
+  size: 104, 107
+  orig: 104, 107
+  offset: 0, 0
+  index: -1
+xearsd
+  rotate: false
+  xy: 637, 455
+  size: 47, 55
+  orig: 49, 58
+  offset: 1, 2
+  index: -1
+xhead
+  rotate: false
+  xy: 756, 309
+  size: 193, 201
+  orig: 193, 201
+  offset: 0, 0
+  index: -1
+xleg1
+  rotate: false
+  xy: 909, 659
+  size: 127, 154
+  orig: 128, 154
+  offset: 1, 0
+  index: -1
+xleg2
+  rotate: false
+  xy: 909, 815
+  size: 105, 195
+  orig: 105, 195
+  offset: 0, 0
+  index: -1
+xleg3
+  rotate: false
+  xy: 951, 412
+  size: 108, 122
+  orig: 108, 122
+  offset: 0, 0
+  index: -1
+xleg4
+  rotate: false
+  xy: 1132, 904
+  size: 86, 106
+  orig: 87, 106
+  offset: 0, 0
+  index: -1
+xtooth
+  rotate: false
+  xy: 510, 455
+  size: 125, 55
+  orig: 125, 55
+  offset: 0, 0
+  index: -1
+y1s
+  rotate: false
+  xy: 510, 512
+  size: 397, 498
+  orig: 398, 512
+  offset: 0, 13
+  index: -1

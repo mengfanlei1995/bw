@@ -179,7 +179,7 @@ export default class DiceThree extends UIGame {
                     if (this.diceSkel.animation == "dice_4") {
                         this.addAwardRecord(array);
                         if (this.winBonus > 0) {
-                            this.flyPlayerArea(id);
+                            this._flyPlayerArea(id);
                         } else {
                             this.flyChipsProductSource()
                             SysConfig.settling = false;
@@ -194,58 +194,9 @@ export default class DiceThree extends UIGame {
     }
 
     /**筹码飞向玩家动画 */
-    flyPlayerArea(id: string) {
-        this.flyChipsProductSource()
-        let chipsArray: number[] = [];
-        function checkChipsNum(num: number) {
-            if (num < 2) return;
-            let array: number[] = [5000, 1000, 500, 100, 10, 2]
-            for (let i = 0; i < array.length; i++) {
-                if (num >= array[i]) {
-                    chipsArray.push(array[i])
-                    return checkChipsNum(num - array[i])
-                }
-            }
-        }
-        checkChipsNum(this.winBonus);
-        if (chipsArray.length == 0) {
-            SysConfig.settling = false;
-            return;
-        }
-        for (let i = 0; i < chipsArray.length; i++) {
-            let pos: cc.Vec3;
-            let chipsAreaNode: cc.Node = this.chipsAreaNode[+id - 1];
-            let x = Math.random() * chipsAreaNode.width - chipsAreaNode.width / 2;
-            let y = Math.random() * chipsAreaNode.height - chipsAreaNode.height / 2;
-            if (id == '2') {
-                pos = cc.v3(0 + x, -20 + y, 0)
-            } else {
-                if (id == '1') {
-                    pos = cc.v3(-165 + x, -300 + y, 0)
-                } else {
-                    pos = cc.v3(165 + x, -300 + y, 0)
-                }
-            }
-            let node = this.productChipsNode(chipsArray[i], "", this.betNums);
-            this.chipsProductAreaNode.addChild(node);
-            node.position = pos;
-            cc.tween(node).to(0.6, { position: cc.v3(this.selfChipsSourcePos.x, this.selfChipsSourcePos.y, 0) }, { easing: 'sineInOut' })
-                .call(() => {
-                    PoolMgr.setNode(node)
-                    if (i == chipsArray.length - 1) {
-                        SysConfig.settling = false;
-                        this.winBonusAni.string = `+${this.winBonus}`
-                        let node: cc.Node = this.winBonusAni.node;
-                        node.opacity = 0;
-                        node.y = 0;
-                        cc.tween(node).to(0.5, { opacity: 255, y: 70 }, { easing: 'sineInOut' })
-                            .delay(0.3)
-                            .to(0.5, { opacity: 0 })
-                            .start()
-                    }
-                })
-                .start()
-        }
+    _flyPlayerArea(id: string) {
+        let posArray: cc.Vec3[] = [cc.v3(-165, -300, 0), cc.v3(0, -20, 0), cc.v3(165, -300, 0)];
+        this.flyPlayerArea(id, posArray);
     }
 
     _reset() {

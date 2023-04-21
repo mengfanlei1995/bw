@@ -23,8 +23,6 @@ class UserData {
         gameVersion && (this.userInfo.gameVersion = gameVersion);
         sessionId && (StorageMgr.sessionId = sessionId);
         this.initWalletInfo(walletVO);
-        EventMgr.emit(HALL_EVT.GOLD_CHANGE);
-        console.log(this.userInfo)
     }
 
     initWalletInfo(walletVO: LoginWalletVO) {
@@ -35,6 +33,8 @@ class UserData {
         walletInfo.totalCashBalance = LongUtil.longToNumber(totalCashBalance);
         walletInfo.freeBalance = LongUtil.longToNumber(freeBalance);
         this.userInfo.walletInfo = walletInfo;
+        EventMgr.emit(HALL_EVT.GOLD_CHANGE);
+        console.log(this.userInfo)
     }
 
 }

@@ -1,0 +1,160 @@
+
+TeenPattiWar.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+a
+  rotate: false
+  xy: 510, 1494
+  size: 543, 509
+  orig: 543, 517
+  offset: 0, 0
+  index: -1
+b
+  rotate: false
+  xy: 2, 905
+  size: 549, 522
+  orig: 549, 524
+  offset: 0, 2
+  index: -1
+g_00002
+  rotate: false
+  xy: 682, 660
+  size: 260, 260
+  orig: 360, 405
+  offset: 58, 102
+  index: -1
+g_00003
+  rotate: false
+  xy: 553, 1188
+  size: 273, 273
+  orig: 360, 405
+  offset: 50, 95
+  index: -1
+g_00004
+  rotate: false
+  xy: 401, 627
+  size: 279, 276
+  orig: 360, 405
+  offset: 49, 94
+  index: -1
+g_00005
+  rotate: false
+  xy: 602, 154
+  size: 274, 275
+  orig: 360, 405
+  offset: 51, 94
+  index: -1
+g_00007
+  rotate: false
+  xy: 553, 922
+  size: 266, 264
+  orig: 360, 405
+  offset: 55, 98
+  index: -1
+g_00008
+  rotate: false
+  xy: 878, 285
+  size: 234, 243
+  orig: 360, 405
+  offset: 85, 105
+  index: -1
+g_00009
+  rotate: false
+  xy: 944, 687
+  size: 232, 241
+  orig: 360, 405
+  offset: 85, 106
+  index: -1
+g_00010
+  rotate: false
+  xy: 401, 431
+  size: 202, 194
+  orig: 360, 405
+  offset: 86, 142
+  index: -1
+g_00012
+  rotate: false
+  xy: 605, 431
+  size: 200, 194
+  orig: 360, 405
+  offset: 87, 142
+  index: -1
+g_00013
+  rotate: false
+  xy: 602, 2
+  size: 186, 150
+  orig: 360, 405
+  offset: 98, 150
+  index: -1
+g_00014
+  rotate: false
+  xy: 790, 5
+  size: 184, 147
+  orig: 360, 405
+  offset: 101, 150
+  index: -1
+g_00015
+  rotate: false
+  xy: 510, 1463
+  size: 177, 29
+  orig: 360, 405
+  offset: 104, 265
+  index: -1
+gdg
+  rotate: false
+  xy: 828, 1245
+  size: 247, 247
+  orig: 256, 256
+  offset: 4, 5
+  index: -1
+gq
+  rotate: false
+  xy: 821, 930
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+hh
+  rotate: false
+  xy: 2, 35
+  size: 291, 368
+  orig: 292, 368
+  offset: 0, 0
+  index: -1
+lll
+  rotate: false
+  xy: 295, 39
+  size: 305, 364
+  orig: 305, 364
+  offset: 0, 0
+  index: -1
+s
+  rotate: false
+  xy: 807, 530
+  size: 99, 128
+  orig: 103, 134
+  offset: 2, 3
+  index: -1
+v
+  rotate: false
+  xy: 908, 531
+  size: 116, 127
+  orig: 128, 131
+  offset: 6, 2
+  index: -1
+x1
+  rotate: false
+  xy: 2, 1429
+  size: 506, 574
+  orig: 506, 605
+  offset: 0, 31
+  index: -1
+y1s
+  rotate: false
+  xy: 2, 405
+  size: 397, 498
+  orig: 398, 512
+  offset: 0, 13
+  index: -1
