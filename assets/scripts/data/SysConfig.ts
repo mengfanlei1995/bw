@@ -24,11 +24,13 @@ class SysConfig {
     systemInfo: AppSysInfo = {};
     /**是否在游戏中 */
     isSettling: boolean = false;
+    /**是否处于后台模式 */
+    isHide: boolean = false;
 
     //ws://192.168.124.13:1005/websocket 本地
-    //ws://test.bestbw.net/websocket 测试服
-    //ws://65.2.121.34/websocket 正式服
-    readonly WsUrl: string = this.isTest ? 'ws://test.bestbw.net/websocket' : 'ws://65.2.121.34/websocket';
+    //wss://test.bestbw.net/websocket 测试服
+    //wss://bestbw.net/websocket 正式服
+    readonly WsUrl: string = this.isTest ? 'wss://test.bestbw.net/websocket' : 'wss://bestbw.net/websocket';
 
     set settling(isSettling: boolean) {
         this.isSettling = isSettling;

@@ -1,3 +1,4 @@
+import SysConfig from "../../data/SysConfig";
 import { REPORT_EVT } from "../../enum/DeskEnum";
 import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
@@ -44,8 +45,34 @@ export default class Login extends UIScene {
 
     start(): void {
         this.resetContent();
+        this._init();
     }
 
+    _init() {
+        this.lb_version.string = SysConfig.version;
+    }
+
+    onClickRegister() {
+
+    }
+
+    onClickLogin() {
+
+    }
+
+    onClickForget() {
+
+    }
+
+    onClickPolicy() {
+
+    }
+
+    onClickTC() {
+
+    }
+
+    /**适配分辨率 */
     async resetContent() {
         this.content.node.opacity = 0;
         let spacing: number = 10;

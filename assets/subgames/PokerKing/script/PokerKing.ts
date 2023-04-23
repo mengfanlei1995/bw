@@ -417,6 +417,7 @@ export default class PokerKing extends UIGame {
      * @param data 
      */
     onRecvGameData(info: SocketPushConfig) {
+        if (SysConfig.isHide) return;
         let { mergeCmd, code, data } = info;
         let cmd: number = CmdMgr.getCmd(mergeCmd);
         let subCmd: number = CmdMgr.getSubCmd(mergeCmd);

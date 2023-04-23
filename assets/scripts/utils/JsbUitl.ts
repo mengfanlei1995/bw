@@ -8,6 +8,7 @@ import LangMgr from "../mgr/LangMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import { Login_SessionCmd } from "../net/CmdData";
 import SendMgr from "../net/SendMgr";
+import SocketMgr from "../net/SocketMgr";
 import UIMgr from "../uiform/UIMgr";
 import { DialogType } from "../uiform/ui/common/DiaLog";
 import CommonUtil from "./CommonUtil";
@@ -248,9 +249,11 @@ class JsbUitl {
             )
 
             cc.game.on(SYS_CONST.ON_HIDE, () => {
+                SysConfig.isHide = true
                 EventMgr.emit(REPORT_EVT.BACKGROUND);
             });
             cc.game.on(SYS_CONST.ON_SHOW, async () => {
+                await SocketMgr.clearHistoryMsgPool()
                 EventMgr.emit(HALL_EVT.DESK_RELOAD)
                 EventMgr.emit(REPORT_EVT.STARTONLINE);
                 SendMgr.sendGetUserInfo();
@@ -270,9 +273,11 @@ class JsbUitl {
                 });
 
                 cc.game.on(cc.game.EVENT_HIDE, () => {
+                    SysConfig.isHide = true
                     EventMgr.emit(REPORT_EVT.BACKGROUND);
                 });
-                cc.game.on(cc.game.EVENT_SHOW, () => {
+                cc.game.on(cc.game.EVENT_SHOW, async () => {
+                    await SocketMgr.clearHistoryMsgPool()
                     EventMgr.emit(HALL_EVT.DESK_RELOAD);
                     EventMgr.emit(REPORT_EVT.STARTONLINE);
                     SendMgr.sendGetUserInfo();

@@ -201,6 +201,7 @@ export default class UIGame extends UIScene {
         let sourcePos = isSelf ? this.selfChipsSourcePos : this.chipsSourcePos;
         for (let i = 0; i < areaType.length; i++) {
             await CocosUtil.sleepSync(i * 0.01);
+            if (SysConfig.isHide) break;
             if (!isSelf) this.getChipsSkel.setAnimation(0, "chu", false);
             if (!cc.isValid(this.node) || this.curTime <= 0) return;
             let targetAreaNode: cc.Node = this.getChipsAreaNode(areaType[i]);
@@ -441,7 +442,7 @@ export default class UIGame extends UIScene {
     }
 
     initRoomInfo(info) {
-        console.log('_enterRoom', info)
+        // console.log('_enterRoom', info)
         let { betCoinList, betCoinMap, betList, betSelfCoinMap, gameInfo, roomInfo, onlinePlayers } = info;
         if (betList && betList.length > 0) {
             this.initChips(betList);
@@ -541,7 +542,7 @@ export default class UIGame extends UIScene {
     }
 
     gameStart(info) {
-        console.log('_gameStart', info);
+        // console.log('_gameStart', info);
         let { gameInfo } = info;
         this.curTime = gameInfo?.leftOptSeconds;
         this.gameNum = gameInfo?.gameNum;
@@ -575,7 +576,7 @@ export default class UIGame extends UIScene {
     }
 
     gameEnd(info) {
-        console.log('_gameEnd', info);
+        // console.log('_gameEnd', info);
         let { gameInfo, gameResult, userInfoList } = info;
         this.curTime = gameInfo?.leftOptSeconds
         if (this.gameResultList.length >= 50) this.gameResultList.shift();

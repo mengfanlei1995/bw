@@ -92,6 +92,7 @@ class SocketClient implements ISocket {
     }
 
     public onmessage(event: MessageEvent): void {
+        if (SysConfig.isHide) return;
         let recvData: Uint8Array = new Uint8Array(<ArrayBuffer>event.data);
         let data: ExternalMessage = decodeExternalMessage(recvData);
         let call = HandleMgr.packageHandler(data.cmdMerge, data.responseStatus, data.data);
