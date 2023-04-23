@@ -9,6 +9,7 @@ export default class UIWindow extends UIBase {
 
     onLoad() {
         this.UIType = UIType.WINDOW;
+        this.node.zIndex = 99;
         this.showTween();
     }
 

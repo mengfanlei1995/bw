@@ -8,7 +8,7 @@ import SoundMgr from "../../../scripts/mgr/SoundMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
 import { LuckyBallCmd, Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_LuckyBallCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { LBBeginBetVO, LBDoEnterRoomVO, LBSendDrawMsgVO, LuckyBallWinDto, NotifyBetVO, decodeLBBeginBetVO, decodeLBDoEnterRoomVO, decodeLBSendDrawMsgVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
+import { NotifyLBBeginBetVO, ResponseLBEnterRoomVO, NotifyLBDrawVO, LBWinVO, NotifyBetVO, decodeNotifyLBBeginBetVO, decodeResponseLBEnterRoomVO, decodeNotifyLBDrawVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
@@ -74,6 +74,8 @@ export default class LuckyBall extends UIGame {
     start(): void {
         this.gameId = SysConfig.GameIDConfig.LuckyBall;
         this.gameCmd = LuckyBallCmd;
+        this.gameName = 'LuckyBall';
+        this.historyName = 'LuckyBallHistory';
         this.singleAreaMaxChipsNum = 0;
         this.renderHistoryBalls();
         this._start();
@@ -94,15 +96,13 @@ export default class LuckyBall extends UIGame {
     async _enterRoom(): Promise<void> {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
-        let data: LBDoEnterRoomVO = decodeLBDoEnterRoomVO(info);
-        console.log('_enterRoom', data)
+        let data: ResponseLBEnterRoomVO = decodeResponseLBEnterRoomVO(info);
         if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
     //初始化房间信息
-    _initRoomInfo(info: LBDoEnterRoomVO) {
-        this.initRecordHistroy(info.gameInfo.gameResultList);
+    _initRoomInfo(info: ResponseLBEnterRoomVO) {
         let { betSelfCoinMap } = info;
         if (betSelfCoinMap) {
             for (let key in betSelfCoinMap) {
@@ -110,17 +110,18 @@ export default class LuckyBall extends UIGame {
             }
         }
         this.initRoomInfo(info);
+        this.initRecordHistroy(info.gameInfo.gameResultList);
     }
 
     /**初始化历史记录 */
-    private initRecordHistroy(gameResultList: LuckyBallWinDto[]) {
+    private initRecordHistroy(gameResultList: LBWinVO[]) {
         gameResultList = gameResultList.slice(gameResultList.length - 9, gameResultList.length);
         if (!cc.isValid(this.node)) return;
         gameResultList.reverse();
         this.historyNode.children.forEach(
             (node: cc.Node, index: number) => {
                 let skel: HistoryBallSlkel = node.getComponent(HistoryBallSlkel);
-                let item: LuckyBallWinDto = gameResultList[index];
+                let item: LBWinVO = gameResultList[index];
                 if (item) {
                     skel.init(item.ball, index);
                     skel.playBallSkel(1, false)
@@ -280,8 +281,7 @@ export default class LuckyBall extends UIGame {
     }
 
     _gameStart(data: Uint8Array) {
-        let info: LBBeginBetVO = decodeLBBeginBetVO(data);
-        console.log('_gameStart', info);
+        let info: NotifyLBBeginBetVO = decodeNotifyLBBeginBetVO(data);
         this.isBetTime = true;
         this._reset();
         this.gameStart(info);
@@ -294,9 +294,9 @@ export default class LuckyBall extends UIGame {
     }
 
     async _gameEnd(data: Uint8Array) {
-        let info: LBSendDrawMsgVO = decodeLBSendDrawMsgVO(data);
+        let info: NotifyLBDrawVO = decodeNotifyLBDrawVO(data);
         console.log('_gameEnd', info);
-        let { gameInfo, gameResult, userInfoList } = info;
+        let { gameResult } = info;
         this.gameEnd(info);
         let { ball, id } = gameResult
         this.isBetTime = false

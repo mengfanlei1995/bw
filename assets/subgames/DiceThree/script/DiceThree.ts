@@ -11,7 +11,7 @@ import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
 import { Dice3Cmd, Push_Dice3Cmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_GameCmd, Push_Game_TackOutCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
 import SendMgr from "../../../scripts/net/SendMgr";
-import { Dice3DoEnterRoomVO, Dice3NotifyBeginBetVO, Dice3SendDrawMsgVO, Dice3WinDto, NotifyBetVO, decodeDice3DoEnterRoomVO, decodeDice3NotifyBeginBetVO, decodeDice3SendDrawMsgVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
+import { ResponseD3EnterRoomVO, NotifyD3BeginBetVO, NotifyD3DrawVO, D3WinVO, NotifyBetVO, decodeResponseD3EnterRoomVO, decodeNotifyD3BeginBetVO, decodeNotifyD3DrawVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import UIMgr from "../../../scripts/uiform/UIMgr";
@@ -36,6 +36,8 @@ export default class DiceThree extends UIGame {
     start(): void {
         this.gameId = SysConfig.GameIDConfig.Dice3;
         this.gameCmd = Dice3Cmd;
+        this.gameName = 'DiceThree';
+        this.historyName = 'DiceThreeHistory';
         this._start();
         this._enterRoom();
     }
@@ -54,20 +56,19 @@ export default class DiceThree extends UIGame {
     async _enterRoom(): Promise<void> {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
-        let data: Dice3DoEnterRoomVO = decodeDice3DoEnterRoomVO(info);
-        console.log('_enterRoom', data)
+        let data: ResponseD3EnterRoomVO = decodeResponseD3EnterRoomVO(info);
         if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
     //初始化房间信息
-    _initRoomInfo(info: Dice3DoEnterRoomVO) {
-        this.initRecordHistroy(info.gameInfo.gameResultList);
+    _initRoomInfo(info: ResponseD3EnterRoomVO) {
         this.initRoomInfo(info);
+        this.initRecordHistroy(info.gameInfo.gameResultList);
     }
 
     /**初始化历史记录 */
-    private initRecordHistroy(gameResultList: Dice3WinDto[]) {
+    private initRecordHistroy(gameResultList: D3WinVO[]) {
         this.recordLayoutNode.removeAllChildren()
         if (gameResultList.length > 15) gameResultList = gameResultList.slice(gameResultList.length - 15, gameResultList.length)
         for (let i = 0; i < gameResultList.length; i++) {
@@ -205,8 +206,7 @@ export default class DiceThree extends UIGame {
     }
 
     _gameStart(data: Uint8Array) {
-        let info: Dice3NotifyBeginBetVO = decodeDice3NotifyBeginBetVO(data);
-        console.log('_gameStart', info);
+        let info: NotifyD3BeginBetVO = decodeNotifyD3BeginBetVO(data);
         this.isBetTime = true;
         this._reset();
         this.gameStart(info);
@@ -219,8 +219,7 @@ export default class DiceThree extends UIGame {
     }
 
     _gameEnd(data: Uint8Array) {
-        let info: Dice3SendDrawMsgVO = decodeDice3SendDrawMsgVO(data);
-        console.log('_gameEnd', info);
+        let info: NotifyD3DrawVO = decodeNotifyD3DrawVO(data);
         let { gameInfo, gameResult } = info;
         let { dices, id } = gameResult;
         this.diceSkel.node.zIndex = 2;
@@ -261,10 +260,6 @@ export default class DiceThree extends UIGame {
                 this._gameEnd(data);
                 break;
         }
-    }
-
-    onRecordClick(e: cc.Event.EventTouch) {
-        // WindowMgr.open(UIConfig.DiceThreeHistory.prefab, this.gameResultList)
     }
 
     onPlayerListClick() {

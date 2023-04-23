@@ -1,11 +1,11 @@
 import CommonUtil from "./CommonUtil";
 
-class ListenerMgr {
+export default class ListenerMgr {
 
-    private cbMap: Map<string, Function> = new Map<string, Function>();
-    private keySuff: number = 1;
+    private static cbMap: Map<string, Function> = new Map<string, Function>();
+    private static keySuff: number = 1;
 
-    public create(callback: Function, key: string = ''): string {
+    public static create(callback: Function, key: string = ''): string {
         let _realKey: string = `${key || this.keySuff}`;
         let _callback = this.cbMap.get(_realKey)
         if (!_callback) {
@@ -16,29 +16,29 @@ class ListenerMgr {
     }
 
     /**客户端调用注册的回调函数用 */
-    public callListener(key: string, params: string) {
+    public static callListener(key: string, params: string) {
         let _callback = this.cbMap.get(key)
         _callback && _callback(CommonUtil.isJsonString(params) ? JSON.parse(params) : params);
         this.clearCb(key)
     }
 
     /**客户端调用注册的回调函数用 */
-    public callListenerByKey(key: string) {
+    public static callListenerByKey(key: string) {
         let _callback = this.cbMap.get(key)
         _callback && _callback();
     }
 
     /**客户端调用注册的回调函数用 */
-    public callListenerByKeyParams(key: string, params: string) {
+    public static callListenerByKeyParams(key: string, params: string) {
         let _callback = this.cbMap.get(key)
         _callback && _callback(CommonUtil.isJsonString(params) ? JSON.parse(params) : params);
     }
 
 
-    public clearCb(key: string) {
+    public static clearCb(key: string) {
         let _callback = this.cbMap.get(key)
         _callback && this.cbMap.delete(key)
     }
 }
 
-export default new ListenerMgr();
+window['ListenerMgr'] = ListenerMgr;

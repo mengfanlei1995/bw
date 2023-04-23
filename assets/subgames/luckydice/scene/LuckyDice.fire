@@ -4918,7 +4918,7 @@
     },
     "component": "",
     "_componentId": "03cbaWcphtHD5Nqe4eknoPF",
-    "handler": "",
+    "handler": "onRecordClick",
     "customEventData": ""
   },
   {

@@ -14,23 +14,3 @@ message GameUserWalletNotifyVO {
 
 }
 
-// Description:
-message WalletVO {
-  int64 depositBalance = 1;
-  int64 withdrawBalance = 2;
-  int64 totalCashBalance = 3;
-  int64 freeBalance = 4;
-
-}
-
-// Description:
-message BaseUserInfoVO {
-  string userId = 1;
-  string nickName = 2;
-  string headPic = 3;
-  string phone = 4;
-  // Description:
-  WalletVO walletVO = 5;
-
-}
-

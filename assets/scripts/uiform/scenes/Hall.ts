@@ -20,7 +20,7 @@ export default class Hall extends UIScene {
     @property(cc.Node)
     gameContent: cc.Node = null;
 
-    onLoad() {
+    start() {
         this.initHallInfo();
         this.initGameList();
     }
@@ -34,7 +34,6 @@ export default class Hall extends UIScene {
         let list = SysConfig.gameList;
         if (list.length === 0) {
             let info = await SendMgr.sendGameList();
-            console.log(info)
             if (info && info.games && info.games.length > 0) {
                 SysConfig.setGameList(info.games);
             }
@@ -43,14 +42,9 @@ export default class Hall extends UIScene {
         console.log(list)
         list.forEach((value, index) => {
             let node = cc.instantiate(this.gameIcon);
-            node.getComponent(GameIcon).init(value);
+            node.getComponent(GameIcon).init(index, value);
             this.gameContent.addChild(node);
         })
-    }
-
-
-    start() {
-
     }
 
 }

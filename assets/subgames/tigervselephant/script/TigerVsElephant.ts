@@ -5,7 +5,7 @@ import EventMgr from "../../../scripts/mgr/EventMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
 import { Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_TigerVsElephantCmd, TigerVsElephantCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { DTBeginBetVO, DTDoEnterRoomVO, DTSendDrawMsgVO, DragonAndTigerPokerResultDto, NotifyBetVO, decodeDTBeginBetVO, decodeDTDoEnterRoomVO, decodeDTSendDrawMsgVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
+import { NotifyDTBeginBetVO, ResponseDTEnterRoomVO, NotifyDTDrawVO, DTPokerResultVO, NotifyBetVO, decodeNotifyDTBeginBetVO, decodeResponseDTEnterRoomVO, decodeNotifyDTDrawVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
@@ -57,6 +57,8 @@ export default class TigerVsElephant extends UIGame {
         this.contentNode.getComponent(cc.Widget).top = topDiff;
         this.gameId = SysConfig.GameIDConfig.TigerVSElephant;
         this.gameCmd = TigerVsElephantCmd;
+        this.gameName = 'TigerVSElephant';
+        this.historyName = 'TigerElephantHistory';
         this._start();
         this._enterRoom();
     }
@@ -75,16 +77,15 @@ export default class TigerVsElephant extends UIGame {
     async _enterRoom(): Promise<void> {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
-        let data: DTDoEnterRoomVO = decodeDTDoEnterRoomVO(info);
-        console.log('_enterRoom', data)
+        let data: ResponseDTEnterRoomVO = decodeResponseDTEnterRoomVO(info);
         if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
     //初始化房间信息
-    _initRoomInfo(info: DTDoEnterRoomVO) {
-        this.initRecordHistroy(info.gameInfo.gameResultList);
+    _initRoomInfo(info: ResponseDTEnterRoomVO) {
         this.initRoomInfo(info);
+        this.initRecordHistroy(info.gameInfo.gameResultList);
     }
 
     /**初始化历史记录 */
@@ -137,7 +138,7 @@ export default class TigerVsElephant extends UIGame {
      * 开奖
      * @returns 
      */
-    async openAward(awardCode: DragonAndTigerPokerResultDto[], result: string) {
+    async openAward(awardCode: DTPokerResultVO[], result: string) {
         let gameNum = this.gameNum;
         if (this.isReturn(gameNum)) return;
         EventMgr.emit(REPORT_EVT.CLICK, {
@@ -217,8 +218,7 @@ export default class TigerVsElephant extends UIGame {
 
 
     _gameStart(data: Uint8Array) {
-        let info: DTBeginBetVO = decodeDTBeginBetVO(data);
-        console.log('_gameStart', info);
+        let info: NotifyDTBeginBetVO = decodeNotifyDTBeginBetVO(data);
         this.isBetTime = true;
         this._reset();
         this.gameStart(info);
@@ -231,8 +231,7 @@ export default class TigerVsElephant extends UIGame {
     }
 
     _gameEnd(data: Uint8Array) {
-        let info: DTSendDrawMsgVO = decodeDTSendDrawMsgVO(data);
-        console.log('_gameEnd', info);
+        let info: NotifyDTDrawVO = decodeNotifyDTDrawVO(data);
         let { gameInfo, gameResult } = info;
         this.gameEnd(info);
         this.rotateCardSkel()

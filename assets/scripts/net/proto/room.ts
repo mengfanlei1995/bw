@@ -1,222 +1,16 @@
-export interface LuckyDiceGameInfoVo {
-  oddsInfoList?: OddsInfoVo[];
-  gameResultList?: LuckyDiceWinDto[];
-  gameNum?: number;
-  bankerId?: string;
-  currOptUserId?: string;
-  totalOptSeconds?: number;
-  leftOptSeconds?: number;
-  dealCardMilliseconds?: Long;
-  leftPaiNum?: number;
-  qiPai?: string;
-  turnType?: number;
-}
-
-export function encodeLuckyDiceGameInfoVo(message: LuckyDiceGameInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLuckyDiceGameInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLuckyDiceGameInfoVo(message: LuckyDiceGameInfoVo, bb: ByteBuffer): void {
-  // repeated OddsInfoVo oddsInfoList = 1;
-  let array$oddsInfoList = message.oddsInfoList;
-  if (array$oddsInfoList !== undefined) {
-    for (let value of array$oddsInfoList) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeOddsInfoVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated LuckyDiceWinDto gameResultList = 2;
-  let array$gameResultList = message.gameResultList;
-  if (array$gameResultList !== undefined) {
-    for (let value of array$gameResultList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeLuckyDiceWinDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameNum = 3;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional string bankerId = 4;
-  let $bankerId = message.bankerId;
-  if ($bankerId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $bankerId);
-  }
-
-  // optional string currOptUserId = 5;
-  let $currOptUserId = message.currOptUserId;
-  if ($currOptUserId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $currOptUserId);
-  }
-
-  // optional int32 totalOptSeconds = 6;
-  let $totalOptSeconds = message.totalOptSeconds;
-  if ($totalOptSeconds !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($totalOptSeconds));
-  }
-
-  // optional int32 leftOptSeconds = 7;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int64 dealCardMilliseconds = 8;
-  let $dealCardMilliseconds = message.dealCardMilliseconds;
-  if ($dealCardMilliseconds !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $dealCardMilliseconds);
-  }
-
-  // optional int32 leftPaiNum = 9;
-  let $leftPaiNum = message.leftPaiNum;
-  if ($leftPaiNum !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($leftPaiNum));
-  }
-
-  // optional string qiPai = 10;
-  let $qiPai = message.qiPai;
-  if ($qiPai !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $qiPai);
-  }
-
-  // optional int32 turnType = 11;
-  let $turnType = message.turnType;
-  if ($turnType !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($turnType));
-  }
-}
-
-export function decodeLuckyDiceGameInfoVo(binary: Uint8Array): LuckyDiceGameInfoVo {
-  return _decodeLuckyDiceGameInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeLuckyDiceGameInfoVo(bb: ByteBuffer): LuckyDiceGameInfoVo {
-  let message: LuckyDiceGameInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated OddsInfoVo oddsInfoList = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.oddsInfoList || (message.oddsInfoList = []);
-        values.push(_decodeOddsInfoVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated LuckyDiceWinDto gameResultList = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.gameResultList || (message.gameResultList = []);
-        values.push(_decodeLuckyDiceWinDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 gameNum = 3;
-      case 3: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string bankerId = 4;
-      case 4: {
-        message.bankerId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currOptUserId = 5;
-      case 5: {
-        message.currOptUserId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 totalOptSeconds = 6;
-      case 6: {
-        message.totalOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 leftOptSeconds = 7;
-      case 7: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 dealCardMilliseconds = 8;
-      case 8: {
-        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 leftPaiNum = 9;
-      case 9: {
-        message.leftPaiNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string qiPai = 10;
-      case 10: {
-        message.qiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 turnType = 11;
-      case 11: {
-        message.turnType = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LBBeginBetVO {
+export interface NotifyBetVO {
   notifyType?: number;
-  lastMsgId?: string;
-  currMsgId?: string;
-  gameInfo?: LuckyBallGameInfoVo;
+  betCoinMap?: { [key: number]: Long };
+  betList?: PointBetCoinsVO[];
 }
 
-export function encodeLBBeginBetVO(message: LBBeginBetVO): Uint8Array {
+export function encodeNotifyBetVO(message: NotifyBetVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeLBBeginBetVO(message, bb);
+  _encodeNotifyBetVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeLBBeginBetVO(message: LBBeginBetVO, bb: ByteBuffer): void {
+function _encodeNotifyBetVO(message: NotifyBetVO, bb: ByteBuffer): void {
   // optional int32 notifyType = 1;
   let $notifyType = message.notifyType;
   if ($notifyType !== undefined) {
@@ -224,38 +18,43 @@ function _encodeLBBeginBetVO(message: LBBeginBetVO, bb: ByteBuffer): void {
     writeVarint64(bb, intToLong($notifyType));
   }
 
-  // optional string lastMsgId = 2;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $lastMsgId);
+  // optional map<int32, int64> betCoinMap = 2;
+  let map$betCoinMap = message.betCoinMap;
+  if (map$betCoinMap !== undefined) {
+    for (let key in map$betCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 18);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
   }
 
-  // optional string currMsgId = 3;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional LuckyBallGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeLuckyBallGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
+  // repeated PointBetCoinsVO betList = 3;
+  let array$betList = message.betList;
+  if (array$betList !== undefined) {
+    for (let value of array$betList) {
+      writeVarint32(bb, 26);
+      let nested = popByteBuffer();
+      _encodePointBetCoinsVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
   }
 }
 
-export function decodeLBBeginBetVO(binary: Uint8Array): LBBeginBetVO {
-  return _decodeLBBeginBetVO(wrapByteBuffer(binary));
+export function decodeNotifyBetVO(binary: Uint8Array): NotifyBetVO {
+  return _decodeNotifyBetVO(wrapByteBuffer(binary));
 }
 
-function _decodeLBBeginBetVO(bb: ByteBuffer): LBBeginBetVO {
-  let message: LBBeginBetVO = {} as any;
+function _decodeNotifyBetVO(bb: ByteBuffer): NotifyBetVO {
+  let message: NotifyBetVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -270,22 +69,41 @@ function _decodeLBBeginBetVO(bb: ByteBuffer): LBBeginBetVO {
         break;
       }
 
-      // optional string lastMsgId = 2;
+      // optional map<int32, int64> betCoinMap = 2;
       case 2: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
+        let values = message.betCoinMap || (message.betCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
         break;
       }
 
-      // optional string currMsgId = 3;
+      // repeated PointBetCoinsVO betList = 3;
       case 3: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional LuckyBallGameInfoVo gameInfo = 4;
-      case 4: {
         let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeLuckyBallGameInfoVo(bb);
+        let values = message.betList || (message.betList = []);
+        values.push(_decodePointBetCoinsVO(bb));
         bb.limit = limit;
         break;
       }
@@ -298,20 +116,88 @@ function _decodeLBBeginBetVO(bb: ByteBuffer): LBBeginBetVO {
   return message;
 }
 
-export interface LuckyDiceWinDto {
-  gameNum?: number;
-  id?: number;
-  dices?: number[];
-  controlSingleState?: number;
+export interface PointBetCoinsVO {
+  betCoins?: Long;
+  betId?: number;
 }
 
-export function encodeLuckyDiceWinDto(message: LuckyDiceWinDto): Uint8Array {
+export function encodePointBetCoinsVO(message: PointBetCoinsVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeLuckyDiceWinDto(message, bb);
+  _encodePointBetCoinsVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeLuckyDiceWinDto(message: LuckyDiceWinDto, bb: ByteBuffer): void {
+function _encodePointBetCoinsVO(message: PointBetCoinsVO, bb: ByteBuffer): void {
+  // optional int64 betCoins = 1;
+  let $betCoins = message.betCoins;
+  if ($betCoins !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $betCoins);
+  }
+
+  // optional int32 betId = 2;
+  let $betId = message.betId;
+  if ($betId !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($betId));
+  }
+}
+
+export function decodePointBetCoinsVO(binary: Uint8Array): PointBetCoinsVO {
+  return _decodePointBetCoinsVO(wrapByteBuffer(binary));
+}
+
+function _decodePointBetCoinsVO(bb: ByteBuffer): PointBetCoinsVO {
+  let message: PointBetCoinsVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 betCoins = 1;
+      case 1: {
+        message.betCoins = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 betId = 2;
+      case 2: {
+        message.betId = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface D3GameInfoVO {
+  gameNum?: number;
+  bankerId?: string;
+  currOptUserId?: string;
+  totalOptSeconds?: number;
+  leftOptSeconds?: number;
+  dealCardMilliseconds?: Long;
+  leftPaiNum?: number;
+  qiPai?: string;
+  turnType?: number;
+  oddsInfoList?: OddsInfoVO[];
+  gameResultList?: D3WinVO[];
+}
+
+export function encodeD3GameInfoVO(message: D3GameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeD3GameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeD3GameInfoVO(message: D3GameInfoVO, bb: ByteBuffer): void {
   // optional int32 gameNum = 1;
   let $gameNum = message.gameNum;
   if ($gameNum !== undefined) {
@@ -319,40 +205,95 @@ function _encodeLuckyDiceWinDto(message: LuckyDiceWinDto, bb: ByteBuffer): void 
     writeVarint64(bb, intToLong($gameNum));
   }
 
-  // optional int32 id = 2;
-  let $id = message.id;
-  if ($id !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($id));
+  // optional string bankerId = 2;
+  let $bankerId = message.bankerId;
+  if ($bankerId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $bankerId);
   }
 
-  // repeated int32 dices = 3;
-  let array$dices = message.dices;
-  if (array$dices !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$dices) {
-      writeVarint64(packed, intToLong(value));
-    }
+  // optional string currOptUserId = 3;
+  let $currOptUserId = message.currOptUserId;
+  if ($currOptUserId !== undefined) {
     writeVarint32(bb, 26);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
+    writeString(bb, $currOptUserId);
   }
 
-  // optional int32 controlSingleState = 4;
-  let $controlSingleState = message.controlSingleState;
-  if ($controlSingleState !== undefined) {
+  // optional int32 totalOptSeconds = 4;
+  let $totalOptSeconds = message.totalOptSeconds;
+  if ($totalOptSeconds !== undefined) {
     writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($controlSingleState));
+    writeVarint64(bb, intToLong($totalOptSeconds));
+  }
+
+  // optional int32 leftOptSeconds = 5;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int64 dealCardMilliseconds = 6;
+  let $dealCardMilliseconds = message.dealCardMilliseconds;
+  if ($dealCardMilliseconds !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, $dealCardMilliseconds);
+  }
+
+  // optional int32 leftPaiNum = 7;
+  let $leftPaiNum = message.leftPaiNum;
+  if ($leftPaiNum !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($leftPaiNum));
+  }
+
+  // optional string qiPai = 8;
+  let $qiPai = message.qiPai;
+  if ($qiPai !== undefined) {
+    writeVarint32(bb, 66);
+    writeString(bb, $qiPai);
+  }
+
+  // optional int32 turnType = 9;
+  let $turnType = message.turnType;
+  if ($turnType !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($turnType));
+  }
+
+  // repeated OddsInfoVO oddsInfoList = 10;
+  let array$oddsInfoList = message.oddsInfoList;
+  if (array$oddsInfoList !== undefined) {
+    for (let value of array$oddsInfoList) {
+      writeVarint32(bb, 82);
+      let nested = popByteBuffer();
+      _encodeOddsInfoVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated D3WinVO gameResultList = 11;
+  let array$gameResultList = message.gameResultList;
+  if (array$gameResultList !== undefined) {
+    for (let value of array$gameResultList) {
+      writeVarint32(bb, 90);
+      let nested = popByteBuffer();
+      _encodeD3WinVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
   }
 }
 
-export function decodeLuckyDiceWinDto(binary: Uint8Array): LuckyDiceWinDto {
-  return _decodeLuckyDiceWinDto(wrapByteBuffer(binary));
+export function decodeD3GameInfoVO(binary: Uint8Array): D3GameInfoVO {
+  return _decodeD3GameInfoVO(wrapByteBuffer(binary));
 }
 
-function _decodeLuckyDiceWinDto(bb: ByteBuffer): LuckyDiceWinDto {
-  let message: LuckyDiceWinDto = {} as any;
+function _decodeD3GameInfoVO(bb: ByteBuffer): D3GameInfoVO {
+  let message: D3GameInfoVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -367,9 +308,1304 @@ function _decodeLuckyDiceWinDto(bb: ByteBuffer): LuckyDiceWinDto {
         break;
       }
 
-      // optional int32 id = 2;
+      // optional string bankerId = 2;
       case 2: {
-        message.id = readVarint32(bb);
+        message.bankerId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currOptUserId = 3;
+      case 3: {
+        message.currOptUserId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 totalOptSeconds = 4;
+      case 4: {
+        message.totalOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 leftOptSeconds = 5;
+      case 5: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 dealCardMilliseconds = 6;
+      case 6: {
+        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 leftPaiNum = 7;
+      case 7: {
+        message.leftPaiNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string qiPai = 8;
+      case 8: {
+        message.qiPai = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 turnType = 9;
+      case 9: {
+        message.turnType = readVarint32(bb);
+        break;
+      }
+
+      // repeated OddsInfoVO oddsInfoList = 10;
+      case 10: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.oddsInfoList || (message.oddsInfoList = []);
+        values.push(_decodeOddsInfoVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated D3WinVO gameResultList = 11;
+      case 11: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.gameResultList || (message.gameResultList = []);
+        values.push(_decodeD3WinVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyJMDrawGameInfoVO {
+  leftOptSeconds?: number;
+  gameNum?: number;
+  onlinePlayers?: number;
+}
+
+export function encodeNotifyJMDrawGameInfoVO(message: NotifyJMDrawGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyJMDrawGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyJMDrawGameInfoVO(message: NotifyJMDrawGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 leftOptSeconds = 1;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int32 gameNum = 2;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional int32 onlinePlayers = 3;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeNotifyJMDrawGameInfoVO(binary: Uint8Array): NotifyJMDrawGameInfoVO {
+  return _decodeNotifyJMDrawGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyJMDrawGameInfoVO(bb: ByteBuffer): NotifyJMDrawGameInfoVO {
+  let message: NotifyJMDrawGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 leftOptSeconds = 1;
+      case 1: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 gameNum = 2;
+      case 2: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 onlinePlayers = 3;
+      case 3: {
+        message.onlinePlayers = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyDTDrawVO {
+  notifyType?: number;
+  playerResult?: number;
+  headWinnerList?: NotifyDTWinnerVO[];
+  gameInfo?: NotifyDTDrawGameInfoVO;
+  userInfoList?: RoomUserVO[];
+  gameResult?: number;
+}
+
+export function encodeNotifyDTDrawVO(message: NotifyDTDrawVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyDTDrawVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyDTDrawVO(message: NotifyDTDrawVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional int32 playerResult = 2;
+  let $playerResult = message.playerResult;
+  if ($playerResult !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($playerResult));
+  }
+
+  // repeated NotifyDTWinnerVO headWinnerList = 3;
+  let array$headWinnerList = message.headWinnerList;
+  if (array$headWinnerList !== undefined) {
+    for (let value of array$headWinnerList) {
+      writeVarint32(bb, 26);
+      let nested = popByteBuffer();
+      _encodeNotifyDTWinnerVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional NotifyDTDrawGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeNotifyDTDrawGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated RoomUserVO userInfoList = 5;
+  let array$userInfoList = message.userInfoList;
+  if (array$userInfoList !== undefined) {
+    for (let value of array$userInfoList) {
+      writeVarint32(bb, 42);
+      let nested = popByteBuffer();
+      _encodeRoomUserVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional int32 gameResult = 6;
+  let $gameResult = message.gameResult;
+  if ($gameResult !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, intToLong($gameResult));
+  }
+}
+
+export function decodeNotifyDTDrawVO(binary: Uint8Array): NotifyDTDrawVO {
+  return _decodeNotifyDTDrawVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyDTDrawVO(bb: ByteBuffer): NotifyDTDrawVO {
+  let message: NotifyDTDrawVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 playerResult = 2;
+      case 2: {
+        message.playerResult = readVarint32(bb);
+        break;
+      }
+
+      // repeated NotifyDTWinnerVO headWinnerList = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.headWinnerList || (message.headWinnerList = []);
+        values.push(_decodeNotifyDTWinnerVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional NotifyDTDrawGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeNotifyDTDrawGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated RoomUserVO userInfoList = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.userInfoList || (message.userInfoList = []);
+        values.push(_decodeRoomUserVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional int32 gameResult = 6;
+      case 6: {
+        message.gameResult = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface DTGameInfoVO {
+  gameNum?: number;
+  bankerId?: string;
+  currOptUserId?: string;
+  totalOptSeconds?: number;
+  leftOptSeconds?: number;
+  dealCardMilliseconds?: Long;
+  leftPaiNum?: number;
+  qiPai?: string;
+  turnType?: number;
+  pokerResultList?: DTPokerResultVO[];
+  OddsInfoList?: OddsInfoVO[];
+  gameResultList?: number[];
+  gameResultWinUserDtoList?: DTWinUserVO[];
+  diPaiCount?: number;
+  qiPaiCount?: number;
+}
+
+export function encodeDTGameInfoVO(message: DTGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeDTGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeDTGameInfoVO(message: DTGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional string bankerId = 2;
+  let $bankerId = message.bankerId;
+  if ($bankerId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $bankerId);
+  }
+
+  // optional string currOptUserId = 3;
+  let $currOptUserId = message.currOptUserId;
+  if ($currOptUserId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currOptUserId);
+  }
+
+  // optional int32 totalOptSeconds = 4;
+  let $totalOptSeconds = message.totalOptSeconds;
+  if ($totalOptSeconds !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($totalOptSeconds));
+  }
+
+  // optional int32 leftOptSeconds = 5;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int64 dealCardMilliseconds = 6;
+  let $dealCardMilliseconds = message.dealCardMilliseconds;
+  if ($dealCardMilliseconds !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, $dealCardMilliseconds);
+  }
+
+  // optional int32 leftPaiNum = 7;
+  let $leftPaiNum = message.leftPaiNum;
+  if ($leftPaiNum !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($leftPaiNum));
+  }
+
+  // optional string qiPai = 8;
+  let $qiPai = message.qiPai;
+  if ($qiPai !== undefined) {
+    writeVarint32(bb, 66);
+    writeString(bb, $qiPai);
+  }
+
+  // optional int32 turnType = 9;
+  let $turnType = message.turnType;
+  if ($turnType !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($turnType));
+  }
+
+  // repeated DTPokerResultVO pokerResultList = 10;
+  let array$pokerResultList = message.pokerResultList;
+  if (array$pokerResultList !== undefined) {
+    for (let value of array$pokerResultList) {
+      writeVarint32(bb, 82);
+      let nested = popByteBuffer();
+      _encodeDTPokerResultVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated OddsInfoVO OddsInfoList = 11;
+  let array$OddsInfoList = message.OddsInfoList;
+  if (array$OddsInfoList !== undefined) {
+    for (let value of array$OddsInfoList) {
+      writeVarint32(bb, 90);
+      let nested = popByteBuffer();
+      _encodeOddsInfoVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated int32 gameResultList = 12;
+  let array$gameResultList = message.gameResultList;
+  if (array$gameResultList !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$gameResultList) {
+      writeVarint64(packed, intToLong(value));
+    }
+    writeVarint32(bb, 98);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+
+  // repeated DTWinUserVO gameResultWinUserDtoList = 13;
+  let array$gameResultWinUserDtoList = message.gameResultWinUserDtoList;
+  if (array$gameResultWinUserDtoList !== undefined) {
+    for (let value of array$gameResultWinUserDtoList) {
+      writeVarint32(bb, 106);
+      let nested = popByteBuffer();
+      _encodeDTWinUserVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional int32 diPaiCount = 14;
+  let $diPaiCount = message.diPaiCount;
+  if ($diPaiCount !== undefined) {
+    writeVarint32(bb, 112);
+    writeVarint64(bb, intToLong($diPaiCount));
+  }
+
+  // optional int32 qiPaiCount = 15;
+  let $qiPaiCount = message.qiPaiCount;
+  if ($qiPaiCount !== undefined) {
+    writeVarint32(bb, 120);
+    writeVarint64(bb, intToLong($qiPaiCount));
+  }
+}
+
+export function decodeDTGameInfoVO(binary: Uint8Array): DTGameInfoVO {
+  return _decodeDTGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeDTGameInfoVO(bb: ByteBuffer): DTGameInfoVO {
+  let message: DTGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 gameNum = 1;
+      case 1: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string bankerId = 2;
+      case 2: {
+        message.bankerId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currOptUserId = 3;
+      case 3: {
+        message.currOptUserId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 totalOptSeconds = 4;
+      case 4: {
+        message.totalOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 leftOptSeconds = 5;
+      case 5: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 dealCardMilliseconds = 6;
+      case 6: {
+        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 leftPaiNum = 7;
+      case 7: {
+        message.leftPaiNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string qiPai = 8;
+      case 8: {
+        message.qiPai = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 turnType = 9;
+      case 9: {
+        message.turnType = readVarint32(bb);
+        break;
+      }
+
+      // repeated DTPokerResultVO pokerResultList = 10;
+      case 10: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.pokerResultList || (message.pokerResultList = []);
+        values.push(_decodeDTPokerResultVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated OddsInfoVO OddsInfoList = 11;
+      case 11: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.OddsInfoList || (message.OddsInfoList = []);
+        values.push(_decodeOddsInfoVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated int32 gameResultList = 12;
+      case 12: {
+        let values = message.gameResultList || (message.gameResultList = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint32(bb));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint32(bb));
+        }
+        break;
+      }
+
+      // repeated DTWinUserVO gameResultWinUserDtoList = 13;
+      case 13: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.gameResultWinUserDtoList || (message.gameResultWinUserDtoList = []);
+        values.push(_decodeDTWinUserVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional int32 diPaiCount = 14;
+      case 14: {
+        message.diPaiCount = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 qiPaiCount = 15;
+      case 15: {
+        message.qiPaiCount = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyTPWDrawVO {
+  notifyType?: number;
+  playerResult?: number;
+  gameInfo?: NotifyTPWDrawGameInfoVO;
+  userInfoList?: RoomUserVO[];
+  gameResult?: TPWWinVO;
+}
+
+export function encodeNotifyTPWDrawVO(message: NotifyTPWDrawVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyTPWDrawVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyTPWDrawVO(message: NotifyTPWDrawVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional int32 playerResult = 2;
+  let $playerResult = message.playerResult;
+  if ($playerResult !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($playerResult));
+  }
+
+  // optional NotifyTPWDrawGameInfoVO gameInfo = 3;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeNotifyTPWDrawGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated RoomUserVO userInfoList = 4;
+  let array$userInfoList = message.userInfoList;
+  if (array$userInfoList !== undefined) {
+    for (let value of array$userInfoList) {
+      writeVarint32(bb, 34);
+      let nested = popByteBuffer();
+      _encodeRoomUserVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional TPWWinVO gameResult = 5;
+  let $gameResult = message.gameResult;
+  if ($gameResult !== undefined) {
+    writeVarint32(bb, 42);
+    let nested = popByteBuffer();
+    _encodeTPWWinVO($gameResult, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyTPWDrawVO(binary: Uint8Array): NotifyTPWDrawVO {
+  return _decodeNotifyTPWDrawVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyTPWDrawVO(bb: ByteBuffer): NotifyTPWDrawVO {
+  let message: NotifyTPWDrawVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 playerResult = 2;
+      case 2: {
+        message.playerResult = readVarint32(bb);
+        break;
+      }
+
+      // optional NotifyTPWDrawGameInfoVO gameInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeNotifyTPWDrawGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated RoomUserVO userInfoList = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.userInfoList || (message.userInfoList = []);
+        values.push(_decodeRoomUserVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional TPWWinVO gameResult = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        message.gameResult = _decodeTPWWinVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponseJMEnterRoomVO {
+  lastMsgId?: string;
+  currMsgId?: string;
+  roomInfo?: RoomInfoVO;
+  gameInfo?: JMGameInfoVO;
+  betList?: PointBetCoinsVO[];
+  betCoinMap?: { [key: number]: Long };
+  betSelfCoinMap?: { [key: number]: Long };
+  betCoinList?: Long[];
+  onlinePlayers?: number;
+}
+
+export function encodeResponseJMEnterRoomVO(message: ResponseJMEnterRoomVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeResponseJMEnterRoomVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeResponseJMEnterRoomVO(message: ResponseJMEnterRoomVO, bb: ByteBuffer): void {
+  // optional string lastMsgId = 1;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 2;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional RoomInfoVO roomInfo = 3;
+  let $roomInfo = message.roomInfo;
+  if ($roomInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeRoomInfoVO($roomInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // optional JMGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeJMGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated PointBetCoinsVO betList = 5;
+  let array$betList = message.betList;
+  if (array$betList !== undefined) {
+    for (let value of array$betList) {
+      writeVarint32(bb, 42);
+      let nested = popByteBuffer();
+      _encodePointBetCoinsVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betCoinMap = 6;
+  let map$betCoinMap = message.betCoinMap;
+  if (map$betCoinMap !== undefined) {
+    for (let key in map$betCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 50);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betSelfCoinMap = 7;
+  let map$betSelfCoinMap = message.betSelfCoinMap;
+  if (map$betSelfCoinMap !== undefined) {
+    for (let key in map$betSelfCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betSelfCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 58);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated int64 betCoinList = 8;
+  let array$betCoinList = message.betCoinList;
+  if (array$betCoinList !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$betCoinList) {
+      writeVarint64(packed, value);
+    }
+    writeVarint32(bb, 66);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+
+  // optional int32 onlinePlayers = 9;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeResponseJMEnterRoomVO(binary: Uint8Array): ResponseJMEnterRoomVO {
+  return _decodeResponseJMEnterRoomVO(wrapByteBuffer(binary));
+}
+
+function _decodeResponseJMEnterRoomVO(bb: ByteBuffer): ResponseJMEnterRoomVO {
+  let message: ResponseJMEnterRoomVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string lastMsgId = 1;
+      case 1: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 2;
+      case 2: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional RoomInfoVO roomInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.roomInfo = _decodeRoomInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // optional JMGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeJMGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated PointBetCoinsVO betList = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.betList || (message.betList = []);
+        values.push(_decodePointBetCoinsVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional map<int32, int64> betCoinMap = 6;
+      case 6: {
+        let values = message.betCoinMap || (message.betCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // optional map<int32, int64> betSelfCoinMap = 7;
+      case 7: {
+        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betSelfCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // repeated int64 betCoinList = 8;
+      case 8: {
+        let values = message.betCoinList || (message.betCoinList = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint64(bb, /* unsigned */ false));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint64(bb, /* unsigned */ false));
+        }
+        break;
+      }
+
+      // optional int32 onlinePlayers = 9;
+      case 9: {
+        message.onlinePlayers = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponseTPEnterRoomVO {
+  lastMsgId?: string;
+  currMsgId?: string;
+  roomInfo?: RoomInfoVO;
+  gameInfo?: TPWGameInfoVO;
+  betList?: PointBetCoinsVO[];
+  betCoinMap?: { [key: number]: Long };
+  betSelfCoinMap?: { [key: number]: Long };
+  betCoinList?: Long[];
+  onlinePlayers?: number;
+}
+
+export function encodeResponseTPEnterRoomVO(message: ResponseTPEnterRoomVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeResponseTPEnterRoomVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeResponseTPEnterRoomVO(message: ResponseTPEnterRoomVO, bb: ByteBuffer): void {
+  // optional string lastMsgId = 1;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 2;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional RoomInfoVO roomInfo = 3;
+  let $roomInfo = message.roomInfo;
+  if ($roomInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeRoomInfoVO($roomInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // optional TPWGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeTPWGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated PointBetCoinsVO betList = 5;
+  let array$betList = message.betList;
+  if (array$betList !== undefined) {
+    for (let value of array$betList) {
+      writeVarint32(bb, 42);
+      let nested = popByteBuffer();
+      _encodePointBetCoinsVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betCoinMap = 6;
+  let map$betCoinMap = message.betCoinMap;
+  if (map$betCoinMap !== undefined) {
+    for (let key in map$betCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 50);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betSelfCoinMap = 7;
+  let map$betSelfCoinMap = message.betSelfCoinMap;
+  if (map$betSelfCoinMap !== undefined) {
+    for (let key in map$betSelfCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betSelfCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 58);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated int64 betCoinList = 8;
+  let array$betCoinList = message.betCoinList;
+  if (array$betCoinList !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$betCoinList) {
+      writeVarint64(packed, value);
+    }
+    writeVarint32(bb, 66);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+
+  // optional int32 onlinePlayers = 9;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeResponseTPEnterRoomVO(binary: Uint8Array): ResponseTPEnterRoomVO {
+  return _decodeResponseTPEnterRoomVO(wrapByteBuffer(binary));
+}
+
+function _decodeResponseTPEnterRoomVO(bb: ByteBuffer): ResponseTPEnterRoomVO {
+  let message: ResponseTPEnterRoomVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string lastMsgId = 1;
+      case 1: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 2;
+      case 2: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional RoomInfoVO roomInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.roomInfo = _decodeRoomInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // optional TPWGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeTPWGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated PointBetCoinsVO betList = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.betList || (message.betList = []);
+        values.push(_decodePointBetCoinsVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional map<int32, int64> betCoinMap = 6;
+      case 6: {
+        let values = message.betCoinMap || (message.betCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // optional map<int32, int64> betSelfCoinMap = 7;
+      case 7: {
+        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betSelfCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // repeated int64 betCoinList = 8;
+      case 8: {
+        let values = message.betCoinList || (message.betCoinList = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint64(bb, /* unsigned */ false));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint64(bb, /* unsigned */ false));
+        }
+        break;
+      }
+
+      // optional int32 onlinePlayers = 9;
+      case 9: {
+        message.onlinePlayers = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface JMWinVO {
+  gameNum?: number;
+  idRates?: JMWinIdRateVO[];
+  dices?: number[];
+}
+
+export function encodeJMWinVO(message: JMWinVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeJMWinVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeJMWinVO(message: JMWinVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // repeated JMWinIdRateVO idRates = 2;
+  let array$idRates = message.idRates;
+  if (array$idRates !== undefined) {
+    for (let value of array$idRates) {
+      writeVarint32(bb, 18);
+      let nested = popByteBuffer();
+      _encodeJMWinIdRateVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated int32 dices = 3;
+  let array$dices = message.dices;
+  if (array$dices !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$dices) {
+      writeVarint64(packed, intToLong(value));
+    }
+    writeVarint32(bb, 26);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+}
+
+export function decodeJMWinVO(binary: Uint8Array): JMWinVO {
+  return _decodeJMWinVO(wrapByteBuffer(binary));
+}
+
+function _decodeJMWinVO(bb: ByteBuffer): JMWinVO {
+  let message: JMWinVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 gameNum = 1;
+      case 1: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // repeated JMWinIdRateVO idRates = 2;
+      case 2: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.idRates || (message.idRates = []);
+        values.push(_decodeJMWinIdRateVO(bb));
+        bb.limit = limit;
         break;
       }
 
@@ -388,12 +1624,6 @@ function _decodeLuckyDiceWinDto(bb: ByteBuffer): LuckyDiceWinDto {
         break;
       }
 
-      // optional int32 controlSingleState = 4;
-      case 4: {
-        message.controlSingleState = readVarint32(bb);
-        break;
-      }
-
       default:
         skipUnknownField(bb, tag & 7);
     }
@@ -402,8 +1632,7 @@ function _decodeLuckyDiceWinDto(bb: ByteBuffer): LuckyDiceWinDto {
   return message;
 }
 
-export interface LuckyBallRoomInfoVo {
-  roomState?: number;
+export interface RoomInfoVO {
   roomId?: string;
   lastMsgId?: string;
   currMsgId?: string;
@@ -415,1066 +1644,21 @@ export interface LuckyBallRoomInfoVo {
   baseMultiple?: number;
   maxGameNum?: number;
   currGameNum?: number;
+  roomState?: number;
 }
 
-export function encodeLuckyBallRoomInfoVo(message: LuckyBallRoomInfoVo): Uint8Array {
+export function encodeRoomInfoVO(message: RoomInfoVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeLuckyBallRoomInfoVo(message, bb);
+  _encodeRoomInfoVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeLuckyBallRoomInfoVo(message: LuckyBallRoomInfoVo, bb: ByteBuffer): void {
-  // optional int32 roomState = 1;
-  let $roomState = message.roomState;
-  if ($roomState !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($roomState));
-  }
-
-  // optional string roomId = 2;
+function _encodeRoomInfoVO(message: RoomInfoVO, bb: ByteBuffer): void {
+  // optional string roomId = 1;
   let $roomId = message.roomId;
   if ($roomId !== undefined) {
-    writeVarint32(bb, 18);
+    writeVarint32(bb, 10);
     writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 3;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 4;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 6;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 7;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 8;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 9;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 10;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 11;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 12;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodeLuckyBallRoomInfoVo(binary: Uint8Array): LuckyBallRoomInfoVo {
-  return _decodeLuckyBallRoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeLuckyBallRoomInfoVo(bb: ByteBuffer): LuckyBallRoomInfoVo {
-  let message: LuckyBallRoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 roomState = 1;
-      case 1: {
-        message.roomState = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 2;
-      case 2: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 3;
-      case 3: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 4;
-      case 4: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool playing = 6;
-      case 6: {
-        message.playing = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 gameType = 7;
-      case 7: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomType = 8;
-      case 8: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 9;
-      case 9: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 baseMultiple = 10;
-      case 10: {
-        message.baseMultiple = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxGameNum = 11;
-      case 11: {
-        message.maxGameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 currGameNum = 12;
-      case 12: {
-        message.currGameNum = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface DTDoEnterRoomVO {
-  lastMsgId?: string;
-  currMsgId?: string;
-  roomInfo?: DragonAndTigerRoomInfoVo;
-  gameInfo?: DragonAndTigerGameInfoVo;
-  betList?: PointBetCoinsNotifyVo[];
-  betCoinMap?: { [key: number]: Long };
-  betSelfCoinMap?: { [key: number]: Long };
-  betCoinList?: Long[];
-  onlinePlayers?: number;
-}
-
-export function encodeDTDoEnterRoomVO(message: DTDoEnterRoomVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDTDoEnterRoomVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDTDoEnterRoomVO(message: DTDoEnterRoomVO, bb: ByteBuffer): void {
-  // optional string lastMsgId = 1;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 2;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional DragonAndTigerRoomInfoVo roomInfo = 3;
-  let $roomInfo = message.roomInfo;
-  if ($roomInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeDragonAndTigerRoomInfoVo($roomInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional DragonAndTigerGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeDragonAndTigerGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated PointBetCoinsNotifyVo betList = 5;
-  let array$betList = message.betList;
-  if (array$betList !== undefined) {
-    for (let value of array$betList) {
-      writeVarint32(bb, 42);
-      let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betCoinMap = 6;
-  let map$betCoinMap = message.betCoinMap;
-  if (map$betCoinMap !== undefined) {
-    for (let key in map$betCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 50);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betSelfCoinMap = 7;
-  let map$betSelfCoinMap = message.betSelfCoinMap;
-  if (map$betSelfCoinMap !== undefined) {
-    for (let key in map$betSelfCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betSelfCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 58);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated int64 betCoinList = 8;
-  let array$betCoinList = message.betCoinList;
-  if (array$betCoinList !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$betCoinList) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 66);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional int32 onlinePlayers = 9;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-}
-
-export function decodeDTDoEnterRoomVO(binary: Uint8Array): DTDoEnterRoomVO {
-  return _decodeDTDoEnterRoomVO(wrapByteBuffer(binary));
-}
-
-function _decodeDTDoEnterRoomVO(bb: ByteBuffer): DTDoEnterRoomVO {
-  let message: DTDoEnterRoomVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string lastMsgId = 1;
-      case 1: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 2;
-      case 2: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional DragonAndTigerRoomInfoVo roomInfo = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodeDragonAndTigerRoomInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional DragonAndTigerGameInfoVo gameInfo = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeDragonAndTigerGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated PointBetCoinsNotifyVo betList = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional map<int32, int64> betCoinMap = 6;
-      case 6: {
-        let values = message.betCoinMap || (message.betCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // optional map<int32, int64> betSelfCoinMap = 7;
-      case 7: {
-        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betSelfCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // repeated int64 betCoinList = 8;
-      case 8: {
-        let values = message.betCoinList || (message.betCoinList = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional int32 onlinePlayers = 9;
-      case 9: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface Dice3DoEnterRoomVO {
-  lastMsgId?: string;
-  currMsgId?: string;
-  betCoinList?: Long[];
-  onlinePlayers?: number;
-  betSelfCoinMap?: { [key: number]: Long };
-  betCoinMap?: { [key: number]: Long };
-  betList?: PointBetCoinsNotifyVo[];
-  gameInfo?: Dice3GameInfoVo;
-  roomInfo?: Dice3RoomInfoVo;
-}
-
-export function encodeDice3DoEnterRoomVO(message: Dice3DoEnterRoomVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDice3DoEnterRoomVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDice3DoEnterRoomVO(message: Dice3DoEnterRoomVO, bb: ByteBuffer): void {
-  // optional string lastMsgId = 1;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 2;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $currMsgId);
-  }
-
-  // repeated int64 betCoinList = 3;
-  let array$betCoinList = message.betCoinList;
-  if (array$betCoinList !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$betCoinList) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 26);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional int32 onlinePlayers = 4;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-
-  // optional map<int32, int64> betSelfCoinMap = 5;
-  let map$betSelfCoinMap = message.betSelfCoinMap;
-  if (map$betSelfCoinMap !== undefined) {
-    for (let key in map$betSelfCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betSelfCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 42);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betCoinMap = 6;
-  let map$betCoinMap = message.betCoinMap;
-  if (map$betCoinMap !== undefined) {
-    for (let key in map$betCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 50);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated PointBetCoinsNotifyVo betList = 7;
-  let array$betList = message.betList;
-  if (array$betList !== undefined) {
-    for (let value of array$betList) {
-      writeVarint32(bb, 58);
-      let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional Dice3GameInfoVo gameInfo = 8;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 66);
-    let nested = popByteBuffer();
-    _encodeDice3GameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional Dice3RoomInfoVo roomInfo = 9;
-  let $roomInfo = message.roomInfo;
-  if ($roomInfo !== undefined) {
-    writeVarint32(bb, 74);
-    let nested = popByteBuffer();
-    _encodeDice3RoomInfoVo($roomInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeDice3DoEnterRoomVO(binary: Uint8Array): Dice3DoEnterRoomVO {
-  return _decodeDice3DoEnterRoomVO(wrapByteBuffer(binary));
-}
-
-function _decodeDice3DoEnterRoomVO(bb: ByteBuffer): Dice3DoEnterRoomVO {
-  let message: Dice3DoEnterRoomVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string lastMsgId = 1;
-      case 1: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 2;
-      case 2: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // repeated int64 betCoinList = 3;
-      case 3: {
-        let values = message.betCoinList || (message.betCoinList = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional int32 onlinePlayers = 4;
-      case 4: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      // optional map<int32, int64> betSelfCoinMap = 5;
-      case 5: {
-        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betSelfCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // optional map<int32, int64> betCoinMap = 6;
-      case 6: {
-        let values = message.betCoinMap || (message.betCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // repeated PointBetCoinsNotifyVo betList = 7;
-      case 7: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Dice3GameInfoVo gameInfo = 8;
-      case 8: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeDice3GameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional Dice3RoomInfoVo roomInfo = 9;
-      case 9: {
-        let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodeDice3RoomInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomUserVo {
-  winCoins?: Long;
-  winRate?: number;
-  userInTableState?: number;
-  seatNo?: number;
-  userId?: string;
-  status?: number;
-  nickName?: string;
-  portrait?: string;
-  vipLevel?: number;
-  balanceCoins?: Long;
-  autoPlay?: boolean;
-  autoPlayTimes?: number;
-  playNums?: number;
-  maxPlayNums?: number;
-  extra?: string;
-  roundCount?: number;
-  winRoundCount?: number;
-  totalWinCoins?: Long;
-  userType?: number;
-  winBalance?: Long;
-  loseBalance?: Long;
-}
-
-export function encodeRoomUserVo(message: RoomUserVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomUserVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomUserVo(message: RoomUserVo, bb: ByteBuffer): void {
-  // optional int64 winCoins = 1;
-  let $winCoins = message.winCoins;
-  if ($winCoins !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $winCoins);
-  }
-
-  // optional int32 winRate = 3;
-  let $winRate = message.winRate;
-  if ($winRate !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($winRate));
-  }
-
-  // optional int32 userInTableState = 4;
-  let $userInTableState = message.userInTableState;
-  if ($userInTableState !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($userInTableState));
-  }
-
-  // optional int32 seatNo = 5;
-  let $seatNo = message.seatNo;
-  if ($seatNo !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, intToLong($seatNo));
-  }
-
-  // optional string userId = 6;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $userId);
-  }
-
-  // optional int32 status = 7;
-  let $status = message.status;
-  if ($status !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($status));
-  }
-
-  // optional string nickName = 8;
-  let $nickName = message.nickName;
-  if ($nickName !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $nickName);
-  }
-
-  // optional string portrait = 9;
-  let $portrait = message.portrait;
-  if ($portrait !== undefined) {
-    writeVarint32(bb, 74);
-    writeString(bb, $portrait);
-  }
-
-  // optional int32 vipLevel = 10;
-  let $vipLevel = message.vipLevel;
-  if ($vipLevel !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($vipLevel));
-  }
-
-  // optional int64 balanceCoins = 11;
-  let $balanceCoins = message.balanceCoins;
-  if ($balanceCoins !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, $balanceCoins);
-  }
-
-  // optional bool autoPlay = 12;
-  let $autoPlay = message.autoPlay;
-  if ($autoPlay !== undefined) {
-    writeVarint32(bb, 96);
-    writeByte(bb, $autoPlay ? 1 : 0);
-  }
-
-  // optional int32 autoPlayTimes = 13;
-  let $autoPlayTimes = message.autoPlayTimes;
-  if ($autoPlayTimes !== undefined) {
-    writeVarint32(bb, 104);
-    writeVarint64(bb, intToLong($autoPlayTimes));
-  }
-
-  // optional int32 playNums = 14;
-  let $playNums = message.playNums;
-  if ($playNums !== undefined) {
-    writeVarint32(bb, 112);
-    writeVarint64(bb, intToLong($playNums));
-  }
-
-  // optional int32 maxPlayNums = 15;
-  let $maxPlayNums = message.maxPlayNums;
-  if ($maxPlayNums !== undefined) {
-    writeVarint32(bb, 120);
-    writeVarint64(bb, intToLong($maxPlayNums));
-  }
-
-  // optional string extra = 16;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 130);
-    writeString(bb, $extra);
-  }
-
-  // optional int32 roundCount = 17;
-  let $roundCount = message.roundCount;
-  if ($roundCount !== undefined) {
-    writeVarint32(bb, 136);
-    writeVarint64(bb, intToLong($roundCount));
-  }
-
-  // optional int32 winRoundCount = 18;
-  let $winRoundCount = message.winRoundCount;
-  if ($winRoundCount !== undefined) {
-    writeVarint32(bb, 144);
-    writeVarint64(bb, intToLong($winRoundCount));
-  }
-
-  // optional int64 totalWinCoins = 19;
-  let $totalWinCoins = message.totalWinCoins;
-  if ($totalWinCoins !== undefined) {
-    writeVarint32(bb, 152);
-    writeVarint64(bb, $totalWinCoins);
-  }
-
-  // optional int32 userType = 20;
-  let $userType = message.userType;
-  if ($userType !== undefined) {
-    writeVarint32(bb, 160);
-    writeVarint64(bb, intToLong($userType));
-  }
-
-  // optional int64 winBalance = 21;
-  let $winBalance = message.winBalance;
-  if ($winBalance !== undefined) {
-    writeVarint32(bb, 168);
-    writeVarint64(bb, $winBalance);
-  }
-
-  // optional int64 loseBalance = 22;
-  let $loseBalance = message.loseBalance;
-  if ($loseBalance !== undefined) {
-    writeVarint32(bb, 176);
-    writeVarint64(bb, $loseBalance);
-  }
-}
-
-export function decodeRoomUserVo(binary: Uint8Array): RoomUserVo {
-  return _decodeRoomUserVo(wrapByteBuffer(binary));
-}
-
-function _decodeRoomUserVo(bb: ByteBuffer): RoomUserVo {
-  let message: RoomUserVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int64 winCoins = 1;
-      case 1: {
-        message.winCoins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 winRate = 3;
-      case 3: {
-        message.winRate = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 userInTableState = 4;
-      case 4: {
-        message.userInTableState = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 seatNo = 5;
-      case 5: {
-        message.seatNo = readVarint32(bb);
-        break;
-      }
-
-      // optional string userId = 6;
-      case 6: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 status = 7;
-      case 7: {
-        message.status = readVarint32(bb);
-        break;
-      }
-
-      // optional string nickName = 8;
-      case 8: {
-        message.nickName = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string portrait = 9;
-      case 9: {
-        message.portrait = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 vipLevel = 10;
-      case 10: {
-        message.vipLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 balanceCoins = 11;
-      case 11: {
-        message.balanceCoins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional bool autoPlay = 12;
-      case 12: {
-        message.autoPlay = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 autoPlayTimes = 13;
-      case 13: {
-        message.autoPlayTimes = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 playNums = 14;
-      case 14: {
-        message.playNums = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxPlayNums = 15;
-      case 15: {
-        message.maxPlayNums = readVarint32(bb);
-        break;
-      }
-
-      // optional string extra = 16;
-      case 16: {
-        message.extra = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 roundCount = 17;
-      case 17: {
-        message.roundCount = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 winRoundCount = 18;
-      case 18: {
-        message.winRoundCount = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 totalWinCoins = 19;
-      case 19: {
-        message.totalWinCoins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 userType = 20;
-      case 20: {
-        message.userType = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 winBalance = 21;
-      case 21: {
-        message.winBalance = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 loseBalance = 22;
-      case 22: {
-        message.loseBalance = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RYBBeginBetVO {
-  notifyType?: number;
-  lastMsgId?: string;
-  currMsgId?: string;
-  gameInfo?: RedYellowBlueGameInfoVo;
-}
-
-export function encodeRYBBeginBetVO(message: RYBBeginBetVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRYBBeginBetVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRYBBeginBetVO(message: RYBBeginBetVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
   }
 
   // optional string lastMsgId = 2;
@@ -1491,24 +1675,76 @@ function _encodeRYBBeginBetVO(message: RYBBeginBetVO, bb: ByteBuffer): void {
     writeString(bb, $currMsgId);
   }
 
-  // optional RedYellowBlueGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
+  // optional string userId = 4;
+  let $userId = message.userId;
+  if ($userId !== undefined) {
     writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeRedYellowBlueGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
+    writeString(bb, $userId);
+  }
+
+  // optional bool playing = 5;
+  let $playing = message.playing;
+  if ($playing !== undefined) {
+    writeVarint32(bb, 40);
+    writeByte(bb, $playing ? 1 : 0);
+  }
+
+  // optional int32 gameType = 6;
+  let $gameType = message.gameType;
+  if ($gameType !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, intToLong($gameType));
+  }
+
+  // optional int32 roomType = 7;
+  let $roomType = message.roomType;
+  if ($roomType !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($roomType));
+  }
+
+  // optional int32 roomLevel = 8;
+  let $roomLevel = message.roomLevel;
+  if ($roomLevel !== undefined) {
+    writeVarint32(bb, 64);
+    writeVarint64(bb, intToLong($roomLevel));
+  }
+
+  // optional int32 baseMultiple = 9;
+  let $baseMultiple = message.baseMultiple;
+  if ($baseMultiple !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($baseMultiple));
+  }
+
+  // optional int32 maxGameNum = 10;
+  let $maxGameNum = message.maxGameNum;
+  if ($maxGameNum !== undefined) {
+    writeVarint32(bb, 80);
+    writeVarint64(bb, intToLong($maxGameNum));
+  }
+
+  // optional int32 currGameNum = 11;
+  let $currGameNum = message.currGameNum;
+  if ($currGameNum !== undefined) {
+    writeVarint32(bb, 88);
+    writeVarint64(bb, intToLong($currGameNum));
+  }
+
+  // optional int32 roomState = 12;
+  let $roomState = message.roomState;
+  if ($roomState !== undefined) {
+    writeVarint32(bb, 96);
+    writeVarint64(bb, intToLong($roomState));
   }
 }
 
-export function decodeRYBBeginBetVO(binary: Uint8Array): RYBBeginBetVO {
-  return _decodeRYBBeginBetVO(wrapByteBuffer(binary));
+export function decodeRoomInfoVO(binary: Uint8Array): RoomInfoVO {
+  return _decodeRoomInfoVO(wrapByteBuffer(binary));
 }
 
-function _decodeRYBBeginBetVO(bb: ByteBuffer): RYBBeginBetVO {
-  let message: RYBBeginBetVO = {} as any;
+function _decodeRoomInfoVO(bb: ByteBuffer): RoomInfoVO {
+  let message: RoomInfoVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -1517,9 +1753,9 @@ function _decodeRYBBeginBetVO(bb: ByteBuffer): RYBBeginBetVO {
       case 0:
         break end_of_message;
 
-      // optional int32 notifyType = 1;
+      // optional string roomId = 1;
       case 1: {
-        message.notifyType = readVarint32(bb);
+        message.roomId = readString(bb, readVarint32(bb));
         break;
       }
 
@@ -1535,416 +1771,60 @@ function _decodeRYBBeginBetVO(bb: ByteBuffer): RYBBeginBetVO {
         break;
       }
 
-      // optional RedYellowBlueGameInfoVo gameInfo = 4;
+      // optional string userId = 4;
       case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeRedYellowBlueGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface DragonAndTigerRoomInfoVo {
-  roomState?: number;
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  userId?: string;
-  playing?: boolean;
-  gameType?: number;
-  roomType?: number;
-  roomLevel?: number;
-  baseMultiple?: number;
-  maxGameNum?: number;
-  currGameNum?: number;
-}
-
-export function encodeDragonAndTigerRoomInfoVo(message: DragonAndTigerRoomInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDragonAndTigerRoomInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDragonAndTigerRoomInfoVo(message: DragonAndTigerRoomInfoVo, bb: ByteBuffer): void {
-  // optional int32 roomState = 1;
-  let $roomState = message.roomState;
-  if ($roomState !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($roomState));
-  }
-
-  // optional string roomId = 2;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 3;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 4;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 6;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 7;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 8;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 9;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 10;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 11;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 12;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodeDragonAndTigerRoomInfoVo(binary: Uint8Array): DragonAndTigerRoomInfoVo {
-  return _decodeDragonAndTigerRoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeDragonAndTigerRoomInfoVo(bb: ByteBuffer): DragonAndTigerRoomInfoVo {
-  let message: DragonAndTigerRoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 roomState = 1;
-      case 1: {
-        message.roomState = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 2;
-      case 2: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 3;
-      case 3: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 4;
-      case 4: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
         message.userId = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional bool playing = 6;
-      case 6: {
+      // optional bool playing = 5;
+      case 5: {
         message.playing = !!readByte(bb);
         break;
       }
 
-      // optional int32 gameType = 7;
-      case 7: {
+      // optional int32 gameType = 6;
+      case 6: {
         message.gameType = readVarint32(bb);
         break;
       }
 
-      // optional int32 roomType = 8;
-      case 8: {
+      // optional int32 roomType = 7;
+      case 7: {
         message.roomType = readVarint32(bb);
         break;
       }
 
-      // optional int32 roomLevel = 9;
-      case 9: {
+      // optional int32 roomLevel = 8;
+      case 8: {
         message.roomLevel = readVarint32(bb);
         break;
       }
 
-      // optional int32 baseMultiple = 10;
-      case 10: {
+      // optional int32 baseMultiple = 9;
+      case 9: {
         message.baseMultiple = readVarint32(bb);
         break;
       }
 
-      // optional int32 maxGameNum = 11;
-      case 11: {
+      // optional int32 maxGameNum = 10;
+      case 10: {
         message.maxGameNum = readVarint32(bb);
         break;
       }
 
-      // optional int32 currGameNum = 12;
-      case 12: {
+      // optional int32 currGameNum = 11;
+      case 11: {
         message.currGameNum = readVarint32(bb);
         break;
       }
 
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface JhandiMundaRoomInfoVo {
-  roomState?: number;
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  userId?: string;
-  playing?: boolean;
-  gameType?: number;
-  roomType?: number;
-  roomLevel?: number;
-  baseMultiple?: number;
-  maxGameNum?: number;
-  currGameNum?: number;
-}
-
-export function encodeJhandiMundaRoomInfoVo(message: JhandiMundaRoomInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeJhandiMundaRoomInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeJhandiMundaRoomInfoVo(message: JhandiMundaRoomInfoVo, bb: ByteBuffer): void {
-  // optional int32 roomState = 1;
-  let $roomState = message.roomState;
-  if ($roomState !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($roomState));
-  }
-
-  // optional string roomId = 2;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 3;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 4;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 6;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 7;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 8;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 9;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 10;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 11;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 12;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodeJhandiMundaRoomInfoVo(binary: Uint8Array): JhandiMundaRoomInfoVo {
-  return _decodeJhandiMundaRoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeJhandiMundaRoomInfoVo(bb: ByteBuffer): JhandiMundaRoomInfoVo {
-  let message: JhandiMundaRoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 roomState = 1;
-      case 1: {
+      // optional int32 roomState = 12;
+      case 12: {
         message.roomState = readVarint32(bb);
         break;
       }
 
-      // optional string roomId = 2;
-      case 2: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 3;
-      case 3: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 4;
-      case 4: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool playing = 6;
-      case 6: {
-        message.playing = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 gameType = 7;
-      case 7: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomType = 8;
-      case 8: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 9;
-      case 9: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 baseMultiple = 10;
-      case 10: {
-        message.baseMultiple = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxGameNum = 11;
-      case 11: {
-        message.maxGameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 currGameNum = 12;
-      case 12: {
-        message.currGameNum = readVarint32(bb);
-        break;
-      }
-
       default:
         skipUnknownField(bb, tag & 7);
     }
@@ -1953,486 +1833,27 @@ function _decodeJhandiMundaRoomInfoVo(bb: ByteBuffer): JhandiMundaRoomInfoVo {
   return message;
 }
 
-export interface TeenPattiWarPokerResultDto {
-  pais?: string[];
-  paisAttr?: number;
-}
-
-export function encodeTeenPattiWarPokerResultDto(message: TeenPattiWarPokerResultDto): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeTeenPattiWarPokerResultDto(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeTeenPattiWarPokerResultDto(message: TeenPattiWarPokerResultDto, bb: ByteBuffer): void {
-  // repeated string pais = 1;
-  let array$pais = message.pais;
-  if (array$pais !== undefined) {
-    for (let value of array$pais) {
-      writeVarint32(bb, 10);
-      writeString(bb, value);
-    }
-  }
-
-  // optional int32 paisAttr = 2;
-  let $paisAttr = message.paisAttr;
-  if ($paisAttr !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($paisAttr));
-  }
-}
-
-export function decodeTeenPattiWarPokerResultDto(binary: Uint8Array): TeenPattiWarPokerResultDto {
-  return _decodeTeenPattiWarPokerResultDto(wrapByteBuffer(binary));
-}
-
-function _decodeTeenPattiWarPokerResultDto(bb: ByteBuffer): TeenPattiWarPokerResultDto {
-  let message: TeenPattiWarPokerResultDto = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated string pais = 1;
-      case 1: {
-        let values = message.pais || (message.pais = []);
-        values.push(readString(bb, readVarint32(bb)));
-        break;
-      }
-
-      // optional int32 paisAttr = 2;
-      case 2: {
-        message.paisAttr = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface TeenPattiWarRoomInfoVo {
-  roomState?: number;
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  userId?: string;
-  playing?: boolean;
-  gameType?: number;
-  roomType?: number;
-  roomLevel?: number;
-  baseMultiple?: number;
-  maxGameNum?: number;
-  currGameNum?: number;
-}
-
-export function encodeTeenPattiWarRoomInfoVo(message: TeenPattiWarRoomInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeTeenPattiWarRoomInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeTeenPattiWarRoomInfoVo(message: TeenPattiWarRoomInfoVo, bb: ByteBuffer): void {
-  // optional int32 roomState = 1;
-  let $roomState = message.roomState;
-  if ($roomState !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($roomState));
-  }
-
-  // optional string roomId = 2;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 3;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 4;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 6;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 7;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 8;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 9;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 10;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 11;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 12;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodeTeenPattiWarRoomInfoVo(binary: Uint8Array): TeenPattiWarRoomInfoVo {
-  return _decodeTeenPattiWarRoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeTeenPattiWarRoomInfoVo(bb: ByteBuffer): TeenPattiWarRoomInfoVo {
-  let message: TeenPattiWarRoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 roomState = 1;
-      case 1: {
-        message.roomState = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 2;
-      case 2: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 3;
-      case 3: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 4;
-      case 4: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool playing = 6;
-      case 6: {
-        message.playing = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 gameType = 7;
-      case 7: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomType = 8;
-      case 8: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 9;
-      case 9: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 baseMultiple = 10;
-      case 10: {
-        message.baseMultiple = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxGameNum = 11;
-      case 11: {
-        message.maxGameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 currGameNum = 12;
-      case 12: {
-        message.currGameNum = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LuckyDiceRoomInfoVo {
-  roomState?: number;
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  userId?: string;
-  playing?: boolean;
-  gameType?: number;
-  roomType?: number;
-  roomLevel?: number;
-  baseMultiple?: number;
-  maxGameNum?: number;
-  currGameNum?: number;
-}
-
-export function encodeLuckyDiceRoomInfoVo(message: LuckyDiceRoomInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLuckyDiceRoomInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLuckyDiceRoomInfoVo(message: LuckyDiceRoomInfoVo, bb: ByteBuffer): void {
-  // optional int32 roomState = 1;
-  let $roomState = message.roomState;
-  if ($roomState !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($roomState));
-  }
-
-  // optional string roomId = 2;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 3;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 4;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 6;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 7;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 8;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 9;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 10;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 11;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 12;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodeLuckyDiceRoomInfoVo(binary: Uint8Array): LuckyDiceRoomInfoVo {
-  return _decodeLuckyDiceRoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeLuckyDiceRoomInfoVo(bb: ByteBuffer): LuckyDiceRoomInfoVo {
-  let message: LuckyDiceRoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 roomState = 1;
-      case 1: {
-        message.roomState = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 2;
-      case 2: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 3;
-      case 3: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 4;
-      case 4: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool playing = 6;
-      case 6: {
-        message.playing = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 gameType = 7;
-      case 7: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomType = 8;
-      case 8: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 9;
-      case 9: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 baseMultiple = 10;
-      case 10: {
-        message.baseMultiple = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxGameNum = 11;
-      case 11: {
-        message.maxGameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 currGameNum = 12;
-      case 12: {
-        message.currGameNum = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RedYellowBlueWinDto {
+export interface JMGameInfoVO {
   gameNum?: number;
-  id?: number;
-  reelIndex?: number;
-  controlSingleState?: number;
+  bankerId?: string;
+  currOptUserId?: string;
+  totalOptSeconds?: number;
+  leftOptSeconds?: number;
+  dealCardMilliseconds?: Long;
+  leftPaiNum?: number;
+  qiPai?: string;
+  turnType?: number;
+  oddsInfoList?: OddsInfoVO[];
+  gameResultList?: JMWinVO[];
 }
 
-export function encodeRedYellowBlueWinDto(message: RedYellowBlueWinDto): Uint8Array {
+export function encodeJMGameInfoVO(message: JMGameInfoVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeRedYellowBlueWinDto(message, bb);
+  _encodeJMGameInfoVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeRedYellowBlueWinDto(message: RedYellowBlueWinDto, bb: ByteBuffer): void {
+function _encodeJMGameInfoVO(message: JMGameInfoVO, bb: ByteBuffer): void {
   // optional int32 gameNum = 1;
   let $gameNum = message.gameNum;
   if ($gameNum !== undefined) {
@@ -2440,34 +1861,95 @@ function _encodeRedYellowBlueWinDto(message: RedYellowBlueWinDto, bb: ByteBuffer
     writeVarint64(bb, intToLong($gameNum));
   }
 
-  // optional int32 id = 2;
-  let $id = message.id;
-  if ($id !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($id));
+  // optional string bankerId = 2;
+  let $bankerId = message.bankerId;
+  if ($bankerId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $bankerId);
   }
 
-  // optional int32 reelIndex = 3;
-  let $reelIndex = message.reelIndex;
-  if ($reelIndex !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($reelIndex));
+  // optional string currOptUserId = 3;
+  let $currOptUserId = message.currOptUserId;
+  if ($currOptUserId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currOptUserId);
   }
 
-  // optional int32 controlSingleState = 4;
-  let $controlSingleState = message.controlSingleState;
-  if ($controlSingleState !== undefined) {
+  // optional int32 totalOptSeconds = 4;
+  let $totalOptSeconds = message.totalOptSeconds;
+  if ($totalOptSeconds !== undefined) {
     writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($controlSingleState));
+    writeVarint64(bb, intToLong($totalOptSeconds));
+  }
+
+  // optional int32 leftOptSeconds = 5;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int64 dealCardMilliseconds = 6;
+  let $dealCardMilliseconds = message.dealCardMilliseconds;
+  if ($dealCardMilliseconds !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, $dealCardMilliseconds);
+  }
+
+  // optional int32 leftPaiNum = 7;
+  let $leftPaiNum = message.leftPaiNum;
+  if ($leftPaiNum !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($leftPaiNum));
+  }
+
+  // optional string qiPai = 8;
+  let $qiPai = message.qiPai;
+  if ($qiPai !== undefined) {
+    writeVarint32(bb, 66);
+    writeString(bb, $qiPai);
+  }
+
+  // optional int32 turnType = 9;
+  let $turnType = message.turnType;
+  if ($turnType !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($turnType));
+  }
+
+  // repeated OddsInfoVO oddsInfoList = 10;
+  let array$oddsInfoList = message.oddsInfoList;
+  if (array$oddsInfoList !== undefined) {
+    for (let value of array$oddsInfoList) {
+      writeVarint32(bb, 82);
+      let nested = popByteBuffer();
+      _encodeOddsInfoVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated JMWinVO gameResultList = 11;
+  let array$gameResultList = message.gameResultList;
+  if (array$gameResultList !== undefined) {
+    for (let value of array$gameResultList) {
+      writeVarint32(bb, 90);
+      let nested = popByteBuffer();
+      _encodeJMWinVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
   }
 }
 
-export function decodeRedYellowBlueWinDto(binary: Uint8Array): RedYellowBlueWinDto {
-  return _decodeRedYellowBlueWinDto(wrapByteBuffer(binary));
+export function decodeJMGameInfoVO(binary: Uint8Array): JMGameInfoVO {
+  return _decodeJMGameInfoVO(wrapByteBuffer(binary));
 }
 
-function _decodeRedYellowBlueWinDto(bb: ByteBuffer): RedYellowBlueWinDto {
-  let message: RedYellowBlueWinDto = {} as any;
+function _decodeJMGameInfoVO(bb: ByteBuffer): JMGameInfoVO {
+  let message: JMGameInfoVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -2482,21 +1964,69 @@ function _decodeRedYellowBlueWinDto(bb: ByteBuffer): RedYellowBlueWinDto {
         break;
       }
 
-      // optional int32 id = 2;
+      // optional string bankerId = 2;
       case 2: {
-        message.id = readVarint32(bb);
+        message.bankerId = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional int32 reelIndex = 3;
+      // optional string currOptUserId = 3;
       case 3: {
-        message.reelIndex = readVarint32(bb);
+        message.currOptUserId = readString(bb, readVarint32(bb));
         break;
       }
 
-      // optional int32 controlSingleState = 4;
+      // optional int32 totalOptSeconds = 4;
       case 4: {
-        message.controlSingleState = readVarint32(bb);
+        message.totalOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 leftOptSeconds = 5;
+      case 5: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 dealCardMilliseconds = 6;
+      case 6: {
+        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 leftPaiNum = 7;
+      case 7: {
+        message.leftPaiNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string qiPai = 8;
+      case 8: {
+        message.qiPai = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 turnType = 9;
+      case 9: {
+        message.turnType = readVarint32(bb);
+        break;
+      }
+
+      // repeated OddsInfoVO oddsInfoList = 10;
+      case 10: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.oddsInfoList || (message.oddsInfoList = []);
+        values.push(_decodeOddsInfoVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated JMWinVO gameResultList = 11;
+      case 11: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.gameResultList || (message.gameResultList = []);
+        values.push(_decodeJMWinVO(bb));
+        bb.limit = limit;
         break;
       }
 
@@ -2508,19 +2038,238 @@ function _decodeRedYellowBlueWinDto(bb: ByteBuffer): RedYellowBlueWinDto {
   return message;
 }
 
-export interface RYBSendDrawMsgGameInfoVO {
+export interface NotifyLBDrawVO {
+  notifyType?: number;
+  playerResult?: number;
+  gameInfo?: NotifyLBDrawGameInfoVO;
+  userInfoList?: RoomUserVO[];
+  gameResult?: LBWinVO;
+}
+
+export function encodeNotifyLBDrawVO(message: NotifyLBDrawVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyLBDrawVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyLBDrawVO(message: NotifyLBDrawVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional int32 playerResult = 2;
+  let $playerResult = message.playerResult;
+  if ($playerResult !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($playerResult));
+  }
+
+  // optional NotifyLBDrawGameInfoVO gameInfo = 3;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeNotifyLBDrawGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated RoomUserVO userInfoList = 4;
+  let array$userInfoList = message.userInfoList;
+  if (array$userInfoList !== undefined) {
+    for (let value of array$userInfoList) {
+      writeVarint32(bb, 34);
+      let nested = popByteBuffer();
+      _encodeRoomUserVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional LBWinVO gameResult = 5;
+  let $gameResult = message.gameResult;
+  if ($gameResult !== undefined) {
+    writeVarint32(bb, 42);
+    let nested = popByteBuffer();
+    _encodeLBWinVO($gameResult, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyLBDrawVO(binary: Uint8Array): NotifyLBDrawVO {
+  return _decodeNotifyLBDrawVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyLBDrawVO(bb: ByteBuffer): NotifyLBDrawVO {
+  let message: NotifyLBDrawVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 playerResult = 2;
+      case 2: {
+        message.playerResult = readVarint32(bb);
+        break;
+      }
+
+      // optional NotifyLBDrawGameInfoVO gameInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeNotifyLBDrawGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated RoomUserVO userInfoList = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.userInfoList || (message.userInfoList = []);
+        values.push(_decodeRoomUserVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional LBWinVO gameResult = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        message.gameResult = _decodeLBWinVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyLBBeginBetVO {
+  notifyType?: number;
+  lastMsgId?: string;
+  currMsgId?: string;
+  gameInfo?: LBGameInfoVO;
+}
+
+export function encodeNotifyLBBeginBetVO(message: NotifyLBBeginBetVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyLBBeginBetVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyLBBeginBetVO(message: NotifyLBBeginBetVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional string lastMsgId = 2;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 3;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional LBGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeLBGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyLBBeginBetVO(binary: Uint8Array): NotifyLBBeginBetVO {
+  return _decodeNotifyLBBeginBetVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyLBBeginBetVO(bb: ByteBuffer): NotifyLBBeginBetVO {
+  let message: NotifyLBBeginBetVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional string lastMsgId = 2;
+      case 2: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 3;
+      case 3: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional LBGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeLBGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyLDDrawGameInfoVO {
   leftOptSeconds?: number;
   gameNum?: number;
   onlinePlayers?: number;
 }
 
-export function encodeRYBSendDrawMsgGameInfoVO(message: RYBSendDrawMsgGameInfoVO): Uint8Array {
+export function encodeNotifyLDDrawGameInfoVO(message: NotifyLDDrawGameInfoVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeRYBSendDrawMsgGameInfoVO(message, bb);
+  _encodeNotifyLDDrawGameInfoVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeRYBSendDrawMsgGameInfoVO(message: RYBSendDrawMsgGameInfoVO, bb: ByteBuffer): void {
+function _encodeNotifyLDDrawGameInfoVO(message: NotifyLDDrawGameInfoVO, bb: ByteBuffer): void {
   // optional int32 leftOptSeconds = 1;
   let $leftOptSeconds = message.leftOptSeconds;
   if ($leftOptSeconds !== undefined) {
@@ -2543,12 +2292,12 @@ function _encodeRYBSendDrawMsgGameInfoVO(message: RYBSendDrawMsgGameInfoVO, bb: 
   }
 }
 
-export function decodeRYBSendDrawMsgGameInfoVO(binary: Uint8Array): RYBSendDrawMsgGameInfoVO {
-  return _decodeRYBSendDrawMsgGameInfoVO(wrapByteBuffer(binary));
+export function decodeNotifyLDDrawGameInfoVO(binary: Uint8Array): NotifyLDDrawGameInfoVO {
+  return _decodeNotifyLDDrawGameInfoVO(wrapByteBuffer(binary));
 }
 
-function _decodeRYBSendDrawMsgGameInfoVO(bb: ByteBuffer): RYBSendDrawMsgGameInfoVO {
-  let message: RYBSendDrawMsgGameInfoVO = {} as any;
+function _decodeNotifyLDDrawGameInfoVO(bb: ByteBuffer): NotifyLDDrawGameInfoVO {
+  let message: NotifyLDDrawGameInfoVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -2583,460 +2332,57 @@ function _decodeRYBSendDrawMsgGameInfoVO(bb: ByteBuffer): RYBSendDrawMsgGameInfo
   return message;
 }
 
-export interface RoomRecordParam {
-  page?: number;
-  gameType?: number;
-  dateType?: number;
-  winLost?: number;
-  userId?: string;
-  sessionId?: string;
-  s_deviceid?: string;
-  s_platform?: string;
-  ip?: string;
-  s_cid?: string;
-  media_id?: string;
-  utm_campaign?: string;
-  s_model?: string;
-  s_version?: string;
-  s_access?: string;
-  s_sWidth?: string;
-  s_carrier?: string;
-  s_osVersion?: string;
-  s_brand?: string;
-  s_sHeight?: string;
-  vipLevel?: number;
-  vipVp?: number;
-  totalPayment?: number;
-  userType?: number;
-  firstLoginTime?: string;
+export interface TPWOddsInfoVO {
+  betId?: number;
+  odds?: number;
+  luckyHitRate?: { [key: number]: number };
 }
 
-export function encodeRoomRecordParam(message: RoomRecordParam): Uint8Array {
+export function encodeTPWOddsInfoVO(message: TPWOddsInfoVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeRoomRecordParam(message, bb);
+  _encodeTPWOddsInfoVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeRoomRecordParam(message: RoomRecordParam, bb: ByteBuffer): void {
-  // optional int32 page = 1;
-  let $page = message.page;
-  if ($page !== undefined) {
+function _encodeTPWOddsInfoVO(message: TPWOddsInfoVO, bb: ByteBuffer): void {
+  // optional int32 betId = 1;
+  let $betId = message.betId;
+  if ($betId !== undefined) {
     writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($page));
+    writeVarint64(bb, intToLong($betId));
   }
 
-  // optional int32 gameType = 2;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($gameType));
+  // optional double odds = 2;
+  let $odds = message.odds;
+  if ($odds !== undefined) {
+    writeVarint32(bb, 17);
+    writeDouble(bb, $odds);
   }
 
-  // optional int32 dateType = 3;
-  let $dateType = message.dateType;
-  if ($dateType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($dateType));
-  }
-
-  // optional int32 winLost = 4;
-  let $winLost = message.winLost;
-  if ($winLost !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($winLost));
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional string sessionId = 6;
-  let $sessionId = message.sessionId;
-  if ($sessionId !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $sessionId);
-  }
-
-  // optional string s_deviceid = 7;
-  let $s_deviceid = message.s_deviceid;
-  if ($s_deviceid !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $s_deviceid);
-  }
-
-  // optional string s_platform = 8;
-  let $s_platform = message.s_platform;
-  if ($s_platform !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $s_platform);
-  }
-
-  // optional string ip = 9;
-  let $ip = message.ip;
-  if ($ip !== undefined) {
-    writeVarint32(bb, 74);
-    writeString(bb, $ip);
-  }
-
-  // optional string s_cid = 10;
-  let $s_cid = message.s_cid;
-  if ($s_cid !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $s_cid);
-  }
-
-  // optional string media_id = 11;
-  let $media_id = message.media_id;
-  if ($media_id !== undefined) {
-    writeVarint32(bb, 90);
-    writeString(bb, $media_id);
-  }
-
-  // optional string utm_campaign = 12;
-  let $utm_campaign = message.utm_campaign;
-  if ($utm_campaign !== undefined) {
-    writeVarint32(bb, 98);
-    writeString(bb, $utm_campaign);
-  }
-
-  // optional string s_model = 13;
-  let $s_model = message.s_model;
-  if ($s_model !== undefined) {
-    writeVarint32(bb, 106);
-    writeString(bb, $s_model);
-  }
-
-  // optional string s_version = 14;
-  let $s_version = message.s_version;
-  if ($s_version !== undefined) {
-    writeVarint32(bb, 114);
-    writeString(bb, $s_version);
-  }
-
-  // optional string s_access = 15;
-  let $s_access = message.s_access;
-  if ($s_access !== undefined) {
-    writeVarint32(bb, 122);
-    writeString(bb, $s_access);
-  }
-
-  // optional string s_sWidth = 16;
-  let $s_sWidth = message.s_sWidth;
-  if ($s_sWidth !== undefined) {
-    writeVarint32(bb, 130);
-    writeString(bb, $s_sWidth);
-  }
-
-  // optional string s_carrier = 17;
-  let $s_carrier = message.s_carrier;
-  if ($s_carrier !== undefined) {
-    writeVarint32(bb, 138);
-    writeString(bb, $s_carrier);
-  }
-
-  // optional string s_osVersion = 18;
-  let $s_osVersion = message.s_osVersion;
-  if ($s_osVersion !== undefined) {
-    writeVarint32(bb, 146);
-    writeString(bb, $s_osVersion);
-  }
-
-  // optional string s_brand = 19;
-  let $s_brand = message.s_brand;
-  if ($s_brand !== undefined) {
-    writeVarint32(bb, 154);
-    writeString(bb, $s_brand);
-  }
-
-  // optional string s_sHeight = 20;
-  let $s_sHeight = message.s_sHeight;
-  if ($s_sHeight !== undefined) {
-    writeVarint32(bb, 162);
-    writeString(bb, $s_sHeight);
-  }
-
-  // optional int32 vipLevel = 21;
-  let $vipLevel = message.vipLevel;
-  if ($vipLevel !== undefined) {
-    writeVarint32(bb, 168);
-    writeVarint64(bb, intToLong($vipLevel));
-  }
-
-  // optional int32 vipVp = 22;
-  let $vipVp = message.vipVp;
-  if ($vipVp !== undefined) {
-    writeVarint32(bb, 176);
-    writeVarint64(bb, intToLong($vipVp));
-  }
-
-  // optional int32 totalPayment = 23;
-  let $totalPayment = message.totalPayment;
-  if ($totalPayment !== undefined) {
-    writeVarint32(bb, 184);
-    writeVarint64(bb, intToLong($totalPayment));
-  }
-
-  // optional int32 userType = 24;
-  let $userType = message.userType;
-  if ($userType !== undefined) {
-    writeVarint32(bb, 192);
-    writeVarint64(bb, intToLong($userType));
-  }
-
-  // optional string firstLoginTime = 25;
-  let $firstLoginTime = message.firstLoginTime;
-  if ($firstLoginTime !== undefined) {
-    writeVarint32(bb, 202);
-    writeString(bb, $firstLoginTime);
-  }
-}
-
-export function decodeRoomRecordParam(binary: Uint8Array): RoomRecordParam {
-  return _decodeRoomRecordParam(wrapByteBuffer(binary));
-}
-
-function _decodeRoomRecordParam(bb: ByteBuffer): RoomRecordParam {
-  let message: RoomRecordParam = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 page = 1;
-      case 1: {
-        message.page = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 gameType = 2;
-      case 2: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 dateType = 3;
-      case 3: {
-        message.dateType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 winLost = 4;
-      case 4: {
-        message.winLost = readVarint32(bb);
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string sessionId = 6;
-      case 6: {
-        message.sessionId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_deviceid = 7;
-      case 7: {
-        message.s_deviceid = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_platform = 8;
-      case 8: {
-        message.s_platform = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string ip = 9;
-      case 9: {
-        message.ip = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_cid = 10;
-      case 10: {
-        message.s_cid = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string media_id = 11;
-      case 11: {
-        message.media_id = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string utm_campaign = 12;
-      case 12: {
-        message.utm_campaign = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_model = 13;
-      case 13: {
-        message.s_model = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_version = 14;
-      case 14: {
-        message.s_version = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_access = 15;
-      case 15: {
-        message.s_access = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_sWidth = 16;
-      case 16: {
-        message.s_sWidth = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_carrier = 17;
-      case 17: {
-        message.s_carrier = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_osVersion = 18;
-      case 18: {
-        message.s_osVersion = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_brand = 19;
-      case 19: {
-        message.s_brand = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_sHeight = 20;
-      case 20: {
-        message.s_sHeight = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 vipLevel = 21;
-      case 21: {
-        message.vipLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 vipVp = 22;
-      case 22: {
-        message.vipVp = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 totalPayment = 23;
-      case 23: {
-        message.totalPayment = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 userType = 24;
-      case 24: {
-        message.userType = readVarint32(bb);
-        break;
-      }
-
-      // optional string firstLoginTime = 25;
-      case 25: {
-        message.firstLoginTime = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LDSendDrawMsgVO {
-  notifyType?: number;
-  playerResult?: number;
-  gameInfo?: LDSendDrawMsgGameInfoVO;
-  userInfoList?: RoomUserVo[];
-  gameResult?: LuckyDiceWinDto;
-}
-
-export function encodeLDSendDrawMsgVO(message: LDSendDrawMsgVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLDSendDrawMsgVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLDSendDrawMsgVO(message: LDSendDrawMsgVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional int32 playerResult = 2;
-  let $playerResult = message.playerResult;
-  if ($playerResult !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($playerResult));
-  }
-
-  // optional LDSendDrawMsgGameInfoVO gameInfo = 3;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeLDSendDrawMsgGameInfoVO($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomUserVo userInfoList = 4;
-  let array$userInfoList = message.userInfoList;
-  if (array$userInfoList !== undefined) {
-    for (let value of array$userInfoList) {
-      writeVarint32(bb, 34);
+  // optional map<int32, int32> luckyHitRate = 3;
+  let map$luckyHitRate = message.luckyHitRate;
+  if (map$luckyHitRate !== undefined) {
+    for (let key in map$luckyHitRate) {
       let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
-      writeVarint32(bb, nested.limit);
+      let value = map$luckyHitRate[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, intToLong(value));
+      writeVarint32(bb, 26);
+      writeVarint32(bb, nested.offset);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
   }
-
-  // optional LuckyDiceWinDto gameResult = 5;
-  let $gameResult = message.gameResult;
-  if ($gameResult !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeLuckyDiceWinDto($gameResult, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
 }
 
-export function decodeLDSendDrawMsgVO(binary: Uint8Array): LDSendDrawMsgVO {
-  return _decodeLDSendDrawMsgVO(wrapByteBuffer(binary));
+export function decodeTPWOddsInfoVO(binary: Uint8Array): TPWOddsInfoVO {
+  return _decodeTPWOddsInfoVO(wrapByteBuffer(binary));
 }
 
-function _decodeLDSendDrawMsgVO(bb: ByteBuffer): LDSendDrawMsgVO {
-  let message: LDSendDrawMsgVO = {} as any;
+function _decodeTPWOddsInfoVO(bb: ByteBuffer): TPWOddsInfoVO {
+  let message: TPWOddsInfoVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -3045,40 +2391,45 @@ function _decodeLDSendDrawMsgVO(bb: ByteBuffer): LDSendDrawMsgVO {
       case 0:
         break end_of_message;
 
-      // optional int32 notifyType = 1;
+      // optional int32 betId = 1;
       case 1: {
-        message.notifyType = readVarint32(bb);
+        message.betId = readVarint32(bb);
         break;
       }
 
-      // optional int32 playerResult = 2;
+      // optional double odds = 2;
       case 2: {
-        message.playerResult = readVarint32(bb);
+        message.odds = readDouble(bb);
         break;
       }
 
-      // optional LDSendDrawMsgGameInfoVO gameInfo = 3;
+      // optional map<int32, int32> luckyHitRate = 3;
       case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeLDSendDrawMsgGameInfoVO(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserVo userInfoList = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.userInfoList || (message.userInfoList = []);
-        values.push(_decodeRoomUserVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional LuckyDiceWinDto gameResult = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.gameResult = _decodeLuckyDiceWinDto(bb);
-        bb.limit = limit;
+        let values = message.luckyHitRate || (message.luckyHitRate = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: number | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint32(bb);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: luckyHitRate");
+        values[key] = value;
+        bb.limit = outerLimit;
         break;
       }
 
@@ -3090,25 +2441,25 @@ function _decodeLDSendDrawMsgVO(bb: ByteBuffer): LDSendDrawMsgVO {
   return message;
 }
 
-export interface LBDoEnterRoomVO {
+export interface ResponseRYBEnterRoomVO {
   lastMsgId?: string;
   currMsgId?: string;
-  roomInfo?: LuckyBallRoomInfoVo;
-  gameInfo?: LuckyBallGameInfoVo;
+  roomInfo?: RoomInfoVO;
+  gameInfo?: RYBGameInfoVO;
+  betList?: PointBetCoinsVO[];
   betCoinMap?: { [key: number]: Long };
-  betList?: PointBetCoinsNotifyVo[];
   betSelfCoinMap?: { [key: number]: Long };
   betCoinList?: Long[];
   onlinePlayers?: number;
 }
 
-export function encodeLBDoEnterRoomVO(message: LBDoEnterRoomVO): Uint8Array {
+export function encodeResponseRYBEnterRoomVO(message: ResponseRYBEnterRoomVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeLBDoEnterRoomVO(message, bb);
+  _encodeResponseRYBEnterRoomVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeLBDoEnterRoomVO(message: LBDoEnterRoomVO, bb: ByteBuffer): void {
+function _encodeResponseRYBEnterRoomVO(message: ResponseRYBEnterRoomVO, bb: ByteBuffer): void {
   // optional string lastMsgId = 1;
   let $lastMsgId = message.lastMsgId;
   if ($lastMsgId !== undefined) {
@@ -3123,29 +2474,42 @@ function _encodeLBDoEnterRoomVO(message: LBDoEnterRoomVO, bb: ByteBuffer): void 
     writeString(bb, $currMsgId);
   }
 
-  // optional LuckyBallRoomInfoVo roomInfo = 3;
+  // optional RoomInfoVO roomInfo = 3;
   let $roomInfo = message.roomInfo;
   if ($roomInfo !== undefined) {
     writeVarint32(bb, 26);
     let nested = popByteBuffer();
-    _encodeLuckyBallRoomInfoVo($roomInfo, nested);
+    _encodeRoomInfoVO($roomInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 
-  // optional LuckyBallGameInfoVo gameInfo = 4;
+  // optional RYBGameInfoVO gameInfo = 4;
   let $gameInfo = message.gameInfo;
   if ($gameInfo !== undefined) {
     writeVarint32(bb, 34);
     let nested = popByteBuffer();
-    _encodeLuckyBallGameInfoVo($gameInfo, nested);
+    _encodeRYBGameInfoVO($gameInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 
-  // optional map<int32, int64> betCoinMap = 5;
+  // repeated PointBetCoinsVO betList = 5;
+  let array$betList = message.betList;
+  if (array$betList !== undefined) {
+    for (let value of array$betList) {
+      writeVarint32(bb, 42);
+      let nested = popByteBuffer();
+      _encodePointBetCoinsVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betCoinMap = 6;
   let map$betCoinMap = message.betCoinMap;
   if (map$betCoinMap !== undefined) {
     for (let key in map$betCoinMap) {
@@ -3155,21 +2519,8 @@ function _encodeLBDoEnterRoomVO(message: LBDoEnterRoomVO, bb: ByteBuffer): void 
       writeVarint64(nested, intToLong(+key));
       writeVarint32(nested, 16);
       writeVarint64(nested, value);
-      writeVarint32(bb, 42);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated PointBetCoinsNotifyVo betList = 6;
-  let array$betList = message.betList;
-  if (array$betList !== undefined) {
-    for (let value of array$betList) {
       writeVarint32(bb, 50);
-      let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
-      writeVarint32(bb, nested.limit);
+      writeVarint32(bb, nested.offset);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
@@ -3213,12 +2564,12 @@ function _encodeLBDoEnterRoomVO(message: LBDoEnterRoomVO, bb: ByteBuffer): void 
   }
 }
 
-export function decodeLBDoEnterRoomVO(binary: Uint8Array): LBDoEnterRoomVO {
-  return _decodeLBDoEnterRoomVO(wrapByteBuffer(binary));
+export function decodeResponseRYBEnterRoomVO(binary: Uint8Array): ResponseRYBEnterRoomVO {
+  return _decodeResponseRYBEnterRoomVO(wrapByteBuffer(binary));
 }
 
-function _decodeLBDoEnterRoomVO(bb: ByteBuffer): LBDoEnterRoomVO {
-  let message: LBDoEnterRoomVO = {} as any;
+function _decodeResponseRYBEnterRoomVO(bb: ByteBuffer): ResponseRYBEnterRoomVO {
+  let message: ResponseRYBEnterRoomVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -3239,24 +2590,33 @@ function _decodeLBDoEnterRoomVO(bb: ByteBuffer): LBDoEnterRoomVO {
         break;
       }
 
-      // optional LuckyBallRoomInfoVo roomInfo = 3;
+      // optional RoomInfoVO roomInfo = 3;
       case 3: {
         let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodeLuckyBallRoomInfoVo(bb);
+        message.roomInfo = _decodeRoomInfoVO(bb);
         bb.limit = limit;
         break;
       }
 
-      // optional LuckyBallGameInfoVo gameInfo = 4;
+      // optional RYBGameInfoVO gameInfo = 4;
       case 4: {
         let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeLuckyBallGameInfoVo(bb);
+        message.gameInfo = _decodeRYBGameInfoVO(bb);
         bb.limit = limit;
         break;
       }
 
-      // optional map<int32, int64> betCoinMap = 5;
+      // repeated PointBetCoinsVO betList = 5;
       case 5: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.betList || (message.betList = []);
+        values.push(_decodePointBetCoinsVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional map<int32, int64> betCoinMap = 6;
+      case 6: {
         let values = message.betCoinMap || (message.betCoinMap = {});
         let outerLimit = pushTemporaryLength(bb);
         let key: number | undefined;
@@ -3282,15 +2642,6 @@ function _decodeLBDoEnterRoomVO(bb: ByteBuffer): LBDoEnterRoomVO {
           throw new Error("Invalid data for map: betCoinMap");
         values[key] = value;
         bb.limit = outerLimit;
-        break;
-      }
-
-      // repeated PointBetCoinsNotifyVo betList = 6;
-      case 6: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
-        bb.limit = limit;
         break;
       }
 
@@ -3353,518 +2704,19 @@ function _decodeLBDoEnterRoomVO(bb: ByteBuffer): LBDoEnterRoomVO {
   return message;
 }
 
-export interface JhandiMundaWinIdRateDto {
-  id?: number;
-  rate?: number;
-  count?: number;
-}
-
-export function encodeJhandiMundaWinIdRateDto(message: JhandiMundaWinIdRateDto): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeJhandiMundaWinIdRateDto(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeJhandiMundaWinIdRateDto(message: JhandiMundaWinIdRateDto, bb: ByteBuffer): void {
-  // optional int32 id = 1;
-  let $id = message.id;
-  if ($id !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($id));
-  }
-
-  // optional double rate = 2;
-  let $rate = message.rate;
-  if ($rate !== undefined) {
-    writeVarint32(bb, 17);
-    writeDouble(bb, $rate);
-  }
-
-  // optional int32 count = 3;
-  let $count = message.count;
-  if ($count !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($count));
-  }
-}
-
-export function decodeJhandiMundaWinIdRateDto(binary: Uint8Array): JhandiMundaWinIdRateDto {
-  return _decodeJhandiMundaWinIdRateDto(wrapByteBuffer(binary));
-}
-
-function _decodeJhandiMundaWinIdRateDto(bb: ByteBuffer): JhandiMundaWinIdRateDto {
-  let message: JhandiMundaWinIdRateDto = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 id = 1;
-      case 1: {
-        message.id = readVarint32(bb);
-        break;
-      }
-
-      // optional double rate = 2;
-      case 2: {
-        message.rate = readDouble(bb);
-        break;
-      }
-
-      // optional int32 count = 3;
-      case 3: {
-        message.count = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface DTBeginBetVO {
-  notifyType?: number;
-  lastMsgId?: string;
-  currMsgId?: string;
-  gameInfo?: DragonAndTigerGameInfoVo;
-}
-
-export function encodeDTBeginBetVO(message: DTBeginBetVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDTBeginBetVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDTBeginBetVO(message: DTBeginBetVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional string lastMsgId = 2;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 3;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional DragonAndTigerGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeDragonAndTigerGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeDTBeginBetVO(binary: Uint8Array): DTBeginBetVO {
-  return _decodeDTBeginBetVO(wrapByteBuffer(binary));
-}
-
-function _decodeDTBeginBetVO(bb: ByteBuffer): DTBeginBetVO {
-  let message: DTBeginBetVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional string lastMsgId = 2;
-      case 2: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 3;
-      case 3: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional DragonAndTigerGameInfoVo gameInfo = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeDragonAndTigerGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface Dice3GameInfoVo {
-  OddsInfoList?: OddsInfoVo[];
-  gameResultList?: Dice3WinDto[];
-  gameNum?: number;
-  bankerId?: string;
-  currOptUserId?: string;
-  totalOptSeconds?: number;
-  leftOptSeconds?: number;
-  dealCardMilliseconds?: Long;
-  leftPaiNum?: number;
-  qiPai?: string;
-  turnType?: number;
-}
-
-export function encodeDice3GameInfoVo(message: Dice3GameInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDice3GameInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDice3GameInfoVo(message: Dice3GameInfoVo, bb: ByteBuffer): void {
-  // repeated OddsInfoVo OddsInfoList = 1;
-  let array$OddsInfoList = message.OddsInfoList;
-  if (array$OddsInfoList !== undefined) {
-    for (let value of array$OddsInfoList) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeOddsInfoVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated Dice3WinDto gameResultList = 2;
-  let array$gameResultList = message.gameResultList;
-  if (array$gameResultList !== undefined) {
-    for (let value of array$gameResultList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeDice3WinDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameNum = 3;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional string bankerId = 4;
-  let $bankerId = message.bankerId;
-  if ($bankerId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $bankerId);
-  }
-
-  // optional string currOptUserId = 5;
-  let $currOptUserId = message.currOptUserId;
-  if ($currOptUserId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $currOptUserId);
-  }
-
-  // optional int32 totalOptSeconds = 6;
-  let $totalOptSeconds = message.totalOptSeconds;
-  if ($totalOptSeconds !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($totalOptSeconds));
-  }
-
-  // optional int32 leftOptSeconds = 7;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int64 dealCardMilliseconds = 8;
-  let $dealCardMilliseconds = message.dealCardMilliseconds;
-  if ($dealCardMilliseconds !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $dealCardMilliseconds);
-  }
-
-  // optional int32 leftPaiNum = 9;
-  let $leftPaiNum = message.leftPaiNum;
-  if ($leftPaiNum !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($leftPaiNum));
-  }
-
-  // optional string qiPai = 10;
-  let $qiPai = message.qiPai;
-  if ($qiPai !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $qiPai);
-  }
-
-  // optional int32 turnType = 11;
-  let $turnType = message.turnType;
-  if ($turnType !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($turnType));
-  }
-}
-
-export function decodeDice3GameInfoVo(binary: Uint8Array): Dice3GameInfoVo {
-  return _decodeDice3GameInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeDice3GameInfoVo(bb: ByteBuffer): Dice3GameInfoVo {
-  let message: Dice3GameInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated OddsInfoVo OddsInfoList = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.OddsInfoList || (message.OddsInfoList = []);
-        values.push(_decodeOddsInfoVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated Dice3WinDto gameResultList = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.gameResultList || (message.gameResultList = []);
-        values.push(_decodeDice3WinDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 gameNum = 3;
-      case 3: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string bankerId = 4;
-      case 4: {
-        message.bankerId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currOptUserId = 5;
-      case 5: {
-        message.currOptUserId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 totalOptSeconds = 6;
-      case 6: {
-        message.totalOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 leftOptSeconds = 7;
-      case 7: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 dealCardMilliseconds = 8;
-      case 8: {
-        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 leftPaiNum = 9;
-      case 9: {
-        message.leftPaiNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string qiPai = 10;
-      case 10: {
-        message.qiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 turnType = 11;
-      case 11: {
-        message.turnType = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LBSendDrawMsgVO {
-  notifyType?: number;
-  playerResult?: number;
-  gameInfo?: LBSendDrawMsgGameInfoVO;
-  userInfoList?: RoomUserVo[];
-  gameResult?: LuckyBallWinDto;
-}
-
-export function encodeLBSendDrawMsgVO(message: LBSendDrawMsgVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLBSendDrawMsgVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLBSendDrawMsgVO(message: LBSendDrawMsgVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional int32 playerResult = 2;
-  let $playerResult = message.playerResult;
-  if ($playerResult !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($playerResult));
-  }
-
-  // optional LBSendDrawMsgGameInfoVO gameInfo = 3;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeLBSendDrawMsgGameInfoVO($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomUserVo userInfoList = 4;
-  let array$userInfoList = message.userInfoList;
-  if (array$userInfoList !== undefined) {
-    for (let value of array$userInfoList) {
-      writeVarint32(bb, 34);
-      let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional LuckyBallWinDto gameResult = 5;
-  let $gameResult = message.gameResult;
-  if ($gameResult !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeLuckyBallWinDto($gameResult, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeLBSendDrawMsgVO(binary: Uint8Array): LBSendDrawMsgVO {
-  return _decodeLBSendDrawMsgVO(wrapByteBuffer(binary));
-}
-
-function _decodeLBSendDrawMsgVO(bb: ByteBuffer): LBSendDrawMsgVO {
-  let message: LBSendDrawMsgVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 playerResult = 2;
-      case 2: {
-        message.playerResult = readVarint32(bb);
-        break;
-      }
-
-      // optional LBSendDrawMsgGameInfoVO gameInfo = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeLBSendDrawMsgGameInfoVO(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserVo userInfoList = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.userInfoList || (message.userInfoList = []);
-        values.push(_decodeRoomUserVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional LuckyBallWinDto gameResult = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.gameResult = _decodeLuckyBallWinDto(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface TPSendDrawMsgGameInfoVO {
+export interface NotifyPKDrawGameInfoVO {
   leftOptSeconds?: number;
   gameNum?: number;
   onlinePlayers?: number;
 }
 
-export function encodeTPSendDrawMsgGameInfoVO(message: TPSendDrawMsgGameInfoVO): Uint8Array {
+export function encodeNotifyPKDrawGameInfoVO(message: NotifyPKDrawGameInfoVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeTPSendDrawMsgGameInfoVO(message, bb);
+  _encodeNotifyPKDrawGameInfoVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeTPSendDrawMsgGameInfoVO(message: TPSendDrawMsgGameInfoVO, bb: ByteBuffer): void {
+function _encodeNotifyPKDrawGameInfoVO(message: NotifyPKDrawGameInfoVO, bb: ByteBuffer): void {
   // optional int32 leftOptSeconds = 1;
   let $leftOptSeconds = message.leftOptSeconds;
   if ($leftOptSeconds !== undefined) {
@@ -3887,12 +2739,12 @@ function _encodeTPSendDrawMsgGameInfoVO(message: TPSendDrawMsgGameInfoVO, bb: By
   }
 }
 
-export function decodeTPSendDrawMsgGameInfoVO(binary: Uint8Array): TPSendDrawMsgGameInfoVO {
-  return _decodeTPSendDrawMsgGameInfoVO(wrapByteBuffer(binary));
+export function decodeNotifyPKDrawGameInfoVO(binary: Uint8Array): NotifyPKDrawGameInfoVO {
+  return _decodeNotifyPKDrawGameInfoVO(wrapByteBuffer(binary));
 }
 
-function _decodeTPSendDrawMsgGameInfoVO(bb: ByteBuffer): TPSendDrawMsgGameInfoVO {
-  let message: TPSendDrawMsgGameInfoVO = {} as any;
+function _decodeNotifyPKDrawGameInfoVO(bb: ByteBuffer): NotifyPKDrawGameInfoVO {
+  let message: NotifyPKDrawGameInfoVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -3927,7 +2779,1765 @@ function _decodeTPSendDrawMsgGameInfoVO(bb: ByteBuffer): TPSendDrawMsgGameInfoVO
   return message;
 }
 
-export interface RoomUserDto {
+export interface DTWinUserVO {
+  gameNum?: number;
+  dragon?: DTPokerResultVO;
+  tiger?: DTPokerResultVO;
+  battleIdEnum?: number;
+}
+
+export function encodeDTWinUserVO(message: DTWinUserVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeDTWinUserVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeDTWinUserVO(message: DTWinUserVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional DTPokerResultVO dragon = 2;
+  let $dragon = message.dragon;
+  if ($dragon !== undefined) {
+    writeVarint32(bb, 18);
+    let nested = popByteBuffer();
+    _encodeDTPokerResultVO($dragon, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // optional DTPokerResultVO tiger = 3;
+  let $tiger = message.tiger;
+  if ($tiger !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeDTPokerResultVO($tiger, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // optional int32 battleIdEnum = 4;
+  let $battleIdEnum = message.battleIdEnum;
+  if ($battleIdEnum !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($battleIdEnum));
+  }
+}
+
+export function decodeDTWinUserVO(binary: Uint8Array): DTWinUserVO {
+  return _decodeDTWinUserVO(wrapByteBuffer(binary));
+}
+
+function _decodeDTWinUserVO(bb: ByteBuffer): DTWinUserVO {
+  let message: DTWinUserVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 gameNum = 1;
+      case 1: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional DTPokerResultVO dragon = 2;
+      case 2: {
+        let limit = pushTemporaryLength(bb);
+        message.dragon = _decodeDTPokerResultVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // optional DTPokerResultVO tiger = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.tiger = _decodeDTPokerResultVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // optional int32 battleIdEnum = 4;
+      case 4: {
+        message.battleIdEnum = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyDTWinnerVO {
+  userId?: string;
+  nickName?: string;
+  portrait?: string;
+  vipLevel?: number;
+  winCoins?: Long;
+}
+
+export function encodeNotifyDTWinnerVO(message: NotifyDTWinnerVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyDTWinnerVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyDTWinnerVO(message: NotifyDTWinnerVO, bb: ByteBuffer): void {
+  // optional string userId = 1;
+  let $userId = message.userId;
+  if ($userId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $userId);
+  }
+
+  // optional string nickName = 2;
+  let $nickName = message.nickName;
+  if ($nickName !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $nickName);
+  }
+
+  // optional string portrait = 3;
+  let $portrait = message.portrait;
+  if ($portrait !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $portrait);
+  }
+
+  // optional int32 vipLevel = 4;
+  let $vipLevel = message.vipLevel;
+  if ($vipLevel !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($vipLevel));
+  }
+
+  // optional int64 winCoins = 5;
+  let $winCoins = message.winCoins;
+  if ($winCoins !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, $winCoins);
+  }
+}
+
+export function decodeNotifyDTWinnerVO(binary: Uint8Array): NotifyDTWinnerVO {
+  return _decodeNotifyDTWinnerVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyDTWinnerVO(bb: ByteBuffer): NotifyDTWinnerVO {
+  let message: NotifyDTWinnerVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string userId = 1;
+      case 1: {
+        message.userId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string nickName = 2;
+      case 2: {
+        message.nickName = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string portrait = 3;
+      case 3: {
+        message.portrait = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 vipLevel = 4;
+      case 4: {
+        message.vipLevel = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 winCoins = 5;
+      case 5: {
+        message.winCoins = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LDGameInfoVO {
+  gameNum?: number;
+  bankerId?: string;
+  currOptUserId?: string;
+  totalOptSeconds?: number;
+  leftOptSeconds?: number;
+  dealCardMilliseconds?: Long;
+  leftPaiNum?: number;
+  qiPai?: string;
+  turnType?: number;
+  oddsInfoList?: OddsInfoVO[];
+  gameResultList?: LDWinVO[];
+}
+
+export function encodeLDGameInfoVO(message: LDGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLDGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLDGameInfoVO(message: LDGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional string bankerId = 2;
+  let $bankerId = message.bankerId;
+  if ($bankerId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $bankerId);
+  }
+
+  // optional string currOptUserId = 3;
+  let $currOptUserId = message.currOptUserId;
+  if ($currOptUserId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currOptUserId);
+  }
+
+  // optional int32 totalOptSeconds = 4;
+  let $totalOptSeconds = message.totalOptSeconds;
+  if ($totalOptSeconds !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($totalOptSeconds));
+  }
+
+  // optional int32 leftOptSeconds = 5;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int64 dealCardMilliseconds = 6;
+  let $dealCardMilliseconds = message.dealCardMilliseconds;
+  if ($dealCardMilliseconds !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, $dealCardMilliseconds);
+  }
+
+  // optional int32 leftPaiNum = 7;
+  let $leftPaiNum = message.leftPaiNum;
+  if ($leftPaiNum !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($leftPaiNum));
+  }
+
+  // optional string qiPai = 8;
+  let $qiPai = message.qiPai;
+  if ($qiPai !== undefined) {
+    writeVarint32(bb, 66);
+    writeString(bb, $qiPai);
+  }
+
+  // optional int32 turnType = 9;
+  let $turnType = message.turnType;
+  if ($turnType !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($turnType));
+  }
+
+  // repeated OddsInfoVO oddsInfoList = 10;
+  let array$oddsInfoList = message.oddsInfoList;
+  if (array$oddsInfoList !== undefined) {
+    for (let value of array$oddsInfoList) {
+      writeVarint32(bb, 82);
+      let nested = popByteBuffer();
+      _encodeOddsInfoVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated LDWinVO gameResultList = 11;
+  let array$gameResultList = message.gameResultList;
+  if (array$gameResultList !== undefined) {
+    for (let value of array$gameResultList) {
+      writeVarint32(bb, 90);
+      let nested = popByteBuffer();
+      _encodeLDWinVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeLDGameInfoVO(binary: Uint8Array): LDGameInfoVO {
+  return _decodeLDGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeLDGameInfoVO(bb: ByteBuffer): LDGameInfoVO {
+  let message: LDGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 gameNum = 1;
+      case 1: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string bankerId = 2;
+      case 2: {
+        message.bankerId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currOptUserId = 3;
+      case 3: {
+        message.currOptUserId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 totalOptSeconds = 4;
+      case 4: {
+        message.totalOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 leftOptSeconds = 5;
+      case 5: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 dealCardMilliseconds = 6;
+      case 6: {
+        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 leftPaiNum = 7;
+      case 7: {
+        message.leftPaiNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string qiPai = 8;
+      case 8: {
+        message.qiPai = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 turnType = 9;
+      case 9: {
+        message.turnType = readVarint32(bb);
+        break;
+      }
+
+      // repeated OddsInfoVO oddsInfoList = 10;
+      case 10: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.oddsInfoList || (message.oddsInfoList = []);
+        values.push(_decodeOddsInfoVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated LDWinVO gameResultList = 11;
+      case 11: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.gameResultList || (message.gameResultList = []);
+        values.push(_decodeLDWinVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponseRoomPageRecordVO {
+  total?: Long;
+  records?: ResponseRoomRecordVO[];
+}
+
+export function encodeResponseRoomPageRecordVO(message: ResponseRoomPageRecordVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeResponseRoomPageRecordVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeResponseRoomPageRecordVO(message: ResponseRoomPageRecordVO, bb: ByteBuffer): void {
+  // optional int64 total = 1;
+  let $total = message.total;
+  if ($total !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $total);
+  }
+
+  // repeated ResponseRoomRecordVO records = 2;
+  let array$records = message.records;
+  if (array$records !== undefined) {
+    for (let value of array$records) {
+      writeVarint32(bb, 18);
+      let nested = popByteBuffer();
+      _encodeResponseRoomRecordVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeResponseRoomPageRecordVO(binary: Uint8Array): ResponseRoomPageRecordVO {
+  return _decodeResponseRoomPageRecordVO(wrapByteBuffer(binary));
+}
+
+function _decodeResponseRoomPageRecordVO(bb: ByteBuffer): ResponseRoomPageRecordVO {
+  let message: ResponseRoomPageRecordVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 total = 1;
+      case 1: {
+        message.total = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // repeated ResponseRoomRecordVO records = 2;
+      case 2: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.records || (message.records = []);
+        values.push(_decodeResponseRoomRecordVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponseDTEnterRoomVO {
+  lastMsgId?: string;
+  currMsgId?: string;
+  roomInfo?: RoomInfoVO;
+  gameInfo?: DTGameInfoVO;
+  betList?: PointBetCoinsVO[];
+  betCoinMap?: { [key: number]: Long };
+  betSelfCoinMap?: { [key: number]: Long };
+  betCoinList?: Long[];
+  onlinePlayers?: number;
+}
+
+export function encodeResponseDTEnterRoomVO(message: ResponseDTEnterRoomVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeResponseDTEnterRoomVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeResponseDTEnterRoomVO(message: ResponseDTEnterRoomVO, bb: ByteBuffer): void {
+  // optional string lastMsgId = 1;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 2;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional RoomInfoVO roomInfo = 3;
+  let $roomInfo = message.roomInfo;
+  if ($roomInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeRoomInfoVO($roomInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // optional DTGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeDTGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated PointBetCoinsVO betList = 5;
+  let array$betList = message.betList;
+  if (array$betList !== undefined) {
+    for (let value of array$betList) {
+      writeVarint32(bb, 42);
+      let nested = popByteBuffer();
+      _encodePointBetCoinsVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betCoinMap = 6;
+  let map$betCoinMap = message.betCoinMap;
+  if (map$betCoinMap !== undefined) {
+    for (let key in map$betCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 50);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betSelfCoinMap = 7;
+  let map$betSelfCoinMap = message.betSelfCoinMap;
+  if (map$betSelfCoinMap !== undefined) {
+    for (let key in map$betSelfCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betSelfCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 58);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated int64 betCoinList = 8;
+  let array$betCoinList = message.betCoinList;
+  if (array$betCoinList !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$betCoinList) {
+      writeVarint64(packed, value);
+    }
+    writeVarint32(bb, 66);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+
+  // optional int32 onlinePlayers = 9;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeResponseDTEnterRoomVO(binary: Uint8Array): ResponseDTEnterRoomVO {
+  return _decodeResponseDTEnterRoomVO(wrapByteBuffer(binary));
+}
+
+function _decodeResponseDTEnterRoomVO(bb: ByteBuffer): ResponseDTEnterRoomVO {
+  let message: ResponseDTEnterRoomVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string lastMsgId = 1;
+      case 1: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 2;
+      case 2: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional RoomInfoVO roomInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.roomInfo = _decodeRoomInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // optional DTGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeDTGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated PointBetCoinsVO betList = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.betList || (message.betList = []);
+        values.push(_decodePointBetCoinsVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional map<int32, int64> betCoinMap = 6;
+      case 6: {
+        let values = message.betCoinMap || (message.betCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // optional map<int32, int64> betSelfCoinMap = 7;
+      case 7: {
+        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betSelfCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // repeated int64 betCoinList = 8;
+      case 8: {
+        let values = message.betCoinList || (message.betCoinList = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint64(bb, /* unsigned */ false));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint64(bb, /* unsigned */ false));
+        }
+        break;
+      }
+
+      // optional int32 onlinePlayers = 9;
+      case 9: {
+        message.onlinePlayers = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyLDBeginBetVO {
+  notifyType?: number;
+  lastMsgId?: string;
+  currMsgId?: string;
+  gameInfo?: LDGameInfoVO;
+}
+
+export function encodeNotifyLDBeginBetVO(message: NotifyLDBeginBetVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyLDBeginBetVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyLDBeginBetVO(message: NotifyLDBeginBetVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional string lastMsgId = 2;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 3;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional LDGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeLDGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyLDBeginBetVO(binary: Uint8Array): NotifyLDBeginBetVO {
+  return _decodeNotifyLDBeginBetVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyLDBeginBetVO(bb: ByteBuffer): NotifyLDBeginBetVO {
+  let message: NotifyLDBeginBetVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional string lastMsgId = 2;
+      case 2: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 3;
+      case 3: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional LDGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeLDGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface RYBGameInfoVO {
+  gameNum?: number;
+  bankerId?: string;
+  currOptUserId?: string;
+  totalOptSeconds?: number;
+  leftOptSeconds?: number;
+  dealCardMilliseconds?: Long;
+  leftPaiNum?: number;
+  qiPai?: string;
+  turnType?: number;
+  OddsInfoList?: OddsInfoVO[];
+  gameResultList?: RYBWinVO[];
+}
+
+export function encodeRYBGameInfoVO(message: RYBGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeRYBGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeRYBGameInfoVO(message: RYBGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional string bankerId = 2;
+  let $bankerId = message.bankerId;
+  if ($bankerId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $bankerId);
+  }
+
+  // optional string currOptUserId = 3;
+  let $currOptUserId = message.currOptUserId;
+  if ($currOptUserId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currOptUserId);
+  }
+
+  // optional int32 totalOptSeconds = 4;
+  let $totalOptSeconds = message.totalOptSeconds;
+  if ($totalOptSeconds !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($totalOptSeconds));
+  }
+
+  // optional int32 leftOptSeconds = 5;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int64 dealCardMilliseconds = 6;
+  let $dealCardMilliseconds = message.dealCardMilliseconds;
+  if ($dealCardMilliseconds !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, $dealCardMilliseconds);
+  }
+
+  // optional int32 leftPaiNum = 7;
+  let $leftPaiNum = message.leftPaiNum;
+  if ($leftPaiNum !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($leftPaiNum));
+  }
+
+  // optional string qiPai = 8;
+  let $qiPai = message.qiPai;
+  if ($qiPai !== undefined) {
+    writeVarint32(bb, 66);
+    writeString(bb, $qiPai);
+  }
+
+  // optional int32 turnType = 9;
+  let $turnType = message.turnType;
+  if ($turnType !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($turnType));
+  }
+
+  // repeated OddsInfoVO OddsInfoList = 10;
+  let array$OddsInfoList = message.OddsInfoList;
+  if (array$OddsInfoList !== undefined) {
+    for (let value of array$OddsInfoList) {
+      writeVarint32(bb, 82);
+      let nested = popByteBuffer();
+      _encodeOddsInfoVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated RYBWinVO gameResultList = 11;
+  let array$gameResultList = message.gameResultList;
+  if (array$gameResultList !== undefined) {
+    for (let value of array$gameResultList) {
+      writeVarint32(bb, 90);
+      let nested = popByteBuffer();
+      _encodeRYBWinVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeRYBGameInfoVO(binary: Uint8Array): RYBGameInfoVO {
+  return _decodeRYBGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeRYBGameInfoVO(bb: ByteBuffer): RYBGameInfoVO {
+  let message: RYBGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 gameNum = 1;
+      case 1: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string bankerId = 2;
+      case 2: {
+        message.bankerId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currOptUserId = 3;
+      case 3: {
+        message.currOptUserId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 totalOptSeconds = 4;
+      case 4: {
+        message.totalOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 leftOptSeconds = 5;
+      case 5: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 dealCardMilliseconds = 6;
+      case 6: {
+        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 leftPaiNum = 7;
+      case 7: {
+        message.leftPaiNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string qiPai = 8;
+      case 8: {
+        message.qiPai = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 turnType = 9;
+      case 9: {
+        message.turnType = readVarint32(bb);
+        break;
+      }
+
+      // repeated OddsInfoVO OddsInfoList = 10;
+      case 10: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.OddsInfoList || (message.OddsInfoList = []);
+        values.push(_decodeOddsInfoVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated RYBWinVO gameResultList = 11;
+      case 11: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.gameResultList || (message.gameResultList = []);
+        values.push(_decodeRYBWinVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface RoomRecordDTO {
+  page?: number;
+  dateType?: number;
+  winLost?: number;
+}
+
+export function encodeRoomRecordDTO(message: RoomRecordDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeRoomRecordDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeRoomRecordDTO(message: RoomRecordDTO, bb: ByteBuffer): void {
+  // optional int32 page = 1;
+  let $page = message.page;
+  if ($page !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($page));
+  }
+
+  // optional int32 dateType = 2;
+  let $dateType = message.dateType;
+  if ($dateType !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($dateType));
+  }
+
+  // optional int32 winLost = 3;
+  let $winLost = message.winLost;
+  if ($winLost !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($winLost));
+  }
+}
+
+export function decodeRoomRecordDTO(binary: Uint8Array): RoomRecordDTO {
+  return _decodeRoomRecordDTO(wrapByteBuffer(binary));
+}
+
+function _decodeRoomRecordDTO(bb: ByteBuffer): RoomRecordDTO {
+  let message: RoomRecordDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 page = 1;
+      case 1: {
+        message.page = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 dateType = 2;
+      case 2: {
+        message.dateType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 winLost = 3;
+      case 3: {
+        message.winLost = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface OddsInfoVO {
+  betId?: number;
+  odds?: number;
+}
+
+export function encodeOddsInfoVO(message: OddsInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeOddsInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeOddsInfoVO(message: OddsInfoVO, bb: ByteBuffer): void {
+  // optional int32 betId = 1;
+  let $betId = message.betId;
+  if ($betId !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($betId));
+  }
+
+  // optional double odds = 2;
+  let $odds = message.odds;
+  if ($odds !== undefined) {
+    writeVarint32(bb, 17);
+    writeDouble(bb, $odds);
+  }
+}
+
+export function decodeOddsInfoVO(binary: Uint8Array): OddsInfoVO {
+  return _decodeOddsInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeOddsInfoVO(bb: ByteBuffer): OddsInfoVO {
+  let message: OddsInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 betId = 1;
+      case 1: {
+        message.betId = readVarint32(bb);
+        break;
+      }
+
+      // optional double odds = 2;
+      case 2: {
+        message.odds = readDouble(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyTPWDrawGameInfoVO {
+  leftOptSeconds?: number;
+  gameNum?: number;
+  onlinePlayers?: number;
+}
+
+export function encodeNotifyTPWDrawGameInfoVO(message: NotifyTPWDrawGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyTPWDrawGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyTPWDrawGameInfoVO(message: NotifyTPWDrawGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 leftOptSeconds = 1;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int32 gameNum = 2;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional int32 onlinePlayers = 3;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeNotifyTPWDrawGameInfoVO(binary: Uint8Array): NotifyTPWDrawGameInfoVO {
+  return _decodeNotifyTPWDrawGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyTPWDrawGameInfoVO(bb: ByteBuffer): NotifyTPWDrawGameInfoVO {
+  let message: NotifyTPWDrawGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 leftOptSeconds = 1;
+      case 1: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 gameNum = 2;
+      case 2: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 onlinePlayers = 3;
+      case 3: {
+        message.onlinePlayers = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface TPWGameInfoVO {
+  gameNum?: number;
+  bankerId?: string;
+  currOptUserId?: string;
+  totalOptSeconds?: number;
+  leftOptSeconds?: number;
+  dealCardMilliseconds?: Long;
+  leftPaiNum?: number;
+  qiPai?: string;
+  turnType?: number;
+  oddsInfoList?: TPWOddsInfoVO[];
+  gameResultList?: TPWWinVO[];
+}
+
+export function encodeTPWGameInfoVO(message: TPWGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeTPWGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeTPWGameInfoVO(message: TPWGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional string bankerId = 2;
+  let $bankerId = message.bankerId;
+  if ($bankerId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $bankerId);
+  }
+
+  // optional string currOptUserId = 3;
+  let $currOptUserId = message.currOptUserId;
+  if ($currOptUserId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currOptUserId);
+  }
+
+  // optional int32 totalOptSeconds = 4;
+  let $totalOptSeconds = message.totalOptSeconds;
+  if ($totalOptSeconds !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($totalOptSeconds));
+  }
+
+  // optional int32 leftOptSeconds = 5;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int64 dealCardMilliseconds = 6;
+  let $dealCardMilliseconds = message.dealCardMilliseconds;
+  if ($dealCardMilliseconds !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, $dealCardMilliseconds);
+  }
+
+  // optional int32 leftPaiNum = 7;
+  let $leftPaiNum = message.leftPaiNum;
+  if ($leftPaiNum !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($leftPaiNum));
+  }
+
+  // optional string qiPai = 8;
+  let $qiPai = message.qiPai;
+  if ($qiPai !== undefined) {
+    writeVarint32(bb, 66);
+    writeString(bb, $qiPai);
+  }
+
+  // optional int32 turnType = 9;
+  let $turnType = message.turnType;
+  if ($turnType !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($turnType));
+  }
+
+  // repeated TPWOddsInfoVO oddsInfoList = 10;
+  let array$oddsInfoList = message.oddsInfoList;
+  if (array$oddsInfoList !== undefined) {
+    for (let value of array$oddsInfoList) {
+      writeVarint32(bb, 82);
+      let nested = popByteBuffer();
+      _encodeTPWOddsInfoVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated TPWWinVO gameResultList = 11;
+  let array$gameResultList = message.gameResultList;
+  if (array$gameResultList !== undefined) {
+    for (let value of array$gameResultList) {
+      writeVarint32(bb, 90);
+      let nested = popByteBuffer();
+      _encodeTPWWinVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeTPWGameInfoVO(binary: Uint8Array): TPWGameInfoVO {
+  return _decodeTPWGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeTPWGameInfoVO(bb: ByteBuffer): TPWGameInfoVO {
+  let message: TPWGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 gameNum = 1;
+      case 1: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string bankerId = 2;
+      case 2: {
+        message.bankerId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currOptUserId = 3;
+      case 3: {
+        message.currOptUserId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 totalOptSeconds = 4;
+      case 4: {
+        message.totalOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 leftOptSeconds = 5;
+      case 5: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 dealCardMilliseconds = 6;
+      case 6: {
+        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 leftPaiNum = 7;
+      case 7: {
+        message.leftPaiNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string qiPai = 8;
+      case 8: {
+        message.qiPai = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 turnType = 9;
+      case 9: {
+        message.turnType = readVarint32(bb);
+        break;
+      }
+
+      // repeated TPWOddsInfoVO oddsInfoList = 10;
+      case 10: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.oddsInfoList || (message.oddsInfoList = []);
+        values.push(_decodeTPWOddsInfoVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated TPWWinVO gameResultList = 11;
+      case 11: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.gameResultList || (message.gameResultList = []);
+        values.push(_decodeTPWWinVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyD3BeginBetVO {
+  notifyType?: number;
+  lastMsgId?: string;
+  currMsgId?: string;
+  gameInfo?: D3GameInfoVO;
+}
+
+export function encodeNotifyD3BeginBetVO(message: NotifyD3BeginBetVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyD3BeginBetVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyD3BeginBetVO(message: NotifyD3BeginBetVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional string lastMsgId = 2;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 3;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional D3GameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeD3GameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyD3BeginBetVO(binary: Uint8Array): NotifyD3BeginBetVO {
+  return _decodeNotifyD3BeginBetVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyD3BeginBetVO(bb: ByteBuffer): NotifyD3BeginBetVO {
+  let message: NotifyD3BeginBetVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional string lastMsgId = 2;
+      case 2: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 3;
+      case 3: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional D3GameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeD3GameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LBGameInfoVO {
+  gameNum?: number;
+  bankerId?: string;
+  currOptUserId?: string;
+  totalOptSeconds?: number;
+  leftOptSeconds?: number;
+  dealCardMilliseconds?: Long;
+  leftPaiNum?: number;
+  qiPai?: string;
+  turnType?: number;
+  oddsInfoList?: OddsInfoVO[];
+  gameResultList?: LBWinVO[];
+}
+
+export function encodeLBGameInfoVO(message: LBGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLBGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLBGameInfoVO(message: LBGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional string bankerId = 2;
+  let $bankerId = message.bankerId;
+  if ($bankerId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $bankerId);
+  }
+
+  // optional string currOptUserId = 3;
+  let $currOptUserId = message.currOptUserId;
+  if ($currOptUserId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currOptUserId);
+  }
+
+  // optional int32 totalOptSeconds = 4;
+  let $totalOptSeconds = message.totalOptSeconds;
+  if ($totalOptSeconds !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($totalOptSeconds));
+  }
+
+  // optional int32 leftOptSeconds = 5;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int64 dealCardMilliseconds = 6;
+  let $dealCardMilliseconds = message.dealCardMilliseconds;
+  if ($dealCardMilliseconds !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, $dealCardMilliseconds);
+  }
+
+  // optional int32 leftPaiNum = 7;
+  let $leftPaiNum = message.leftPaiNum;
+  if ($leftPaiNum !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($leftPaiNum));
+  }
+
+  // optional string qiPai = 8;
+  let $qiPai = message.qiPai;
+  if ($qiPai !== undefined) {
+    writeVarint32(bb, 66);
+    writeString(bb, $qiPai);
+  }
+
+  // optional int32 turnType = 9;
+  let $turnType = message.turnType;
+  if ($turnType !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($turnType));
+  }
+
+  // repeated OddsInfoVO oddsInfoList = 10;
+  let array$oddsInfoList = message.oddsInfoList;
+  if (array$oddsInfoList !== undefined) {
+    for (let value of array$oddsInfoList) {
+      writeVarint32(bb, 82);
+      let nested = popByteBuffer();
+      _encodeOddsInfoVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated LBWinVO gameResultList = 11;
+  let array$gameResultList = message.gameResultList;
+  if (array$gameResultList !== undefined) {
+    for (let value of array$gameResultList) {
+      writeVarint32(bb, 90);
+      let nested = popByteBuffer();
+      _encodeLBWinVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeLBGameInfoVO(binary: Uint8Array): LBGameInfoVO {
+  return _decodeLBGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeLBGameInfoVO(bb: ByteBuffer): LBGameInfoVO {
+  let message: LBGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 gameNum = 1;
+      case 1: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string bankerId = 2;
+      case 2: {
+        message.bankerId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currOptUserId = 3;
+      case 3: {
+        message.currOptUserId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 totalOptSeconds = 4;
+      case 4: {
+        message.totalOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 leftOptSeconds = 5;
+      case 5: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 dealCardMilliseconds = 6;
+      case 6: {
+        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 leftPaiNum = 7;
+      case 7: {
+        message.leftPaiNum = readVarint32(bb);
+        break;
+      }
+
+      // optional string qiPai = 8;
+      case 8: {
+        message.qiPai = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 turnType = 9;
+      case 9: {
+        message.turnType = readVarint32(bb);
+        break;
+      }
+
+      // repeated OddsInfoVO oddsInfoList = 10;
+      case 10: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.oddsInfoList || (message.oddsInfoList = []);
+        values.push(_decodeOddsInfoVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated LBWinVO gameResultList = 11;
+      case 11: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.gameResultList || (message.gameResultList = []);
+        values.push(_decodeLBWinVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface RoomUserVO {
   seatNo?: number;
   userId?: string;
   status?: number;
@@ -3946,15 +4556,18 @@ export interface RoomUserDto {
   userType?: number;
   winBalance?: Long;
   loseBalance?: Long;
+  winCoins?: Long;
+  winRate?: number;
+  userInTableState?: number;
 }
 
-export function encodeRoomUserDto(message: RoomUserDto): Uint8Array {
+export function encodeRoomUserVO(message: RoomUserVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeRoomUserDto(message, bb);
+  _encodeRoomUserVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeRoomUserDto(message: RoomUserDto, bb: ByteBuffer): void {
+function _encodeRoomUserVO(message: RoomUserVO, bb: ByteBuffer): void {
   // optional int32 seatNo = 1;
   let $seatNo = message.seatNo;
   if ($seatNo !== undefined) {
@@ -4080,14 +4693,35 @@ function _encodeRoomUserDto(message: RoomUserDto, bb: ByteBuffer): void {
     writeVarint32(bb, 144);
     writeVarint64(bb, $loseBalance);
   }
+
+  // optional int64 winCoins = 19;
+  let $winCoins = message.winCoins;
+  if ($winCoins !== undefined) {
+    writeVarint32(bb, 152);
+    writeVarint64(bb, $winCoins);
+  }
+
+  // optional int32 winRate = 20;
+  let $winRate = message.winRate;
+  if ($winRate !== undefined) {
+    writeVarint32(bb, 160);
+    writeVarint64(bb, intToLong($winRate));
+  }
+
+  // optional int32 userInTableState = 21;
+  let $userInTableState = message.userInTableState;
+  if ($userInTableState !== undefined) {
+    writeVarint32(bb, 168);
+    writeVarint64(bb, intToLong($userInTableState));
+  }
 }
 
-export function decodeRoomUserDto(binary: Uint8Array): RoomUserDto {
-  return _decodeRoomUserDto(wrapByteBuffer(binary));
+export function decodeRoomUserVO(binary: Uint8Array): RoomUserVO {
+  return _decodeRoomUserVO(wrapByteBuffer(binary));
 }
 
-function _decodeRoomUserDto(bb: ByteBuffer): RoomUserDto {
-  let message: RoomUserDto = {} as any;
+function _decodeRoomUserVO(bb: ByteBuffer): RoomUserVO {
+  let message: RoomUserVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -4204,6 +4838,24 @@ function _decodeRoomUserDto(bb: ByteBuffer): RoomUserDto {
         break;
       }
 
+      // optional int64 winCoins = 19;
+      case 19: {
+        message.winCoins = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 winRate = 20;
+      case 20: {
+        message.winRate = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 userInTableState = 21;
+      case 21: {
+        message.userInTableState = readVarint32(bb);
+        break;
+      }
+
       default:
         skipUnknownField(bb, tag & 7);
     }
@@ -4212,25 +4864,377 @@ function _decodeRoomUserDto(bb: ByteBuffer): RoomUserDto {
   return message;
 }
 
-export interface JMDoEnterRoomVO {
-  lastMsgId?: string;
-  currMsgId?: string;
-  roomInfo?: JhandiMundaRoomInfoVo;
-  gameInfo?: JhandiMundaGameInfoVo;
-  betList?: PointBetCoinsNotifyVo[];
-  betCoinMap?: { [key: number]: Long };
-  betSelfCoinMap?: { [key: number]: Long };
-  betCoinList?: Long[];
-  onlinePlayers?: number;
+export interface LDWinVO {
+  gameNum?: number;
+  id?: number;
+  dices?: number[];
 }
 
-export function encodeJMDoEnterRoomVO(message: JMDoEnterRoomVO): Uint8Array {
+export function encodeLDWinVO(message: LDWinVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeJMDoEnterRoomVO(message, bb);
+  _encodeLDWinVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeJMDoEnterRoomVO(message: JMDoEnterRoomVO, bb: ByteBuffer): void {
+function _encodeLDWinVO(message: LDWinVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional int32 id = 2;
+  let $id = message.id;
+  if ($id !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($id));
+  }
+
+  // repeated int32 dices = 3;
+  let array$dices = message.dices;
+  if (array$dices !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$dices) {
+      writeVarint64(packed, intToLong(value));
+    }
+    writeVarint32(bb, 26);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+}
+
+export function decodeLDWinVO(binary: Uint8Array): LDWinVO {
+  return _decodeLDWinVO(wrapByteBuffer(binary));
+}
+
+function _decodeLDWinVO(bb: ByteBuffer): LDWinVO {
+  let message: LDWinVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 gameNum = 1;
+      case 1: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 id = 2;
+      case 2: {
+        message.id = readVarint32(bb);
+        break;
+      }
+
+      // repeated int32 dices = 3;
+      case 3: {
+        let values = message.dices || (message.dices = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint32(bb));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint32(bb));
+        }
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface RoomEnterDTO {
+  roomType?: number;
+  gameType?: number;
+  roomLevel?: number;
+}
+
+export function encodeRoomEnterDTO(message: RoomEnterDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeRoomEnterDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeRoomEnterDTO(message: RoomEnterDTO, bb: ByteBuffer): void {
+  // optional int32 roomType = 1;
+  let $roomType = message.roomType;
+  if ($roomType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($roomType));
+  }
+
+  // optional int32 gameType = 2;
+  let $gameType = message.gameType;
+  if ($gameType !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($gameType));
+  }
+
+  // optional int32 roomLevel = 3;
+  let $roomLevel = message.roomLevel;
+  if ($roomLevel !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($roomLevel));
+  }
+}
+
+export function decodeRoomEnterDTO(binary: Uint8Array): RoomEnterDTO {
+  return _decodeRoomEnterDTO(wrapByteBuffer(binary));
+}
+
+function _decodeRoomEnterDTO(bb: ByteBuffer): RoomEnterDTO {
+  let message: RoomEnterDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 roomType = 1;
+      case 1: {
+        message.roomType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 gameType = 2;
+      case 2: {
+        message.gameType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 roomLevel = 3;
+      case 3: {
+        message.roomLevel = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyDTDrawGameInfoVO {
+  leftOptSeconds?: number;
+  pokerResultList?: DTPokerResultVO[];
+  gameNum?: number;
+  onlinePlayers?: number;
+}
+
+export function encodeNotifyDTDrawGameInfoVO(message: NotifyDTDrawGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyDTDrawGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyDTDrawGameInfoVO(message: NotifyDTDrawGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 leftOptSeconds = 1;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // repeated DTPokerResultVO pokerResultList = 2;
+  let array$pokerResultList = message.pokerResultList;
+  if (array$pokerResultList !== undefined) {
+    for (let value of array$pokerResultList) {
+      writeVarint32(bb, 18);
+      let nested = popByteBuffer();
+      _encodeDTPokerResultVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional int32 gameNum = 3;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional int32 onlinePlayers = 4;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeNotifyDTDrawGameInfoVO(binary: Uint8Array): NotifyDTDrawGameInfoVO {
+  return _decodeNotifyDTDrawGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyDTDrawGameInfoVO(bb: ByteBuffer): NotifyDTDrawGameInfoVO {
+  let message: NotifyDTDrawGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 leftOptSeconds = 1;
+      case 1: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // repeated DTPokerResultVO pokerResultList = 2;
+      case 2: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.pokerResultList || (message.pokerResultList = []);
+        values.push(_decodeDTPokerResultVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional int32 gameNum = 3;
+      case 3: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 onlinePlayers = 4;
+      case 4: {
+        message.onlinePlayers = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponseRoomRecordVO {
+  gameTime?: Long;
+  amount?: Long;
+  winAmount?: Long;
+  winnings?: number;
+}
+
+export function encodeResponseRoomRecordVO(message: ResponseRoomRecordVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeResponseRoomRecordVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeResponseRoomRecordVO(message: ResponseRoomRecordVO, bb: ByteBuffer): void {
+  // optional int64 gameTime = 1;
+  let $gameTime = message.gameTime;
+  if ($gameTime !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $gameTime);
+  }
+
+  // optional int64 amount = 2;
+  let $amount = message.amount;
+  if ($amount !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, $amount);
+  }
+
+  // optional int64 winAmount = 3;
+  let $winAmount = message.winAmount;
+  if ($winAmount !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, $winAmount);
+  }
+
+  // optional int32 winnings = 4;
+  let $winnings = message.winnings;
+  if ($winnings !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($winnings));
+  }
+}
+
+export function decodeResponseRoomRecordVO(binary: Uint8Array): ResponseRoomRecordVO {
+  return _decodeResponseRoomRecordVO(wrapByteBuffer(binary));
+}
+
+function _decodeResponseRoomRecordVO(bb: ByteBuffer): ResponseRoomRecordVO {
+  let message: ResponseRoomRecordVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 gameTime = 1;
+      case 1: {
+        message.gameTime = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 amount = 2;
+      case 2: {
+        message.amount = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 winAmount = 3;
+      case 3: {
+        message.winAmount = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int32 winnings = 4;
+      case 4: {
+        message.winnings = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponseD3EnterRoomVO {
+  lastMsgId?: string;
+  currMsgId?: string;
+  betCoinList?: Long[];
+  onlinePlayers?: number;
+  betSelfCoinMap?: { [key: number]: Long };
+  betCoinMap?: { [key: number]: Long };
+  betList?: PointBetCoinsVO[];
+  gameInfo?: D3GameInfoVO;
+  roomInfo?: RoomInfoVO;
+}
+
+export function encodeResponseD3EnterRoomVO(message: ResponseD3EnterRoomVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeResponseD3EnterRoomVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeResponseD3EnterRoomVO(message: ResponseD3EnterRoomVO, bb: ByteBuffer): void {
   // optional string lastMsgId = 1;
   let $lastMsgId = message.lastMsgId;
   if ($lastMsgId !== undefined) {
@@ -4245,36 +5249,38 @@ function _encodeJMDoEnterRoomVO(message: JMDoEnterRoomVO, bb: ByteBuffer): void 
     writeString(bb, $currMsgId);
   }
 
-  // optional JhandiMundaRoomInfoVo roomInfo = 3;
-  let $roomInfo = message.roomInfo;
-  if ($roomInfo !== undefined) {
+  // repeated int64 betCoinList = 3;
+  let array$betCoinList = message.betCoinList;
+  if (array$betCoinList !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$betCoinList) {
+      writeVarint64(packed, value);
+    }
     writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeJhandiMundaRoomInfoVo($roomInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
   }
 
-  // optional JhandiMundaGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeJhandiMundaGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
+  // optional int32 onlinePlayers = 4;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($onlinePlayers));
   }
 
-  // repeated PointBetCoinsNotifyVo betList = 5;
-  let array$betList = message.betList;
-  if (array$betList !== undefined) {
-    for (let value of array$betList) {
-      writeVarint32(bb, 42);
+  // optional map<int32, int64> betSelfCoinMap = 5;
+  let map$betSelfCoinMap = message.betSelfCoinMap;
+  if (map$betSelfCoinMap !== undefined) {
+    for (let key in map$betSelfCoinMap) {
       let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
-      writeVarint32(bb, nested.limit);
+      let value = map$betSelfCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 42);
+      writeVarint32(bb, nested.offset);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
@@ -4297,50 +5303,48 @@ function _encodeJMDoEnterRoomVO(message: JMDoEnterRoomVO, bb: ByteBuffer): void 
     }
   }
 
-  // optional map<int32, int64> betSelfCoinMap = 7;
-  let map$betSelfCoinMap = message.betSelfCoinMap;
-  if (map$betSelfCoinMap !== undefined) {
-    for (let key in map$betSelfCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betSelfCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
+  // repeated PointBetCoinsVO betList = 7;
+  let array$betList = message.betList;
+  if (array$betList !== undefined) {
+    for (let value of array$betList) {
       writeVarint32(bb, 58);
-      writeVarint32(bb, nested.offset);
+      let nested = popByteBuffer();
+      _encodePointBetCoinsVO(value, nested);
+      writeVarint32(bb, nested.limit);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
   }
 
-  // repeated int64 betCoinList = 8;
-  let array$betCoinList = message.betCoinList;
-  if (array$betCoinList !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$betCoinList) {
-      writeVarint64(packed, value);
-    }
+  // optional D3GameInfoVO gameInfo = 8;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
     writeVarint32(bb, 66);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
+    let nested = popByteBuffer();
+    _encodeD3GameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
   }
 
-  // optional int32 onlinePlayers = 9;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($onlinePlayers));
+  // optional RoomInfoVO roomInfo = 9;
+  let $roomInfo = message.roomInfo;
+  if ($roomInfo !== undefined) {
+    writeVarint32(bb, 74);
+    let nested = popByteBuffer();
+    _encodeRoomInfoVO($roomInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
   }
 }
 
-export function decodeJMDoEnterRoomVO(binary: Uint8Array): JMDoEnterRoomVO {
-  return _decodeJMDoEnterRoomVO(wrapByteBuffer(binary));
+export function decodeResponseD3EnterRoomVO(binary: Uint8Array): ResponseD3EnterRoomVO {
+  return _decodeResponseD3EnterRoomVO(wrapByteBuffer(binary));
 }
 
-function _decodeJMDoEnterRoomVO(bb: ByteBuffer): JMDoEnterRoomVO {
-  let message: JMDoEnterRoomVO = {} as any;
+function _decodeResponseD3EnterRoomVO(bb: ByteBuffer): ResponseD3EnterRoomVO {
+  let message: ResponseD3EnterRoomVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -4361,28 +5365,54 @@ function _decodeJMDoEnterRoomVO(bb: ByteBuffer): JMDoEnterRoomVO {
         break;
       }
 
-      // optional JhandiMundaRoomInfoVo roomInfo = 3;
+      // repeated int64 betCoinList = 3;
       case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodeJhandiMundaRoomInfoVo(bb);
-        bb.limit = limit;
+        let values = message.betCoinList || (message.betCoinList = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint64(bb, /* unsigned */ false));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint64(bb, /* unsigned */ false));
+        }
         break;
       }
 
-      // optional JhandiMundaGameInfoVo gameInfo = 4;
+      // optional int32 onlinePlayers = 4;
       case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeJhandiMundaGameInfoVo(bb);
-        bb.limit = limit;
+        message.onlinePlayers = readVarint32(bb);
         break;
       }
 
-      // repeated PointBetCoinsNotifyVo betList = 5;
+      // optional map<int32, int64> betSelfCoinMap = 5;
       case 5: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
-        bb.limit = limit;
+        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betSelfCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
         break;
       }
 
@@ -4416,53 +5446,226 @@ function _decodeJMDoEnterRoomVO(bb: ByteBuffer): JMDoEnterRoomVO {
         break;
       }
 
-      // optional map<int32, int64> betSelfCoinMap = 7;
+      // repeated PointBetCoinsVO betList = 7;
       case 7: {
-        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betSelfCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
+        let limit = pushTemporaryLength(bb);
+        let values = message.betList || (message.betList = []);
+        values.push(_decodePointBetCoinsVO(bb));
+        bb.limit = limit;
         break;
       }
 
-      // repeated int64 betCoinList = 8;
+      // optional D3GameInfoVO gameInfo = 8;
       case 8: {
-        let values = message.betCoinList || (message.betCoinList = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeD3GameInfoVO(bb);
+        bb.limit = limit;
         break;
       }
 
-      // optional int32 onlinePlayers = 9;
+      // optional RoomInfoVO roomInfo = 9;
       case 9: {
+        let limit = pushTemporaryLength(bb);
+        message.roomInfo = _decodeRoomInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyPKDrawVO {
+  notifyType?: number;
+  playerResult?: number;
+  gameInfo?: NotifyPKDrawGameInfoVO;
+  userInfoList?: RoomUserVO[];
+  gameResult?: PKWinVO;
+}
+
+export function encodeNotifyPKDrawVO(message: NotifyPKDrawVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyPKDrawVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyPKDrawVO(message: NotifyPKDrawVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional int32 playerResult = 2;
+  let $playerResult = message.playerResult;
+  if ($playerResult !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($playerResult));
+  }
+
+  // optional NotifyPKDrawGameInfoVO gameInfo = 3;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeNotifyPKDrawGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated RoomUserVO userInfoList = 4;
+  let array$userInfoList = message.userInfoList;
+  if (array$userInfoList !== undefined) {
+    for (let value of array$userInfoList) {
+      writeVarint32(bb, 34);
+      let nested = popByteBuffer();
+      _encodeRoomUserVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional PKWinVO gameResult = 5;
+  let $gameResult = message.gameResult;
+  if ($gameResult !== undefined) {
+    writeVarint32(bb, 42);
+    let nested = popByteBuffer();
+    _encodePKWinVO($gameResult, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyPKDrawVO(binary: Uint8Array): NotifyPKDrawVO {
+  return _decodeNotifyPKDrawVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyPKDrawVO(bb: ByteBuffer): NotifyPKDrawVO {
+  let message: NotifyPKDrawVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 playerResult = 2;
+      case 2: {
+        message.playerResult = readVarint32(bb);
+        break;
+      }
+
+      // optional NotifyPKDrawGameInfoVO gameInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeNotifyPKDrawGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated RoomUserVO userInfoList = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.userInfoList || (message.userInfoList = []);
+        values.push(_decodeRoomUserVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional PKWinVO gameResult = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        message.gameResult = _decodePKWinVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyLBDrawGameInfoVO {
+  leftOptSeconds?: number;
+  gameNum?: number;
+  onlinePlayers?: number;
+}
+
+export function encodeNotifyLBDrawGameInfoVO(message: NotifyLBDrawGameInfoVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyLBDrawGameInfoVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyLBDrawGameInfoVO(message: NotifyLBDrawGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 leftOptSeconds = 1;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int32 gameNum = 2;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional int32 onlinePlayers = 3;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeNotifyLBDrawGameInfoVO(binary: Uint8Array): NotifyLBDrawGameInfoVO {
+  return _decodeNotifyLBDrawGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyLBDrawGameInfoVO(bb: ByteBuffer): NotifyLBDrawGameInfoVO {
+  let message: NotifyLBDrawGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 leftOptSeconds = 1;
+      case 1: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 gameNum = 2;
+      case 2: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 onlinePlayers = 3;
+      case 3: {
         message.onlinePlayers = readVarint32(bb);
         break;
       }
@@ -4475,123 +5678,47 @@ function _decodeJMDoEnterRoomVO(bb: ByteBuffer): JMDoEnterRoomVO {
   return message;
 }
 
-export interface PokerKingGameInfoVo {
-  oddsInfoList?: OddsInfoVo[];
-  gameResultList?: PokerKingWinDto[];
-  gameNum?: number;
-  bankerId?: string;
-  currOptUserId?: string;
-  totalOptSeconds?: number;
+export interface NotifyD3DrawGameInfoVO {
   leftOptSeconds?: number;
-  dealCardMilliseconds?: Long;
-  leftPaiNum?: number;
-  qiPai?: string;
-  turnType?: number;
+  gameNum?: number;
+  onlinePlayers?: number;
 }
 
-export function encodePokerKingGameInfoVo(message: PokerKingGameInfoVo): Uint8Array {
+export function encodeNotifyD3DrawGameInfoVO(message: NotifyD3DrawGameInfoVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodePokerKingGameInfoVo(message, bb);
+  _encodeNotifyD3DrawGameInfoVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodePokerKingGameInfoVo(message: PokerKingGameInfoVo, bb: ByteBuffer): void {
-  // repeated OddsInfoVo oddsInfoList = 1;
-  let array$oddsInfoList = message.oddsInfoList;
-  if (array$oddsInfoList !== undefined) {
-    for (let value of array$oddsInfoList) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeOddsInfoVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated PokerKingWinDto gameResultList = 2;
-  let array$gameResultList = message.gameResultList;
-  if (array$gameResultList !== undefined) {
-    for (let value of array$gameResultList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodePokerKingWinDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameNum = 3;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional string bankerId = 4;
-  let $bankerId = message.bankerId;
-  if ($bankerId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $bankerId);
-  }
-
-  // optional string currOptUserId = 5;
-  let $currOptUserId = message.currOptUserId;
-  if ($currOptUserId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $currOptUserId);
-  }
-
-  // optional int32 totalOptSeconds = 6;
-  let $totalOptSeconds = message.totalOptSeconds;
-  if ($totalOptSeconds !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($totalOptSeconds));
-  }
-
-  // optional int32 leftOptSeconds = 7;
+function _encodeNotifyD3DrawGameInfoVO(message: NotifyD3DrawGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 leftOptSeconds = 1;
   let $leftOptSeconds = message.leftOptSeconds;
   if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 56);
+    writeVarint32(bb, 8);
     writeVarint64(bb, intToLong($leftOptSeconds));
   }
 
-  // optional int64 dealCardMilliseconds = 8;
-  let $dealCardMilliseconds = message.dealCardMilliseconds;
-  if ($dealCardMilliseconds !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $dealCardMilliseconds);
+  // optional int32 gameNum = 2;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($gameNum));
   }
 
-  // optional int32 leftPaiNum = 9;
-  let $leftPaiNum = message.leftPaiNum;
-  if ($leftPaiNum !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($leftPaiNum));
-  }
-
-  // optional string qiPai = 10;
-  let $qiPai = message.qiPai;
-  if ($qiPai !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $qiPai);
-  }
-
-  // optional int32 turnType = 11;
-  let $turnType = message.turnType;
-  if ($turnType !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($turnType));
+  // optional int32 onlinePlayers = 3;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($onlinePlayers));
   }
 }
 
-export function decodePokerKingGameInfoVo(binary: Uint8Array): PokerKingGameInfoVo {
-  return _decodePokerKingGameInfoVo(wrapByteBuffer(binary));
+export function decodeNotifyD3DrawGameInfoVO(binary: Uint8Array): NotifyD3DrawGameInfoVO {
+  return _decodeNotifyD3DrawGameInfoVO(wrapByteBuffer(binary));
 }
 
-function _decodePokerKingGameInfoVo(bb: ByteBuffer): PokerKingGameInfoVo {
-  let message: PokerKingGameInfoVo = {} as any;
+function _decodeNotifyD3DrawGameInfoVO(bb: ByteBuffer): NotifyD3DrawGameInfoVO {
+  let message: NotifyD3DrawGameInfoVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -4600,75 +5727,21 @@ function _decodePokerKingGameInfoVo(bb: ByteBuffer): PokerKingGameInfoVo {
       case 0:
         break end_of_message;
 
-      // repeated OddsInfoVo oddsInfoList = 1;
+      // optional int32 leftOptSeconds = 1;
       case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.oddsInfoList || (message.oddsInfoList = []);
-        values.push(_decodeOddsInfoVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated PokerKingWinDto gameResultList = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.gameResultList || (message.gameResultList = []);
-        values.push(_decodePokerKingWinDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 gameNum = 3;
-      case 3: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string bankerId = 4;
-      case 4: {
-        message.bankerId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currOptUserId = 5;
-      case 5: {
-        message.currOptUserId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 totalOptSeconds = 6;
-      case 6: {
-        message.totalOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 leftOptSeconds = 7;
-      case 7: {
         message.leftOptSeconds = readVarint32(bb);
         break;
       }
 
-      // optional int64 dealCardMilliseconds = 8;
-      case 8: {
-        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
+      // optional int32 gameNum = 2;
+      case 2: {
+        message.gameNum = readVarint32(bb);
         break;
       }
 
-      // optional int32 leftPaiNum = 9;
-      case 9: {
-        message.leftPaiNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string qiPai = 10;
-      case 10: {
-        message.qiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 turnType = 11;
-      case 11: {
-        message.turnType = readVarint32(bb);
+      // optional int32 onlinePlayers = 3;
+      case 3: {
+        message.onlinePlayers = readVarint32(bb);
         break;
       }
 
@@ -4680,39 +5753,47 @@ function _decodePokerKingGameInfoVo(bb: ByteBuffer): PokerKingGameInfoVo {
   return message;
 }
 
-export interface OddsInfoVo {
-  betId?: number;
-  odds?: number;
+export interface RYBWinVO {
+  gameNum?: number;
+  id?: number;
+  reelIndex?: number;
 }
 
-export function encodeOddsInfoVo(message: OddsInfoVo): Uint8Array {
+export function encodeRYBWinVO(message: RYBWinVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeOddsInfoVo(message, bb);
+  _encodeRYBWinVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeOddsInfoVo(message: OddsInfoVo, bb: ByteBuffer): void {
-  // optional int32 betId = 1;
-  let $betId = message.betId;
-  if ($betId !== undefined) {
+function _encodeRYBWinVO(message: RYBWinVO, bb: ByteBuffer): void {
+  // optional int32 gameNum = 1;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
     writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($betId));
+    writeVarint64(bb, intToLong($gameNum));
   }
 
-  // optional double odds = 2;
-  let $odds = message.odds;
-  if ($odds !== undefined) {
-    writeVarint32(bb, 17);
-    writeDouble(bb, $odds);
+  // optional int32 id = 2;
+  let $id = message.id;
+  if ($id !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($id));
+  }
+
+  // optional int32 reelIndex = 3;
+  let $reelIndex = message.reelIndex;
+  if ($reelIndex !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($reelIndex));
   }
 }
 
-export function decodeOddsInfoVo(binary: Uint8Array): OddsInfoVo {
-  return _decodeOddsInfoVo(wrapByteBuffer(binary));
+export function decodeRYBWinVO(binary: Uint8Array): RYBWinVO {
+  return _decodeRYBWinVO(wrapByteBuffer(binary));
 }
 
-function _decodeOddsInfoVo(bb: ByteBuffer): OddsInfoVo {
-  let message: OddsInfoVo = {} as any;
+function _decodeRYBWinVO(bb: ByteBuffer): RYBWinVO {
+  let message: RYBWinVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -4721,15 +5802,21 @@ function _decodeOddsInfoVo(bb: ByteBuffer): OddsInfoVo {
       case 0:
         break end_of_message;
 
-      // optional int32 betId = 1;
+      // optional int32 gameNum = 1;
       case 1: {
-        message.betId = readVarint32(bb);
+        message.gameNum = readVarint32(bb);
         break;
       }
 
-      // optional double odds = 2;
+      // optional int32 id = 2;
       case 2: {
-        message.odds = readDouble(bb);
+        message.id = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 reelIndex = 3;
+      case 3: {
+        message.reelIndex = readVarint32(bb);
         break;
       }
 
@@ -4741,7 +5828,7 @@ function _decodeOddsInfoVo(bb: ByteBuffer): OddsInfoVo {
   return message;
 }
 
-export interface KickUserVO {
+export interface NotifyKickUserVO {
   notifyType?: number;
   gameType?: number;
   roomId?: string;
@@ -4749,13 +5836,13 @@ export interface KickUserVO {
   currMsgId?: string;
 }
 
-export function encodeKickUserVO(message: KickUserVO): Uint8Array {
+export function encodeNotifyKickUserVO(message: NotifyKickUserVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeKickUserVO(message, bb);
+  _encodeNotifyKickUserVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeKickUserVO(message: KickUserVO, bb: ByteBuffer): void {
+function _encodeNotifyKickUserVO(message: NotifyKickUserVO, bb: ByteBuffer): void {
   // optional int32 notifyType = 1;
   let $notifyType = message.notifyType;
   if ($notifyType !== undefined) {
@@ -4792,12 +5879,12 @@ function _encodeKickUserVO(message: KickUserVO, bb: ByteBuffer): void {
   }
 }
 
-export function decodeKickUserVO(binary: Uint8Array): KickUserVO {
-  return _decodeKickUserVO(wrapByteBuffer(binary));
+export function decodeNotifyKickUserVO(binary: Uint8Array): NotifyKickUserVO {
+  return _decodeNotifyKickUserVO(wrapByteBuffer(binary));
 }
 
-function _decodeKickUserVO(bb: ByteBuffer): KickUserVO {
-  let message: KickUserVO = {} as any;
+function _decodeNotifyKickUserVO(bb: ByteBuffer): NotifyKickUserVO {
+  let message: NotifyKickUserVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -4844,433 +5931,21 @@ function _decodeKickUserVO(bb: ByteBuffer): KickUserVO {
   return message;
 }
 
-export interface TeenPattiWarGameInfoVo {
-  oddsInfoList?: TeenPattiWarOddsInfoVo[];
-  gameResultList?: TeenPattiWarWinDto[];
-  gameNum?: number;
-  bankerId?: string;
-  currOptUserId?: string;
-  totalOptSeconds?: number;
-  leftOptSeconds?: number;
-  dealCardMilliseconds?: Long;
-  leftPaiNum?: number;
-  qiPai?: string;
-  turnType?: number;
-}
-
-export function encodeTeenPattiWarGameInfoVo(message: TeenPattiWarGameInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeTeenPattiWarGameInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeTeenPattiWarGameInfoVo(message: TeenPattiWarGameInfoVo, bb: ByteBuffer): void {
-  // repeated TeenPattiWarOddsInfoVo oddsInfoList = 1;
-  let array$oddsInfoList = message.oddsInfoList;
-  if (array$oddsInfoList !== undefined) {
-    for (let value of array$oddsInfoList) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeTeenPattiWarOddsInfoVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated TeenPattiWarWinDto gameResultList = 2;
-  let array$gameResultList = message.gameResultList;
-  if (array$gameResultList !== undefined) {
-    for (let value of array$gameResultList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeTeenPattiWarWinDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameNum = 3;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional string bankerId = 4;
-  let $bankerId = message.bankerId;
-  if ($bankerId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $bankerId);
-  }
-
-  // optional string currOptUserId = 5;
-  let $currOptUserId = message.currOptUserId;
-  if ($currOptUserId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $currOptUserId);
-  }
-
-  // optional int32 totalOptSeconds = 6;
-  let $totalOptSeconds = message.totalOptSeconds;
-  if ($totalOptSeconds !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($totalOptSeconds));
-  }
-
-  // optional int32 leftOptSeconds = 7;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int64 dealCardMilliseconds = 8;
-  let $dealCardMilliseconds = message.dealCardMilliseconds;
-  if ($dealCardMilliseconds !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $dealCardMilliseconds);
-  }
-
-  // optional int32 leftPaiNum = 9;
-  let $leftPaiNum = message.leftPaiNum;
-  if ($leftPaiNum !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($leftPaiNum));
-  }
-
-  // optional string qiPai = 10;
-  let $qiPai = message.qiPai;
-  if ($qiPai !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $qiPai);
-  }
-
-  // optional int32 turnType = 11;
-  let $turnType = message.turnType;
-  if ($turnType !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($turnType));
-  }
-}
-
-export function decodeTeenPattiWarGameInfoVo(binary: Uint8Array): TeenPattiWarGameInfoVo {
-  return _decodeTeenPattiWarGameInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeTeenPattiWarGameInfoVo(bb: ByteBuffer): TeenPattiWarGameInfoVo {
-  let message: TeenPattiWarGameInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated TeenPattiWarOddsInfoVo oddsInfoList = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.oddsInfoList || (message.oddsInfoList = []);
-        values.push(_decodeTeenPattiWarOddsInfoVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated TeenPattiWarWinDto gameResultList = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.gameResultList || (message.gameResultList = []);
-        values.push(_decodeTeenPattiWarWinDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 gameNum = 3;
-      case 3: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string bankerId = 4;
-      case 4: {
-        message.bankerId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currOptUserId = 5;
-      case 5: {
-        message.currOptUserId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 totalOptSeconds = 6;
-      case 6: {
-        message.totalOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 leftOptSeconds = 7;
-      case 7: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 dealCardMilliseconds = 8;
-      case 8: {
-        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 leftPaiNum = 9;
-      case 9: {
-        message.leftPaiNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string qiPai = 10;
-      case 10: {
-        message.qiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 turnType = 11;
-      case 11: {
-        message.turnType = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface DTSendDrawMsgGameInfoVO {
-  leftOptSeconds?: number;
-  pokerResultList?: DragonAndTigerPokerResultDto[];
-  gameNum?: number;
-  onlinePlayers?: number;
-}
-
-export function encodeDTSendDrawMsgGameInfoVO(message: DTSendDrawMsgGameInfoVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDTSendDrawMsgGameInfoVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDTSendDrawMsgGameInfoVO(message: DTSendDrawMsgGameInfoVO, bb: ByteBuffer): void {
-  // optional int32 leftOptSeconds = 1;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // repeated DragonAndTigerPokerResultDto pokerResultList = 2;
-  let array$pokerResultList = message.pokerResultList;
-  if (array$pokerResultList !== undefined) {
-    for (let value of array$pokerResultList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeDragonAndTigerPokerResultDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameNum = 3;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional int32 onlinePlayers = 4;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-}
-
-export function decodeDTSendDrawMsgGameInfoVO(binary: Uint8Array): DTSendDrawMsgGameInfoVO {
-  return _decodeDTSendDrawMsgGameInfoVO(wrapByteBuffer(binary));
-}
-
-function _decodeDTSendDrawMsgGameInfoVO(bb: ByteBuffer): DTSendDrawMsgGameInfoVO {
-  let message: DTSendDrawMsgGameInfoVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 leftOptSeconds = 1;
-      case 1: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // repeated DragonAndTigerPokerResultDto pokerResultList = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.pokerResultList || (message.pokerResultList = []);
-        values.push(_decodeDragonAndTigerPokerResultDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 gameNum = 3;
-      case 3: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 onlinePlayers = 4;
-      case 4: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface TeenPattiWarOddsInfoVo {
-  luckyHitRate?: { [key: number]: number };
-  betId?: number;
-  odds?: number;
-}
-
-export function encodeTeenPattiWarOddsInfoVo(message: TeenPattiWarOddsInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeTeenPattiWarOddsInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeTeenPattiWarOddsInfoVo(message: TeenPattiWarOddsInfoVo, bb: ByteBuffer): void {
-  // optional map<int32, int32> luckyHitRate = 1;
-  let map$luckyHitRate = message.luckyHitRate;
-  if (map$luckyHitRate !== undefined) {
-    for (let key in map$luckyHitRate) {
-      let nested = popByteBuffer();
-      let value = map$luckyHitRate[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, intToLong(value));
-      writeVarint32(bb, 10);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 betId = 2;
-  let $betId = message.betId;
-  if ($betId !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($betId));
-  }
-
-  // optional double odds = 3;
-  let $odds = message.odds;
-  if ($odds !== undefined) {
-    writeVarint32(bb, 25);
-    writeDouble(bb, $odds);
-  }
-}
-
-export function decodeTeenPattiWarOddsInfoVo(binary: Uint8Array): TeenPattiWarOddsInfoVo {
-  return _decodeTeenPattiWarOddsInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeTeenPattiWarOddsInfoVo(bb: ByteBuffer): TeenPattiWarOddsInfoVo {
-  let message: TeenPattiWarOddsInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional map<int32, int32> luckyHitRate = 1;
-      case 1: {
-        let values = message.luckyHitRate || (message.luckyHitRate = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: number | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint32(bb);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: luckyHitRate");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // optional int32 betId = 2;
-      case 2: {
-        message.betId = readVarint32(bb);
-        break;
-      }
-
-      // optional double odds = 3;
-      case 3: {
-        message.odds = readDouble(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface Dice3SendDrawMsgVO {
+export interface NotifyJMDrawVO {
   notifyType?: number;
   playerResult?: number;
-  gameInfo?: Dice3SendDrawMsgGameInfoVO;
-  userInfoList?: RoomUserVo[];
-  gameResult?: Dice3WinDto;
+  gameInfo?: NotifyJMDrawGameInfoVO;
+  userInfoList?: RoomUserVO[];
+  gameResult?: JMWinVO;
 }
 
-export function encodeDice3SendDrawMsgVO(message: Dice3SendDrawMsgVO): Uint8Array {
+export function encodeNotifyJMDrawVO(message: NotifyJMDrawVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeDice3SendDrawMsgVO(message, bb);
+  _encodeNotifyJMDrawVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeDice3SendDrawMsgVO(message: Dice3SendDrawMsgVO, bb: ByteBuffer): void {
+function _encodeNotifyJMDrawVO(message: NotifyJMDrawVO, bb: ByteBuffer): void {
   // optional int32 notifyType = 1;
   let $notifyType = message.notifyType;
   if ($notifyType !== undefined) {
@@ -5285,48 +5960,48 @@ function _encodeDice3SendDrawMsgVO(message: Dice3SendDrawMsgVO, bb: ByteBuffer):
     writeVarint64(bb, intToLong($playerResult));
   }
 
-  // optional Dice3SendDrawMsgGameInfoVO gameInfo = 3;
+  // optional NotifyJMDrawGameInfoVO gameInfo = 3;
   let $gameInfo = message.gameInfo;
   if ($gameInfo !== undefined) {
     writeVarint32(bb, 26);
     let nested = popByteBuffer();
-    _encodeDice3SendDrawMsgGameInfoVO($gameInfo, nested);
+    _encodeNotifyJMDrawGameInfoVO($gameInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 
-  // repeated RoomUserVo userInfoList = 4;
+  // repeated RoomUserVO userInfoList = 4;
   let array$userInfoList = message.userInfoList;
   if (array$userInfoList !== undefined) {
     for (let value of array$userInfoList) {
       writeVarint32(bb, 34);
       let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
+      _encodeRoomUserVO(value, nested);
       writeVarint32(bb, nested.limit);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
   }
 
-  // optional Dice3WinDto gameResult = 5;
+  // optional JMWinVO gameResult = 5;
   let $gameResult = message.gameResult;
   if ($gameResult !== undefined) {
     writeVarint32(bb, 42);
     let nested = popByteBuffer();
-    _encodeDice3WinDto($gameResult, nested);
+    _encodeJMWinVO($gameResult, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 }
 
-export function decodeDice3SendDrawMsgVO(binary: Uint8Array): Dice3SendDrawMsgVO {
-  return _decodeDice3SendDrawMsgVO(wrapByteBuffer(binary));
+export function decodeNotifyJMDrawVO(binary: Uint8Array): NotifyJMDrawVO {
+  return _decodeNotifyJMDrawVO(wrapByteBuffer(binary));
 }
 
-function _decodeDice3SendDrawMsgVO(bb: ByteBuffer): Dice3SendDrawMsgVO {
-  let message: Dice3SendDrawMsgVO = {} as any;
+function _decodeNotifyJMDrawVO(bb: ByteBuffer): NotifyJMDrawVO {
+  let message: NotifyJMDrawVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -5347,27 +6022,27 @@ function _decodeDice3SendDrawMsgVO(bb: ByteBuffer): Dice3SendDrawMsgVO {
         break;
       }
 
-      // optional Dice3SendDrawMsgGameInfoVO gameInfo = 3;
+      // optional NotifyJMDrawGameInfoVO gameInfo = 3;
       case 3: {
         let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeDice3SendDrawMsgGameInfoVO(bb);
+        message.gameInfo = _decodeNotifyJMDrawGameInfoVO(bb);
         bb.limit = limit;
         break;
       }
 
-      // repeated RoomUserVo userInfoList = 4;
+      // repeated RoomUserVO userInfoList = 4;
       case 4: {
         let limit = pushTemporaryLength(bb);
         let values = message.userInfoList || (message.userInfoList = []);
-        values.push(_decodeRoomUserVo(bb));
+        values.push(_decodeRoomUserVO(bb));
         bb.limit = limit;
         break;
       }
 
-      // optional Dice3WinDto gameResult = 5;
+      // optional JMWinVO gameResult = 5;
       case 5: {
         let limit = pushTemporaryLength(bb);
-        message.gameResult = _decodeDice3WinDto(bb);
+        message.gameResult = _decodeJMWinVO(bb);
         bb.limit = limit;
         break;
       }
@@ -5380,20 +6055,157 @@ function _decodeDice3SendDrawMsgVO(bb: ByteBuffer): Dice3SendDrawMsgVO {
   return message;
 }
 
-export interface NotifyBetVO {
-  betCoinMap?: { [key: number]: Long };
+export interface NotifyTPWBeginBetVO {
   notifyType?: number;
-  betList?: PointBetCoinsNotifyVo[];
+  lastMsgId?: string;
+  currMsgId?: string;
+  gameInfo?: TPWGameInfoVO;
 }
 
-export function encodeNotifyBetVO(message: NotifyBetVO): Uint8Array {
+export function encodeNotifyTPWBeginBetVO(message: NotifyTPWBeginBetVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeNotifyBetVO(message, bb);
+  _encodeNotifyTPWBeginBetVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeNotifyBetVO(message: NotifyBetVO, bb: ByteBuffer): void {
-  // optional map<int32, int64> betCoinMap = 1;
+function _encodeNotifyTPWBeginBetVO(message: NotifyTPWBeginBetVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional string lastMsgId = 2;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 3;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional TPWGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeTPWGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyTPWBeginBetVO(binary: Uint8Array): NotifyTPWBeginBetVO {
+  return _decodeNotifyTPWBeginBetVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyTPWBeginBetVO(bb: ByteBuffer): NotifyTPWBeginBetVO {
+  let message: NotifyTPWBeginBetVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional string lastMsgId = 2;
+      case 2: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 3;
+      case 3: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional TPWGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeTPWGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponseLBEnterRoomVO {
+  lastMsgId?: string;
+  currMsgId?: string;
+  roomInfo?: RoomInfoVO;
+  gameInfo?: LBGameInfoVO;
+  betCoinMap?: { [key: number]: Long };
+  betList?: PointBetCoinsVO[];
+  betSelfCoinMap?: { [key: number]: Long };
+  betCoinList?: Long[];
+  onlinePlayers?: number;
+}
+
+export function encodeResponseLBEnterRoomVO(message: ResponseLBEnterRoomVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeResponseLBEnterRoomVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeResponseLBEnterRoomVO(message: ResponseLBEnterRoomVO, bb: ByteBuffer): void {
+  // optional string lastMsgId = 1;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 2;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional RoomInfoVO roomInfo = 3;
+  let $roomInfo = message.roomInfo;
+  if ($roomInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeRoomInfoVO($roomInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // optional LBGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodeLBGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // optional map<int32, int64> betCoinMap = 5;
   let map$betCoinMap = message.betCoinMap;
   if (map$betCoinMap !== undefined) {
     for (let key in map$betCoinMap) {
@@ -5403,40 +6215,70 @@ function _encodeNotifyBetVO(message: NotifyBetVO, bb: ByteBuffer): void {
       writeVarint64(nested, intToLong(+key));
       writeVarint32(nested, 16);
       writeVarint64(nested, value);
-      writeVarint32(bb, 10);
+      writeVarint32(bb, 42);
       writeVarint32(bb, nested.offset);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
   }
 
-  // optional int32 notifyType = 2;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // repeated PointBetCoinsNotifyVo betList = 3;
+  // repeated PointBetCoinsVO betList = 6;
   let array$betList = message.betList;
   if (array$betList !== undefined) {
     for (let value of array$betList) {
-      writeVarint32(bb, 26);
+      writeVarint32(bb, 50);
       let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
+      _encodePointBetCoinsVO(value, nested);
       writeVarint32(bb, nested.limit);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
   }
+
+  // optional map<int32, int64> betSelfCoinMap = 7;
+  let map$betSelfCoinMap = message.betSelfCoinMap;
+  if (map$betSelfCoinMap !== undefined) {
+    for (let key in map$betSelfCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betSelfCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 58);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated int64 betCoinList = 8;
+  let array$betCoinList = message.betCoinList;
+  if (array$betCoinList !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$betCoinList) {
+      writeVarint64(packed, value);
+    }
+    writeVarint32(bb, 66);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+
+  // optional int32 onlinePlayers = 9;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
 }
 
-export function decodeNotifyBetVO(binary: Uint8Array): NotifyBetVO {
-  return _decodeNotifyBetVO(wrapByteBuffer(binary));
+export function decodeResponseLBEnterRoomVO(binary: Uint8Array): ResponseLBEnterRoomVO {
+  return _decodeResponseLBEnterRoomVO(wrapByteBuffer(binary));
 }
 
-function _decodeNotifyBetVO(bb: ByteBuffer): NotifyBetVO {
-  let message: NotifyBetVO = {} as any;
+function _decodeResponseLBEnterRoomVO(bb: ByteBuffer): ResponseLBEnterRoomVO {
+  let message: ResponseLBEnterRoomVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -5445,8 +6287,36 @@ function _decodeNotifyBetVO(bb: ByteBuffer): NotifyBetVO {
       case 0:
         break end_of_message;
 
-      // optional map<int32, int64> betCoinMap = 1;
+      // optional string lastMsgId = 1;
       case 1: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 2;
+      case 2: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional RoomInfoVO roomInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.roomInfo = _decodeRoomInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // optional LBGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeLBGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // optional map<int32, int64> betCoinMap = 5;
+      case 5: {
         let values = message.betCoinMap || (message.betCoinMap = {});
         let outerLimit = pushTemporaryLength(bb);
         let key: number | undefined;
@@ -5475,18 +6345,63 @@ function _decodeNotifyBetVO(bb: ByteBuffer): NotifyBetVO {
         break;
       }
 
-      // optional int32 notifyType = 2;
-      case 2: {
-        message.notifyType = readVarint32(bb);
+      // repeated PointBetCoinsVO betList = 6;
+      case 6: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.betList || (message.betList = []);
+        values.push(_decodePointBetCoinsVO(bb));
+        bb.limit = limit;
         break;
       }
 
-      // repeated PointBetCoinsNotifyVo betList = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
-        bb.limit = limit;
+      // optional map<int32, int64> betSelfCoinMap = 7;
+      case 7: {
+        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betSelfCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // repeated int64 betCoinList = 8;
+      case 8: {
+        let values = message.betCoinList || (message.betCoinList = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint64(bb, /* unsigned */ false));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint64(bb, /* unsigned */ false));
+        }
+        break;
+      }
+
+      // optional int32 onlinePlayers = 9;
+      case 9: {
+        message.onlinePlayers = readVarint32(bb);
         break;
       }
 
@@ -5498,21 +6413,21 @@ function _decodeNotifyBetVO(bb: ByteBuffer): NotifyBetVO {
   return message;
 }
 
-export interface TPSendDrawMsgVO {
+export interface NotifyD3DrawVO {
   notifyType?: number;
   playerResult?: number;
-  gameInfo?: TPSendDrawMsgGameInfoVO;
-  userInfoList?: RoomUserVo[];
-  gameResult?: TeenPattiWarWinDto;
+  gameInfo?: NotifyD3DrawGameInfoVO;
+  userInfoList?: RoomUserVO[];
+  gameResult?: D3WinVO;
 }
 
-export function encodeTPSendDrawMsgVO(message: TPSendDrawMsgVO): Uint8Array {
+export function encodeNotifyD3DrawVO(message: NotifyD3DrawVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeTPSendDrawMsgVO(message, bb);
+  _encodeNotifyD3DrawVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeTPSendDrawMsgVO(message: TPSendDrawMsgVO, bb: ByteBuffer): void {
+function _encodeNotifyD3DrawVO(message: NotifyD3DrawVO, bb: ByteBuffer): void {
   // optional int32 notifyType = 1;
   let $notifyType = message.notifyType;
   if ($notifyType !== undefined) {
@@ -5527,48 +6442,48 @@ function _encodeTPSendDrawMsgVO(message: TPSendDrawMsgVO, bb: ByteBuffer): void 
     writeVarint64(bb, intToLong($playerResult));
   }
 
-  // optional TPSendDrawMsgGameInfoVO gameInfo = 3;
+  // optional NotifyD3DrawGameInfoVO gameInfo = 3;
   let $gameInfo = message.gameInfo;
   if ($gameInfo !== undefined) {
     writeVarint32(bb, 26);
     let nested = popByteBuffer();
-    _encodeTPSendDrawMsgGameInfoVO($gameInfo, nested);
+    _encodeNotifyD3DrawGameInfoVO($gameInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 
-  // repeated RoomUserVo userInfoList = 4;
+  // repeated RoomUserVO userInfoList = 4;
   let array$userInfoList = message.userInfoList;
   if (array$userInfoList !== undefined) {
     for (let value of array$userInfoList) {
       writeVarint32(bb, 34);
       let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
+      _encodeRoomUserVO(value, nested);
       writeVarint32(bb, nested.limit);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
   }
 
-  // optional TeenPattiWarWinDto gameResult = 5;
+  // optional D3WinVO gameResult = 5;
   let $gameResult = message.gameResult;
   if ($gameResult !== undefined) {
     writeVarint32(bb, 42);
     let nested = popByteBuffer();
-    _encodeTeenPattiWarWinDto($gameResult, nested);
+    _encodeD3WinVO($gameResult, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 }
 
-export function decodeTPSendDrawMsgVO(binary: Uint8Array): TPSendDrawMsgVO {
-  return _decodeTPSendDrawMsgVO(wrapByteBuffer(binary));
+export function decodeNotifyD3DrawVO(binary: Uint8Array): NotifyD3DrawVO {
+  return _decodeNotifyD3DrawVO(wrapByteBuffer(binary));
 }
 
-function _decodeTPSendDrawMsgVO(bb: ByteBuffer): TPSendDrawMsgVO {
-  let message: TPSendDrawMsgVO = {} as any;
+function _decodeNotifyD3DrawVO(bb: ByteBuffer): NotifyD3DrawVO {
+  let message: NotifyD3DrawVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -5589,27 +6504,27 @@ function _decodeTPSendDrawMsgVO(bb: ByteBuffer): TPSendDrawMsgVO {
         break;
       }
 
-      // optional TPSendDrawMsgGameInfoVO gameInfo = 3;
+      // optional NotifyD3DrawGameInfoVO gameInfo = 3;
       case 3: {
         let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeTPSendDrawMsgGameInfoVO(bb);
+        message.gameInfo = _decodeNotifyD3DrawGameInfoVO(bb);
         bb.limit = limit;
         break;
       }
 
-      // repeated RoomUserVo userInfoList = 4;
+      // repeated RoomUserVO userInfoList = 4;
       case 4: {
         let limit = pushTemporaryLength(bb);
         let values = message.userInfoList || (message.userInfoList = []);
-        values.push(_decodeRoomUserVo(bb));
+        values.push(_decodeRoomUserVO(bb));
         bb.limit = limit;
         break;
       }
 
-      // optional TeenPattiWarWinDto gameResult = 5;
+      // optional D3WinVO gameResult = 5;
       case 5: {
         let limit = pushTemporaryLength(bb);
-        message.gameResult = _decodeTeenPattiWarWinDto(bb);
+        message.gameResult = _decodeD3WinVO(bb);
         bb.limit = limit;
         break;
       }
@@ -5622,47 +6537,77 @@ function _decodeTPSendDrawMsgVO(bb: ByteBuffer): TPSendDrawMsgVO {
   return message;
 }
 
-export interface LBSendDrawMsgGameInfoVO {
-  leftOptSeconds?: number;
-  gameNum?: number;
-  onlinePlayers?: number;
+export interface NotifyRYBDrawVO {
+  notifyType?: number;
+  playerResult?: number;
+  gameInfo?: NotifyRYBDrawGameInfoVO;
+  userInfoList?: RoomUserVO[];
+  gameResult?: RYBWinVO;
 }
 
-export function encodeLBSendDrawMsgGameInfoVO(message: LBSendDrawMsgGameInfoVO): Uint8Array {
+export function encodeNotifyRYBDrawVO(message: NotifyRYBDrawVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeLBSendDrawMsgGameInfoVO(message, bb);
+  _encodeNotifyRYBDrawVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeLBSendDrawMsgGameInfoVO(message: LBSendDrawMsgGameInfoVO, bb: ByteBuffer): void {
-  // optional int32 leftOptSeconds = 1;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
+function _encodeNotifyRYBDrawVO(message: NotifyRYBDrawVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
     writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($leftOptSeconds));
+    writeVarint64(bb, intToLong($notifyType));
   }
 
-  // optional int32 gameNum = 2;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
+  // optional int32 playerResult = 2;
+  let $playerResult = message.playerResult;
+  if ($playerResult !== undefined) {
     writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($gameNum));
+    writeVarint64(bb, intToLong($playerResult));
   }
 
-  // optional int32 onlinePlayers = 3;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($onlinePlayers));
+  // optional NotifyRYBDrawGameInfoVO gameInfo = 3;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeNotifyRYBDrawGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated RoomUserVO userInfoList = 4;
+  let array$userInfoList = message.userInfoList;
+  if (array$userInfoList !== undefined) {
+    for (let value of array$userInfoList) {
+      writeVarint32(bb, 34);
+      let nested = popByteBuffer();
+      _encodeRoomUserVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional RYBWinVO gameResult = 5;
+  let $gameResult = message.gameResult;
+  if ($gameResult !== undefined) {
+    writeVarint32(bb, 42);
+    let nested = popByteBuffer();
+    _encodeRYBWinVO($gameResult, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
   }
 }
 
-export function decodeLBSendDrawMsgGameInfoVO(binary: Uint8Array): LBSendDrawMsgGameInfoVO {
-  return _decodeLBSendDrawMsgGameInfoVO(wrapByteBuffer(binary));
+export function decodeNotifyRYBDrawVO(binary: Uint8Array): NotifyRYBDrawVO {
+  return _decodeNotifyRYBDrawVO(wrapByteBuffer(binary));
 }
 
-function _decodeLBSendDrawMsgGameInfoVO(bb: ByteBuffer): LBSendDrawMsgGameInfoVO {
-  let message: LBSendDrawMsgGameInfoVO = {} as any;
+function _decodeNotifyRYBDrawVO(bb: ByteBuffer): NotifyRYBDrawVO {
+  let message: NotifyRYBDrawVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -5671,21 +6616,40 @@ function _decodeLBSendDrawMsgGameInfoVO(bb: ByteBuffer): LBSendDrawMsgGameInfoVO
       case 0:
         break end_of_message;
 
-      // optional int32 leftOptSeconds = 1;
+      // optional int32 notifyType = 1;
       case 1: {
-        message.leftOptSeconds = readVarint32(bb);
+        message.notifyType = readVarint32(bb);
         break;
       }
 
-      // optional int32 gameNum = 2;
+      // optional int32 playerResult = 2;
       case 2: {
-        message.gameNum = readVarint32(bb);
+        message.playerResult = readVarint32(bb);
         break;
       }
 
-      // optional int32 onlinePlayers = 3;
+      // optional NotifyRYBDrawGameInfoVO gameInfo = 3;
       case 3: {
-        message.onlinePlayers = readVarint32(bb);
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeNotifyRYBDrawGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated RoomUserVO userInfoList = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.userInfoList || (message.userInfoList = []);
+        values.push(_decodeRoomUserVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional RYBWinVO gameResult = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        message.gameResult = _decodeRYBWinVO(bb);
+        bb.limit = limit;
         break;
       }
 
@@ -5697,25 +6661,100 @@ function _decodeLBSendDrawMsgGameInfoVO(bb: ByteBuffer): LBSendDrawMsgGameInfoVO
   return message;
 }
 
-export interface TPDoEnterRoomVO {
+export interface JMWinIdRateVO {
+  id?: number;
+  rate?: number;
+  count?: number;
+}
+
+export function encodeJMWinIdRateVO(message: JMWinIdRateVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeJMWinIdRateVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeJMWinIdRateVO(message: JMWinIdRateVO, bb: ByteBuffer): void {
+  // optional int32 id = 1;
+  let $id = message.id;
+  if ($id !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($id));
+  }
+
+  // optional double rate = 2;
+  let $rate = message.rate;
+  if ($rate !== undefined) {
+    writeVarint32(bb, 17);
+    writeDouble(bb, $rate);
+  }
+
+  // optional int32 count = 3;
+  let $count = message.count;
+  if ($count !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($count));
+  }
+}
+
+export function decodeJMWinIdRateVO(binary: Uint8Array): JMWinIdRateVO {
+  return _decodeJMWinIdRateVO(wrapByteBuffer(binary));
+}
+
+function _decodeJMWinIdRateVO(bb: ByteBuffer): JMWinIdRateVO {
+  let message: JMWinIdRateVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 id = 1;
+      case 1: {
+        message.id = readVarint32(bb);
+        break;
+      }
+
+      // optional double rate = 2;
+      case 2: {
+        message.rate = readDouble(bb);
+        break;
+      }
+
+      // optional int32 count = 3;
+      case 3: {
+        message.count = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponseLDEnterRoomVO {
   lastMsgId?: string;
   currMsgId?: string;
-  roomInfo?: TeenPattiWarRoomInfoVo;
-  gameInfo?: TeenPattiWarGameInfoVo;
-  betList?: PointBetCoinsNotifyVo[];
+  roomInfo?: RoomInfoVO;
+  gameInfo?: LDGameInfoVO;
+  betList?: PointBetCoinsVO[];
   betCoinMap?: { [key: number]: Long };
   betSelfCoinMap?: { [key: number]: Long };
   betCoinList?: Long[];
   onlinePlayers?: number;
 }
 
-export function encodeTPDoEnterRoomVO(message: TPDoEnterRoomVO): Uint8Array {
+export function encodeResponseLDEnterRoomVO(message: ResponseLDEnterRoomVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeTPDoEnterRoomVO(message, bb);
+  _encodeResponseLDEnterRoomVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeTPDoEnterRoomVO(message: TPDoEnterRoomVO, bb: ByteBuffer): void {
+function _encodeResponseLDEnterRoomVO(message: ResponseLDEnterRoomVO, bb: ByteBuffer): void {
   // optional string lastMsgId = 1;
   let $lastMsgId = message.lastMsgId;
   if ($lastMsgId !== undefined) {
@@ -5730,35 +6769,35 @@ function _encodeTPDoEnterRoomVO(message: TPDoEnterRoomVO, bb: ByteBuffer): void 
     writeString(bb, $currMsgId);
   }
 
-  // optional TeenPattiWarRoomInfoVo roomInfo = 3;
+  // optional RoomInfoVO roomInfo = 3;
   let $roomInfo = message.roomInfo;
   if ($roomInfo !== undefined) {
     writeVarint32(bb, 26);
     let nested = popByteBuffer();
-    _encodeTeenPattiWarRoomInfoVo($roomInfo, nested);
+    _encodeRoomInfoVO($roomInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 
-  // optional TeenPattiWarGameInfoVo gameInfo = 4;
+  // optional LDGameInfoVO gameInfo = 4;
   let $gameInfo = message.gameInfo;
   if ($gameInfo !== undefined) {
     writeVarint32(bb, 34);
     let nested = popByteBuffer();
-    _encodeTeenPattiWarGameInfoVo($gameInfo, nested);
+    _encodeLDGameInfoVO($gameInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 
-  // repeated PointBetCoinsNotifyVo betList = 5;
+  // repeated PointBetCoinsVO betList = 5;
   let array$betList = message.betList;
   if (array$betList !== undefined) {
     for (let value of array$betList) {
       writeVarint32(bb, 42);
       let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
+      _encodePointBetCoinsVO(value, nested);
       writeVarint32(bb, nested.limit);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
@@ -5820,12 +6859,12 @@ function _encodeTPDoEnterRoomVO(message: TPDoEnterRoomVO, bb: ByteBuffer): void 
   }
 }
 
-export function decodeTPDoEnterRoomVO(binary: Uint8Array): TPDoEnterRoomVO {
-  return _decodeTPDoEnterRoomVO(wrapByteBuffer(binary));
+export function decodeResponseLDEnterRoomVO(binary: Uint8Array): ResponseLDEnterRoomVO {
+  return _decodeResponseLDEnterRoomVO(wrapByteBuffer(binary));
 }
 
-function _decodeTPDoEnterRoomVO(bb: ByteBuffer): TPDoEnterRoomVO {
-  let message: TPDoEnterRoomVO = {} as any;
+function _decodeResponseLDEnterRoomVO(bb: ByteBuffer): ResponseLDEnterRoomVO {
+  let message: ResponseLDEnterRoomVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -5846,27 +6885,27 @@ function _decodeTPDoEnterRoomVO(bb: ByteBuffer): TPDoEnterRoomVO {
         break;
       }
 
-      // optional TeenPattiWarRoomInfoVo roomInfo = 3;
+      // optional RoomInfoVO roomInfo = 3;
       case 3: {
         let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodeTeenPattiWarRoomInfoVo(bb);
+        message.roomInfo = _decodeRoomInfoVO(bb);
         bb.limit = limit;
         break;
       }
 
-      // optional TeenPattiWarGameInfoVo gameInfo = 4;
+      // optional LDGameInfoVO gameInfo = 4;
       case 4: {
         let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeTeenPattiWarGameInfoVo(bb);
+        message.gameInfo = _decodeLDGameInfoVO(bb);
         bb.limit = limit;
         break;
       }
 
-      // repeated PointBetCoinsNotifyVo betList = 5;
+      // repeated PointBetCoinsVO betList = 5;
       case 5: {
         let limit = pushTemporaryLength(bb);
         let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
+        values.push(_decodePointBetCoinsVO(bb));
         bb.limit = limit;
         break;
       }
@@ -5960,485 +6999,20 @@ function _decodeTPDoEnterRoomVO(bb: ByteBuffer): TPDoEnterRoomVO {
   return message;
 }
 
-export interface Dice3RoomInfoVo {
-  roomState?: number;
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  userId?: string;
-  playing?: boolean;
-  gameType?: number;
-  roomType?: number;
-  roomLevel?: number;
-  baseMultiple?: number;
-  maxGameNum?: number;
-  currGameNum?: number;
-}
-
-export function encodeDice3RoomInfoVo(message: Dice3RoomInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDice3RoomInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDice3RoomInfoVo(message: Dice3RoomInfoVo, bb: ByteBuffer): void {
-  // optional int32 roomState = 1;
-  let $roomState = message.roomState;
-  if ($roomState !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($roomState));
-  }
-
-  // optional string roomId = 2;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 3;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 4;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 6;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 7;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 8;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 9;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 10;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 11;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 12;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodeDice3RoomInfoVo(binary: Uint8Array): Dice3RoomInfoVo {
-  return _decodeDice3RoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeDice3RoomInfoVo(bb: ByteBuffer): Dice3RoomInfoVo {
-  let message: Dice3RoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 roomState = 1;
-      case 1: {
-        message.roomState = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 2;
-      case 2: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 3;
-      case 3: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 4;
-      case 4: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool playing = 6;
-      case 6: {
-        message.playing = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 gameType = 7;
-      case 7: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomType = 8;
-      case 8: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 9;
-      case 9: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 baseMultiple = 10;
-      case 10: {
-        message.baseMultiple = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxGameNum = 11;
-      case 11: {
-        message.maxGameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 currGameNum = 12;
-      case 12: {
-        message.currGameNum = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RYBDoEnterRoomVO {
-  lastMsgId?: string;
-  currMsgId?: string;
-  roomInfo?: RedYellowBlueRoomInfoVo;
-  gameInfo?: RedYellowBlueGameInfoVo;
-  betList?: PointBetCoinsNotifyVo[];
-  betCoinMap?: { [key: number]: Long };
-  betSelfCoinMap?: { [key: number]: Long };
-  betCoinList?: Long[];
-  onlinePlayers?: number;
-}
-
-export function encodeRYBDoEnterRoomVO(message: RYBDoEnterRoomVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRYBDoEnterRoomVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRYBDoEnterRoomVO(message: RYBDoEnterRoomVO, bb: ByteBuffer): void {
-  // optional string lastMsgId = 1;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 2;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional RedYellowBlueRoomInfoVo roomInfo = 3;
-  let $roomInfo = message.roomInfo;
-  if ($roomInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeRedYellowBlueRoomInfoVo($roomInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional RedYellowBlueGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeRedYellowBlueGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated PointBetCoinsNotifyVo betList = 5;
-  let array$betList = message.betList;
-  if (array$betList !== undefined) {
-    for (let value of array$betList) {
-      writeVarint32(bb, 42);
-      let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betCoinMap = 6;
-  let map$betCoinMap = message.betCoinMap;
-  if (map$betCoinMap !== undefined) {
-    for (let key in map$betCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 50);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betSelfCoinMap = 7;
-  let map$betSelfCoinMap = message.betSelfCoinMap;
-  if (map$betSelfCoinMap !== undefined) {
-    for (let key in map$betSelfCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betSelfCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 58);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated int64 betCoinList = 8;
-  let array$betCoinList = message.betCoinList;
-  if (array$betCoinList !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$betCoinList) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 66);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional int32 onlinePlayers = 9;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-}
-
-export function decodeRYBDoEnterRoomVO(binary: Uint8Array): RYBDoEnterRoomVO {
-  return _decodeRYBDoEnterRoomVO(wrapByteBuffer(binary));
-}
-
-function _decodeRYBDoEnterRoomVO(bb: ByteBuffer): RYBDoEnterRoomVO {
-  let message: RYBDoEnterRoomVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string lastMsgId = 1;
-      case 1: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 2;
-      case 2: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional RedYellowBlueRoomInfoVo roomInfo = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodeRedYellowBlueRoomInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional RedYellowBlueGameInfoVo gameInfo = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeRedYellowBlueGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated PointBetCoinsNotifyVo betList = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional map<int32, int64> betCoinMap = 6;
-      case 6: {
-        let values = message.betCoinMap || (message.betCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // optional map<int32, int64> betSelfCoinMap = 7;
-      case 7: {
-        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betSelfCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // repeated int64 betCoinList = 8;
-      case 8: {
-        let values = message.betCoinList || (message.betCoinList = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional int32 onlinePlayers = 9;
-      case 9: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface TeenPattiWarWinDto {
+export interface TPWWinVO {
   gameNum?: number;
   id?: number[];
-  king?: TeenPattiWarPokerResultDto;
-  queen?: TeenPattiWarPokerResultDto;
-  controlSingleState?: number;
+  king?: TPWPokerResultVO;
+  queen?: TPWPokerResultVO;
 }
 
-export function encodeTeenPattiWarWinDto(message: TeenPattiWarWinDto): Uint8Array {
+export function encodeTPWWinVO(message: TPWWinVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeTeenPattiWarWinDto(message, bb);
+  _encodeTPWWinVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeTeenPattiWarWinDto(message: TeenPattiWarWinDto, bb: ByteBuffer): void {
+function _encodeTPWWinVO(message: TPWWinVO, bb: ByteBuffer): void {
   // optional int32 gameNum = 1;
   let $gameNum = message.gameNum;
   if ($gameNum !== undefined) {
@@ -6459,42 +7033,35 @@ function _encodeTeenPattiWarWinDto(message: TeenPattiWarWinDto, bb: ByteBuffer):
     pushByteBuffer(packed);
   }
 
-  // optional TeenPattiWarPokerResultDto king = 3;
+  // optional TPWPokerResultVO king = 3;
   let $king = message.king;
   if ($king !== undefined) {
     writeVarint32(bb, 26);
     let nested = popByteBuffer();
-    _encodeTeenPattiWarPokerResultDto($king, nested);
+    _encodeTPWPokerResultVO($king, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 
-  // optional TeenPattiWarPokerResultDto queen = 4;
+  // optional TPWPokerResultVO queen = 4;
   let $queen = message.queen;
   if ($queen !== undefined) {
     writeVarint32(bb, 34);
     let nested = popByteBuffer();
-    _encodeTeenPattiWarPokerResultDto($queen, nested);
+    _encodeTPWPokerResultVO($queen, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
-
-  // optional int32 controlSingleState = 5;
-  let $controlSingleState = message.controlSingleState;
-  if ($controlSingleState !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, intToLong($controlSingleState));
-  }
 }
 
-export function decodeTeenPattiWarWinDto(binary: Uint8Array): TeenPattiWarWinDto {
-  return _decodeTeenPattiWarWinDto(wrapByteBuffer(binary));
+export function decodeTPWWinVO(binary: Uint8Array): TPWWinVO {
+  return _decodeTPWWinVO(wrapByteBuffer(binary));
 }
 
-function _decodeTeenPattiWarWinDto(bb: ByteBuffer): TeenPattiWarWinDto {
-  let message: TeenPattiWarWinDto = {} as any;
+function _decodeTPWWinVO(bb: ByteBuffer): TPWWinVO {
+  let message: TPWWinVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -6524,28 +7091,22 @@ function _decodeTeenPattiWarWinDto(bb: ByteBuffer): TeenPattiWarWinDto {
         break;
       }
 
-      // optional TeenPattiWarPokerResultDto king = 3;
+      // optional TPWPokerResultVO king = 3;
       case 3: {
         let limit = pushTemporaryLength(bb);
-        message.king = _decodeTeenPattiWarPokerResultDto(bb);
+        message.king = _decodeTPWPokerResultVO(bb);
         bb.limit = limit;
         break;
       }
 
-      // optional TeenPattiWarPokerResultDto queen = 4;
+      // optional TPWPokerResultVO queen = 4;
       case 4: {
         let limit = pushTemporaryLength(bb);
-        message.queen = _decodeTeenPattiWarPokerResultDto(bb);
+        message.queen = _decodeTPWPokerResultVO(bb);
         bb.limit = limit;
         break;
       }
 
-      // optional int32 controlSingleState = 5;
-      case 5: {
-        message.controlSingleState = readVarint32(bb);
-        break;
-      }
-
       default:
         skipUnknownField(bb, tag & 7);
     }
@@ -6554,81 +7115,19 @@ function _decodeTeenPattiWarWinDto(bb: ByteBuffer): TeenPattiWarWinDto {
   return message;
 }
 
-export interface PointBetCoinsNotifyVo {
-  betCoins?: Long;
-  betId?: number;
-}
-
-export function encodePointBetCoinsNotifyVo(message: PointBetCoinsNotifyVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodePointBetCoinsNotifyVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodePointBetCoinsNotifyVo(message: PointBetCoinsNotifyVo, bb: ByteBuffer): void {
-  // optional int64 betCoins = 1;
-  let $betCoins = message.betCoins;
-  if ($betCoins !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $betCoins);
-  }
-
-  // optional int32 betId = 2;
-  let $betId = message.betId;
-  if ($betId !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($betId));
-  }
-}
-
-export function decodePointBetCoinsNotifyVo(binary: Uint8Array): PointBetCoinsNotifyVo {
-  return _decodePointBetCoinsNotifyVo(wrapByteBuffer(binary));
-}
-
-function _decodePointBetCoinsNotifyVo(bb: ByteBuffer): PointBetCoinsNotifyVo {
-  let message: PointBetCoinsNotifyVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int64 betCoins = 1;
-      case 1: {
-        message.betCoins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 betId = 2;
-      case 2: {
-        message.betId = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface JhandiMundaWinDto {
+export interface PKWinVO {
   gameNum?: number;
-  idRates?: JhandiMundaWinIdRateDto[];
-  dices?: number[];
-  controlSingleState?: number;
+  id?: number[];
+  poker?: string;
 }
 
-export function encodeJhandiMundaWinDto(message: JhandiMundaWinDto): Uint8Array {
+export function encodePKWinVO(message: PKWinVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeJhandiMundaWinDto(message, bb);
+  _encodePKWinVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeJhandiMundaWinDto(message: JhandiMundaWinDto, bb: ByteBuffer): void {
+function _encodePKWinVO(message: PKWinVO, bb: ByteBuffer): void {
   // optional int32 gameNum = 1;
   let $gameNum = message.gameNum;
   if ($gameNum !== undefined) {
@@ -6636,46 +7135,33 @@ function _encodeJhandiMundaWinDto(message: JhandiMundaWinDto, bb: ByteBuffer): v
     writeVarint64(bb, intToLong($gameNum));
   }
 
-  // repeated JhandiMundaWinIdRateDto idRates = 2;
-  let array$idRates = message.idRates;
-  if (array$idRates !== undefined) {
-    for (let value of array$idRates) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeJhandiMundaWinIdRateDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated int32 dices = 3;
-  let array$dices = message.dices;
-  if (array$dices !== undefined) {
+  // repeated int32 id = 2;
+  let array$id = message.id;
+  if (array$id !== undefined) {
     let packed = popByteBuffer();
-    for (let value of array$dices) {
+    for (let value of array$id) {
       writeVarint64(packed, intToLong(value));
     }
-    writeVarint32(bb, 26);
+    writeVarint32(bb, 18);
     writeVarint32(bb, packed.offset);
     writeByteBuffer(bb, packed);
     pushByteBuffer(packed);
   }
 
-  // optional int32 controlSingleState = 4;
-  let $controlSingleState = message.controlSingleState;
-  if ($controlSingleState !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($controlSingleState));
+  // optional string poker = 3;
+  let $poker = message.poker;
+  if ($poker !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $poker);
   }
 }
 
-export function decodeJhandiMundaWinDto(binary: Uint8Array): JhandiMundaWinDto {
-  return _decodeJhandiMundaWinDto(wrapByteBuffer(binary));
+export function decodePKWinVO(binary: Uint8Array): PKWinVO {
+  return _decodePKWinVO(wrapByteBuffer(binary));
 }
 
-function _decodeJhandiMundaWinDto(bb: ByteBuffer): JhandiMundaWinDto {
-  let message: JhandiMundaWinDto = {} as any;
+function _decodePKWinVO(bb: ByteBuffer): PKWinVO {
+  let message: PKWinVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -6690,18 +7176,9 @@ function _decodeJhandiMundaWinDto(bb: ByteBuffer): JhandiMundaWinDto {
         break;
       }
 
-      // repeated JhandiMundaWinIdRateDto idRates = 2;
+      // repeated int32 id = 2;
       case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.idRates || (message.idRates = []);
-        values.push(_decodeJhandiMundaWinIdRateDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated int32 dices = 3;
-      case 3: {
-        let values = message.dices || (message.dices = []);
+        let values = message.id || (message.id = []);
         if ((tag & 7) === 2) {
           let outerLimit = pushTemporaryLength(bb);
           while (!isAtEnd(bb)) {
@@ -6714,9 +7191,9 @@ function _decodeJhandiMundaWinDto(bb: ByteBuffer): JhandiMundaWinDto {
         break;
       }
 
-      // optional int32 controlSingleState = 4;
-      case 4: {
-        message.controlSingleState = readVarint32(bb);
+      // optional string poker = 3;
+      case 3: {
+        message.poker = readString(bb, readVarint32(bb));
         break;
       }
 
@@ -6728,7 +7205,489 @@ function _decodeJhandiMundaWinDto(bb: ByteBuffer): JhandiMundaWinDto {
   return message;
 }
 
-export interface GameInfoVo {
+export interface NotifyPKBeginBetVO {
+  notifyType?: number;
+  lastMsgId?: string;
+  currMsgId?: string;
+  gameInfo?: PKGameInfoVO;
+}
+
+export function encodeNotifyPKBeginBetVO(message: NotifyPKBeginBetVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyPKBeginBetVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyPKBeginBetVO(message: NotifyPKBeginBetVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional string lastMsgId = 2;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 3;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional PKGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodePKGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyPKBeginBetVO(binary: Uint8Array): NotifyPKBeginBetVO {
+  return _decodeNotifyPKBeginBetVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyPKBeginBetVO(bb: ByteBuffer): NotifyPKBeginBetVO {
+  let message: NotifyPKBeginBetVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional string lastMsgId = 2;
+      case 2: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 3;
+      case 3: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional PKGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodePKGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface NotifyLDDrawVO {
+  notifyType?: number;
+  playerResult?: number;
+  gameInfo?: NotifyLDDrawGameInfoVO;
+  userInfoList?: RoomUserVO[];
+  gameResult?: LDWinVO;
+}
+
+export function encodeNotifyLDDrawVO(message: NotifyLDDrawVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeNotifyLDDrawVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeNotifyLDDrawVO(message: NotifyLDDrawVO, bb: ByteBuffer): void {
+  // optional int32 notifyType = 1;
+  let $notifyType = message.notifyType;
+  if ($notifyType !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($notifyType));
+  }
+
+  // optional int32 playerResult = 2;
+  let $playerResult = message.playerResult;
+  if ($playerResult !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($playerResult));
+  }
+
+  // optional NotifyLDDrawGameInfoVO gameInfo = 3;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeNotifyLDDrawGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated RoomUserVO userInfoList = 4;
+  let array$userInfoList = message.userInfoList;
+  if (array$userInfoList !== undefined) {
+    for (let value of array$userInfoList) {
+      writeVarint32(bb, 34);
+      let nested = popByteBuffer();
+      _encodeRoomUserVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional LDWinVO gameResult = 5;
+  let $gameResult = message.gameResult;
+  if ($gameResult !== undefined) {
+    writeVarint32(bb, 42);
+    let nested = popByteBuffer();
+    _encodeLDWinVO($gameResult, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+}
+
+export function decodeNotifyLDDrawVO(binary: Uint8Array): NotifyLDDrawVO {
+  return _decodeNotifyLDDrawVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyLDDrawVO(bb: ByteBuffer): NotifyLDDrawVO {
+  let message: NotifyLDDrawVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 notifyType = 1;
+      case 1: {
+        message.notifyType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 playerResult = 2;
+      case 2: {
+        message.playerResult = readVarint32(bb);
+        break;
+      }
+
+      // optional NotifyLDDrawGameInfoVO gameInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodeNotifyLDDrawGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated RoomUserVO userInfoList = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.userInfoList || (message.userInfoList = []);
+        values.push(_decodeRoomUserVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional LDWinVO gameResult = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        message.gameResult = _decodeLDWinVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ResponsePKEnterRoomVO {
+  lastMsgId?: string;
+  currMsgId?: string;
+  roomInfo?: RoomInfoVO;
+  gameInfo?: PKGameInfoVO;
+  betList?: PointBetCoinsVO[];
+  betCoinMap?: { [key: number]: Long };
+  betSelfCoinMap?: { [key: number]: Long };
+  betCoinList?: Long[];
+  onlinePlayers?: number;
+}
+
+export function encodeResponsePKEnterRoomVO(message: ResponsePKEnterRoomVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeResponsePKEnterRoomVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeResponsePKEnterRoomVO(message: ResponsePKEnterRoomVO, bb: ByteBuffer): void {
+  // optional string lastMsgId = 1;
+  let $lastMsgId = message.lastMsgId;
+  if ($lastMsgId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $lastMsgId);
+  }
+
+  // optional string currMsgId = 2;
+  let $currMsgId = message.currMsgId;
+  if ($currMsgId !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $currMsgId);
+  }
+
+  // optional RoomInfoVO roomInfo = 3;
+  let $roomInfo = message.roomInfo;
+  if ($roomInfo !== undefined) {
+    writeVarint32(bb, 26);
+    let nested = popByteBuffer();
+    _encodeRoomInfoVO($roomInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // optional PKGameInfoVO gameInfo = 4;
+  let $gameInfo = message.gameInfo;
+  if ($gameInfo !== undefined) {
+    writeVarint32(bb, 34);
+    let nested = popByteBuffer();
+    _encodePKGameInfoVO($gameInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated PointBetCoinsVO betList = 5;
+  let array$betList = message.betList;
+  if (array$betList !== undefined) {
+    for (let value of array$betList) {
+      writeVarint32(bb, 42);
+      let nested = popByteBuffer();
+      _encodePointBetCoinsVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betCoinMap = 6;
+  let map$betCoinMap = message.betCoinMap;
+  if (map$betCoinMap !== undefined) {
+    for (let key in map$betCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 50);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<int32, int64> betSelfCoinMap = 7;
+  let map$betSelfCoinMap = message.betSelfCoinMap;
+  if (map$betSelfCoinMap !== undefined) {
+    for (let key in map$betSelfCoinMap) {
+      let nested = popByteBuffer();
+      let value = map$betSelfCoinMap[key];
+      writeVarint32(nested, 8);
+      writeVarint64(nested, intToLong(+key));
+      writeVarint32(nested, 16);
+      writeVarint64(nested, value);
+      writeVarint32(bb, 58);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated int64 betCoinList = 8;
+  let array$betCoinList = message.betCoinList;
+  if (array$betCoinList !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$betCoinList) {
+      writeVarint64(packed, value);
+    }
+    writeVarint32(bb, 66);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+
+  // optional int32 onlinePlayers = 9;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 72);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeResponsePKEnterRoomVO(binary: Uint8Array): ResponsePKEnterRoomVO {
+  return _decodeResponsePKEnterRoomVO(wrapByteBuffer(binary));
+}
+
+function _decodeResponsePKEnterRoomVO(bb: ByteBuffer): ResponsePKEnterRoomVO {
+  let message: ResponsePKEnterRoomVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string lastMsgId = 1;
+      case 1: {
+        message.lastMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string currMsgId = 2;
+      case 2: {
+        message.currMsgId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional RoomInfoVO roomInfo = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        message.roomInfo = _decodeRoomInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // optional PKGameInfoVO gameInfo = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        message.gameInfo = _decodePKGameInfoVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated PointBetCoinsVO betList = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.betList || (message.betList = []);
+        values.push(_decodePointBetCoinsVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional map<int32, int64> betCoinMap = 6;
+      case 6: {
+        let values = message.betCoinMap || (message.betCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // optional map<int32, int64> betSelfCoinMap = 7;
+      case 7: {
+        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: number | undefined;
+        let value: Long | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readVarint32(bb);
+              break;
+            }
+            case 2: {
+              value = readVarint64(bb, /* unsigned */ false);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: betSelfCoinMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      // repeated int64 betCoinList = 8;
+      case 8: {
+        let values = message.betCoinList || (message.betCoinList = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint64(bb, /* unsigned */ false));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint64(bb, /* unsigned */ false));
+        }
+        break;
+      }
+
+      // optional int32 onlinePlayers = 9;
+      case 9: {
+        message.onlinePlayers = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface PKGameInfoVO {
   gameNum?: number;
   bankerId?: string;
   currOptUserId?: string;
@@ -6738,15 +7697,17 @@ export interface GameInfoVo {
   leftPaiNum?: number;
   qiPai?: string;
   turnType?: number;
+  oddsInfoList?: OddsInfoVO[];
+  gameResultList?: PKWinVO[];
 }
 
-export function encodeGameInfoVo(message: GameInfoVo): Uint8Array {
+export function encodePKGameInfoVO(message: PKGameInfoVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeGameInfoVo(message, bb);
+  _encodePKGameInfoVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeGameInfoVo(message: GameInfoVo, bb: ByteBuffer): void {
+function _encodePKGameInfoVO(message: PKGameInfoVO, bb: ByteBuffer): void {
   // optional int32 gameNum = 1;
   let $gameNum = message.gameNum;
   if ($gameNum !== undefined) {
@@ -6809,14 +7770,40 @@ function _encodeGameInfoVo(message: GameInfoVo, bb: ByteBuffer): void {
     writeVarint32(bb, 72);
     writeVarint64(bb, intToLong($turnType));
   }
+
+  // repeated OddsInfoVO oddsInfoList = 10;
+  let array$oddsInfoList = message.oddsInfoList;
+  if (array$oddsInfoList !== undefined) {
+    for (let value of array$oddsInfoList) {
+      writeVarint32(bb, 82);
+      let nested = popByteBuffer();
+      _encodeOddsInfoVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated PKWinVO gameResultList = 11;
+  let array$gameResultList = message.gameResultList;
+  if (array$gameResultList !== undefined) {
+    for (let value of array$gameResultList) {
+      writeVarint32(bb, 90);
+      let nested = popByteBuffer();
+      _encodePKWinVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
 }
 
-export function decodeGameInfoVo(binary: Uint8Array): GameInfoVo {
-  return _decodeGameInfoVo(wrapByteBuffer(binary));
+export function decodePKGameInfoVO(binary: Uint8Array): PKGameInfoVO {
+  return _decodePKGameInfoVO(wrapByteBuffer(binary));
 }
 
-function _decodeGameInfoVo(bb: ByteBuffer): GameInfoVo {
-  let message: GameInfoVo = {} as any;
+function _decodePKGameInfoVO(bb: ByteBuffer): PKGameInfoVO {
+  let message: PKGameInfoVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -6879,1590 +7866,21 @@ function _decodeGameInfoVo(bb: ByteBuffer): GameInfoVo {
         break;
       }
 
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface PKSendDrawMsgVO {
-  notifyType?: number;
-  playerResult?: number;
-  gameInfo?: PKSendDrawMsgGameInfoVO;
-  userInfoList?: RoomUserVo[];
-  gameResult?: PokerKingWinDto;
-}
-
-export function encodePKSendDrawMsgVO(message: PKSendDrawMsgVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodePKSendDrawMsgVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodePKSendDrawMsgVO(message: PKSendDrawMsgVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional int32 playerResult = 2;
-  let $playerResult = message.playerResult;
-  if ($playerResult !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($playerResult));
-  }
-
-  // optional PKSendDrawMsgGameInfoVO gameInfo = 3;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodePKSendDrawMsgGameInfoVO($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomUserVo userInfoList = 4;
-  let array$userInfoList = message.userInfoList;
-  if (array$userInfoList !== undefined) {
-    for (let value of array$userInfoList) {
-      writeVarint32(bb, 34);
-      let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional PokerKingWinDto gameResult = 5;
-  let $gameResult = message.gameResult;
-  if ($gameResult !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodePokerKingWinDto($gameResult, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodePKSendDrawMsgVO(binary: Uint8Array): PKSendDrawMsgVO {
-  return _decodePKSendDrawMsgVO(wrapByteBuffer(binary));
-}
-
-function _decodePKSendDrawMsgVO(bb: ByteBuffer): PKSendDrawMsgVO {
-  let message: PKSendDrawMsgVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 playerResult = 2;
-      case 2: {
-        message.playerResult = readVarint32(bb);
-        break;
-      }
-
-      // optional PKSendDrawMsgGameInfoVO gameInfo = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodePKSendDrawMsgGameInfoVO(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserVo userInfoList = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.userInfoList || (message.userInfoList = []);
-        values.push(_decodeRoomUserVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional PokerKingWinDto gameResult = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.gameResult = _decodePokerKingWinDto(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface PKSendDrawMsgGameInfoVO {
-  leftOptSeconds?: number;
-  gameNum?: number;
-  onlinePlayers?: number;
-}
-
-export function encodePKSendDrawMsgGameInfoVO(message: PKSendDrawMsgGameInfoVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodePKSendDrawMsgGameInfoVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodePKSendDrawMsgGameInfoVO(message: PKSendDrawMsgGameInfoVO, bb: ByteBuffer): void {
-  // optional int32 leftOptSeconds = 1;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int32 gameNum = 2;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional int32 onlinePlayers = 3;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-}
-
-export function decodePKSendDrawMsgGameInfoVO(binary: Uint8Array): PKSendDrawMsgGameInfoVO {
-  return _decodePKSendDrawMsgGameInfoVO(wrapByteBuffer(binary));
-}
-
-function _decodePKSendDrawMsgGameInfoVO(bb: ByteBuffer): PKSendDrawMsgGameInfoVO {
-  let message: PKSendDrawMsgGameInfoVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 leftOptSeconds = 1;
-      case 1: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 gameNum = 2;
-      case 2: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 onlinePlayers = 3;
-      case 3: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomInfoVo {
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  userId?: string;
-  playing?: boolean;
-  gameType?: number;
-  roomType?: number;
-  roomLevel?: number;
-  baseMultiple?: number;
-  maxGameNum?: number;
-  currGameNum?: number;
-}
-
-export function encodeRoomInfoVo(message: RoomInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomInfoVo(message: RoomInfoVo, bb: ByteBuffer): void {
-  // optional string roomId = 1;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 2;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 3;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 4;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 5;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 40);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 6;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 7;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 8;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 9;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 10;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 11;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodeRoomInfoVo(binary: Uint8Array): RoomInfoVo {
-  return _decodeRoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeRoomInfoVo(bb: ByteBuffer): RoomInfoVo {
-  let message: RoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string roomId = 1;
-      case 1: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 2;
-      case 2: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 3;
-      case 3: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 4;
-      case 4: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool playing = 5;
-      case 5: {
-        message.playing = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 gameType = 6;
-      case 6: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomType = 7;
-      case 7: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 8;
-      case 8: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 baseMultiple = 9;
-      case 9: {
-        message.baseMultiple = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxGameNum = 10;
+      // repeated OddsInfoVO oddsInfoList = 10;
       case 10: {
-        message.maxGameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 currGameNum = 11;
-      case 11: {
-        message.currGameNum = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface NotifyEnterRoomVO {
-  notifyType?: number;
-  userId?: string;
-  gameType?: number;
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  roomInfo?: RoomInfoVo;
-  roomUserList?: RoomUserDto[];
-  gameInfo?: GameInfoVo;
-  gameUserList?: GameUserVo[];
-  roomUserVoList?: RoomUserVo[];
-}
-
-export function encodeNotifyEnterRoomVO(message: NotifyEnterRoomVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeNotifyEnterRoomVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeNotifyEnterRoomVO(message: NotifyEnterRoomVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional string userId = 2;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $userId);
-  }
-
-  // optional int32 gameType = 3;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional string roomId = 4;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 5;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 6;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional RoomInfoVo roomInfo = 7;
-  let $roomInfo = message.roomInfo;
-  if ($roomInfo !== undefined) {
-    writeVarint32(bb, 58);
-    let nested = popByteBuffer();
-    _encodeRoomInfoVo($roomInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomUserDto roomUserList = 8;
-  let array$roomUserList = message.roomUserList;
-  if (array$roomUserList !== undefined) {
-    for (let value of array$roomUserList) {
-      writeVarint32(bb, 66);
-      let nested = popByteBuffer();
-      _encodeRoomUserDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional GameInfoVo gameInfo = 9;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 74);
-    let nested = popByteBuffer();
-    _encodeGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated GameUserVo gameUserList = 10;
-  let array$gameUserList = message.gameUserList;
-  if (array$gameUserList !== undefined) {
-    for (let value of array$gameUserList) {
-      writeVarint32(bb, 82);
-      let nested = popByteBuffer();
-      _encodeGameUserVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated RoomUserVo roomUserVoList = 11;
-  let array$roomUserVoList = message.roomUserVoList;
-  if (array$roomUserVoList !== undefined) {
-    for (let value of array$roomUserVoList) {
-      writeVarint32(bb, 90);
-      let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-}
-
-export function decodeNotifyEnterRoomVO(binary: Uint8Array): NotifyEnterRoomVO {
-  return _decodeNotifyEnterRoomVO(wrapByteBuffer(binary));
-}
-
-function _decodeNotifyEnterRoomVO(bb: ByteBuffer): NotifyEnterRoomVO {
-  let message: NotifyEnterRoomVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional string userId = 2;
-      case 2: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 gameType = 3;
-      case 3: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 4;
-      case 4: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 5;
-      case 5: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 6;
-      case 6: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional RoomInfoVo roomInfo = 7;
-      case 7: {
-        let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodeRoomInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserDto roomUserList = 8;
-      case 8: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.roomUserList || (message.roomUserList = []);
-        values.push(_decodeRoomUserDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional GameInfoVo gameInfo = 9;
-      case 9: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated GameUserVo gameUserList = 10;
-      case 10: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.gameUserList || (message.gameUserList = []);
-        values.push(_decodeGameUserVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserVo roomUserVoList = 11;
-      case 11: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.roomUserVoList || (message.roomUserVoList = []);
-        values.push(_decodeRoomUserVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface PKBeginBetVO {
-  notifyType?: number;
-  lastMsgId?: string;
-  currMsgId?: string;
-  gameInfo?: PokerKingGameInfoVo;
-}
-
-export function encodePKBeginBetVO(message: PKBeginBetVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodePKBeginBetVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodePKBeginBetVO(message: PKBeginBetVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional string lastMsgId = 2;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 3;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional PokerKingGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodePokerKingGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodePKBeginBetVO(binary: Uint8Array): PKBeginBetVO {
-  return _decodePKBeginBetVO(wrapByteBuffer(binary));
-}
-
-function _decodePKBeginBetVO(bb: ByteBuffer): PKBeginBetVO {
-  let message: PKBeginBetVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional string lastMsgId = 2;
-      case 2: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 3;
-      case 3: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional PokerKingGameInfoVo gameInfo = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodePokerKingGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LDSendDrawMsgGameInfoVO {
-  leftOptSeconds?: number;
-  gameNum?: number;
-  onlinePlayers?: number;
-}
-
-export function encodeLDSendDrawMsgGameInfoVO(message: LDSendDrawMsgGameInfoVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLDSendDrawMsgGameInfoVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLDSendDrawMsgGameInfoVO(message: LDSendDrawMsgGameInfoVO, bb: ByteBuffer): void {
-  // optional int32 leftOptSeconds = 1;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int32 gameNum = 2;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional int32 onlinePlayers = 3;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-}
-
-export function decodeLDSendDrawMsgGameInfoVO(binary: Uint8Array): LDSendDrawMsgGameInfoVO {
-  return _decodeLDSendDrawMsgGameInfoVO(wrapByteBuffer(binary));
-}
-
-function _decodeLDSendDrawMsgGameInfoVO(bb: ByteBuffer): LDSendDrawMsgGameInfoVO {
-  let message: LDSendDrawMsgGameInfoVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 leftOptSeconds = 1;
-      case 1: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 gameNum = 2;
-      case 2: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 onlinePlayers = 3;
-      case 3: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RedYellowBlueRoomInfoVo {
-  roomState?: number;
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  userId?: string;
-  playing?: boolean;
-  gameType?: number;
-  roomType?: number;
-  roomLevel?: number;
-  baseMultiple?: number;
-  maxGameNum?: number;
-  currGameNum?: number;
-}
-
-export function encodeRedYellowBlueRoomInfoVo(message: RedYellowBlueRoomInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRedYellowBlueRoomInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRedYellowBlueRoomInfoVo(message: RedYellowBlueRoomInfoVo, bb: ByteBuffer): void {
-  // optional int32 roomState = 1;
-  let $roomState = message.roomState;
-  if ($roomState !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($roomState));
-  }
-
-  // optional string roomId = 2;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 3;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 4;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 6;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 7;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 8;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 9;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 10;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 11;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 12;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodeRedYellowBlueRoomInfoVo(binary: Uint8Array): RedYellowBlueRoomInfoVo {
-  return _decodeRedYellowBlueRoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeRedYellowBlueRoomInfoVo(bb: ByteBuffer): RedYellowBlueRoomInfoVo {
-  let message: RedYellowBlueRoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 roomState = 1;
-      case 1: {
-        message.roomState = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 2;
-      case 2: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 3;
-      case 3: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 4;
-      case 4: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool playing = 6;
-      case 6: {
-        message.playing = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 gameType = 7;
-      case 7: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomType = 8;
-      case 8: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 9;
-      case 9: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 baseMultiple = 10;
-      case 10: {
-        message.baseMultiple = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxGameNum = 11;
-      case 11: {
-        message.maxGameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 currGameNum = 12;
-      case 12: {
-        message.currGameNum = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface PokerKingRoomInfoVo {
-  roomState?: number;
-  roomId?: string;
-  lastMsgId?: string;
-  currMsgId?: string;
-  userId?: string;
-  playing?: boolean;
-  gameType?: number;
-  roomType?: number;
-  roomLevel?: number;
-  baseMultiple?: number;
-  maxGameNum?: number;
-  currGameNum?: number;
-}
-
-export function encodePokerKingRoomInfoVo(message: PokerKingRoomInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodePokerKingRoomInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodePokerKingRoomInfoVo(message: PokerKingRoomInfoVo, bb: ByteBuffer): void {
-  // optional int32 roomState = 1;
-  let $roomState = message.roomState;
-  if ($roomState !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($roomState));
-  }
-
-  // optional string roomId = 2;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $roomId);
-  }
-
-  // optional string lastMsgId = 3;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 4;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional string userId = 5;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $userId);
-  }
-
-  // optional bool playing = 6;
-  let $playing = message.playing;
-  if ($playing !== undefined) {
-    writeVarint32(bb, 48);
-    writeByte(bb, $playing ? 1 : 0);
-  }
-
-  // optional int32 gameType = 7;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roomType = 8;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 9;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional int32 baseMultiple = 10;
-  let $baseMultiple = message.baseMultiple;
-  if ($baseMultiple !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($baseMultiple));
-  }
-
-  // optional int32 maxGameNum = 11;
-  let $maxGameNum = message.maxGameNum;
-  if ($maxGameNum !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($maxGameNum));
-  }
-
-  // optional int32 currGameNum = 12;
-  let $currGameNum = message.currGameNum;
-  if ($currGameNum !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($currGameNum));
-  }
-}
-
-export function decodePokerKingRoomInfoVo(binary: Uint8Array): PokerKingRoomInfoVo {
-  return _decodePokerKingRoomInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodePokerKingRoomInfoVo(bb: ByteBuffer): PokerKingRoomInfoVo {
-  let message: PokerKingRoomInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 roomState = 1;
-      case 1: {
-        message.roomState = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 2;
-      case 2: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string lastMsgId = 3;
-      case 3: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 4;
-      case 4: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 5;
-      case 5: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool playing = 6;
-      case 6: {
-        message.playing = !!readByte(bb);
-        break;
-      }
-
-      // optional int32 gameType = 7;
-      case 7: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomType = 8;
-      case 8: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 9;
-      case 9: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 baseMultiple = 10;
-      case 10: {
-        message.baseMultiple = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 maxGameNum = 11;
-      case 11: {
-        message.maxGameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 currGameNum = 12;
-      case 12: {
-        message.currGameNum = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LDBeginBetVO {
-  notifyType?: number;
-  lastMsgId?: string;
-  currMsgId?: string;
-  gameInfo?: LuckyDiceGameInfoVo;
-}
-
-export function encodeLDBeginBetVO(message: LDBeginBetVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLDBeginBetVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLDBeginBetVO(message: LDBeginBetVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional string lastMsgId = 2;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 3;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional LuckyDiceGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeLuckyDiceGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeLDBeginBetVO(binary: Uint8Array): LDBeginBetVO {
-  return _decodeLDBeginBetVO(wrapByteBuffer(binary));
-}
-
-function _decodeLDBeginBetVO(bb: ByteBuffer): LDBeginBetVO {
-  let message: LDBeginBetVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional string lastMsgId = 2;
-      case 2: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 3;
-      case 3: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional LuckyDiceGameInfoVo gameInfo = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeLuckyDiceGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface OptDto {
-  optType?: number;
-  useShouPai?: string;
-  useQiPai?: string;
-  priority?: number;
-  extra?: string;
-}
-
-export function encodeOptDto(message: OptDto): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeOptDto(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeOptDto(message: OptDto, bb: ByteBuffer): void {
-  // optional int32 optType = 1;
-  let $optType = message.optType;
-  if ($optType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($optType));
-  }
-
-  // optional string useShouPai = 2;
-  let $useShouPai = message.useShouPai;
-  if ($useShouPai !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $useShouPai);
-  }
-
-  // optional string useQiPai = 3;
-  let $useQiPai = message.useQiPai;
-  if ($useQiPai !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $useQiPai);
-  }
-
-  // optional int32 priority = 4;
-  let $priority = message.priority;
-  if ($priority !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($priority));
-  }
-
-  // optional string extra = 5;
-  let $extra = message.extra;
-  if ($extra !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $extra);
-  }
-}
-
-export function decodeOptDto(binary: Uint8Array): OptDto {
-  return _decodeOptDto(wrapByteBuffer(binary));
-}
-
-function _decodeOptDto(bb: ByteBuffer): OptDto {
-  let message: OptDto = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 optType = 1;
-      case 1: {
-        message.optType = readVarint32(bb);
-        break;
-      }
-
-      // optional string useShouPai = 2;
-      case 2: {
-        message.useShouPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string useQiPai = 3;
-      case 3: {
-        message.useQiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 priority = 4;
-      case 4: {
-        message.priority = readVarint32(bb);
-        break;
-      }
-
-      // optional string extra = 5;
-      case 5: {
-        message.extra = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface JhandiMundaGameInfoVo {
-  oddsInfoList?: OddsInfoVo[];
-  gameResultList?: JhandiMundaWinDto[];
-  gameNum?: number;
-  bankerId?: string;
-  currOptUserId?: string;
-  totalOptSeconds?: number;
-  leftOptSeconds?: number;
-  dealCardMilliseconds?: Long;
-  leftPaiNum?: number;
-  qiPai?: string;
-  turnType?: number;
-}
-
-export function encodeJhandiMundaGameInfoVo(message: JhandiMundaGameInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeJhandiMundaGameInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeJhandiMundaGameInfoVo(message: JhandiMundaGameInfoVo, bb: ByteBuffer): void {
-  // repeated OddsInfoVo oddsInfoList = 1;
-  let array$oddsInfoList = message.oddsInfoList;
-  if (array$oddsInfoList !== undefined) {
-    for (let value of array$oddsInfoList) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeOddsInfoVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated JhandiMundaWinDto gameResultList = 2;
-  let array$gameResultList = message.gameResultList;
-  if (array$gameResultList !== undefined) {
-    for (let value of array$gameResultList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeJhandiMundaWinDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameNum = 3;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional string bankerId = 4;
-  let $bankerId = message.bankerId;
-  if ($bankerId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $bankerId);
-  }
-
-  // optional string currOptUserId = 5;
-  let $currOptUserId = message.currOptUserId;
-  if ($currOptUserId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $currOptUserId);
-  }
-
-  // optional int32 totalOptSeconds = 6;
-  let $totalOptSeconds = message.totalOptSeconds;
-  if ($totalOptSeconds !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($totalOptSeconds));
-  }
-
-  // optional int32 leftOptSeconds = 7;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int64 dealCardMilliseconds = 8;
-  let $dealCardMilliseconds = message.dealCardMilliseconds;
-  if ($dealCardMilliseconds !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $dealCardMilliseconds);
-  }
-
-  // optional int32 leftPaiNum = 9;
-  let $leftPaiNum = message.leftPaiNum;
-  if ($leftPaiNum !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($leftPaiNum));
-  }
-
-  // optional string qiPai = 10;
-  let $qiPai = message.qiPai;
-  if ($qiPai !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $qiPai);
-  }
-
-  // optional int32 turnType = 11;
-  let $turnType = message.turnType;
-  if ($turnType !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($turnType));
-  }
-}
-
-export function decodeJhandiMundaGameInfoVo(binary: Uint8Array): JhandiMundaGameInfoVo {
-  return _decodeJhandiMundaGameInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeJhandiMundaGameInfoVo(bb: ByteBuffer): JhandiMundaGameInfoVo {
-  let message: JhandiMundaGameInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated OddsInfoVo oddsInfoList = 1;
-      case 1: {
         let limit = pushTemporaryLength(bb);
         let values = message.oddsInfoList || (message.oddsInfoList = []);
-        values.push(_decodeOddsInfoVo(bb));
+        values.push(_decodeOddsInfoVO(bb));
         bb.limit = limit;
         break;
       }
 
-      // repeated JhandiMundaWinDto gameResultList = 2;
-      case 2: {
+      // repeated PKWinVO gameResultList = 11;
+      case 11: {
         let limit = pushTemporaryLength(bb);
         let values = message.gameResultList || (message.gameResultList = []);
-        values.push(_decodeJhandiMundaWinDto(bb));
+        values.push(_decodePKWinVO(bb));
         bb.limit = limit;
-        break;
-      }
-
-      // optional int32 gameNum = 3;
-      case 3: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string bankerId = 4;
-      case 4: {
-        message.bankerId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currOptUserId = 5;
-      case 5: {
-        message.currOptUserId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 totalOptSeconds = 6;
-      case 6: {
-        message.totalOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 leftOptSeconds = 7;
-      case 7: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 dealCardMilliseconds = 8;
-      case 8: {
-        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 leftPaiNum = 9;
-      case 9: {
-        message.leftPaiNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string qiPai = 10;
-      case 10: {
-        message.qiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 turnType = 11;
-      case 11: {
-        message.turnType = readVarint32(bb);
         break;
       }
 
@@ -8474,20 +7892,20 @@ function _decodeJhandiMundaGameInfoVo(bb: ByteBuffer): JhandiMundaGameInfoVo {
   return message;
 }
 
-export interface TPBeginBetVO {
+export interface NotifyRYBBeginBetVO {
   notifyType?: number;
   lastMsgId?: string;
   currMsgId?: string;
-  gameInfo?: TeenPattiWarGameInfoVo;
+  gameInfo?: RYBGameInfoVO;
 }
 
-export function encodeTPBeginBetVO(message: TPBeginBetVO): Uint8Array {
+export function encodeNotifyRYBBeginBetVO(message: NotifyRYBBeginBetVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeTPBeginBetVO(message, bb);
+  _encodeNotifyRYBBeginBetVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeTPBeginBetVO(message: TPBeginBetVO, bb: ByteBuffer): void {
+function _encodeNotifyRYBBeginBetVO(message: NotifyRYBBeginBetVO, bb: ByteBuffer): void {
   // optional int32 notifyType = 1;
   let $notifyType = message.notifyType;
   if ($notifyType !== undefined) {
@@ -8509,24 +7927,24 @@ function _encodeTPBeginBetVO(message: TPBeginBetVO, bb: ByteBuffer): void {
     writeString(bb, $currMsgId);
   }
 
-  // optional TeenPattiWarGameInfoVo gameInfo = 4;
+  // optional RYBGameInfoVO gameInfo = 4;
   let $gameInfo = message.gameInfo;
   if ($gameInfo !== undefined) {
     writeVarint32(bb, 34);
     let nested = popByteBuffer();
-    _encodeTeenPattiWarGameInfoVo($gameInfo, nested);
+    _encodeRYBGameInfoVO($gameInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 }
 
-export function decodeTPBeginBetVO(binary: Uint8Array): TPBeginBetVO {
-  return _decodeTPBeginBetVO(wrapByteBuffer(binary));
+export function decodeNotifyRYBBeginBetVO(binary: Uint8Array): NotifyRYBBeginBetVO {
+  return _decodeNotifyRYBBeginBetVO(wrapByteBuffer(binary));
 }
 
-function _decodeTPBeginBetVO(bb: ByteBuffer): TPBeginBetVO {
-  let message: TPBeginBetVO = {} as any;
+function _decodeNotifyRYBBeginBetVO(bb: ByteBuffer): NotifyRYBBeginBetVO {
+  let message: NotifyRYBBeginBetVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -8553,10 +7971,10 @@ function _decodeTPBeginBetVO(bb: ByteBuffer): TPBeginBetVO {
         break;
       }
 
-      // optional TeenPattiWarGameInfoVo gameInfo = 4;
+      // optional RYBGameInfoVO gameInfo = 4;
       case 4: {
         let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeTeenPattiWarGameInfoVo(bb);
+        message.gameInfo = _decodeRYBGameInfoVO(bb);
         bb.limit = limit;
         break;
       }
@@ -8569,1520 +7987,20 @@ function _decodeTPBeginBetVO(bb: ByteBuffer): TPBeginBetVO {
   return message;
 }
 
-export interface DragonAndTigerWinUserDto {
-  gameNum?: number;
-  dragon?: DragonAndTigerPokerResultDto;
-  tiger?: DragonAndTigerPokerResultDto;
-  battleIdEnum?: number;
-  controlSingleState?: number;
-}
-
-export function encodeDragonAndTigerWinUserDto(message: DragonAndTigerWinUserDto): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDragonAndTigerWinUserDto(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDragonAndTigerWinUserDto(message: DragonAndTigerWinUserDto, bb: ByteBuffer): void {
-  // optional int32 gameNum = 1;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional DragonAndTigerPokerResultDto dragon = 2;
-  let $dragon = message.dragon;
-  if ($dragon !== undefined) {
-    writeVarint32(bb, 18);
-    let nested = popByteBuffer();
-    _encodeDragonAndTigerPokerResultDto($dragon, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional DragonAndTigerPokerResultDto tiger = 3;
-  let $tiger = message.tiger;
-  if ($tiger !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeDragonAndTigerPokerResultDto($tiger, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional int32 battleIdEnum = 4;
-  let $battleIdEnum = message.battleIdEnum;
-  if ($battleIdEnum !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($battleIdEnum));
-  }
-
-  // optional int32 controlSingleState = 5;
-  let $controlSingleState = message.controlSingleState;
-  if ($controlSingleState !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, intToLong($controlSingleState));
-  }
-}
-
-export function decodeDragonAndTigerWinUserDto(binary: Uint8Array): DragonAndTigerWinUserDto {
-  return _decodeDragonAndTigerWinUserDto(wrapByteBuffer(binary));
-}
-
-function _decodeDragonAndTigerWinUserDto(bb: ByteBuffer): DragonAndTigerWinUserDto {
-  let message: DragonAndTigerWinUserDto = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 gameNum = 1;
-      case 1: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional DragonAndTigerPokerResultDto dragon = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        message.dragon = _decodeDragonAndTigerPokerResultDto(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional DragonAndTigerPokerResultDto tiger = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.tiger = _decodeDragonAndTigerPokerResultDto(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 battleIdEnum = 4;
-      case 4: {
-        message.battleIdEnum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 controlSingleState = 5;
-      case 5: {
-        message.controlSingleState = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface GameUserVo {
-  userId?: string;
-  seatNo?: number;
-  shouPai?: string;
-  hitoutPai?: string;
-  score?: Long;
-  coins?: Long;
-  balanceCoins?: Long;
-  optList?: OptDto[];
-}
-
-export function encodeGameUserVo(message: GameUserVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeGameUserVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeGameUserVo(message: GameUserVo, bb: ByteBuffer): void {
-  // optional string userId = 1;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $userId);
-  }
-
-  // optional int32 seatNo = 2;
-  let $seatNo = message.seatNo;
-  if ($seatNo !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($seatNo));
-  }
-
-  // optional string shouPai = 3;
-  let $shouPai = message.shouPai;
-  if ($shouPai !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $shouPai);
-  }
-
-  // optional string hitoutPai = 4;
-  let $hitoutPai = message.hitoutPai;
-  if ($hitoutPai !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $hitoutPai);
-  }
-
-  // optional int64 score = 5;
-  let $score = message.score;
-  if ($score !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, $score);
-  }
-
-  // optional int64 coins = 6;
-  let $coins = message.coins;
-  if ($coins !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, $coins);
-  }
-
-  // optional int64 balanceCoins = 7;
-  let $balanceCoins = message.balanceCoins;
-  if ($balanceCoins !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, $balanceCoins);
-  }
-
-  // repeated OptDto optList = 8;
-  let array$optList = message.optList;
-  if (array$optList !== undefined) {
-    for (let value of array$optList) {
-      writeVarint32(bb, 66);
-      let nested = popByteBuffer();
-      _encodeOptDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-}
-
-export function decodeGameUserVo(binary: Uint8Array): GameUserVo {
-  return _decodeGameUserVo(wrapByteBuffer(binary));
-}
-
-function _decodeGameUserVo(bb: ByteBuffer): GameUserVo {
-  let message: GameUserVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string userId = 1;
-      case 1: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 seatNo = 2;
-      case 2: {
-        message.seatNo = readVarint32(bb);
-        break;
-      }
-
-      // optional string shouPai = 3;
-      case 3: {
-        message.shouPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string hitoutPai = 4;
-      case 4: {
-        message.hitoutPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 score = 5;
-      case 5: {
-        message.score = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 coins = 6;
-      case 6: {
-        message.coins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 balanceCoins = 7;
-      case 7: {
-        message.balanceCoins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // repeated OptDto optList = 8;
-      case 8: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.optList || (message.optList = []);
-        values.push(_decodeOptDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface JMSendDrawMsgGameInfoVO {
-  leftOptSeconds?: number;
-  gameNum?: number;
-  onlinePlayers?: number;
-}
-
-export function encodeJMSendDrawMsgGameInfoVO(message: JMSendDrawMsgGameInfoVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeJMSendDrawMsgGameInfoVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeJMSendDrawMsgGameInfoVO(message: JMSendDrawMsgGameInfoVO, bb: ByteBuffer): void {
-  // optional int32 leftOptSeconds = 1;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int32 gameNum = 2;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional int32 onlinePlayers = 3;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-}
-
-export function decodeJMSendDrawMsgGameInfoVO(binary: Uint8Array): JMSendDrawMsgGameInfoVO {
-  return _decodeJMSendDrawMsgGameInfoVO(wrapByteBuffer(binary));
-}
-
-function _decodeJMSendDrawMsgGameInfoVO(bb: ByteBuffer): JMSendDrawMsgGameInfoVO {
-  let message: JMSendDrawMsgGameInfoVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 leftOptSeconds = 1;
-      case 1: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 gameNum = 2;
-      case 2: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 onlinePlayers = 3;
-      case 3: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomRecordResponse {
-}
-
-export function encodeRoomRecordResponse(message: RoomRecordResponse): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomRecordResponse(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomRecordResponse(message: RoomRecordResponse, bb: ByteBuffer): void {
-}
-
-export function decodeRoomRecordResponse(binary: Uint8Array): RoomRecordResponse {
-  return _decodeRoomRecordResponse(wrapByteBuffer(binary));
-}
-
-function _decodeRoomRecordResponse(bb: ByteBuffer): RoomRecordResponse {
-  let message: RoomRecordResponse = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RedYellowBlueGameInfoVo {
-  OddsInfoList?: OddsInfoVo[];
-  gameResultList?: RedYellowBlueWinDto[];
-  gameNum?: number;
-  bankerId?: string;
-  currOptUserId?: string;
-  totalOptSeconds?: number;
-  leftOptSeconds?: number;
-  dealCardMilliseconds?: Long;
-  leftPaiNum?: number;
-  qiPai?: string;
-  turnType?: number;
-}
-
-export function encodeRedYellowBlueGameInfoVo(message: RedYellowBlueGameInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRedYellowBlueGameInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRedYellowBlueGameInfoVo(message: RedYellowBlueGameInfoVo, bb: ByteBuffer): void {
-  // repeated OddsInfoVo OddsInfoList = 1;
-  let array$OddsInfoList = message.OddsInfoList;
-  if (array$OddsInfoList !== undefined) {
-    for (let value of array$OddsInfoList) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeOddsInfoVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated RedYellowBlueWinDto gameResultList = 2;
-  let array$gameResultList = message.gameResultList;
-  if (array$gameResultList !== undefined) {
-    for (let value of array$gameResultList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeRedYellowBlueWinDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameNum = 3;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional string bankerId = 4;
-  let $bankerId = message.bankerId;
-  if ($bankerId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $bankerId);
-  }
-
-  // optional string currOptUserId = 5;
-  let $currOptUserId = message.currOptUserId;
-  if ($currOptUserId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $currOptUserId);
-  }
-
-  // optional int32 totalOptSeconds = 6;
-  let $totalOptSeconds = message.totalOptSeconds;
-  if ($totalOptSeconds !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($totalOptSeconds));
-  }
-
-  // optional int32 leftOptSeconds = 7;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int64 dealCardMilliseconds = 8;
-  let $dealCardMilliseconds = message.dealCardMilliseconds;
-  if ($dealCardMilliseconds !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $dealCardMilliseconds);
-  }
-
-  // optional int32 leftPaiNum = 9;
-  let $leftPaiNum = message.leftPaiNum;
-  if ($leftPaiNum !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($leftPaiNum));
-  }
-
-  // optional string qiPai = 10;
-  let $qiPai = message.qiPai;
-  if ($qiPai !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $qiPai);
-  }
-
-  // optional int32 turnType = 11;
-  let $turnType = message.turnType;
-  if ($turnType !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($turnType));
-  }
-}
-
-export function decodeRedYellowBlueGameInfoVo(binary: Uint8Array): RedYellowBlueGameInfoVo {
-  return _decodeRedYellowBlueGameInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeRedYellowBlueGameInfoVo(bb: ByteBuffer): RedYellowBlueGameInfoVo {
-  let message: RedYellowBlueGameInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated OddsInfoVo OddsInfoList = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.OddsInfoList || (message.OddsInfoList = []);
-        values.push(_decodeOddsInfoVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RedYellowBlueWinDto gameResultList = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.gameResultList || (message.gameResultList = []);
-        values.push(_decodeRedYellowBlueWinDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 gameNum = 3;
-      case 3: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string bankerId = 4;
-      case 4: {
-        message.bankerId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currOptUserId = 5;
-      case 5: {
-        message.currOptUserId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 totalOptSeconds = 6;
-      case 6: {
-        message.totalOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 leftOptSeconds = 7;
-      case 7: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 dealCardMilliseconds = 8;
-      case 8: {
-        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 leftPaiNum = 9;
-      case 9: {
-        message.leftPaiNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string qiPai = 10;
-      case 10: {
-        message.qiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 turnType = 11;
-      case 11: {
-        message.turnType = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface PKDoEnterRoomVO {
-  lastMsgId?: string;
-  currMsgId?: string;
-  roomInfo?: PokerKingRoomInfoVo;
-  gameInfo?: PokerKingGameInfoVo;
-  betList?: PointBetCoinsNotifyVo[];
-  betCoinMap?: { [key: number]: Long };
-  betSelfCoinMap?: { [key: number]: Long };
-  betCoinList?: Long[];
-  onlinePlayers?: number;
-}
-
-export function encodePKDoEnterRoomVO(message: PKDoEnterRoomVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodePKDoEnterRoomVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodePKDoEnterRoomVO(message: PKDoEnterRoomVO, bb: ByteBuffer): void {
-  // optional string lastMsgId = 1;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 2;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional PokerKingRoomInfoVo roomInfo = 3;
-  let $roomInfo = message.roomInfo;
-  if ($roomInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodePokerKingRoomInfoVo($roomInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional PokerKingGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodePokerKingGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated PointBetCoinsNotifyVo betList = 5;
-  let array$betList = message.betList;
-  if (array$betList !== undefined) {
-    for (let value of array$betList) {
-      writeVarint32(bb, 42);
-      let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betCoinMap = 6;
-  let map$betCoinMap = message.betCoinMap;
-  if (map$betCoinMap !== undefined) {
-    for (let key in map$betCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 50);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betSelfCoinMap = 7;
-  let map$betSelfCoinMap = message.betSelfCoinMap;
-  if (map$betSelfCoinMap !== undefined) {
-    for (let key in map$betSelfCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betSelfCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 58);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated int64 betCoinList = 8;
-  let array$betCoinList = message.betCoinList;
-  if (array$betCoinList !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$betCoinList) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 66);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional int32 onlinePlayers = 9;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-}
-
-export function decodePKDoEnterRoomVO(binary: Uint8Array): PKDoEnterRoomVO {
-  return _decodePKDoEnterRoomVO(wrapByteBuffer(binary));
-}
-
-function _decodePKDoEnterRoomVO(bb: ByteBuffer): PKDoEnterRoomVO {
-  let message: PKDoEnterRoomVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string lastMsgId = 1;
-      case 1: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currMsgId = 2;
-      case 2: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional PokerKingRoomInfoVo roomInfo = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodePokerKingRoomInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional PokerKingGameInfoVo gameInfo = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodePokerKingGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated PointBetCoinsNotifyVo betList = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional map<int32, int64> betCoinMap = 6;
-      case 6: {
-        let values = message.betCoinMap || (message.betCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // optional map<int32, int64> betSelfCoinMap = 7;
-      case 7: {
-        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betSelfCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // repeated int64 betCoinList = 8;
-      case 8: {
-        let values = message.betCoinList || (message.betCoinList = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional int32 onlinePlayers = 9;
-      case 9: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface DragonAndTigerGameInfoVo {
-  pokerResultList?: DragonAndTigerPokerResultDto[];
-  OddsInfoList?: OddsInfoVo[];
-  gameResultList?: number[];
-  gameResultWinUserDtoList?: DragonAndTigerWinUserDto[];
-  diPaiCount?: number;
-  qiPaiCount?: number;
-  gameNum?: number;
-  bankerId?: string;
-  currOptUserId?: string;
-  totalOptSeconds?: number;
-  leftOptSeconds?: number;
-  dealCardMilliseconds?: Long;
-  leftPaiNum?: number;
-  qiPai?: string;
-  turnType?: number;
-}
-
-export function encodeDragonAndTigerGameInfoVo(message: DragonAndTigerGameInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDragonAndTigerGameInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDragonAndTigerGameInfoVo(message: DragonAndTigerGameInfoVo, bb: ByteBuffer): void {
-  // repeated DragonAndTigerPokerResultDto pokerResultList = 1;
-  let array$pokerResultList = message.pokerResultList;
-  if (array$pokerResultList !== undefined) {
-    for (let value of array$pokerResultList) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeDragonAndTigerPokerResultDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated OddsInfoVo OddsInfoList = 2;
-  let array$OddsInfoList = message.OddsInfoList;
-  if (array$OddsInfoList !== undefined) {
-    for (let value of array$OddsInfoList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeOddsInfoVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated int32 gameResultList = 3;
-  let array$gameResultList = message.gameResultList;
-  if (array$gameResultList !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$gameResultList) {
-      writeVarint64(packed, intToLong(value));
-    }
-    writeVarint32(bb, 26);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // repeated DragonAndTigerWinUserDto gameResultWinUserDtoList = 4;
-  let array$gameResultWinUserDtoList = message.gameResultWinUserDtoList;
-  if (array$gameResultWinUserDtoList !== undefined) {
-    for (let value of array$gameResultWinUserDtoList) {
-      writeVarint32(bb, 34);
-      let nested = popByteBuffer();
-      _encodeDragonAndTigerWinUserDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 diPaiCount = 5;
-  let $diPaiCount = message.diPaiCount;
-  if ($diPaiCount !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, intToLong($diPaiCount));
-  }
-
-  // optional int32 qiPaiCount = 6;
-  let $qiPaiCount = message.qiPaiCount;
-  if ($qiPaiCount !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($qiPaiCount));
-  }
-
-  // optional int32 gameNum = 7;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional string bankerId = 8;
-  let $bankerId = message.bankerId;
-  if ($bankerId !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $bankerId);
-  }
-
-  // optional string currOptUserId = 9;
-  let $currOptUserId = message.currOptUserId;
-  if ($currOptUserId !== undefined) {
-    writeVarint32(bb, 74);
-    writeString(bb, $currOptUserId);
-  }
-
-  // optional int32 totalOptSeconds = 10;
-  let $totalOptSeconds = message.totalOptSeconds;
-  if ($totalOptSeconds !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($totalOptSeconds));
-  }
-
-  // optional int32 leftOptSeconds = 11;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int64 dealCardMilliseconds = 12;
-  let $dealCardMilliseconds = message.dealCardMilliseconds;
-  if ($dealCardMilliseconds !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, $dealCardMilliseconds);
-  }
-
-  // optional int32 leftPaiNum = 13;
-  let $leftPaiNum = message.leftPaiNum;
-  if ($leftPaiNum !== undefined) {
-    writeVarint32(bb, 104);
-    writeVarint64(bb, intToLong($leftPaiNum));
-  }
-
-  // optional string qiPai = 14;
-  let $qiPai = message.qiPai;
-  if ($qiPai !== undefined) {
-    writeVarint32(bb, 114);
-    writeString(bb, $qiPai);
-  }
-
-  // optional int32 turnType = 15;
-  let $turnType = message.turnType;
-  if ($turnType !== undefined) {
-    writeVarint32(bb, 120);
-    writeVarint64(bb, intToLong($turnType));
-  }
-}
-
-export function decodeDragonAndTigerGameInfoVo(binary: Uint8Array): DragonAndTigerGameInfoVo {
-  return _decodeDragonAndTigerGameInfoVo(wrapByteBuffer(binary));
-}
-
-function _decodeDragonAndTigerGameInfoVo(bb: ByteBuffer): DragonAndTigerGameInfoVo {
-  let message: DragonAndTigerGameInfoVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated DragonAndTigerPokerResultDto pokerResultList = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.pokerResultList || (message.pokerResultList = []);
-        values.push(_decodeDragonAndTigerPokerResultDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated OddsInfoVo OddsInfoList = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.OddsInfoList || (message.OddsInfoList = []);
-        values.push(_decodeOddsInfoVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated int32 gameResultList = 3;
-      case 3: {
-        let values = message.gameResultList || (message.gameResultList = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint32(bb));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint32(bb));
-        }
-        break;
-      }
-
-      // repeated DragonAndTigerWinUserDto gameResultWinUserDtoList = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.gameResultWinUserDtoList || (message.gameResultWinUserDtoList = []);
-        values.push(_decodeDragonAndTigerWinUserDto(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 diPaiCount = 5;
-      case 5: {
-        message.diPaiCount = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 qiPaiCount = 6;
-      case 6: {
-        message.qiPaiCount = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 gameNum = 7;
-      case 7: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string bankerId = 8;
-      case 8: {
-        message.bankerId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currOptUserId = 9;
-      case 9: {
-        message.currOptUserId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 totalOptSeconds = 10;
-      case 10: {
-        message.totalOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 leftOptSeconds = 11;
-      case 11: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 dealCardMilliseconds = 12;
-      case 12: {
-        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 leftPaiNum = 13;
-      case 13: {
-        message.leftPaiNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string qiPai = 14;
-      case 14: {
-        message.qiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 turnType = 15;
-      case 15: {
-        message.turnType = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface DTSendDrawMsgVO {
-  notifyType?: number;
-  playerResult?: number;
-  headWinnerList?: DragonAndTigerWinnerVo[];
-  gameInfo?: DTSendDrawMsgGameInfoVO;
-  userInfoList?: RoomUserVo[];
-  gameResult?: number;
-}
-
-export function encodeDTSendDrawMsgVO(message: DTSendDrawMsgVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDTSendDrawMsgVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDTSendDrawMsgVO(message: DTSendDrawMsgVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional int32 playerResult = 2;
-  let $playerResult = message.playerResult;
-  if ($playerResult !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($playerResult));
-  }
-
-  // repeated DragonAndTigerWinnerVo headWinnerList = 3;
-  let array$headWinnerList = message.headWinnerList;
-  if (array$headWinnerList !== undefined) {
-    for (let value of array$headWinnerList) {
-      writeVarint32(bb, 26);
-      let nested = popByteBuffer();
-      _encodeDragonAndTigerWinnerVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional DTSendDrawMsgGameInfoVO gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeDTSendDrawMsgGameInfoVO($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomUserVo userInfoList = 5;
-  let array$userInfoList = message.userInfoList;
-  if (array$userInfoList !== undefined) {
-    for (let value of array$userInfoList) {
-      writeVarint32(bb, 42);
-      let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameResult = 6;
-  let $gameResult = message.gameResult;
-  if ($gameResult !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($gameResult));
-  }
-}
-
-export function decodeDTSendDrawMsgVO(binary: Uint8Array): DTSendDrawMsgVO {
-  return _decodeDTSendDrawMsgVO(wrapByteBuffer(binary));
-}
-
-function _decodeDTSendDrawMsgVO(bb: ByteBuffer): DTSendDrawMsgVO {
-  let message: DTSendDrawMsgVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 playerResult = 2;
-      case 2: {
-        message.playerResult = readVarint32(bb);
-        break;
-      }
-
-      // repeated DragonAndTigerWinnerVo headWinnerList = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.headWinnerList || (message.headWinnerList = []);
-        values.push(_decodeDragonAndTigerWinnerVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional DTSendDrawMsgGameInfoVO gameInfo = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeDTSendDrawMsgGameInfoVO(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserVo userInfoList = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.userInfoList || (message.userInfoList = []);
-        values.push(_decodeRoomUserVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional int32 gameResult = 6;
-      case 6: {
-        message.gameResult = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface JMSendDrawMsgVO {
-  notifyType?: number;
-  playerResult?: number;
-  gameInfo?: JMSendDrawMsgGameInfoVO;
-  userInfoList?: RoomUserVo[];
-  gameResult?: JhandiMundaWinDto;
-}
-
-export function encodeJMSendDrawMsgVO(message: JMSendDrawMsgVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeJMSendDrawMsgVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeJMSendDrawMsgVO(message: JMSendDrawMsgVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
-  }
-
-  // optional int32 playerResult = 2;
-  let $playerResult = message.playerResult;
-  if ($playerResult !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($playerResult));
-  }
-
-  // optional JMSendDrawMsgGameInfoVO gameInfo = 3;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeJMSendDrawMsgGameInfoVO($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomUserVo userInfoList = 4;
-  let array$userInfoList = message.userInfoList;
-  if (array$userInfoList !== undefined) {
-    for (let value of array$userInfoList) {
-      writeVarint32(bb, 34);
-      let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional JhandiMundaWinDto gameResult = 5;
-  let $gameResult = message.gameResult;
-  if ($gameResult !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeJhandiMundaWinDto($gameResult, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeJMSendDrawMsgVO(binary: Uint8Array): JMSendDrawMsgVO {
-  return _decodeJMSendDrawMsgVO(wrapByteBuffer(binary));
-}
-
-function _decodeJMSendDrawMsgVO(bb: ByteBuffer): JMSendDrawMsgVO {
-  let message: JMSendDrawMsgVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 playerResult = 2;
-      case 2: {
-        message.playerResult = readVarint32(bb);
-        break;
-      }
-
-      // optional JMSendDrawMsgGameInfoVO gameInfo = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeJMSendDrawMsgGameInfoVO(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserVo userInfoList = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.userInfoList || (message.userInfoList = []);
-        values.push(_decodeRoomUserVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional JhandiMundaWinDto gameResult = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.gameResult = _decodeJhandiMundaWinDto(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface PokerKingWinDto {
-  gameNum?: number;
-  id?: number[];
-  poker?: string;
-  controlSingleState?: number;
-}
-
-export function encodePokerKingWinDto(message: PokerKingWinDto): Uint8Array {
-  let bb = popByteBuffer();
-  _encodePokerKingWinDto(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodePokerKingWinDto(message: PokerKingWinDto, bb: ByteBuffer): void {
-  // optional int32 gameNum = 1;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // repeated int32 id = 2;
-  let array$id = message.id;
-  if (array$id !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$id) {
-      writeVarint64(packed, intToLong(value));
-    }
-    writeVarint32(bb, 18);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional string poker = 3;
-  let $poker = message.poker;
-  if ($poker !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $poker);
-  }
-
-  // optional int32 controlSingleState = 4;
-  let $controlSingleState = message.controlSingleState;
-  if ($controlSingleState !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($controlSingleState));
-  }
-}
-
-export function decodePokerKingWinDto(binary: Uint8Array): PokerKingWinDto {
-  return _decodePokerKingWinDto(wrapByteBuffer(binary));
-}
-
-function _decodePokerKingWinDto(bb: ByteBuffer): PokerKingWinDto {
-  let message: PokerKingWinDto = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 gameNum = 1;
-      case 1: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // repeated int32 id = 2;
-      case 2: {
-        let values = message.id || (message.id = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint32(bb));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint32(bb));
-        }
-        break;
-      }
-
-      // optional string poker = 3;
-      case 3: {
-        message.poker = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 controlSingleState = 4;
-      case 4: {
-        message.controlSingleState = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface JMBeginBetVO {
+export interface NotifyDTBeginBetVO {
   notifyType?: number;
   lastMsgId?: string;
   currMsgId?: string;
-  gameInfo?: JhandiMundaGameInfoVo;
+  gameInfo?: DTGameInfoVO;
 }
 
-export function encodeJMBeginBetVO(message: JMBeginBetVO): Uint8Array {
+export function encodeNotifyDTBeginBetVO(message: NotifyDTBeginBetVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeJMBeginBetVO(message, bb);
+  _encodeNotifyDTBeginBetVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeJMBeginBetVO(message: JMBeginBetVO, bb: ByteBuffer): void {
+function _encodeNotifyDTBeginBetVO(message: NotifyDTBeginBetVO, bb: ByteBuffer): void {
   // optional int32 notifyType = 1;
   let $notifyType = message.notifyType;
   if ($notifyType !== undefined) {
@@ -10104,24 +8022,24 @@ function _encodeJMBeginBetVO(message: JMBeginBetVO, bb: ByteBuffer): void {
     writeString(bb, $currMsgId);
   }
 
-  // optional JhandiMundaGameInfoVo gameInfo = 4;
+  // optional DTGameInfoVO gameInfo = 4;
   let $gameInfo = message.gameInfo;
   if ($gameInfo !== undefined) {
     writeVarint32(bb, 34);
     let nested = popByteBuffer();
-    _encodeJhandiMundaGameInfoVo($gameInfo, nested);
+    _encodeDTGameInfoVO($gameInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 }
 
-export function decodeJMBeginBetVO(binary: Uint8Array): JMBeginBetVO {
-  return _decodeJMBeginBetVO(wrapByteBuffer(binary));
+export function decodeNotifyDTBeginBetVO(binary: Uint8Array): NotifyDTBeginBetVO {
+  return _decodeNotifyDTBeginBetVO(wrapByteBuffer(binary));
 }
 
-function _decodeJMBeginBetVO(bb: ByteBuffer): JMBeginBetVO {
-  let message: JMBeginBetVO = {} as any;
+function _decodeNotifyDTBeginBetVO(bb: ByteBuffer): NotifyDTBeginBetVO {
+  let message: NotifyDTBeginBetVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -10148,10 +8066,10 @@ function _decodeJMBeginBetVO(bb: ByteBuffer): JMBeginBetVO {
         break;
       }
 
-      // optional JhandiMundaGameInfoVo gameInfo = 4;
+      // optional DTGameInfoVO gameInfo = 4;
       case 4: {
         let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeJhandiMundaGameInfoVo(bb);
+        message.gameInfo = _decodeDTGameInfoVO(bb);
         bb.limit = limit;
         break;
       }
@@ -10164,745 +8082,20 @@ function _decodeJMBeginBetVO(bb: ByteBuffer): JMBeginBetVO {
   return message;
 }
 
-export interface DragonAndTigerWinnerVo {
-  userId?: string;
-  nickName?: string;
-  portrait?: string;
-  vipLevel?: number;
-  winCoins?: Long;
-}
-
-export function encodeDragonAndTigerWinnerVo(message: DragonAndTigerWinnerVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDragonAndTigerWinnerVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDragonAndTigerWinnerVo(message: DragonAndTigerWinnerVo, bb: ByteBuffer): void {
-  // optional string userId = 1;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $userId);
-  }
-
-  // optional string nickName = 2;
-  let $nickName = message.nickName;
-  if ($nickName !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $nickName);
-  }
-
-  // optional string portrait = 3;
-  let $portrait = message.portrait;
-  if ($portrait !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $portrait);
-  }
-
-  // optional int32 vipLevel = 4;
-  let $vipLevel = message.vipLevel;
-  if ($vipLevel !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($vipLevel));
-  }
-
-  // optional int64 winCoins = 5;
-  let $winCoins = message.winCoins;
-  if ($winCoins !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, $winCoins);
-  }
-}
-
-export function decodeDragonAndTigerWinnerVo(binary: Uint8Array): DragonAndTigerWinnerVo {
-  return _decodeDragonAndTigerWinnerVo(wrapByteBuffer(binary));
-}
-
-function _decodeDragonAndTigerWinnerVo(bb: ByteBuffer): DragonAndTigerWinnerVo {
-  let message: DragonAndTigerWinnerVo = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string userId = 1;
-      case 1: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string nickName = 2;
-      case 2: {
-        message.nickName = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string portrait = 3;
-      case 3: {
-        message.portrait = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 vipLevel = 4;
-      case 4: {
-        message.vipLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 winCoins = 5;
-      case 5: {
-        message.winCoins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RoomOptParam {
-  optType?: number;
-  gameType?: number;
-  roundType?: number;
-  roomId?: string;
-  roomType?: number;
-  roomLevel?: number;
-  useShouPai?: string;
-  useQiPai?: string;
-  betCoins?: Long;
-  clientAutoPlay?: number;
-  boxLocation?: number;
-  fairyTalesFreeGame?: number;
-  riseOrLose?: number;
-  connectIndex?: number;
-  jackpotRateList?: number[];
-  betId?: number;
-  userCount?: number;
-  gameNum?: number;
-  layer?: number;
-  bankerAmount?: Long;
-  userId?: string;
-  sessionId?: string;
-  s_deviceid?: string;
-  s_platform?: string;
-  ip?: string;
-  s_cid?: string;
-  media_id?: string;
-  utm_campaign?: string;
-  s_model?: string;
-  s_version?: string;
-  s_access?: string;
-  s_sWidth?: string;
-  s_carrier?: string;
-  s_osVersion?: string;
-  s_brand?: string;
-  s_sHeight?: string;
-  vipLevel?: number;
-  vipVp?: number;
-  totalPayment?: number;
-  userType?: number;
-  firstLoginTime?: string;
-}
-
-export function encodeRoomOptParam(message: RoomOptParam): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRoomOptParam(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRoomOptParam(message: RoomOptParam, bb: ByteBuffer): void {
-  // optional int32 optType = 1;
-  let $optType = message.optType;
-  if ($optType !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($optType));
-  }
-
-  // optional int32 gameType = 2;
-  let $gameType = message.gameType;
-  if ($gameType !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($gameType));
-  }
-
-  // optional int32 roundType = 3;
-  let $roundType = message.roundType;
-  if ($roundType !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($roundType));
-  }
-
-  // optional string roomId = 4;
-  let $roomId = message.roomId;
-  if ($roomId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $roomId);
-  }
-
-  // optional int32 roomType = 5;
-  let $roomType = message.roomType;
-  if ($roomType !== undefined) {
-    writeVarint32(bb, 40);
-    writeVarint64(bb, intToLong($roomType));
-  }
-
-  // optional int32 roomLevel = 6;
-  let $roomLevel = message.roomLevel;
-  if ($roomLevel !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($roomLevel));
-  }
-
-  // optional string useShouPai = 7;
-  let $useShouPai = message.useShouPai;
-  if ($useShouPai !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $useShouPai);
-  }
-
-  // optional string useQiPai = 8;
-  let $useQiPai = message.useQiPai;
-  if ($useQiPai !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $useQiPai);
-  }
-
-  // optional int64 betCoins = 9;
-  let $betCoins = message.betCoins;
-  if ($betCoins !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, $betCoins);
-  }
-
-  // optional int32 clientAutoPlay = 10;
-  let $clientAutoPlay = message.clientAutoPlay;
-  if ($clientAutoPlay !== undefined) {
-    writeVarint32(bb, 80);
-    writeVarint64(bb, intToLong($clientAutoPlay));
-  }
-
-  // optional int32 boxLocation = 11;
-  let $boxLocation = message.boxLocation;
-  if ($boxLocation !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($boxLocation));
-  }
-
-  // optional int32 fairyTalesFreeGame = 12;
-  let $fairyTalesFreeGame = message.fairyTalesFreeGame;
-  if ($fairyTalesFreeGame !== undefined) {
-    writeVarint32(bb, 96);
-    writeVarint64(bb, intToLong($fairyTalesFreeGame));
-  }
-
-  // optional int32 riseOrLose = 13;
-  let $riseOrLose = message.riseOrLose;
-  if ($riseOrLose !== undefined) {
-    writeVarint32(bb, 104);
-    writeVarint64(bb, intToLong($riseOrLose));
-  }
-
-  // optional int32 connectIndex = 14;
-  let $connectIndex = message.connectIndex;
-  if ($connectIndex !== undefined) {
-    writeVarint32(bb, 112);
-    writeVarint64(bb, intToLong($connectIndex));
-  }
-
-  // repeated int32 jackpotRateList = 15;
-  let array$jackpotRateList = message.jackpotRateList;
-  if (array$jackpotRateList !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$jackpotRateList) {
-      writeVarint64(packed, intToLong(value));
-    }
-    writeVarint32(bb, 122);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional int32 betId = 16;
-  let $betId = message.betId;
-  if ($betId !== undefined) {
-    writeVarint32(bb, 128);
-    writeVarint64(bb, intToLong($betId));
-  }
-
-  // optional int32 userCount = 17;
-  let $userCount = message.userCount;
-  if ($userCount !== undefined) {
-    writeVarint32(bb, 136);
-    writeVarint64(bb, intToLong($userCount));
-  }
-
-  // optional int32 gameNum = 18;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
-    writeVarint32(bb, 144);
-    writeVarint64(bb, intToLong($gameNum));
-  }
-
-  // optional int32 layer = 19;
-  let $layer = message.layer;
-  if ($layer !== undefined) {
-    writeVarint32(bb, 152);
-    writeVarint64(bb, intToLong($layer));
-  }
-
-  // optional int64 bankerAmount = 20;
-  let $bankerAmount = message.bankerAmount;
-  if ($bankerAmount !== undefined) {
-    writeVarint32(bb, 160);
-    writeVarint64(bb, $bankerAmount);
-  }
-
-  // optional string userId = 21;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 170);
-    writeString(bb, $userId);
-  }
-
-  // optional string sessionId = 22;
-  let $sessionId = message.sessionId;
-  if ($sessionId !== undefined) {
-    writeVarint32(bb, 178);
-    writeString(bb, $sessionId);
-  }
-
-  // optional string s_deviceid = 23;
-  let $s_deviceid = message.s_deviceid;
-  if ($s_deviceid !== undefined) {
-    writeVarint32(bb, 186);
-    writeString(bb, $s_deviceid);
-  }
-
-  // optional string s_platform = 24;
-  let $s_platform = message.s_platform;
-  if ($s_platform !== undefined) {
-    writeVarint32(bb, 194);
-    writeString(bb, $s_platform);
-  }
-
-  // optional string ip = 25;
-  let $ip = message.ip;
-  if ($ip !== undefined) {
-    writeVarint32(bb, 202);
-    writeString(bb, $ip);
-  }
-
-  // optional string s_cid = 26;
-  let $s_cid = message.s_cid;
-  if ($s_cid !== undefined) {
-    writeVarint32(bb, 210);
-    writeString(bb, $s_cid);
-  }
-
-  // optional string media_id = 27;
-  let $media_id = message.media_id;
-  if ($media_id !== undefined) {
-    writeVarint32(bb, 218);
-    writeString(bb, $media_id);
-  }
-
-  // optional string utm_campaign = 28;
-  let $utm_campaign = message.utm_campaign;
-  if ($utm_campaign !== undefined) {
-    writeVarint32(bb, 226);
-    writeString(bb, $utm_campaign);
-  }
-
-  // optional string s_model = 29;
-  let $s_model = message.s_model;
-  if ($s_model !== undefined) {
-    writeVarint32(bb, 234);
-    writeString(bb, $s_model);
-  }
-
-  // optional string s_version = 30;
-  let $s_version = message.s_version;
-  if ($s_version !== undefined) {
-    writeVarint32(bb, 242);
-    writeString(bb, $s_version);
-  }
-
-  // optional string s_access = 31;
-  let $s_access = message.s_access;
-  if ($s_access !== undefined) {
-    writeVarint32(bb, 250);
-    writeString(bb, $s_access);
-  }
-
-  // optional string s_sWidth = 32;
-  let $s_sWidth = message.s_sWidth;
-  if ($s_sWidth !== undefined) {
-    writeVarint32(bb, 258);
-    writeString(bb, $s_sWidth);
-  }
-
-  // optional string s_carrier = 33;
-  let $s_carrier = message.s_carrier;
-  if ($s_carrier !== undefined) {
-    writeVarint32(bb, 266);
-    writeString(bb, $s_carrier);
-  }
-
-  // optional string s_osVersion = 34;
-  let $s_osVersion = message.s_osVersion;
-  if ($s_osVersion !== undefined) {
-    writeVarint32(bb, 274);
-    writeString(bb, $s_osVersion);
-  }
-
-  // optional string s_brand = 35;
-  let $s_brand = message.s_brand;
-  if ($s_brand !== undefined) {
-    writeVarint32(bb, 282);
-    writeString(bb, $s_brand);
-  }
-
-  // optional string s_sHeight = 36;
-  let $s_sHeight = message.s_sHeight;
-  if ($s_sHeight !== undefined) {
-    writeVarint32(bb, 290);
-    writeString(bb, $s_sHeight);
-  }
-
-  // optional int32 vipLevel = 37;
-  let $vipLevel = message.vipLevel;
-  if ($vipLevel !== undefined) {
-    writeVarint32(bb, 296);
-    writeVarint64(bb, intToLong($vipLevel));
-  }
-
-  // optional int32 vipVp = 38;
-  let $vipVp = message.vipVp;
-  if ($vipVp !== undefined) {
-    writeVarint32(bb, 304);
-    writeVarint64(bb, intToLong($vipVp));
-  }
-
-  // optional int32 totalPayment = 39;
-  let $totalPayment = message.totalPayment;
-  if ($totalPayment !== undefined) {
-    writeVarint32(bb, 312);
-    writeVarint64(bb, intToLong($totalPayment));
-  }
-
-  // optional int32 userType = 40;
-  let $userType = message.userType;
-  if ($userType !== undefined) {
-    writeVarint32(bb, 320);
-    writeVarint64(bb, intToLong($userType));
-  }
-
-  // optional string firstLoginTime = 41;
-  let $firstLoginTime = message.firstLoginTime;
-  if ($firstLoginTime !== undefined) {
-    writeVarint32(bb, 330);
-    writeString(bb, $firstLoginTime);
-  }
-}
-
-export function decodeRoomOptParam(binary: Uint8Array): RoomOptParam {
-  return _decodeRoomOptParam(wrapByteBuffer(binary));
-}
-
-function _decodeRoomOptParam(bb: ByteBuffer): RoomOptParam {
-  let message: RoomOptParam = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 optType = 1;
-      case 1: {
-        message.optType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 gameType = 2;
-      case 2: {
-        message.gameType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roundType = 3;
-      case 3: {
-        message.roundType = readVarint32(bb);
-        break;
-      }
-
-      // optional string roomId = 4;
-      case 4: {
-        message.roomId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 roomType = 5;
-      case 5: {
-        message.roomType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 roomLevel = 6;
-      case 6: {
-        message.roomLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional string useShouPai = 7;
-      case 7: {
-        message.useShouPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string useQiPai = 8;
-      case 8: {
-        message.useQiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int64 betCoins = 9;
-      case 9: {
-        message.betCoins = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 clientAutoPlay = 10;
-      case 10: {
-        message.clientAutoPlay = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 boxLocation = 11;
-      case 11: {
-        message.boxLocation = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 fairyTalesFreeGame = 12;
-      case 12: {
-        message.fairyTalesFreeGame = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 riseOrLose = 13;
-      case 13: {
-        message.riseOrLose = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 connectIndex = 14;
-      case 14: {
-        message.connectIndex = readVarint32(bb);
-        break;
-      }
-
-      // repeated int32 jackpotRateList = 15;
-      case 15: {
-        let values = message.jackpotRateList || (message.jackpotRateList = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint32(bb));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint32(bb));
-        }
-        break;
-      }
-
-      // optional int32 betId = 16;
-      case 16: {
-        message.betId = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 userCount = 17;
-      case 17: {
-        message.userCount = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 gameNum = 18;
-      case 18: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 layer = 19;
-      case 19: {
-        message.layer = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 bankerAmount = 20;
-      case 20: {
-        message.bankerAmount = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional string userId = 21;
-      case 21: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string sessionId = 22;
-      case 22: {
-        message.sessionId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_deviceid = 23;
-      case 23: {
-        message.s_deviceid = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_platform = 24;
-      case 24: {
-        message.s_platform = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string ip = 25;
-      case 25: {
-        message.ip = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_cid = 26;
-      case 26: {
-        message.s_cid = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string media_id = 27;
-      case 27: {
-        message.media_id = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string utm_campaign = 28;
-      case 28: {
-        message.utm_campaign = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_model = 29;
-      case 29: {
-        message.s_model = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_version = 30;
-      case 30: {
-        message.s_version = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_access = 31;
-      case 31: {
-        message.s_access = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_sWidth = 32;
-      case 32: {
-        message.s_sWidth = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_carrier = 33;
-      case 33: {
-        message.s_carrier = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_osVersion = 34;
-      case 34: {
-        message.s_osVersion = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_brand = 35;
-      case 35: {
-        message.s_brand = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_sHeight = 36;
-      case 36: {
-        message.s_sHeight = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 vipLevel = 37;
-      case 37: {
-        message.vipLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 vipVp = 38;
-      case 38: {
-        message.vipVp = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 totalPayment = 39;
-      case 39: {
-        message.totalPayment = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 userType = 40;
-      case 40: {
-        message.userType = readVarint32(bb);
-        break;
-      }
-
-      // optional string firstLoginTime = 41;
-      case 41: {
-        message.firstLoginTime = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface Dice3NotifyBeginBetVO {
+export interface NotifyJMBeginBetVO {
   notifyType?: number;
   lastMsgId?: string;
   currMsgId?: string;
-  gameInfo?: Dice3GameInfoVo;
+  gameInfo?: JMGameInfoVO;
 }
 
-export function encodeDice3NotifyBeginBetVO(message: Dice3NotifyBeginBetVO): Uint8Array {
+export function encodeNotifyJMBeginBetVO(message: NotifyJMBeginBetVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeDice3NotifyBeginBetVO(message, bb);
+  _encodeNotifyJMBeginBetVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeDice3NotifyBeginBetVO(message: Dice3NotifyBeginBetVO, bb: ByteBuffer): void {
+function _encodeNotifyJMBeginBetVO(message: NotifyJMBeginBetVO, bb: ByteBuffer): void {
   // optional int32 notifyType = 1;
   let $notifyType = message.notifyType;
   if ($notifyType !== undefined) {
@@ -10924,24 +8117,24 @@ function _encodeDice3NotifyBeginBetVO(message: Dice3NotifyBeginBetVO, bb: ByteBu
     writeString(bb, $currMsgId);
   }
 
-  // optional Dice3GameInfoVo gameInfo = 4;
+  // optional JMGameInfoVO gameInfo = 4;
   let $gameInfo = message.gameInfo;
   if ($gameInfo !== undefined) {
     writeVarint32(bb, 34);
     let nested = popByteBuffer();
-    _encodeDice3GameInfoVo($gameInfo, nested);
+    _encodeJMGameInfoVO($gameInfo, nested);
     writeVarint32(bb, nested.limit);
     writeByteBuffer(bb, nested);
     pushByteBuffer(nested);
   }
 }
 
-export function decodeDice3NotifyBeginBetVO(binary: Uint8Array): Dice3NotifyBeginBetVO {
-  return _decodeDice3NotifyBeginBetVO(wrapByteBuffer(binary));
+export function decodeNotifyJMBeginBetVO(binary: Uint8Array): NotifyJMBeginBetVO {
+  return _decodeNotifyJMBeginBetVO(wrapByteBuffer(binary));
 }
 
-function _decodeDice3NotifyBeginBetVO(bb: ByteBuffer): Dice3NotifyBeginBetVO {
-  let message: Dice3NotifyBeginBetVO = {} as any;
+function _decodeNotifyJMBeginBetVO(bb: ByteBuffer): NotifyJMBeginBetVO {
+  let message: NotifyJMBeginBetVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -10968,10 +8161,10 @@ function _decodeDice3NotifyBeginBetVO(bb: ByteBuffer): Dice3NotifyBeginBetVO {
         break;
       }
 
-      // optional Dice3GameInfoVo gameInfo = 4;
+      // optional JMGameInfoVO gameInfo = 4;
       case 4: {
         let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeDice3GameInfoVo(bb);
+        message.gameInfo = _decodeJMGameInfoVO(bb);
         bb.limit = limit;
         break;
       }
@@ -10984,586 +8177,39 @@ function _decodeDice3NotifyBeginBetVO(bb: ByteBuffer): Dice3NotifyBeginBetVO {
   return message;
 }
 
-export interface BaseParam {
-  userId?: string;
-  sessionId?: string;
-  s_deviceid?: string;
-  s_platform?: string;
-  ip?: string;
-  s_cid?: string;
-  media_id?: string;
-  utm_campaign?: string;
-  s_model?: string;
-  s_version?: string;
-  s_access?: string;
-  s_sWidth?: string;
-  s_carrier?: string;
-  s_osVersion?: string;
-  s_brand?: string;
-  s_sHeight?: string;
-  vipLevel?: number;
-  vipVp?: number;
-  totalPayment?: number;
-  userType?: number;
-  firstLoginTime?: string;
+export interface DTPokerResultVO {
+  id?: number;
+  point?: string;
 }
 
-export function encodeBaseParam(message: BaseParam): Uint8Array {
+export function encodeDTPokerResultVO(message: DTPokerResultVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeBaseParam(message, bb);
+  _encodeDTPokerResultVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeBaseParam(message: BaseParam, bb: ByteBuffer): void {
-  // optional string userId = 1;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $userId);
-  }
-
-  // optional string sessionId = 2;
-  let $sessionId = message.sessionId;
-  if ($sessionId !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $sessionId);
-  }
-
-  // optional string s_deviceid = 3;
-  let $s_deviceid = message.s_deviceid;
-  if ($s_deviceid !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $s_deviceid);
-  }
-
-  // optional string s_platform = 4;
-  let $s_platform = message.s_platform;
-  if ($s_platform !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $s_platform);
-  }
-
-  // optional string ip = 5;
-  let $ip = message.ip;
-  if ($ip !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $ip);
-  }
-
-  // optional string s_cid = 6;
-  let $s_cid = message.s_cid;
-  if ($s_cid !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $s_cid);
-  }
-
-  // optional string media_id = 7;
-  let $media_id = message.media_id;
-  if ($media_id !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $media_id);
-  }
-
-  // optional string utm_campaign = 8;
-  let $utm_campaign = message.utm_campaign;
-  if ($utm_campaign !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $utm_campaign);
-  }
-
-  // optional string s_model = 9;
-  let $s_model = message.s_model;
-  if ($s_model !== undefined) {
-    writeVarint32(bb, 74);
-    writeString(bb, $s_model);
-  }
-
-  // optional string s_version = 10;
-  let $s_version = message.s_version;
-  if ($s_version !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $s_version);
-  }
-
-  // optional string s_access = 11;
-  let $s_access = message.s_access;
-  if ($s_access !== undefined) {
-    writeVarint32(bb, 90);
-    writeString(bb, $s_access);
-  }
-
-  // optional string s_sWidth = 12;
-  let $s_sWidth = message.s_sWidth;
-  if ($s_sWidth !== undefined) {
-    writeVarint32(bb, 98);
-    writeString(bb, $s_sWidth);
-  }
-
-  // optional string s_carrier = 13;
-  let $s_carrier = message.s_carrier;
-  if ($s_carrier !== undefined) {
-    writeVarint32(bb, 106);
-    writeString(bb, $s_carrier);
-  }
-
-  // optional string s_osVersion = 14;
-  let $s_osVersion = message.s_osVersion;
-  if ($s_osVersion !== undefined) {
-    writeVarint32(bb, 114);
-    writeString(bb, $s_osVersion);
-  }
-
-  // optional string s_brand = 15;
-  let $s_brand = message.s_brand;
-  if ($s_brand !== undefined) {
-    writeVarint32(bb, 122);
-    writeString(bb, $s_brand);
-  }
-
-  // optional string s_sHeight = 16;
-  let $s_sHeight = message.s_sHeight;
-  if ($s_sHeight !== undefined) {
-    writeVarint32(bb, 130);
-    writeString(bb, $s_sHeight);
-  }
-
-  // optional int32 vipLevel = 17;
-  let $vipLevel = message.vipLevel;
-  if ($vipLevel !== undefined) {
-    writeVarint32(bb, 136);
-    writeVarint64(bb, intToLong($vipLevel));
-  }
-
-  // optional int32 vipVp = 18;
-  let $vipVp = message.vipVp;
-  if ($vipVp !== undefined) {
-    writeVarint32(bb, 144);
-    writeVarint64(bb, intToLong($vipVp));
-  }
-
-  // optional int32 totalPayment = 19;
-  let $totalPayment = message.totalPayment;
-  if ($totalPayment !== undefined) {
-    writeVarint32(bb, 152);
-    writeVarint64(bb, intToLong($totalPayment));
-  }
-
-  // optional int32 userType = 20;
-  let $userType = message.userType;
-  if ($userType !== undefined) {
-    writeVarint32(bb, 160);
-    writeVarint64(bb, intToLong($userType));
-  }
-
-  // optional string firstLoginTime = 21;
-  let $firstLoginTime = message.firstLoginTime;
-  if ($firstLoginTime !== undefined) {
-    writeVarint32(bb, 170);
-    writeString(bb, $firstLoginTime);
-  }
-}
-
-export function decodeBaseParam(binary: Uint8Array): BaseParam {
-  return _decodeBaseParam(wrapByteBuffer(binary));
-}
-
-function _decodeBaseParam(bb: ByteBuffer): BaseParam {
-  let message: BaseParam = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string userId = 1;
-      case 1: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string sessionId = 2;
-      case 2: {
-        message.sessionId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_deviceid = 3;
-      case 3: {
-        message.s_deviceid = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_platform = 4;
-      case 4: {
-        message.s_platform = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string ip = 5;
-      case 5: {
-        message.ip = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_cid = 6;
-      case 6: {
-        message.s_cid = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string media_id = 7;
-      case 7: {
-        message.media_id = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string utm_campaign = 8;
-      case 8: {
-        message.utm_campaign = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_model = 9;
-      case 9: {
-        message.s_model = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_version = 10;
-      case 10: {
-        message.s_version = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_access = 11;
-      case 11: {
-        message.s_access = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_sWidth = 12;
-      case 12: {
-        message.s_sWidth = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_carrier = 13;
-      case 13: {
-        message.s_carrier = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_osVersion = 14;
-      case 14: {
-        message.s_osVersion = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_brand = 15;
-      case 15: {
-        message.s_brand = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string s_sHeight = 16;
-      case 16: {
-        message.s_sHeight = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 vipLevel = 17;
-      case 17: {
-        message.vipLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 vipVp = 18;
-      case 18: {
-        message.vipVp = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 totalPayment = 19;
-      case 19: {
-        message.totalPayment = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 userType = 20;
-      case 20: {
-        message.userType = readVarint32(bb);
-        break;
-      }
-
-      // optional string firstLoginTime = 21;
-      case 21: {
-        message.firstLoginTime = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface RYBSendDrawMsgVO {
-  notifyType?: number;
-  playerResult?: number;
-  gameInfo?: RYBSendDrawMsgGameInfoVO;
-  userInfoList?: RoomUserVo[];
-  gameResult?: RedYellowBlueWinDto;
-}
-
-export function encodeRYBSendDrawMsgVO(message: RYBSendDrawMsgVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeRYBSendDrawMsgVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeRYBSendDrawMsgVO(message: RYBSendDrawMsgVO, bb: ByteBuffer): void {
-  // optional int32 notifyType = 1;
-  let $notifyType = message.notifyType;
-  if ($notifyType !== undefined) {
+function _encodeDTPokerResultVO(message: DTPokerResultVO, bb: ByteBuffer): void {
+  // optional int32 id = 1;
+  let $id = message.id;
+  if ($id !== undefined) {
     writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($notifyType));
+    writeVarint64(bb, intToLong($id));
   }
 
-  // optional int32 playerResult = 2;
-  let $playerResult = message.playerResult;
-  if ($playerResult !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($playerResult));
-  }
-
-  // optional RYBSendDrawMsgGameInfoVO gameInfo = 3;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeRYBSendDrawMsgGameInfoVO($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated RoomUserVo userInfoList = 4;
-  let array$userInfoList = message.userInfoList;
-  if (array$userInfoList !== undefined) {
-    for (let value of array$userInfoList) {
-      writeVarint32(bb, 34);
-      let nested = popByteBuffer();
-      _encodeRoomUserVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional RedYellowBlueWinDto gameResult = 5;
-  let $gameResult = message.gameResult;
-  if ($gameResult !== undefined) {
-    writeVarint32(bb, 42);
-    let nested = popByteBuffer();
-    _encodeRedYellowBlueWinDto($gameResult, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-}
-
-export function decodeRYBSendDrawMsgVO(binary: Uint8Array): RYBSendDrawMsgVO {
-  return _decodeRYBSendDrawMsgVO(wrapByteBuffer(binary));
-}
-
-function _decodeRYBSendDrawMsgVO(bb: ByteBuffer): RYBSendDrawMsgVO {
-  let message: RYBSendDrawMsgVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 notifyType = 1;
-      case 1: {
-        message.notifyType = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 playerResult = 2;
-      case 2: {
-        message.playerResult = readVarint32(bb);
-        break;
-      }
-
-      // optional RYBSendDrawMsgGameInfoVO gameInfo = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeRYBSendDrawMsgGameInfoVO(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated RoomUserVo userInfoList = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.userInfoList || (message.userInfoList = []);
-        values.push(_decodeRoomUserVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional RedYellowBlueWinDto gameResult = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        message.gameResult = _decodeRedYellowBlueWinDto(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LDDoEnterRoomVO {
-  lastMsgId?: string;
-  currMsgId?: string;
-  roomInfo?: LuckyDiceRoomInfoVo;
-  gameInfo?: LuckyDiceGameInfoVo;
-  betList?: PointBetCoinsNotifyVo[];
-  betCoinMap?: { [key: number]: Long };
-  betSelfCoinMap?: { [key: number]: Long };
-  betCoinList?: Long[];
-  onlinePlayers?: number;
-}
-
-export function encodeLDDoEnterRoomVO(message: LDDoEnterRoomVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLDDoEnterRoomVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLDDoEnterRoomVO(message: LDDoEnterRoomVO, bb: ByteBuffer): void {
-  // optional string lastMsgId = 1;
-  let $lastMsgId = message.lastMsgId;
-  if ($lastMsgId !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $lastMsgId);
-  }
-
-  // optional string currMsgId = 2;
-  let $currMsgId = message.currMsgId;
-  if ($currMsgId !== undefined) {
+  // optional string point = 2;
+  let $point = message.point;
+  if ($point !== undefined) {
     writeVarint32(bb, 18);
-    writeString(bb, $currMsgId);
-  }
-
-  // optional LuckyDiceRoomInfoVo roomInfo = 3;
-  let $roomInfo = message.roomInfo;
-  if ($roomInfo !== undefined) {
-    writeVarint32(bb, 26);
-    let nested = popByteBuffer();
-    _encodeLuckyDiceRoomInfoVo($roomInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // optional LuckyDiceGameInfoVo gameInfo = 4;
-  let $gameInfo = message.gameInfo;
-  if ($gameInfo !== undefined) {
-    writeVarint32(bb, 34);
-    let nested = popByteBuffer();
-    _encodeLuckyDiceGameInfoVo($gameInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated PointBetCoinsNotifyVo betList = 5;
-  let array$betList = message.betList;
-  if (array$betList !== undefined) {
-    for (let value of array$betList) {
-      writeVarint32(bb, 42);
-      let nested = popByteBuffer();
-      _encodePointBetCoinsNotifyVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betCoinMap = 6;
-  let map$betCoinMap = message.betCoinMap;
-  if (map$betCoinMap !== undefined) {
-    for (let key in map$betCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 50);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional map<int32, int64> betSelfCoinMap = 7;
-  let map$betSelfCoinMap = message.betSelfCoinMap;
-  if (map$betSelfCoinMap !== undefined) {
-    for (let key in map$betSelfCoinMap) {
-      let nested = popByteBuffer();
-      let value = map$betSelfCoinMap[key];
-      writeVarint32(nested, 8);
-      writeVarint64(nested, intToLong(+key));
-      writeVarint32(nested, 16);
-      writeVarint64(nested, value);
-      writeVarint32(bb, 58);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated int64 betCoinList = 8;
-  let array$betCoinList = message.betCoinList;
-  if (array$betCoinList !== undefined) {
-    let packed = popByteBuffer();
-    for (let value of array$betCoinList) {
-      writeVarint64(packed, value);
-    }
-    writeVarint32(bb, 66);
-    writeVarint32(bb, packed.offset);
-    writeByteBuffer(bb, packed);
-    pushByteBuffer(packed);
-  }
-
-  // optional int32 onlinePlayers = 9;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($onlinePlayers));
+    writeString(bb, $point);
   }
 }
 
-export function decodeLDDoEnterRoomVO(binary: Uint8Array): LDDoEnterRoomVO {
-  return _decodeLDDoEnterRoomVO(wrapByteBuffer(binary));
+export function decodeDTPokerResultVO(binary: Uint8Array): DTPokerResultVO {
+  return _decodeDTPokerResultVO(wrapByteBuffer(binary));
 }
 
-function _decodeLDDoEnterRoomVO(bb: ByteBuffer): LDDoEnterRoomVO {
-  let message: LDDoEnterRoomVO = {} as any;
+function _decodeDTPokerResultVO(bb: ByteBuffer): DTPokerResultVO {
+  let message: DTPokerResultVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -11572,121 +8218,15 @@ function _decodeLDDoEnterRoomVO(bb: ByteBuffer): LDDoEnterRoomVO {
       case 0:
         break end_of_message;
 
-      // optional string lastMsgId = 1;
+      // optional int32 id = 1;
       case 1: {
-        message.lastMsgId = readString(bb, readVarint32(bb));
+        message.id = readVarint32(bb);
         break;
       }
 
-      // optional string currMsgId = 2;
+      // optional string point = 2;
       case 2: {
-        message.currMsgId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional LuckyDiceRoomInfoVo roomInfo = 3;
-      case 3: {
-        let limit = pushTemporaryLength(bb);
-        message.roomInfo = _decodeLuckyDiceRoomInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // optional LuckyDiceGameInfoVo gameInfo = 4;
-      case 4: {
-        let limit = pushTemporaryLength(bb);
-        message.gameInfo = _decodeLuckyDiceGameInfoVo(bb);
-        bb.limit = limit;
-        break;
-      }
-
-      // repeated PointBetCoinsNotifyVo betList = 5;
-      case 5: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.betList || (message.betList = []);
-        values.push(_decodePointBetCoinsNotifyVo(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      // optional map<int32, int64> betCoinMap = 6;
-      case 6: {
-        let values = message.betCoinMap || (message.betCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // optional map<int32, int64> betSelfCoinMap = 7;
-      case 7: {
-        let values = message.betSelfCoinMap || (message.betSelfCoinMap = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: number | undefined;
-        let value: Long | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readVarint32(bb);
-              break;
-            }
-            case 2: {
-              value = readVarint64(bb, /* unsigned */ false);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: betSelfCoinMap");
-        values[key] = value;
-        bb.limit = outerLimit;
-        break;
-      }
-
-      // repeated int64 betCoinList = 8;
-      case 8: {
-        let values = message.betCoinList || (message.betCoinList = []);
-        if ((tag & 7) === 2) {
-          let outerLimit = pushTemporaryLength(bb);
-          while (!isAtEnd(bb)) {
-            values.push(readVarint64(bb, /* unsigned */ false));
-          }
-          bb.limit = outerLimit;
-        } else {
-          values.push(readVarint64(bb, /* unsigned */ false));
-        }
-        break;
-      }
-
-      // optional int32 onlinePlayers = 9;
-      case 9: {
-        message.onlinePlayers = readVarint32(bb);
+        message.point = readString(bb, readVarint32(bb));
         break;
       }
 
@@ -11698,20 +8238,19 @@ function _decodeLDDoEnterRoomVO(bb: ByteBuffer): LDDoEnterRoomVO {
   return message;
 }
 
-export interface Dice3WinDto {
+export interface D3WinVO {
   gameNum?: number;
   id?: number;
   dices?: number[];
-  controlSingleState?: number;
 }
 
-export function encodeDice3WinDto(message: Dice3WinDto): Uint8Array {
+export function encodeD3WinVO(message: D3WinVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeDice3WinDto(message, bb);
+  _encodeD3WinVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeDice3WinDto(message: Dice3WinDto, bb: ByteBuffer): void {
+function _encodeD3WinVO(message: D3WinVO, bb: ByteBuffer): void {
   // optional int32 gameNum = 1;
   let $gameNum = message.gameNum;
   if ($gameNum !== undefined) {
@@ -11738,21 +8277,14 @@ function _encodeDice3WinDto(message: Dice3WinDto, bb: ByteBuffer): void {
     writeByteBuffer(bb, packed);
     pushByteBuffer(packed);
   }
-
-  // optional int32 controlSingleState = 4;
-  let $controlSingleState = message.controlSingleState;
-  if ($controlSingleState !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($controlSingleState));
-  }
 }
 
-export function decodeDice3WinDto(binary: Uint8Array): Dice3WinDto {
-  return _decodeDice3WinDto(wrapByteBuffer(binary));
+export function decodeD3WinVO(binary: Uint8Array): D3WinVO {
+  return _decodeD3WinVO(wrapByteBuffer(binary));
 }
 
-function _decodeDice3WinDto(bb: ByteBuffer): Dice3WinDto {
-  let message: Dice3WinDto = {} as any;
+function _decodeD3WinVO(bb: ByteBuffer): D3WinVO {
+  let message: D3WinVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -11788,9 +8320,67 @@ function _decodeDice3WinDto(bb: ByteBuffer): Dice3WinDto {
         break;
       }
 
-      // optional int32 controlSingleState = 4;
-      case 4: {
-        message.controlSingleState = readVarint32(bb);
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface TPWPokerResultVO {
+  pais?: string[];
+  paisAttr?: number;
+}
+
+export function encodeTPWPokerResultVO(message: TPWPokerResultVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeTPWPokerResultVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeTPWPokerResultVO(message: TPWPokerResultVO, bb: ByteBuffer): void {
+  // repeated string pais = 1;
+  let array$pais = message.pais;
+  if (array$pais !== undefined) {
+    for (let value of array$pais) {
+      writeVarint32(bb, 10);
+      writeString(bb, value);
+    }
+  }
+
+  // optional int32 paisAttr = 2;
+  let $paisAttr = message.paisAttr;
+  if ($paisAttr !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($paisAttr));
+  }
+}
+
+export function decodeTPWPokerResultVO(binary: Uint8Array): TPWPokerResultVO {
+  return _decodeTPWPokerResultVO(wrapByteBuffer(binary));
+}
+
+function _decodeTPWPokerResultVO(bb: ByteBuffer): TPWPokerResultVO {
+  let message: TPWPokerResultVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated string pais = 1;
+      case 1: {
+        let values = message.pais || (message.pais = []);
+        values.push(readString(bb, readVarint32(bb)));
+        break;
+      }
+
+      // optional int32 paisAttr = 2;
+      case 2: {
+        message.paisAttr = readVarint32(bb);
         break;
       }
 
@@ -11802,20 +8392,94 @@ function _decodeDice3WinDto(bb: ByteBuffer): Dice3WinDto {
   return message;
 }
 
-export interface LuckyBallWinDto {
+export interface NotifyRYBDrawGameInfoVO {
+  leftOptSeconds?: number;
   gameNum?: number;
-  id?: number[];
-  ball?: number;
-  controlSingleState?: number;
+  onlinePlayers?: number;
 }
 
-export function encodeLuckyBallWinDto(message: LuckyBallWinDto): Uint8Array {
+export function encodeNotifyRYBDrawGameInfoVO(message: NotifyRYBDrawGameInfoVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeLuckyBallWinDto(message, bb);
+  _encodeNotifyRYBDrawGameInfoVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeLuckyBallWinDto(message: LuckyBallWinDto, bb: ByteBuffer): void {
+function _encodeNotifyRYBDrawGameInfoVO(message: NotifyRYBDrawGameInfoVO, bb: ByteBuffer): void {
+  // optional int32 leftOptSeconds = 1;
+  let $leftOptSeconds = message.leftOptSeconds;
+  if ($leftOptSeconds !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($leftOptSeconds));
+  }
+
+  // optional int32 gameNum = 2;
+  let $gameNum = message.gameNum;
+  if ($gameNum !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($gameNum));
+  }
+
+  // optional int32 onlinePlayers = 3;
+  let $onlinePlayers = message.onlinePlayers;
+  if ($onlinePlayers !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($onlinePlayers));
+  }
+}
+
+export function decodeNotifyRYBDrawGameInfoVO(binary: Uint8Array): NotifyRYBDrawGameInfoVO {
+  return _decodeNotifyRYBDrawGameInfoVO(wrapByteBuffer(binary));
+}
+
+function _decodeNotifyRYBDrawGameInfoVO(bb: ByteBuffer): NotifyRYBDrawGameInfoVO {
+  let message: NotifyRYBDrawGameInfoVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 leftOptSeconds = 1;
+      case 1: {
+        message.leftOptSeconds = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 gameNum = 2;
+      case 2: {
+        message.gameNum = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 onlinePlayers = 3;
+      case 3: {
+        message.onlinePlayers = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LBWinVO {
+  gameNum?: number;
+  id?: number[];
+  ball?: number;
+}
+
+export function encodeLBWinVO(message: LBWinVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLBWinVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLBWinVO(message: LBWinVO, bb: ByteBuffer): void {
   // optional int32 gameNum = 1;
   let $gameNum = message.gameNum;
   if ($gameNum !== undefined) {
@@ -11842,21 +8506,14 @@ function _encodeLuckyBallWinDto(message: LuckyBallWinDto, bb: ByteBuffer): void 
     writeVarint32(bb, 24);
     writeVarint64(bb, intToLong($ball));
   }
-
-  // optional int32 controlSingleState = 4;
-  let $controlSingleState = message.controlSingleState;
-  if ($controlSingleState !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($controlSingleState));
-  }
 }
 
-export function decodeLuckyBallWinDto(binary: Uint8Array): LuckyBallWinDto {
-  return _decodeLuckyBallWinDto(wrapByteBuffer(binary));
+export function decodeLBWinVO(binary: Uint8Array): LBWinVO {
+  return _decodeLBWinVO(wrapByteBuffer(binary));
 }
 
-function _decodeLuckyBallWinDto(bb: ByteBuffer): LuckyBallWinDto {
-  let message: LuckyBallWinDto = {} as any;
+function _decodeLBWinVO(bb: ByteBuffer): LBWinVO {
+  let message: LBWinVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -11892,12 +8549,6 @@ function _decodeLuckyBallWinDto(bb: ByteBuffer): LuckyBallWinDto {
         break;
       }
 
-      // optional int32 controlSingleState = 4;
-      case 4: {
-        message.controlSingleState = readVarint32(bb);
-        break;
-      }
-
       default:
         skipUnknownField(bb, tag & 7);
     }
@@ -11906,259 +8557,55 @@ function _decodeLuckyBallWinDto(bb: ByteBuffer): LuckyBallWinDto {
   return message;
 }
 
-export interface DragonAndTigerPokerResultDto {
-  id?: number;
-  point?: string;
-}
-
-export function encodeDragonAndTigerPokerResultDto(message: DragonAndTigerPokerResultDto): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeDragonAndTigerPokerResultDto(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeDragonAndTigerPokerResultDto(message: DragonAndTigerPokerResultDto, bb: ByteBuffer): void {
-  // optional int32 id = 1;
-  let $id = message.id;
-  if ($id !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($id));
-  }
-
-  // optional string point = 2;
-  let $point = message.point;
-  if ($point !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $point);
-  }
-}
-
-export function decodeDragonAndTigerPokerResultDto(binary: Uint8Array): DragonAndTigerPokerResultDto {
-  return _decodeDragonAndTigerPokerResultDto(wrapByteBuffer(binary));
-}
-
-function _decodeDragonAndTigerPokerResultDto(bb: ByteBuffer): DragonAndTigerPokerResultDto {
-  let message: DragonAndTigerPokerResultDto = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 id = 1;
-      case 1: {
-        message.id = readVarint32(bb);
-        break;
-      }
-
-      // optional string point = 2;
-      case 2: {
-        message.point = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface Dice3SendDrawMsgGameInfoVO {
-  leftOptSeconds?: number;
+export interface RoomBetDTO {
+  roomId?: string;
+  betCoins?: Long;
+  betId?: number;
   gameNum?: number;
-  onlinePlayers?: number;
 }
 
-export function encodeDice3SendDrawMsgGameInfoVO(message: Dice3SendDrawMsgGameInfoVO): Uint8Array {
+export function encodeRoomBetDTO(message: RoomBetDTO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeDice3SendDrawMsgGameInfoVO(message, bb);
+  _encodeRoomBetDTO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeDice3SendDrawMsgGameInfoVO(message: Dice3SendDrawMsgGameInfoVO, bb: ByteBuffer): void {
-  // optional int32 leftOptSeconds = 1;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($leftOptSeconds));
+function _encodeRoomBetDTO(message: RoomBetDTO, bb: ByteBuffer): void {
+  // optional string roomId = 1;
+  let $roomId = message.roomId;
+  if ($roomId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $roomId);
   }
 
-  // optional int32 gameNum = 2;
-  let $gameNum = message.gameNum;
-  if ($gameNum !== undefined) {
+  // optional int64 betCoins = 2;
+  let $betCoins = message.betCoins;
+  if ($betCoins !== undefined) {
     writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($gameNum));
+    writeVarint64(bb, $betCoins);
   }
 
-  // optional int32 onlinePlayers = 3;
-  let $onlinePlayers = message.onlinePlayers;
-  if ($onlinePlayers !== undefined) {
+  // optional int32 betId = 3;
+  let $betId = message.betId;
+  if ($betId !== undefined) {
     writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($onlinePlayers));
-  }
-}
-
-export function decodeDice3SendDrawMsgGameInfoVO(binary: Uint8Array): Dice3SendDrawMsgGameInfoVO {
-  return _decodeDice3SendDrawMsgGameInfoVO(wrapByteBuffer(binary));
-}
-
-function _decodeDice3SendDrawMsgGameInfoVO(bb: ByteBuffer): Dice3SendDrawMsgGameInfoVO {
-  let message: Dice3SendDrawMsgGameInfoVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 leftOptSeconds = 1;
-      case 1: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 gameNum = 2;
-      case 2: {
-        message.gameNum = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 onlinePlayers = 3;
-      case 3: {
-        message.onlinePlayers = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
+    writeVarint64(bb, intToLong($betId));
   }
 
-  return message;
-}
-
-export interface LuckyBallGameInfoVo {
-  oddsInfoList?: OddsInfoVo[];
-  gameResultList?: LuckyBallWinDto[];
-  gameNum?: number;
-  bankerId?: string;
-  currOptUserId?: string;
-  totalOptSeconds?: number;
-  leftOptSeconds?: number;
-  dealCardMilliseconds?: Long;
-  leftPaiNum?: number;
-  qiPai?: string;
-  turnType?: number;
-}
-
-export function encodeLuckyBallGameInfoVo(message: LuckyBallGameInfoVo): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLuckyBallGameInfoVo(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLuckyBallGameInfoVo(message: LuckyBallGameInfoVo, bb: ByteBuffer): void {
-  // repeated OddsInfoVo oddsInfoList = 1;
-  let array$oddsInfoList = message.oddsInfoList;
-  if (array$oddsInfoList !== undefined) {
-    for (let value of array$oddsInfoList) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeOddsInfoVo(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // repeated LuckyBallWinDto gameResultList = 2;
-  let array$gameResultList = message.gameResultList;
-  if (array$gameResultList !== undefined) {
-    for (let value of array$gameResultList) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeLuckyBallWinDto(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-
-  // optional int32 gameNum = 3;
+  // optional int32 gameNum = 4;
   let $gameNum = message.gameNum;
   if ($gameNum !== undefined) {
-    writeVarint32(bb, 24);
+    writeVarint32(bb, 32);
     writeVarint64(bb, intToLong($gameNum));
   }
-
-  // optional string bankerId = 4;
-  let $bankerId = message.bankerId;
-  if ($bankerId !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $bankerId);
-  }
-
-  // optional string currOptUserId = 5;
-  let $currOptUserId = message.currOptUserId;
-  if ($currOptUserId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $currOptUserId);
-  }
-
-  // optional int32 totalOptSeconds = 6;
-  let $totalOptSeconds = message.totalOptSeconds;
-  if ($totalOptSeconds !== undefined) {
-    writeVarint32(bb, 48);
-    writeVarint64(bb, intToLong($totalOptSeconds));
-  }
-
-  // optional int32 leftOptSeconds = 7;
-  let $leftOptSeconds = message.leftOptSeconds;
-  if ($leftOptSeconds !== undefined) {
-    writeVarint32(bb, 56);
-    writeVarint64(bb, intToLong($leftOptSeconds));
-  }
-
-  // optional int64 dealCardMilliseconds = 8;
-  let $dealCardMilliseconds = message.dealCardMilliseconds;
-  if ($dealCardMilliseconds !== undefined) {
-    writeVarint32(bb, 64);
-    writeVarint64(bb, $dealCardMilliseconds);
-  }
-
-  // optional int32 leftPaiNum = 9;
-  let $leftPaiNum = message.leftPaiNum;
-  if ($leftPaiNum !== undefined) {
-    writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($leftPaiNum));
-  }
-
-  // optional string qiPai = 10;
-  let $qiPai = message.qiPai;
-  if ($qiPai !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $qiPai);
-  }
-
-  // optional int32 turnType = 11;
-  let $turnType = message.turnType;
-  if ($turnType !== undefined) {
-    writeVarint32(bb, 88);
-    writeVarint64(bb, intToLong($turnType));
-  }
 }
 
-export function decodeLuckyBallGameInfoVo(binary: Uint8Array): LuckyBallGameInfoVo {
-  return _decodeLuckyBallGameInfoVo(wrapByteBuffer(binary));
+export function decodeRoomBetDTO(binary: Uint8Array): RoomBetDTO {
+  return _decodeRoomBetDTO(wrapByteBuffer(binary));
 }
 
-function _decodeLuckyBallGameInfoVo(bb: ByteBuffer): LuckyBallGameInfoVo {
-  let message: LuckyBallGameInfoVo = {} as any;
+function _decodeRoomBetDTO(bb: ByteBuffer): RoomBetDTO {
+  let message: RoomBetDTO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -12167,75 +8614,27 @@ function _decodeLuckyBallGameInfoVo(bb: ByteBuffer): LuckyBallGameInfoVo {
       case 0:
         break end_of_message;
 
-      // repeated OddsInfoVo oddsInfoList = 1;
+      // optional string roomId = 1;
       case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.oddsInfoList || (message.oddsInfoList = []);
-        values.push(_decodeOddsInfoVo(bb));
-        bb.limit = limit;
+        message.roomId = readString(bb, readVarint32(bb));
         break;
       }
 
-      // repeated LuckyBallWinDto gameResultList = 2;
+      // optional int64 betCoins = 2;
       case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.gameResultList || (message.gameResultList = []);
-        values.push(_decodeLuckyBallWinDto(bb));
-        bb.limit = limit;
+        message.betCoins = readVarint64(bb, /* unsigned */ false);
         break;
       }
 
-      // optional int32 gameNum = 3;
+      // optional int32 betId = 3;
       case 3: {
-        message.gameNum = readVarint32(bb);
+        message.betId = readVarint32(bb);
         break;
       }
 
-      // optional string bankerId = 4;
+      // optional int32 gameNum = 4;
       case 4: {
-        message.bankerId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string currOptUserId = 5;
-      case 5: {
-        message.currOptUserId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 totalOptSeconds = 6;
-      case 6: {
-        message.totalOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 leftOptSeconds = 7;
-      case 7: {
-        message.leftOptSeconds = readVarint32(bb);
-        break;
-      }
-
-      // optional int64 dealCardMilliseconds = 8;
-      case 8: {
-        message.dealCardMilliseconds = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int32 leftPaiNum = 9;
-      case 9: {
-        message.leftPaiNum = readVarint32(bb);
-        break;
-      }
-
-      // optional string qiPai = 10;
-      case 10: {
-        message.qiPai = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 turnType = 11;
-      case 11: {
-        message.turnType = readVarint32(bb);
+        message.gameNum = readVarint32(bb);
         break;
       }
 
@@ -12247,45 +8646,31 @@ function _decodeLuckyBallGameInfoVo(bb: ByteBuffer): LuckyBallGameInfoVo {
   return message;
 }
 
-export interface RoomPageRecordResponse {
-  total?: Long;
-  records?: RoomRecordResponse[];
+export interface RoomExitDTO {
+  roomId?: string;
 }
 
-export function encodeRoomPageRecordResponse(message: RoomPageRecordResponse): Uint8Array {
+export function encodeRoomExitDTO(message: RoomExitDTO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeRoomPageRecordResponse(message, bb);
+  _encodeRoomExitDTO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeRoomPageRecordResponse(message: RoomPageRecordResponse, bb: ByteBuffer): void {
-  // optional int64 total = 1;
-  let $total = message.total;
-  if ($total !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $total);
-  }
-
-  // repeated RoomRecordResponse records = 2;
-  let array$records = message.records;
-  if (array$records !== undefined) {
-    for (let value of array$records) {
-      writeVarint32(bb, 18);
-      let nested = popByteBuffer();
-      _encodeRoomRecordResponse(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
+function _encodeRoomExitDTO(message: RoomExitDTO, bb: ByteBuffer): void {
+  // optional string roomId = 1;
+  let $roomId = message.roomId;
+  if ($roomId !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $roomId);
   }
 }
 
-export function decodeRoomPageRecordResponse(binary: Uint8Array): RoomPageRecordResponse {
-  return _decodeRoomPageRecordResponse(wrapByteBuffer(binary));
+export function decodeRoomExitDTO(binary: Uint8Array): RoomExitDTO {
+  return _decodeRoomExitDTO(wrapByteBuffer(binary));
 }
 
-function _decodeRoomPageRecordResponse(bb: ByteBuffer): RoomPageRecordResponse {
-  let message: RoomPageRecordResponse = {} as any;
+function _decodeRoomExitDTO(bb: ByteBuffer): RoomExitDTO {
+  let message: RoomExitDTO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -12294,18 +8679,9 @@ function _decodeRoomPageRecordResponse(bb: ByteBuffer): RoomPageRecordResponse {
       case 0:
         break end_of_message;
 
-      // optional int64 total = 1;
+      // optional string roomId = 1;
       case 1: {
-        message.total = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // repeated RoomRecordResponse records = 2;
-      case 2: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.records || (message.records = []);
-        values.push(_decodeRoomRecordResponse(bb));
-        bb.limit = limit;
+        message.roomId = readString(bb, readVarint32(bb));
         break;
       }
 

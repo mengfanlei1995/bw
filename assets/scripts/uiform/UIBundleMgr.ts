@@ -37,6 +37,7 @@ class UIBundleMgr {
         node = cc.instantiate(prefab);
         let script: UIBase = node.getComponent(name);
         if (script) {
+            script.isBundle = 1;
             script.UIName = name;
             script.onShow(params);
         }

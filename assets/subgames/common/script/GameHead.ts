@@ -1,7 +1,8 @@
+import SysConfig from "../../../scripts/data/SysConfig";
 import SoundMgr from "../../../scripts/mgr/SoundMgr";
 import StorageMgr from "../../../scripts/mgr/StorageMgr";
 import SendMgr from "../../../scripts/net/SendMgr";
-import { RoomOptParam } from "../../../scripts/net/proto/room";
+import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIMgr from "../../../scripts/uiform/UIMgr";
 import UIScreen from "../../../scripts/uiform/UIScreen";
 import LongUtil, { LongType } from "../../../scripts/utils/LongUtil";
@@ -24,7 +25,7 @@ export default class GameHead extends UIScreen {
         return LongUtil.numberToLong(value);
     }
 
-    private optData: RoomOptParam = {
+    private optData = {
         betCoins: this.numberToLong(0),
         //下注区域
         betId: 0,
@@ -50,7 +51,7 @@ export default class GameHead extends UIScreen {
         this.gameCmd = data.gameCmd;
     }
 
-    onLoad(): void {
+    start(): void {
         this.soundSpriteFrameChange = StorageMgr.effectPercent;
         SoundMgr.resumeOrPauseMusic(false);
     }
@@ -60,7 +61,15 @@ export default class GameHead extends UIScreen {
     }
 
     private onHelpClick(e: cc.Event.EventTouch) {
-        // WindowMgr.open(this.optData.gameType == +SysConfig.GameIDConfig.TeenPattiWar ? UIConfig.TPRules.prefab : UIConfig.GameRules.prefab, this.optData.gameType)
+        let bundleName: string = 'common';
+        let url: string = 'prefab/GameRules';
+        let name: string = 'GameRules';
+        if (this.optData.gameType == +SysConfig.GameIDConfig.TeenPattiWar) {
+            bundleName = 'TeenPattiWar';
+            url = 'prefab/TPRules';
+            name = 'TPRules';
+        }
+        UIBundleMgr.show(bundleName, url, name, this.optData.gameType);
     }
 
     private onTransactionsClick(e: cc.Event.EventTouch) {
@@ -78,7 +87,7 @@ export default class GameHead extends UIScreen {
     }
 
     private async onBackClick(e: cc.Event.EventTouch) {
-        SendMgr.sendExitRoom(this.optData, this.gameCmd);
+        SendMgr.sendExitRoom({ roomId: this.optData.roomId }, this.gameCmd);
         // this.hide();
         UIMgr.goHall();
     }

@@ -7,7 +7,7 @@ import SoundMgr from "../../../scripts/mgr/SoundMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
 import { JhandiMundaCmd, Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_JhandiMundaCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { JMBeginBetVO, JMDoEnterRoomVO, JMSendDrawMsgVO, JhandiMundaWinDto, JhandiMundaWinIdRateDto, NotifyBetVO, decodeJMBeginBetVO, decodeJMDoEnterRoomVO, decodeJMSendDrawMsgVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
+import { NotifyJMBeginBetVO, ResponseJMEnterRoomVO, NotifyBetVO, JMWinVO, JMWinIdRateVO, decodeNotifyJMBeginBetVO, decodeResponseJMEnterRoomVO, decodeNotifyBetVO, NotifyJMDrawVO, decodeNotifyJMDrawVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 
@@ -59,20 +59,19 @@ export default class JhandiMunda extends UIGame {
     async _enterRoom(): Promise<void> {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
-        let data: JMDoEnterRoomVO = decodeJMDoEnterRoomVO(info);
-        console.log('_enterRoom', data)
+        let data: ResponseJMEnterRoomVO = decodeResponseJMEnterRoomVO(info);
         if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
     //初始化房间信息
-    _initRoomInfo(info: JMDoEnterRoomVO) {
-        this.initRecordHistroy(info.gameInfo.gameResultList);
+    _initRoomInfo(info: ResponseJMEnterRoomVO) {
         this.initRoomInfo(info);
+        this.initRecordHistroy(info.gameInfo.gameResultList);
     }
 
     /**初始化历史记录 */
-    private initRecordHistroy(gameResultList: JhandiMundaWinDto[]) {
+    private initRecordHistroy(gameResultList: JMWinVO[]) {
         for (let i = 0; i < this.recordsLayoutNode.length; i++) {
             this.recordsLayoutNode[i].removeAllChildren()
             if (gameResultList.length > 12) gameResultList = gameResultList.slice(gameResultList.length - 12, gameResultList.length)
@@ -94,7 +93,7 @@ export default class JhandiMunda extends UIGame {
     }
 
     /**添加开奖记录 */
-    async addAwardRecord(idRates: JhandiMundaWinIdRateDto[]) {
+    async addAwardRecord(idRates: JMWinIdRateVO[]) {
         let array: number[] = [0, 0, 0, 0, 0, 0];
         for (let i = 0; i < idRates.length; i++) {
             array[idRates[i].id - 1] = idRates[i].count;
@@ -112,7 +111,7 @@ export default class JhandiMunda extends UIGame {
      * 开奖
      * @returns 
      */
-    openAward(gameResult: JhandiMundaWinDto) {
+    openAward(gameResult: JMWinVO) {
         if (this.diceSkel.animation != "JhandiMunda_dice2") return;
         let gameNum = this.gameNum;
         let { dices, idRates } = gameResult;
@@ -225,7 +224,7 @@ export default class JhandiMunda extends UIGame {
     }
 
     /**筹码飞向玩家动画 */
-    _flyPlayerArea(idRates: JhandiMundaWinIdRateDto[]) {
+    _flyPlayerArea(idRates: JMWinIdRateVO[]) {
         this.flyChipsProductSource()
         let chipsArray: number[] = [];
         function checkChipsNum(num: number) {
@@ -364,8 +363,7 @@ export default class JhandiMunda extends UIGame {
     }
 
     _gameStart(data: Uint8Array) {
-        let info: JMBeginBetVO = decodeJMBeginBetVO(data);
-        console.log('_gameStart', info);
+        let info: NotifyJMBeginBetVO = decodeNotifyJMBeginBetVO(data);
         this.isBetTime = true;
         this._reset();
         this.gameStart(info);
@@ -378,8 +376,7 @@ export default class JhandiMunda extends UIGame {
     }
 
     _gameEnd(data: Uint8Array) {
-        let info: JMSendDrawMsgVO = decodeJMSendDrawMsgVO(data);
-        console.log('_gameEnd', info);
+        let info: NotifyJMDrawVO = decodeNotifyJMDrawVO(data);
         let { gameInfo, gameResult } = info;
         this.gameEnd(info);
         if (this.gameResultList.length >= 12) this.gameResultList.shift();

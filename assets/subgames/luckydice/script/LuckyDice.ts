@@ -12,14 +12,14 @@ import { Push_GameCmd } from "../../../scripts/net/CmdData";
 import { Push_Game_EndCmd } from "../../../scripts/net/CmdData";
 import { LuckyDiceCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { decodeLDBeginBetVO } from "../../../scripts/net/proto/room";
-import { decodeLDSendDrawMsgVO } from "../../../scripts/net/proto/room";
-import { LDSendDrawMsgVO } from "../../../scripts/net/proto/room";
-import { LDBeginBetVO } from "../../../scripts/net/proto/room";
-import { LuckyDiceWinDto } from "../../../scripts/net/proto/room";
+import { decodeNotifyLDBeginBetVO } from "../../../scripts/net/proto/room";
+import { decodeNotifyLDDrawVO } from "../../../scripts/net/proto/room";
+import { NotifyLDDrawVO } from "../../../scripts/net/proto/room";
+import { NotifyLDBeginBetVO } from "../../../scripts/net/proto/room";
+import { LDWinVO } from "../../../scripts/net/proto/room";
 import { NotifyBetVO } from "../../../scripts/net/proto/room";
 import { decodeNotifyBetVO } from "../../../scripts/net/proto/room";
-import { LDDoEnterRoomVO, decodeLDDoEnterRoomVO } from "../../../scripts/net/proto/room";
+import { ResponseLDEnterRoomVO, decodeResponseLDEnterRoomVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 
@@ -49,6 +49,8 @@ export default class LuckyDice extends UIGame {
     start(): void {
         this.gameId = SysConfig.GameIDConfig.LuckyDice;
         this.gameCmd = LuckyDiceCmd;
+        this.gameName = 'LuckyDice';
+        this.historyName = 'LuckyDiceHistory';
         this._start();
         this._enterRoom();
     }
@@ -67,20 +69,19 @@ export default class LuckyDice extends UIGame {
     async _enterRoom(): Promise<void> {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
-        let data: LDDoEnterRoomVO = decodeLDDoEnterRoomVO(info);
-        console.log('_enterRoom', data)
+        let data: ResponseLDEnterRoomVO = decodeResponseLDEnterRoomVO(info);
         if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
     //初始化房间信息
-    _initRoomInfo(info: LDDoEnterRoomVO) {
-        this.initRecordHistroy(info.gameInfo.gameResultList);
+    _initRoomInfo(info: ResponseLDEnterRoomVO) {
         this.initRoomInfo(info);
+        this.initRecordHistroy(info.gameInfo.gameResultList);
     }
 
     /**初始化历史记录 */
-    private initRecordHistroy(gameResultList: LuckyDiceWinDto[]) {
+    private initRecordHistroy(gameResultList: LDWinVO[]) {
         this.recordLayoutNode.removeAllChildren()
         if (gameResultList.length > 13) gameResultList = gameResultList.slice(gameResultList.length - 13, gameResultList.length)
         for (let i = 0; i < gameResultList.length; i++) {
@@ -206,8 +207,7 @@ export default class LuckyDice extends UIGame {
     }
 
     _gameStart(data: Uint8Array) {
-        let info: LDBeginBetVO = decodeLDBeginBetVO(data);
-        console.log('_gameStart', info);
+        let info: NotifyLDBeginBetVO = decodeNotifyLDBeginBetVO(data);
         this.isBetTime = true;
         this._reset();
         this.gameStart(info);
@@ -220,8 +220,7 @@ export default class LuckyDice extends UIGame {
     }
 
     _gameEnd(data: Uint8Array) {
-        let info: LDSendDrawMsgVO = decodeLDSendDrawMsgVO(data);
-        console.log('_gameEnd', info);
+        let info: NotifyLDDrawVO = decodeNotifyLDDrawVO(data);
         let { gameInfo, gameResult } = info;
         let { dices, id } = gameResult;
         this.diceSkel.node.zIndex = 2;

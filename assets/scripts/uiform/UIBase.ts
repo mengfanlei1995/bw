@@ -1,3 +1,4 @@
+import UIBundleMgr from "./UIBundleMgr";
 import UIMgr, { UIType } from "./UIMgr";
 
 const { ccclass, property } = cc._decorator;
@@ -10,6 +11,8 @@ export default class UIBase extends cc.Component {
 
     /**ui名字 */
     public UIName: string;
+
+    public isBundle: number = 0;
 
     public onShow(params: any) {
 
@@ -31,7 +34,11 @@ export default class UIBase extends cc.Component {
 
     async hide() {
         await this.hideTween();
-        UIMgr.hide(this.UIName);
+        if (this.isBundle) {
+            UIBundleMgr.hide(this.UIName);
+        } else {
+            UIMgr.hide(this.UIName);
+        }
     }
 
 }

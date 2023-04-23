@@ -6,7 +6,7 @@ import LangMgr from "../../../scripts/mgr/LangMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
 import { Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_WhellOfForuneCmd, WhellOfForuneCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { NotifyBetVO, RYBBeginBetVO, RYBDoEnterRoomVO, RYBSendDrawMsgVO, RedYellowBlueWinDto, decodeNotifyBetVO, decodeRYBBeginBetVO, decodeRYBDoEnterRoomVO, decodeRYBSendDrawMsgVO } from "../../../scripts/net/proto/room";
+import { NotifyBetVO, NotifyRYBBeginBetVO, ResponseRYBEnterRoomVO, NotifyRYBDrawVO, RYBWinVO, decodeNotifyBetVO, decodeNotifyRYBBeginBetVO, decodeResponseRYBEnterRoomVO, decodeNotifyRYBDrawVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
@@ -52,6 +52,8 @@ export default class WhellOfForunce extends UIGame {
         this.contentNode.getComponent(cc.Widget).top = topDiff;
         this.gameId = SysConfig.GameIDConfig.WheelofForune;
         this.gameCmd = WhellOfForuneCmd;
+        this.gameName = 'WheelofForune';
+        this.historyName = 'WheelHistory';
         this._start();
         this._enterRoom();
     }
@@ -70,20 +72,19 @@ export default class WhellOfForunce extends UIGame {
     async _enterRoom(): Promise<void> {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
-        let data: RYBDoEnterRoomVO = decodeRYBDoEnterRoomVO(info);
-        console.log('_enterRoom', data)
+        let data: ResponseRYBEnterRoomVO = decodeResponseRYBEnterRoomVO(info);
         if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
     //初始化房间信息
-    _initRoomInfo(info: RYBDoEnterRoomVO) {
+    _initRoomInfo(info: ResponseRYBEnterRoomVO) {
         this.initRecordHistroy(info.gameInfo.gameResultList);
         this.initRoomInfo(info);
     }
 
     /**初始化历史记录 */
-    private initRecordHistroy(gameResultList: RedYellowBlueWinDto[]) {
+    private initRecordHistroy(gameResultList: RYBWinVO[]) {
         this.recordLayoutNode.removeAllChildren()
         if (gameResultList.length > 20) gameResultList = gameResultList.slice(gameResultList.length - 20, gameResultList.length)
         for (let i = 0; i < gameResultList.length; i++) {
@@ -208,8 +209,7 @@ export default class WhellOfForunce extends UIGame {
     }
 
     _gameStart(data: Uint8Array) {
-        let info: RYBBeginBetVO = decodeRYBBeginBetVO(data);
-        console.log('_gameStart', info);
+        let info: NotifyRYBBeginBetVO = decodeNotifyRYBBeginBetVO(data);
         this.isBetTime = true;
         this._reset();
         this.gameStart(info);
@@ -222,8 +222,7 @@ export default class WhellOfForunce extends UIGame {
     }
 
     async _gameEnd(data: Uint8Array) {
-        let info: RYBSendDrawMsgVO = decodeRYBSendDrawMsgVO(data);
-        console.log('_gameEnd', info);
+        let info: NotifyRYBDrawVO = decodeNotifyRYBDrawVO(data);
         let { gameResult } = info;
         this.gameEnd(info);
         let { reelIndex, id } = gameResult

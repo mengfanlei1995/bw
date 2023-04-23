@@ -8,7 +8,7 @@ import PoolMgr from "../mgr/PoolMgr";
 import SoundMgr from "../mgr/SoundMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import SendMgr from "../net/SendMgr";
-import { PointBetCoinsNotifyVo, RoomOptParam } from "../net/proto/room";
+import { PointBetCoinsVO, RoomBetDTO, RoomEnterDTO } from "../net/proto/room";
 import BundleUtil from "../utils/BundleUtil";
 import CocosUtil from "../utils/CocosUtil";
 import LongUtil, { LongType } from "../utils/LongUtil";
@@ -97,6 +97,8 @@ export default class UIGame extends UIScene {
     protected gameCmd: number = 0;
     protected waitingAction: cc.Tween;
     protected isReload: boolean = false;
+    protected gameName: string = '';
+    protected historyName: string = '';
 
     protected numberToLong(value: number): LongType {
         return LongUtil.numberToLong(value);
@@ -106,7 +108,7 @@ export default class UIGame extends UIScene {
         return LongUtil.longToNumber(long);
     }
 
-    protected optData: RoomOptParam = {
+    protected optData = {
         betCoins: this.numberToLong(0),
         //下注区域
         betId: 0,
@@ -158,7 +160,12 @@ export default class UIGame extends UIScene {
     async enterRoom(): Promise<Uint8Array> {
         this.optData.gameType = +this.gameId;
         this.optData.optType = 3;
-        let info: Uint8Array = await SendMgr.sendEnterRoom(this.optData, this.gameCmd);
+        let params: RoomEnterDTO = {
+            roomType: 1,
+            gameType: this.optData.gameType,
+            roomLevel: 1
+        }
+        let info: Uint8Array = await SendMgr.sendEnterRoom(params, this.gameCmd);
         if (!info && cc.isValid(this.node)) {
             UIMgr.goHall();
             UIMgr.showDialog({
@@ -235,7 +242,7 @@ export default class UIGame extends UIScene {
         }
     }
 
-    initChips(betList: PointBetCoinsNotifyVo[]) {
+    initChips(betList: PointBetCoinsVO[]) {
         for (let i = 0; i < betList.length; i++) {
             let areaType: string = `${betList[i].betId}`;
             let chipNum: number = this.longToNumber(betList[i].betCoins);
@@ -404,7 +411,13 @@ export default class UIGame extends UIScene {
         this.optData.gameNum = this.gameNum;
         this.optData.betId = +areaType;
         this.optData.optType = 18;
-        let result: boolean = await SendMgr.sendBet(this.optData, this.gameCmd);
+        let params: RoomBetDTO = {
+            roomId: this.optData.roomId,
+            betCoins: this.optData.betCoins,
+            betId: this.optData.betId,
+            gameNum: this.optData.gameNum
+        }
+        let result: boolean = await SendMgr.sendBet(params, this.gameCmd);
         if (result && cc.isValid(this.node)) {
             EventMgr.emit(REPORT_EVT.CLICK, {
                 element_id: "btn_bet",
@@ -453,6 +466,7 @@ export default class UIGame extends UIScene {
     }
 
     initRoomInfo(info) {
+        console.log('_enterRoom', info)
         let { betCoinList, betCoinMap, betList, betSelfCoinMap, gameInfo, roomInfo, onlinePlayers } = info;
         if (betList && betList.length > 0) {
             this.initChips(betList);
@@ -551,6 +565,7 @@ export default class UIGame extends UIScene {
     }
 
     gameStart(info) {
+        console.log('_gameStart', info);
         let { gameInfo } = info;
         this.curTime = gameInfo?.leftOptSeconds;
         this.gameNum = gameInfo?.gameNum;
@@ -584,6 +599,7 @@ export default class UIGame extends UIScene {
     }
 
     gameEnd(info) {
+        console.log('_gameEnd', info);
         let { gameInfo, gameResult, userInfoList } = info;
         this.curTime = gameInfo?.leftOptSeconds
         if (this.gameResultList.length >= 50) this.gameResultList.shift();
@@ -624,6 +640,10 @@ export default class UIGame extends UIScene {
 
     onAreaClick(e: cc.Event.EventTouch, type: string) {
         this.buyBetChips(type, this.selfBetChipsNumLabel[+type - 1], this.chipsNumLabel[+type - 1]);
+    }
+
+    onRecordClick() {
+        UIBundleMgr.show(this.gameName, `prefab/${this.historyName}`, this.historyName, this.gameResultList);
     }
 
     onAddCashClick(e: cc.Event.EventTouch) {

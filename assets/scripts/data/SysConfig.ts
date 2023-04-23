@@ -6,7 +6,7 @@ import LongUtil from "../utils/LongUtil";
 
 class SysConfig {
     /**调试模式 */
-    readonly isDebug: number = 1;
+    readonly isDebug: number = 0;
     /**带有af统计的默认渠道值 */
     readonly defaultChannel: string = 'Organic';
     /**是否是测试环境 */

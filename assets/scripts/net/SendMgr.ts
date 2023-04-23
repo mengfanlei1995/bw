@@ -9,7 +9,6 @@ import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, Us
 import CmdMgr from "./CmdMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage, encodeExternalMessage } from "./proto/ExternalMessage";
-import { BaseUserInfoVO, decodeBaseUserInfoVO } from "./proto/core";
 import { HomepageResponse, decodeHomepageGameVO, decodeHomepageResponse } from "./proto/hall";
 import { encodeUserUpdateHeadPicDTO } from "./proto/hall";
 import { UserUpdateNicknameDTO } from "./proto/hall";
@@ -22,7 +21,7 @@ import { encodeUserUpdateNicknameDTO } from "./proto/hall";
 import { UserUpdateHeadPicDTO, decodeLoginVO, encodeLoginDTO } from "./proto/hall";
 import { LoginDTO } from "./proto/hall";
 import { LoginVO } from "./proto/hall";
-import { RoomOptParam, encodeRoomOptParam } from "./proto/room";
+import { RoomBetDTO, RoomEnterDTO, RoomExitDTO, RoomRecordDTO, encodeRoomBetDTO, encodeRoomEnterDTO, encodeRoomExitDTO, encodeRoomRecordDTO } from "./proto/room";
 import { NetCallFunc } from "./ws/NetInterface";
 
 const commonParams = function (mergeCmd: number, data: Uint8Array, cmdCode: number = 1, protocolSwitch: number = 0): ExternalMessage {
@@ -73,7 +72,7 @@ class SendMgr {
      */
     public async sendLogin(params: LoginDTO = {}, loginType: number = Login_GuestCmd): Promise<LoginVO> {
         params = Object.assign(loginCommonParams(), params);
-        if (!params.sessionId) return;
+        if (loginType == Login_SessionCmd && !StorageMgr.sessionId) return;
         return new Promise<LoginVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, loginType), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
                 if (code === 0) {
@@ -87,6 +86,7 @@ class SendMgr {
 
     /**获取用户信息 */
     public async sendGetUserInfo(): Promise<boolean> {
+        if (!UserData.userInfo.userId) return;
         return new Promise<boolean>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(UserCmd, User_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
                 if (code === 0) {
@@ -146,36 +146,36 @@ class SendMgr {
     }
 
     /**进入房间 */
-    public async sendEnterRoom(params: RoomOptParam, gameCmd: number): Promise<Uint8Array> {
+    public async sendEnterRoom(params: RoomEnterDTO, gameCmd: number): Promise<Uint8Array> {
         return new Promise<Uint8Array>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, JoinRoomCmd), encodeRoomOptParam(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, JoinRoomCmd), encodeRoomEnterDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? data : null);
             })
         })
     }
 
     /**退出房间 */
-    public async sendExitRoom(params: RoomOptParam, gameCmd: number): Promise<boolean> {
+    public async sendExitRoom(params: RoomExitDTO, gameCmd: number): Promise<boolean> {
         return new Promise<boolean>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, ExitRoomCmd), encodeRoomOptParam(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, ExitRoomCmd), encodeRoomExitDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0);
             })
         })
     }
 
     /**下注 */
-    public async sendBet(params: RoomOptParam, gameCmd: number): Promise<boolean> {
+    public async sendBet(params: RoomBetDTO, gameCmd: number): Promise<boolean> {
         return new Promise<boolean>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, BetCmd), encodeRoomOptParam(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, BetCmd), encodeRoomBetDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0);
             })
         })
     }
 
     /**流水 */
-    public async sendRecordList(params: RoomOptParam, gameCmd: number): Promise<Uint8Array> {
+    public async sendRecordList(params: RoomRecordDTO, gameCmd: number): Promise<Uint8Array> {
         return new Promise<Uint8Array>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, RecordListCmd), encodeRoomOptParam(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, RecordListCmd), encodeRoomRecordDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? data : null);
             })
         })

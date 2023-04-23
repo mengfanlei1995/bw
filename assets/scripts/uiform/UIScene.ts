@@ -1,7 +1,5 @@
 
-import BundleUtil from "../utils/BundleUtil";
 import UIBase from "./UIBase";
-import UIBundleMgr from "./UIBundleMgr";
 import UIMgr, { UIType } from "./UIMgr";
 
 const { ccclass, property } = cc._decorator;

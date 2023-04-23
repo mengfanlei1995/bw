@@ -42,7 +42,7 @@ export default class Login extends UIScene {
     //验证码倒计时
     private second: number = 60;
 
-    onLoad(): void {
+    start(): void {
         this.resetContent();
     }
 
