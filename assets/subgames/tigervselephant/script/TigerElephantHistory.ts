@@ -33,7 +33,6 @@ export default class TigerElephantHistory extends UIWindow {
     yellowSpriteFrame: cc.SpriteFrame = null
 
     public onShow(gameRecordInfo: number[]): void {
-        this.node.zIndex = 99;
         this.initRecordHistroy(gameRecordInfo);
     }
 

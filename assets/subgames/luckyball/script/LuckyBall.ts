@@ -97,7 +97,6 @@ export default class LuckyBall extends UIGame {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
         let data: ResponseLBEnterRoomVO = decodeResponseLBEnterRoomVO(info);
-        if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
@@ -189,7 +188,7 @@ export default class LuckyBall extends UIGame {
     * @param areaType 
     */
     flyActiveArea(areaIndex: number) {
-        SoundMgr.playEffect('audio/collectchips')
+        SoundMgr.playEffectByBundle('common', 'audio/collectchips');
         let startNode = this.colorBallSkel.node;
         let startPost = this.chipsProductAreaNode.convertToNodeSpaceAR(
             startNode.convertToWorldSpaceAR(startNode.getPosition()))

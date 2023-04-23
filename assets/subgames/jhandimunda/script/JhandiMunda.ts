@@ -60,7 +60,6 @@ export default class JhandiMunda extends UIGame {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
         let data: ResponseJMEnterRoomVO = decodeResponseJMEnterRoomVO(info);
-        if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
@@ -283,7 +282,7 @@ export default class JhandiMunda extends UIGame {
 
     /**筹码飞向玩家动画 */
     _flyWinArea(areaType: string[]) {
-        SoundMgr.playEffect('audio/collectchips')
+        SoundMgr.playEffectByBundle('common', 'audio/collectchips');
         for (let j = 0; j < areaType.length; j++) {
             let targetAreaNode: cc.Node = this.getChipsAreaNode(`${(+areaType[j])}`);
             let childrens: cc.Node[] = this.chipsProductAreaNode.children

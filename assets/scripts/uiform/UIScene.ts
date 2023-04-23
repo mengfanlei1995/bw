@@ -1,5 +1,6 @@
 
 import UIBase from "./UIBase";
+import UIBundleMgr from "./UIBundleMgr";
 import UIMgr, { UIType } from "./UIMgr";
 
 const { ccclass, property } = cc._decorator;
@@ -26,7 +27,10 @@ export default class UIScene extends UIBase {
         this.assets.forEach(asset => {
             asset.decRef();
         });
-        UIMgr.hideAll();
+        if (this.isBundle) {
+            UIBundleMgr.hideAll();
+        } else {
+            UIMgr.hideAll();
+        }
     }
-
 }

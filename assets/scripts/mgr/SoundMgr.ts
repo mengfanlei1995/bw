@@ -1,4 +1,5 @@
 import AssetUtil from "../utils/AssetUtil";
+import BundleUtil from "../utils/BundleUtil";
 import StorageMgr from "./StorageMgr";
 
 class SoundMgr {
@@ -73,6 +74,20 @@ class SoundMgr {
         }
         let sound = await AssetUtil.loadResSync<cc.AudioClip>(url, false);
         this.audioCache[url] = sound;
+        this.currEffectId = cc.audioEngine.playEffect(sound, loop);
+    }
+
+    /** 播放音效 by bundle*/
+    public async playEffectByBundle(bundleName: string, url: string, loop = false) {
+        if (StorageMgr.effectPercent == 0) return;
+        if (!url || url === '') return;
+
+        if (this.audioCache[bundleName + url]) {
+            cc.audioEngine.playEffect(this.audioCache[bundleName + url], loop);
+            return;
+        }
+        let sound = await BundleUtil.loadResSync<cc.AudioClip>(bundleName, url);
+        this.audioCache[bundleName + url] = sound;
         this.currEffectId = cc.audioEngine.playEffect(sound, loop);
     }
 

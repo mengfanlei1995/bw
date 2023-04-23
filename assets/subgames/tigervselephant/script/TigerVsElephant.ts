@@ -78,7 +78,6 @@ export default class TigerVsElephant extends UIGame {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
         let data: ResponseDTEnterRoomVO = decodeResponseDTEnterRoomVO(info);
-        if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 

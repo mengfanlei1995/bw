@@ -41,7 +41,7 @@ export default class TeenPattiWar extends UIGame {
     start(): void {
         this.gameId = SysConfig.GameIDConfig.TeenPattiWar;
         this.gameCmd = TPWarCmd;
-        this.gameName = 'TeenTattiWar';
+        this.gameName = 'TeenPattiWar';
         this.historyName = 'TeenPattiWarHistory';
         this._start();
         this._enterRoom();
@@ -62,7 +62,6 @@ export default class TeenPattiWar extends UIGame {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
         let data: ResponseTPEnterRoomVO = decodeResponseTPEnterRoomVO(info);
-        if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
@@ -194,7 +193,7 @@ export default class TeenPattiWar extends UIGame {
     * @param areaType 
     */
     _flyWinArea(areaType: number[]) {
-        SoundMgr.playEffect('audio/collectchips')
+        SoundMgr.playEffectByBundle('common', 'audio/collectchips');
         let targetAreaNode1: cc.Node
         let targetAreaNode2: cc.Node
         targetAreaNode1 = this.getChipsAreaNode(`${areaType[0]}`)
@@ -352,7 +351,7 @@ export default class TeenPattiWar extends UIGame {
         let cardArray: string[] = [];
         if (gameResult) {
             let { king, queen } = gameResult;
-            cardArray = king.pais.concat(queen.pais)
+            cardArray = king.pais.concat(queen.pais);
         }
         this.pokerSkel.node.active = active;
         let track;
@@ -361,27 +360,27 @@ export default class TeenPattiWar extends UIGame {
             this.pokerSkel.setTrackEventListener(track, (trackIdx, evt) => {
                 if (evt.data.name == "Lift") {
                     for (let i = 0; i < 3; i++) {
-                        let huase = cardArray[i].slice(0, 1)
-                        let card = cardArray[i].slice(1)
+                        let huase = cardArray[i].slice(0, 1);
+                        let card = cardArray[i].slice(1);
                         this.poker[i].active = true;
-                        this.poker[i].getComponent(Poker).init(huase, card, false)
+                        this.poker[i].getComponent(Poker).init(huase, card, false);
                     }
                 } else {
                     for (let i = 3; i < 6; i++) {
-                        let huase = cardArray[i].slice(0, 1)
-                        let card = cardArray[i].slice(1)
+                        let huase = cardArray[i].slice(0, 1);
+                        let card = cardArray[i].slice(1);
                         this.poker[i].active = true;
-                        this.poker[i].getComponent(Poker).init(huase, card, false)
+                        this.poker[i].getComponent(Poker).init(huase, card, false);
                     }
                 }
             })
         } else {
             for (let i = 0; i < this.poker.length; i++) {
                 if (name == "Cards_y2") {
-                    let huase = cardArray[i].slice(0, 1)
-                    let card = cardArray[i].slice(1)
+                    let huase = cardArray[i].slice(0, 1);
+                    let card = cardArray[i].slice(1);
                     this.poker[i].active = true;
-                    this.poker[i].getComponent(Poker).init(huase, card, false)
+                    this.poker[i].getComponent(Poker).init(huase, card, false);
                 } else {
                     this.poker[i].active = false;
                 }
@@ -392,12 +391,12 @@ export default class TeenPattiWar extends UIGame {
     /**
      * 生产记录
      * @param value 
-     * @returns 
+     * @returns cc.Node
      */
-    public productRecordNode(id: number[]) {
+    public productRecordNode(id: number[]): cc.Node {
         let node = cc.instantiate(this.recordPrefab);
         node.getComponent(TPRecordItem).init(id);
-        return node
+        return node;
     }
 
 }

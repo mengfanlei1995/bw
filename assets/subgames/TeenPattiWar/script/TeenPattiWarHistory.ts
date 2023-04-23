@@ -1,5 +1,5 @@
 import LangMgr from "../../../scripts/mgr/LangMgr";
-import { TeenPattiWarWinDto } from "../../../scripts/net/proto/room";
+import { TPWWinVO } from "../../../scripts/net/proto/room";
 import UIWindow from "../../../scripts/uiform/UIWindow";
 import TPRecordItem from "./TPRecordItem";
 
@@ -32,8 +32,7 @@ export default class TeenPattiWarHistory extends UIWindow {
     @property({ tooltip: '特殊牌型', type: cc.Node })
     bottomLayout: cc.Node = null;
 
-    public onShow(gameRecordInfo: TeenPattiWarWinDto[]): void {
-        this.node.zIndex = 99;
+    public onShow(gameRecordInfo: TPWWinVO[]): void {
         this.initRecordHistroy(gameRecordInfo);
     }
 
@@ -41,7 +40,7 @@ export default class TeenPattiWarHistory extends UIWindow {
     * 初始化历史记录
     * @returns 
     */
-    initRecordHistroy(gameRecordInfo: TeenPattiWarWinDto[]) {
+    initRecordHistroy(gameRecordInfo: TPWWinVO[]) {
         this.contentLayout.removeAllChildren()
         if (gameRecordInfo == null || gameRecordInfo.length <= 0) return;
         let k = 0, q = 0

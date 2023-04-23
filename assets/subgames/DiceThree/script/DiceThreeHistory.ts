@@ -1,5 +1,5 @@
 
-import { Dice3WinDto } from "../../../scripts/net/proto/room";
+import { D3WinVO } from "../../../scripts/net/proto/room";
 import UIWindow from "../../../scripts/uiform/UIWindow";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
 
@@ -29,8 +29,7 @@ export default class DiceThreeHistory extends UIWindow {
     @property({ tooltip: "黄色", type: cc.SpriteFrame })
     yellowSpriteFrame: cc.SpriteFrame = null
 
-    public onShow(gameRecordInfo: Dice3WinDto[]): void {
-        this.node.zIndex = 99;
+    public onShow(gameRecordInfo: D3WinVO[]): void {
         this.initRecordHistroy(gameRecordInfo)
     }
 
@@ -38,7 +37,7 @@ export default class DiceThreeHistory extends UIWindow {
     * 初始化历史记录
     * @returns 
     */
-    initRecordHistroy(gameRecordInfo: Dice3WinDto[]) {
+    initRecordHistroy(gameRecordInfo: D3WinVO[]) {
         this.contentLayout.removeAllChildren()
         if (gameRecordInfo == null || gameRecordInfo.length <= 0) return;
         let g = 0, r = 0, y = 0

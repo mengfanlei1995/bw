@@ -20,35 +20,19 @@ export default class GameHead extends UIScreen {
     btnSound: cc.Node = null
 
     private gameCmd: number = 0;
+    private roomId: string = '';
+    private gameType: number = 0;
+    private gameName: string = '';
 
     protected numberToLong(value: number): LongType {
         return LongUtil.numberToLong(value);
     }
 
-    private optData = {
-        betCoins: this.numberToLong(0),
-        //下注区域
-        betId: 0,
-        //游戏局数
-        gameNum: 0,
-        //游戏ID
-        gameType: 0,
-        //操作类型 3 进入房间 4退出房间 18下注
-        optType: 4,
-        //房间id
-        roomId: "",
-        // 1
-        roomLevel: 1,
-        // 1
-        roomType: 1,
-        //userid
-        userId: StorageMgr.userId
-    }
-
     public onShow(data: any): void {
-        this.optData.gameType = data?.gameId;
-        this.optData.roomId = data?.roomId;
+        this.gameType = data?.gameId;
+        this.roomId = data?.roomId;
         this.gameCmd = data.gameCmd;
+        this.gameName = data.gameName;
     }
 
     start(): void {
@@ -64,16 +48,16 @@ export default class GameHead extends UIScreen {
         let bundleName: string = 'common';
         let url: string = 'prefab/GameRules';
         let name: string = 'GameRules';
-        if (this.optData.gameType == +SysConfig.GameIDConfig.TeenPattiWar) {
+        if (this.gameType == +SysConfig.GameIDConfig.TeenPattiWar) {
             bundleName = 'TeenPattiWar';
             url = 'prefab/TPRules';
             name = 'TPRules';
         }
-        UIBundleMgr.show(bundleName, url, name, this.optData.gameType);
+        UIBundleMgr.show(bundleName, url, name, this.gameType);
     }
 
     private onTransactionsClick(e: cc.Event.EventTouch) {
-        // FixedMgr.open(UIConfig.GameRecord.prefab, this.optData.gameType);
+        UIBundleMgr.show('common', 'prefab/GameRecord', 'GameRecord', { gameCmd: this.gameCmd, gameName: this.gameName });
     }
 
     private onSoundClick(e: cc.Event.EventTouch) {
@@ -87,7 +71,7 @@ export default class GameHead extends UIScreen {
     }
 
     private async onBackClick(e: cc.Event.EventTouch) {
-        SendMgr.sendExitRoom({ roomId: this.optData.roomId }, this.gameCmd);
+        SendMgr.sendExitRoom({ roomId: this.roomId }, this.gameCmd);
         // this.hide();
         UIMgr.goHall();
     }

@@ -1,4 +1,4 @@
-import { LuckyDiceWinDto } from "../../../scripts/net/proto/room";
+import { LDWinVO } from "../../../scripts/net/proto/room";
 import UIWindow from "../../../scripts/uiform/UIWindow";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
 
@@ -36,8 +36,7 @@ export default class LuckyDiceHistory extends UIWindow {
     @property({ tooltip: "黄色", type: cc.Font })
     yellowFont: cc.Font = null
 
-    public onShow(gameRecordInfo: LuckyDiceWinDto[]): void {
-        this.node.zIndex = 99;
+    public onShow(gameRecordInfo: LDWinVO[]): void {
         this.initRecordHistroy(gameRecordInfo)
     }
 
@@ -45,7 +44,7 @@ export default class LuckyDiceHistory extends UIWindow {
     * 初始化历史记录
     * @returns 
     */
-    private async initRecordHistroy(gameRecordInfo: LuckyDiceWinDto[]) {
+    private async initRecordHistroy(gameRecordInfo: LDWinVO[]) {
         this.contentLayout.removeAllChildren()
         if (gameRecordInfo == null || gameRecordInfo.length <= 0) return;
         let g = 0, r = 0, y = 0

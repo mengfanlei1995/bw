@@ -1,3 +1,4 @@
+import SysConfig from "../../data/SysConfig";
 import UserData from "../../data/UserData";
 import { HALL_EVT } from "../../enum/DeskEnum";
 import { SocketEvent } from "../../enum/SocketEnum";
@@ -32,11 +33,7 @@ class SocketClient implements ISocket {
         this.SocketState = this.SocketState_NoConnect;
     }
 
-    //ws://192.168.124.13:1005/websocket 本地
-    //ws://16.163.128.21/websocket 测试服
-    //ws://65.2.121.34/websocket 正式服
-
-    public async connect(ws: string = "ws://16.163.128.21/websocket"): Promise<void> {
+    public async connect(ws: string = SysConfig.WsUrl): Promise<void> {
         if (this.SocketState != this.SocketState_Connected) {
             if (cc.sys.isNative) {
                 let cacert: cc.Asset = await AssetUtil.loadResSync<cc.Asset>("ssl/cacert", false);

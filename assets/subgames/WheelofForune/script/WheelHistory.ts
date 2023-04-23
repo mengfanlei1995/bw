@@ -1,5 +1,5 @@
 
-import { RedYellowBlueWinDto } from "../../../scripts/net/proto/room";
+import { RYBWinVO } from "../../../scripts/net/proto/room";
 import UIWindow from "../../../scripts/uiform/UIWindow";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
 
@@ -29,15 +29,14 @@ export default class WheelHistory extends UIWindow {
     @property({ tooltip: "黄色球", type: cc.SpriteFrame })
     yellowSpriteFrame: cc.SpriteFrame = null
 
-    public onShow(gameRecordInfo: RedYellowBlueWinDto[]): void {
-        this.node.zIndex = 99;
+    public onShow(gameRecordInfo: RYBWinVO[]): void {
         this.initRecordHistroy(gameRecordInfo)
     }
     /**
      * 初始化历史记录
      * @returns 
      */
-    private async initRecordHistroy(gameRecordInfo: RedYellowBlueWinDto[]) {
+    private async initRecordHistroy(gameRecordInfo: RYBWinVO[]) {
         this.contentLayout.removeAllChildren();
         if (gameRecordInfo == null || gameRecordInfo.length <= 0) return;
         var b = 0, r = 0, y = 0;

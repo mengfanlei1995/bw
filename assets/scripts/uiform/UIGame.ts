@@ -1,4 +1,4 @@
-import Chip from "../../subgames/common/script/Chip";
+// import Chip from "../../subgames/common/script/Chip";
 import SysConfig from "../data/SysConfig";
 import UserData from "../data/UserData";
 import { REPORT_EVT } from "../enum/DeskEnum";
@@ -99,6 +99,7 @@ export default class UIGame extends UIScene {
     protected isReload: boolean = false;
     protected gameName: string = '';
     protected historyName: string = '';
+    protected roomId: string = '';
 
     protected numberToLong(value: number): LongType {
         return LongUtil.numberToLong(value);
@@ -106,26 +107,6 @@ export default class UIGame extends UIScene {
 
     protected longToNumber(long: LongType): number {
         return LongUtil.longToNumber(long);
-    }
-
-    protected optData = {
-        betCoins: this.numberToLong(0),
-        //下注区域
-        betId: 0,
-        //游戏局数
-        gameNum: 0,
-        //游戏ID
-        gameType: 0,
-        //操作类型 3 进入房间 4退出房间 18下注
-        optType: 3,
-        //房间id
-        roomId: "",
-        // 1
-        roomLevel: 1,
-        // 1
-        roomType: 1,
-        //玩家id
-        userId: StorageMgr.userId
     }
 
     fixedBg(root: cc.Node) {
@@ -138,7 +119,7 @@ export default class UIGame extends UIScene {
     }
 
     _start(): void {
-        this.fixedBg(this.node);
+        // this.fixedBg(this.node);
         this.statusTipSkel.node.zIndex = 3;
         this.statusWaitingSkel.node.zIndex = 3;
         this.chipsSourcePos = this.chipsSourceNode.getPosition();
@@ -158,11 +139,9 @@ export default class UIGame extends UIScene {
     }
 
     async enterRoom(): Promise<Uint8Array> {
-        this.optData.gameType = +this.gameId;
-        this.optData.optType = 3;
         let params: RoomEnterDTO = {
             roomType: 1,
-            gameType: this.optData.gameType,
+            gameType: +this.gameId,
             roomLevel: 1
         }
         let info: Uint8Array = await SendMgr.sendEnterRoom(params, this.gameCmd);
@@ -216,7 +195,7 @@ export default class UIGame extends UIScene {
      * @param chipNumArray 
      */
     async flyChips(isSelf: boolean, areaType: string[], chipNum: number[]) {
-        // SoundMgr.playEffect('audio/betchips');
+        // SoundMgr.playEffectByBundle('audio/betchips');
         this.getChipsSkel.node.active = true;
         let moveTime: number = isSelf ? 0.2 : 0.4;
         let sourcePos = isSelf ? this.selfChipsSourcePos : this.chipsSourcePos;
@@ -292,7 +271,7 @@ export default class UIGame extends UIScene {
      * @param areaType 
      */
     flyCenterArea(areaType: string) {
-        SoundMgr.playEffect('audio/collectchips')
+        SoundMgr.playEffectByBundle('common', 'audio/collectchips');
         function moveAnim(node, targetPos, delay) {
             cc.tween(node).delay(delay).parallel(
                 cc.tween().to(0.5, { scale: 0.6 }, { easing: 'sineInOut' }),
@@ -321,7 +300,7 @@ export default class UIGame extends UIScene {
     * @param areaType 
     */
     flyWinArea(areaType: string) {
-        SoundMgr.playEffect('audio/collectchips')
+        SoundMgr.playEffectByBundle('common', 'audio/collectchips');
         let targetAreaNode: cc.Node = this.getChipsAreaNode(areaType)
         let childrens: cc.Node[] = this.chipsProductAreaNode.children
         let areaNodes: cc.Node[] = []
@@ -352,7 +331,7 @@ export default class UIGame extends UIScene {
     * @param areaType 
     */
     flyChipsProductSource() {
-        SoundMgr.playEffect('audio/collectchips')
+        SoundMgr.playEffectByBundle('common', 'audio/collectchips');
         function moveAnim(node, targetPos, delay) {
             cc.tween(node).delay(delay).parallel(
                 cc.tween().to(0.5, { scale: 0.6 }, { easing: 'sineInOut' }),
@@ -407,15 +386,11 @@ export default class UIGame extends UIScene {
             this.showWaitingTipAnim()
             return;
         }
-        this.optData.betCoins = this.numberToLong(chips * 100);
-        this.optData.gameNum = this.gameNum;
-        this.optData.betId = +areaType;
-        this.optData.optType = 18;
         let params: RoomBetDTO = {
-            roomId: this.optData.roomId,
-            betCoins: this.optData.betCoins,
-            betId: this.optData.betId,
-            gameNum: this.optData.gameNum
+            roomId: this.roomId,
+            betCoins: this.numberToLong(chips * 100),
+            betId: +areaType,
+            gameNum: this.gameNum
         }
         let result: boolean = await SendMgr.sendBet(params, this.gameCmd);
         if (result && cc.isValid(this.node)) {
@@ -426,7 +401,7 @@ export default class UIGame extends UIScene {
                 element_position: '',
                 element_content: 'diceThree',
             });
-            // SoundMgr.playEffect('audio/betchips');
+            // SoundMgr.playEffectByBundle('audio/betchips');
             this.flyChips(true, [areaType], [chips]);
             if (selfBetLabel) {
                 let selfBetLbNum: number = Number(selfBetLabel.string);
@@ -479,7 +454,7 @@ export default class UIGame extends UIScene {
             if (this.chipsNumLabel[i - 1] && betCoinMap && betCoinMap[`${i}`] != null && Number(this.chipsNumLabel[i - 1].string) < this.longToNumber(betCoinMap[`${i}`]) / 100) this.chipsNumLabel[i - 1].string = `${this.longToNumber(betCoinMap[`${i}`]) / 100}`;
             if (this.selfBetChipsNumLabel[i - 1] && betSelfCoinMap && betSelfCoinMap[`${i}`] != null) this.selfBetChipsNumLabel[i - 1].string = `${this.longToNumber(betSelfCoinMap[`${i}`]) / 100}`;
         }
-        this.optData.roomId = roomId;
+        this.roomId = roomId;
         this.gameNum = gameNum;
         this.curTime = leftOptSeconds;
         this.isBetTime = roomState == 3;
@@ -494,6 +469,7 @@ export default class UIGame extends UIScene {
         }
         this.statusWaitingSkel.node.active = !this.isBetTime;
         this.updateChipsCircleSkel();
+        if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: this.roomId, gameCmd: this.gameCmd, gameName: this.gameName });
         this.isFirstInto = false;
         this.setOnLineNumber(onlinePlayers);
     }
@@ -548,7 +524,7 @@ export default class UIGame extends UIScene {
     reset() {
         this.isReload = false;
         SysConfig.settling = false;
-        this.recordLayoutNode && (this.recordLayoutNode.getComponent(cc.Layout).enabled = true);
+        this.recordLayoutNode && (this.recordLayoutNode.getComponent(cc.Layout)!.enabled = true);
         this.winBonus = 0;
         for (let i = 0; i < this.awardNode.length; i++) {
             this.awardNode[i].active = false;
@@ -666,7 +642,7 @@ export default class UIGame extends UIScene {
      */
     public productChipsNode(value: number, areaType: string, betNums: number[]): cc.Node {
         let node: cc.Node = PoolMgr.getNode(this.chipPrefab)
-        node.getComponent(Chip).init(value, areaType, betNums)
+        node.getComponent('Chip').init(value, areaType, betNums)
         return node;
     }
 

@@ -1,4 +1,4 @@
-import { LuckyBallWinDto } from "../../../scripts/net/proto/room";
+import { LBWinVO } from "../../../scripts/net/proto/room";
 import UIWindow from "../../../scripts/uiform/UIWindow";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
 
@@ -31,8 +31,7 @@ export default class LuckyBallHistory extends UIWindow {
     @property({ tooltip: '挂载到球上的数字', type: cc.Prefab })
     ballTextPrefab: cc.Prefab = null;
 
-    public onShow(gameRecordInfo: LuckyBallWinDto[]): void {
-        this.node.zIndex = 99;
+    public onShow(gameRecordInfo: LBWinVO[]): void {
         this.initRecordHistroy(gameRecordInfo);
     }
 
@@ -40,7 +39,7 @@ export default class LuckyBallHistory extends UIWindow {
     * 查历史记录
     * @returns 
     */
-    initRecordHistroy(gameRecordInfo: LuckyBallWinDto[]) {
+    initRecordHistroy(gameRecordInfo: LBWinVO[]) {
         this.contentLayout.removeAllChildren()
         if (gameRecordInfo == null || gameRecordInfo.length <= 0) return;
         let b = 0, r = 0, y = 0

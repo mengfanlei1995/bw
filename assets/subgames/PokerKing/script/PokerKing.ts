@@ -57,7 +57,6 @@ export default class PokerKing extends UIGame {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
         let data: ResponsePKEnterRoomVO = decodeResponsePKEnterRoomVO(info);
-        if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
@@ -332,7 +331,7 @@ export default class PokerKing extends UIGame {
     * @param areaType 
     */
     _flyWinArea(areaType: string[]) {
-        SoundMgr.playEffect('audio/collectchips')
+        SoundMgr.playEffectByBundle('common', 'audio/collectchips');
         let targetAreaNode1: cc.Node
         let targetAreaNode2: cc.Node
         targetAreaNode1 = this.getChipsAreaNode(areaType[0])

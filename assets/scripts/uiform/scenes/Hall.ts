@@ -21,7 +21,7 @@ export default class Hall extends UIScene {
     gameContent: cc.Node = null;
 
     start() {
-        this.initHallInfo();
+        // this.initHallInfo();
         this.initGameList();
     }
 
@@ -39,7 +39,6 @@ export default class Hall extends UIScene {
             }
             list = SysConfig.gameList;
         }
-        console.log(list)
         list.forEach((value, index) => {
             let node = cc.instantiate(this.gameIcon);
             node.getComponent(GameIcon).init(index, value);

@@ -34,7 +34,6 @@ class UserData {
         walletInfo.freeBalance = LongUtil.longToNumber(freeBalance);
         this.userInfo.walletInfo = walletInfo;
         EventMgr.emit(HALL_EVT.GOLD_CHANGE);
-        console.log(this.userInfo)
     }
 
 }

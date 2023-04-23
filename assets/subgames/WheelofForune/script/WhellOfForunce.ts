@@ -73,14 +73,13 @@ export default class WhellOfForunce extends UIGame {
         let info: Uint8Array = await this.enterRoom();
         if (!info) return;
         let data: ResponseRYBEnterRoomVO = decodeResponseRYBEnterRoomVO(info);
-        if (this.isFirstInto) UIBundleMgr.showGameHead({ gameId: +this.gameId, roomId: data.roomInfo.roomId, gameCmd: this.gameCmd });
         this._initRoomInfo(data);
     }
 
     //初始化房间信息
     _initRoomInfo(info: ResponseRYBEnterRoomVO) {
-        this.initRecordHistroy(info.gameInfo.gameResultList);
         this.initRoomInfo(info);
+        this.initRecordHistroy(info.gameInfo.gameResultList);
     }
 
     /**初始化历史记录 */

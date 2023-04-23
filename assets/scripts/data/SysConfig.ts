@@ -1,6 +1,5 @@
 import { HALL_EVT } from "../enum/DeskEnum";
 import EventMgr from "../mgr/EventMgr";
-import { Dice3Cmd, JhandiMundaCmd, LuckyBallCmd, LuckyDiceCmd, PokerKingCmd, TPWarCmd, WhellOfForuneCmd } from "../net/CmdData";
 import { HomepageGamesResponse } from "../net/proto/hall";
 import LongUtil from "../utils/LongUtil";
 
@@ -10,13 +9,13 @@ class SysConfig {
     /**带有af统计的默认渠道值 */
     readonly defaultChannel: string = 'Organic';
     /**是否是测试环境 */
-    readonly isTest: number = 0;
+    readonly isTest: number = 1;
     /**包的时区，根据包运营的国家，配置相应的值 */
     readonly pkgTimeZone: string = 'Asia/Kolkata';
     /**包名，也就是网络请求的主域名 */
     readonly pkgName: string = 'luckywinner.website';
     /**当前最新版本 */
-    readonly version: string = '1.2.1';
+    readonly version: string = '1.0.1';
     /**app名字 */
     readonly appName: string = "Big Winner";
     /**ISO货币编号 356印度卢比 */
@@ -25,6 +24,11 @@ class SysConfig {
     systemInfo: AppSysInfo = {};
     /**是否在游戏中 */
     isSettling: boolean = false;
+
+    //ws://192.168.124.13:1005/websocket 本地
+    //ws://test.bestbw.net/websocket 测试服
+    //ws://65.2.121.34/websocket 正式服
+    readonly WsUrl: string = this.isTest ? 'ws://test.bestbw.net/websocket' : 'ws://65.2.121.34/websocket';
 
     set settling(isSettling: boolean) {
         this.isSettling = isSettling;
@@ -44,6 +48,7 @@ class SysConfig {
     /**大厅游戏列表 */
     public gameList: GameListInfo[] = [];
 
+    /**初始化游戏列表 */
     public setGameList(games: HomepageGamesResponse[]) {
         for (let i = 0; i < games.length; i++) {
             let _data: GameListInfo = {};

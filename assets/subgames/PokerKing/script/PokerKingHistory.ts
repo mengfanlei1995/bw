@@ -1,4 +1,4 @@
-import { PokerKingWinDto } from "../../../scripts/net/proto/room";
+import { PKWinVO } from "../../../scripts/net/proto/room";
 import UIWindow from "../../../scripts/uiform/UIWindow";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
 import PokerSmall from "../../common/script/PokerSmall";
@@ -35,8 +35,7 @@ export default class PokerKingHistory extends UIWindow {
     @property({ tooltip: '记录预制体', type: cc.Prefab })
     recordPrefab: cc.Prefab = null;
 
-    public onShow(gameRecordInfo: PokerKingWinDto[]): void {
-        this.node.zIndex = 99;
+    public onShow(gameRecordInfo: PKWinVO[]): void {
         this.initRecordHistroy(gameRecordInfo);
     }
 
@@ -44,7 +43,7 @@ export default class PokerKingHistory extends UIWindow {
     * 初始化历史记录
     * @returns 
     */
-    private async initRecordHistroy(gameRecordInfo: PokerKingWinDto[]) {
+    private async initRecordHistroy(gameRecordInfo: PKWinVO[]) {
         this.contentLayout.removeAllChildren()
         if (gameRecordInfo == null || gameRecordInfo.length <= 0) return;
         let heitao = 0, hongtao = 0, meihua = 0, fangkuai = 0, joker = 0, black = 0, red = 0

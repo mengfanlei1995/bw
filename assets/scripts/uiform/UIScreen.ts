@@ -9,6 +9,7 @@ export default class UIScreen extends UIBase {
 
     onLoad() {
         this.UIType = UIType.SCREEN;
+        this.node.zIndex = 98;
     }
 
 }
