@@ -1,3 +1,363 @@
+export interface LoginMobileSmsVO {
+  smsCode?: string;
+}
+
+export function encodeLoginMobileSmsVO(message: LoginMobileSmsVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLoginMobileSmsVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLoginMobileSmsVO(message: LoginMobileSmsVO, bb: ByteBuffer): void {
+  // optional string smsCode = 1;
+  let $smsCode = message.smsCode;
+  if ($smsCode !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $smsCode);
+  }
+}
+
+export function decodeLoginMobileSmsVO(binary: Uint8Array): LoginMobileSmsVO {
+  return _decodeLoginMobileSmsVO(wrapByteBuffer(binary));
+}
+
+function _decodeLoginMobileSmsVO(bb: ByteBuffer): LoginMobileSmsVO {
+  let message: LoginMobileSmsVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string smsCode = 1;
+      case 1: {
+        message.smsCode = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LoginDTO {
+  appChannel?: string;
+  appVersion?: string;
+  bundleId?: string;
+  appName?: string;
+  platform?: string;
+  devId?: string;
+  userId?: string;
+  sessionId?: string;
+  mobile?: string;
+  mobilePassword?: string;
+  code?: string;
+  invitationCode?: string;
+  invitationType?: string;
+  imei?: string;
+  afId?: string;
+  gaId?: string;
+  fbId?: string;
+  uuid?: string;
+  simulator?: boolean;
+  root?: boolean;
+}
+
+export function encodeLoginDTO(message: LoginDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLoginDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLoginDTO(message: LoginDTO, bb: ByteBuffer): void {
+  // optional string appChannel = 1;
+  let $appChannel = message.appChannel;
+  if ($appChannel !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $appChannel);
+  }
+
+  // optional string appVersion = 2;
+  let $appVersion = message.appVersion;
+  if ($appVersion !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $appVersion);
+  }
+
+  // optional string bundleId = 3;
+  let $bundleId = message.bundleId;
+  if ($bundleId !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $bundleId);
+  }
+
+  // optional string appName = 4;
+  let $appName = message.appName;
+  if ($appName !== undefined) {
+    writeVarint32(bb, 34);
+    writeString(bb, $appName);
+  }
+
+  // optional string platform = 5;
+  let $platform = message.platform;
+  if ($platform !== undefined) {
+    writeVarint32(bb, 42);
+    writeString(bb, $platform);
+  }
+
+  // optional string devId = 6;
+  let $devId = message.devId;
+  if ($devId !== undefined) {
+    writeVarint32(bb, 50);
+    writeString(bb, $devId);
+  }
+
+  // optional string userId = 7;
+  let $userId = message.userId;
+  if ($userId !== undefined) {
+    writeVarint32(bb, 58);
+    writeString(bb, $userId);
+  }
+
+  // optional string sessionId = 8;
+  let $sessionId = message.sessionId;
+  if ($sessionId !== undefined) {
+    writeVarint32(bb, 66);
+    writeString(bb, $sessionId);
+  }
+
+  // optional string mobile = 9;
+  let $mobile = message.mobile;
+  if ($mobile !== undefined) {
+    writeVarint32(bb, 74);
+    writeString(bb, $mobile);
+  }
+
+  // optional string mobilePassword = 10;
+  let $mobilePassword = message.mobilePassword;
+  if ($mobilePassword !== undefined) {
+    writeVarint32(bb, 82);
+    writeString(bb, $mobilePassword);
+  }
+
+  // optional string code = 11;
+  let $code = message.code;
+  if ($code !== undefined) {
+    writeVarint32(bb, 90);
+    writeString(bb, $code);
+  }
+
+  // optional string invitationCode = 12;
+  let $invitationCode = message.invitationCode;
+  if ($invitationCode !== undefined) {
+    writeVarint32(bb, 98);
+    writeString(bb, $invitationCode);
+  }
+
+  // optional string invitationType = 13;
+  let $invitationType = message.invitationType;
+  if ($invitationType !== undefined) {
+    writeVarint32(bb, 106);
+    writeString(bb, $invitationType);
+  }
+
+  // optional string imei = 14;
+  let $imei = message.imei;
+  if ($imei !== undefined) {
+    writeVarint32(bb, 114);
+    writeString(bb, $imei);
+  }
+
+  // optional string afId = 15;
+  let $afId = message.afId;
+  if ($afId !== undefined) {
+    writeVarint32(bb, 122);
+    writeString(bb, $afId);
+  }
+
+  // optional string gaId = 16;
+  let $gaId = message.gaId;
+  if ($gaId !== undefined) {
+    writeVarint32(bb, 130);
+    writeString(bb, $gaId);
+  }
+
+  // optional string fbId = 17;
+  let $fbId = message.fbId;
+  if ($fbId !== undefined) {
+    writeVarint32(bb, 138);
+    writeString(bb, $fbId);
+  }
+
+  // optional string uuid = 18;
+  let $uuid = message.uuid;
+  if ($uuid !== undefined) {
+    writeVarint32(bb, 146);
+    writeString(bb, $uuid);
+  }
+
+  // optional bool simulator = 19;
+  let $simulator = message.simulator;
+  if ($simulator !== undefined) {
+    writeVarint32(bb, 152);
+    writeByte(bb, $simulator ? 1 : 0);
+  }
+
+  // optional bool root = 20;
+  let $root = message.root;
+  if ($root !== undefined) {
+    writeVarint32(bb, 160);
+    writeByte(bb, $root ? 1 : 0);
+  }
+}
+
+export function decodeLoginDTO(binary: Uint8Array): LoginDTO {
+  return _decodeLoginDTO(wrapByteBuffer(binary));
+}
+
+function _decodeLoginDTO(bb: ByteBuffer): LoginDTO {
+  let message: LoginDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string appChannel = 1;
+      case 1: {
+        message.appChannel = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string appVersion = 2;
+      case 2: {
+        message.appVersion = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string bundleId = 3;
+      case 3: {
+        message.bundleId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string appName = 4;
+      case 4: {
+        message.appName = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string platform = 5;
+      case 5: {
+        message.platform = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string devId = 6;
+      case 6: {
+        message.devId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string userId = 7;
+      case 7: {
+        message.userId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string sessionId = 8;
+      case 8: {
+        message.sessionId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string mobile = 9;
+      case 9: {
+        message.mobile = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string mobilePassword = 10;
+      case 10: {
+        message.mobilePassword = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string code = 11;
+      case 11: {
+        message.code = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string invitationCode = 12;
+      case 12: {
+        message.invitationCode = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string invitationType = 13;
+      case 13: {
+        message.invitationType = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string imei = 14;
+      case 14: {
+        message.imei = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string afId = 15;
+      case 15: {
+        message.afId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string gaId = 16;
+      case 16: {
+        message.gaId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string fbId = 17;
+      case 17: {
+        message.fbId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string uuid = 18;
+      case 18: {
+        message.uuid = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional bool simulator = 19;
+      case 19: {
+        message.simulator = !!readByte(bb);
+        break;
+      }
+
+      // optional bool root = 20;
+      case 20: {
+        message.root = !!readByte(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
 export interface HomepageUserInfoResponse {
   bonus?: number;
   vipLevel?: number;
@@ -115,6 +475,128 @@ function _decodeHomepageUserInfoResponse(bb: ByteBuffer): HomepageUserInfoRespon
   return message;
 }
 
+export interface HomepageGameDTO {
+  productId?: number;
+  appVersion?: string;
+  appResVersion?: number;
+}
+
+export function encodeHomepageGameDTO(message: HomepageGameDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeHomepageGameDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeHomepageGameDTO(message: HomepageGameDTO, bb: ByteBuffer): void {
+  // optional int32 productId = 1;
+  let $productId = message.productId;
+  if ($productId !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($productId));
+  }
+
+  // optional string appVersion = 2;
+  let $appVersion = message.appVersion;
+  if ($appVersion !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $appVersion);
+  }
+
+  // optional int32 appResVersion = 3;
+  let $appResVersion = message.appResVersion;
+  if ($appResVersion !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($appResVersion));
+  }
+}
+
+export function decodeHomepageGameDTO(binary: Uint8Array): HomepageGameDTO {
+  return _decodeHomepageGameDTO(wrapByteBuffer(binary));
+}
+
+function _decodeHomepageGameDTO(bb: ByteBuffer): HomepageGameDTO {
+  let message: HomepageGameDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 productId = 1;
+      case 1: {
+        message.productId = readVarint32(bb);
+        break;
+      }
+
+      // optional string appVersion = 2;
+      case 2: {
+        message.appVersion = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 appResVersion = 3;
+      case 3: {
+        message.appResVersion = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface UserUpdateNicknameDTO {
+  nickname?: string;
+}
+
+export function encodeUserUpdateNicknameDTO(message: UserUpdateNicknameDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeUserUpdateNicknameDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeUserUpdateNicknameDTO(message: UserUpdateNicknameDTO, bb: ByteBuffer): void {
+  // optional string nickname = 1;
+  let $nickname = message.nickname;
+  if ($nickname !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $nickname);
+  }
+}
+
+export function decodeUserUpdateNicknameDTO(binary: Uint8Array): UserUpdateNicknameDTO {
+  return _decodeUserUpdateNicknameDTO(wrapByteBuffer(binary));
+}
+
+function _decodeUserUpdateNicknameDTO(bb: ByteBuffer): UserUpdateNicknameDTO {
+  let message: UserUpdateNicknameDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string nickname = 1;
+      case 1: {
+        message.nickname = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
 export interface UserUpdateHeadPicDTO {
   headpic?: string;
 }
@@ -162,53 +644,6 @@ function _decodeUserUpdateHeadPicDTO(bb: ByteBuffer): UserUpdateHeadPicDTO {
   return message;
 }
 
-export interface LoginMobileSmsVO {
-  smsCode?: string;
-}
-
-export function encodeLoginMobileSmsVO(message: LoginMobileSmsVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLoginMobileSmsVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLoginMobileSmsVO(message: LoginMobileSmsVO, bb: ByteBuffer): void {
-  // optional string smsCode = 1;
-  let $smsCode = message.smsCode;
-  if ($smsCode !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $smsCode);
-  }
-}
-
-export function decodeLoginMobileSmsVO(binary: Uint8Array): LoginMobileSmsVO {
-  return _decodeLoginMobileSmsVO(wrapByteBuffer(binary));
-}
-
-function _decodeLoginMobileSmsVO(bb: ByteBuffer): LoginMobileSmsVO {
-  let message: LoginMobileSmsVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string smsCode = 1;
-      case 1: {
-        message.smsCode = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
 export interface LoginVO {
   userId?: string;
   nickName?: string;
@@ -218,7 +653,7 @@ export interface LoginVO {
   accountType?: number;
   firstDay?: Long;
   first?: boolean;
-  gameVersion?: number;
+  green?: boolean;
   walletVO?: LoginWalletVO;
 }
 
@@ -285,11 +720,11 @@ function _encodeLoginVO(message: LoginVO, bb: ByteBuffer): void {
     writeByte(bb, $first ? 1 : 0);
   }
 
-  // optional int32 gameVersion = 9;
-  let $gameVersion = message.gameVersion;
-  if ($gameVersion !== undefined) {
+  // optional bool green = 9;
+  let $green = message.green;
+  if ($green !== undefined) {
     writeVarint32(bb, 72);
-    writeVarint64(bb, intToLong($gameVersion));
+    writeByte(bb, $green ? 1 : 0);
   }
 
   // optional LoginWalletVO walletVO = 10;
@@ -366,9 +801,9 @@ function _decodeLoginVO(bb: ByteBuffer): LoginVO {
         break;
       }
 
-      // optional int32 gameVersion = 9;
+      // optional bool green = 9;
       case 9: {
-        message.gameVersion = readVarint32(bb);
+        message.green = !!readByte(bb);
         break;
       }
 
@@ -376,6 +811,62 @@ function _decodeLoginVO(bb: ByteBuffer): LoginVO {
       case 10: {
         let limit = pushTemporaryLength(bb);
         message.walletVO = _decodeLoginWalletVO(bb);
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface HomepageGameVO {
+  games?: HomepageGamesResponse[];
+}
+
+export function encodeHomepageGameVO(message: HomepageGameVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeHomepageGameVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeHomepageGameVO(message: HomepageGameVO, bb: ByteBuffer): void {
+  // repeated HomepageGamesResponse games = 1;
+  let array$games = message.games;
+  if (array$games !== undefined) {
+    for (let value of array$games) {
+      writeVarint32(bb, 10);
+      let nested = popByteBuffer();
+      _encodeHomepageGamesResponse(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeHomepageGameVO(binary: Uint8Array): HomepageGameVO {
+  return _decodeHomepageGameVO(wrapByteBuffer(binary));
+}
+
+function _decodeHomepageGameVO(bb: ByteBuffer): HomepageGameVO {
+  let message: HomepageGameVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated HomepageGamesResponse games = 1;
+      case 1: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.games || (message.games = []);
+        values.push(_decodeHomepageGamesResponse(bb));
         bb.limit = limit;
         break;
       }
@@ -762,184 +1253,6 @@ function _decodePictureResponse(bb: ByteBuffer): PictureResponse {
   return message;
 }
 
-export interface HomepageGameDTO {
-  productId?: number;
-  appVersion?: string;
-  appResVersion?: number;
-}
-
-export function encodeHomepageGameDTO(message: HomepageGameDTO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeHomepageGameDTO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeHomepageGameDTO(message: HomepageGameDTO, bb: ByteBuffer): void {
-  // optional int32 productId = 1;
-  let $productId = message.productId;
-  if ($productId !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($productId));
-  }
-
-  // optional string appVersion = 2;
-  let $appVersion = message.appVersion;
-  if ($appVersion !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $appVersion);
-  }
-
-  // optional int32 appResVersion = 3;
-  let $appResVersion = message.appResVersion;
-  if ($appResVersion !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($appResVersion));
-  }
-}
-
-export function decodeHomepageGameDTO(binary: Uint8Array): HomepageGameDTO {
-  return _decodeHomepageGameDTO(wrapByteBuffer(binary));
-}
-
-function _decodeHomepageGameDTO(bb: ByteBuffer): HomepageGameDTO {
-  let message: HomepageGameDTO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 productId = 1;
-      case 1: {
-        message.productId = readVarint32(bb);
-        break;
-      }
-
-      // optional string appVersion = 2;
-      case 2: {
-        message.appVersion = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 appResVersion = 3;
-      case 3: {
-        message.appResVersion = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface UserUpdateNicknameDTO {
-  nickname?: string;
-}
-
-export function encodeUserUpdateNicknameDTO(message: UserUpdateNicknameDTO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeUserUpdateNicknameDTO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeUserUpdateNicknameDTO(message: UserUpdateNicknameDTO, bb: ByteBuffer): void {
-  // optional string nickname = 1;
-  let $nickname = message.nickname;
-  if ($nickname !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $nickname);
-  }
-}
-
-export function decodeUserUpdateNicknameDTO(binary: Uint8Array): UserUpdateNicknameDTO {
-  return _decodeUserUpdateNicknameDTO(wrapByteBuffer(binary));
-}
-
-function _decodeUserUpdateNicknameDTO(bb: ByteBuffer): UserUpdateNicknameDTO {
-  let message: UserUpdateNicknameDTO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string nickname = 1;
-      case 1: {
-        message.nickname = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface HomepageGameVO {
-  games?: HomepageGamesResponse[];
-}
-
-export function encodeHomepageGameVO(message: HomepageGameVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeHomepageGameVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeHomepageGameVO(message: HomepageGameVO, bb: ByteBuffer): void {
-  // repeated HomepageGamesResponse games = 1;
-  let array$games = message.games;
-  if (array$games !== undefined) {
-    for (let value of array$games) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeHomepageGamesResponse(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
-  }
-}
-
-export function decodeHomepageGameVO(binary: Uint8Array): HomepageGameVO {
-  return _decodeHomepageGameVO(wrapByteBuffer(binary));
-}
-
-function _decodeHomepageGameVO(bb: ByteBuffer): HomepageGameVO {
-  let message: HomepageGameVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // repeated HomepageGamesResponse games = 1;
-      case 1: {
-        let limit = pushTemporaryLength(bb);
-        let values = message.games || (message.games = []);
-        values.push(_decodeHomepageGamesResponse(bb));
-        bb.limit = limit;
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
 export interface LoginWalletVO {
   depositBalance?: Long;
   withdrawBalance?: Long;
@@ -1018,291 +1331,6 @@ function _decodeLoginWalletVO(bb: ByteBuffer): LoginWalletVO {
       // optional int64 freeBalance = 4;
       case 4: {
         message.freeBalance = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LoginDTO {
-  appChannel?: string;
-  appVersion?: string;
-  bundleId?: string;
-  appName?: string;
-  platform?: string;
-  devId?: string;
-  userId?: string;
-  sessionId?: string;
-  mobile?: string;
-  mobilePassword?: string;
-  code?: string;
-  invitationCode?: string;
-  invitationType?: string;
-  imei?: string;
-  afId?: string;
-  gaId?: string;
-  fbId?: string;
-  uuid?: string;
-}
-
-export function encodeLoginDTO(message: LoginDTO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLoginDTO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLoginDTO(message: LoginDTO, bb: ByteBuffer): void {
-  // optional string appChannel = 1;
-  let $appChannel = message.appChannel;
-  if ($appChannel !== undefined) {
-    writeVarint32(bb, 10);
-    writeString(bb, $appChannel);
-  }
-
-  // optional string appVersion = 2;
-  let $appVersion = message.appVersion;
-  if ($appVersion !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $appVersion);
-  }
-
-  // optional string bundleId = 3;
-  let $bundleId = message.bundleId;
-  if ($bundleId !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $bundleId);
-  }
-
-  // optional string appName = 4;
-  let $appName = message.appName;
-  if ($appName !== undefined) {
-    writeVarint32(bb, 34);
-    writeString(bb, $appName);
-  }
-
-  // optional string platform = 5;
-  let $platform = message.platform;
-  if ($platform !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $platform);
-  }
-
-  // optional string devId = 6;
-  let $devId = message.devId;
-  if ($devId !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $devId);
-  }
-
-  // optional string userId = 7;
-  let $userId = message.userId;
-  if ($userId !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $userId);
-  }
-
-  // optional string sessionId = 8;
-  let $sessionId = message.sessionId;
-  if ($sessionId !== undefined) {
-    writeVarint32(bb, 66);
-    writeString(bb, $sessionId);
-  }
-
-  // optional string mobile = 9;
-  let $mobile = message.mobile;
-  if ($mobile !== undefined) {
-    writeVarint32(bb, 74);
-    writeString(bb, $mobile);
-  }
-
-  // optional string mobilePassword = 10;
-  let $mobilePassword = message.mobilePassword;
-  if ($mobilePassword !== undefined) {
-    writeVarint32(bb, 82);
-    writeString(bb, $mobilePassword);
-  }
-
-  // optional string code = 11;
-  let $code = message.code;
-  if ($code !== undefined) {
-    writeVarint32(bb, 90);
-    writeString(bb, $code);
-  }
-
-  // optional string invitationCode = 12;
-  let $invitationCode = message.invitationCode;
-  if ($invitationCode !== undefined) {
-    writeVarint32(bb, 98);
-    writeString(bb, $invitationCode);
-  }
-
-  // optional string invitationType = 13;
-  let $invitationType = message.invitationType;
-  if ($invitationType !== undefined) {
-    writeVarint32(bb, 106);
-    writeString(bb, $invitationType);
-  }
-
-  // optional string imei = 14;
-  let $imei = message.imei;
-  if ($imei !== undefined) {
-    writeVarint32(bb, 114);
-    writeString(bb, $imei);
-  }
-
-  // optional string afId = 15;
-  let $afId = message.afId;
-  if ($afId !== undefined) {
-    writeVarint32(bb, 122);
-    writeString(bb, $afId);
-  }
-
-  // optional string gaId = 16;
-  let $gaId = message.gaId;
-  if ($gaId !== undefined) {
-    writeVarint32(bb, 130);
-    writeString(bb, $gaId);
-  }
-
-  // optional string fbId = 17;
-  let $fbId = message.fbId;
-  if ($fbId !== undefined) {
-    writeVarint32(bb, 138);
-    writeString(bb, $fbId);
-  }
-
-  // optional string uuid = 18;
-  let $uuid = message.uuid;
-  if ($uuid !== undefined) {
-    writeVarint32(bb, 146);
-    writeString(bb, $uuid);
-  }
-}
-
-export function decodeLoginDTO(binary: Uint8Array): LoginDTO {
-  return _decodeLoginDTO(wrapByteBuffer(binary));
-}
-
-function _decodeLoginDTO(bb: ByteBuffer): LoginDTO {
-  let message: LoginDTO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional string appChannel = 1;
-      case 1: {
-        message.appChannel = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string appVersion = 2;
-      case 2: {
-        message.appVersion = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string bundleId = 3;
-      case 3: {
-        message.bundleId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string appName = 4;
-      case 4: {
-        message.appName = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string platform = 5;
-      case 5: {
-        message.platform = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string devId = 6;
-      case 6: {
-        message.devId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string userId = 7;
-      case 7: {
-        message.userId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string sessionId = 8;
-      case 8: {
-        message.sessionId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string mobile = 9;
-      case 9: {
-        message.mobile = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string mobilePassword = 10;
-      case 10: {
-        message.mobilePassword = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string code = 11;
-      case 11: {
-        message.code = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string invitationCode = 12;
-      case 12: {
-        message.invitationCode = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string invitationType = 13;
-      case 13: {
-        message.invitationType = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string imei = 14;
-      case 14: {
-        message.imei = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string afId = 15;
-      case 15: {
-        message.afId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string gaId = 16;
-      case 16: {
-        message.gaId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string fbId = 17;
-      case 17: {
-        message.fbId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string uuid = 18;
-      case 18: {
-        message.uuid = readString(bb, readVarint32(bb));
         break;
       }
 

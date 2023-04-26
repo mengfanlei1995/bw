@@ -1,3 +1,4 @@
+import SysConfig from "../data/SysConfig";
 import UserData from "../data/UserData";
 
 const { ccclass, property } = cc._decorator;
@@ -6,7 +7,7 @@ const { ccclass, property } = cc._decorator;
 export default class HideNode extends cc.Component {
 
     protected onLoad(): void {
-        this.node.active = UserData.userInfo.gameVersion != 3;
+        this.node.active = !SysConfig.isGreen;
     }
 
 }

@@ -8,8 +8,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
-  "width": 694,
-  "height": 387,
+  "width": 612,
+  "height": 770,
   "platformSettings": {},
   "subMetas": {
     "走势背景": {
@@ -24,14 +24,14 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 694,
-      "height": 387,
-      "rawWidth": 694,
-      "rawHeight": 387,
+      "width": 612,
+      "height": 770,
+      "rawWidth": 612,
+      "rawHeight": 770,
       "borderTop": 211,
-      "borderBottom": 100,
+      "borderBottom": 162,
       "borderLeft": 81,
-      "borderRight": 118,
+      "borderRight": 93,
       "subMetas": {}
     }
   }

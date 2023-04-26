@@ -2,6 +2,37 @@ syntax = "proto3";
 package pb.hall;
 
 // Description:
+message LoginMobileSmsVO {
+  string smsCode = 1;
+
+}
+
+// Description:
+message LoginDTO {
+  string appChannel = 1;
+  string appVersion = 2;
+  string bundleId = 3;
+  string appName = 4;
+  string platform = 5;
+  string devId = 6;
+  string userId = 7;
+  string sessionId = 8;
+  string mobile = 9;
+  string mobilePassword = 10;
+  string code = 11;
+  string invitationCode = 12;
+  string invitationType = 13;
+  string imei = 14;
+  string afId = 15;
+  string gaId = 16;
+  string fbId = 17;
+  string uuid = 18;
+  bool simulator = 19;
+  bool root = 20;
+
+}
+
+// Description:
 message HomepageUserInfoResponse {
   double bonus = 1;
   int32 vipLevel = 2;
@@ -13,15 +44,23 @@ message HomepageUserInfoResponse {
 }
 
 // Description:
-message UserUpdateHeadPicDTO {
-  // 头像编号
-  string headpic = 1;
+message HomepageGameDTO {
+  int32 productId = 1;
+  string appVersion = 2;
+  int32 appResVersion = 3;
 
 }
 
 // Description:
-message LoginMobileSmsVO {
-  string smsCode = 1;
+message UserUpdateNicknameDTO {
+  string nickname = 1;
+
+}
+
+// Description:
+message UserUpdateHeadPicDTO {
+  // 头像编号
+  string headpic = 1;
 
 }
 
@@ -35,9 +74,15 @@ message LoginVO {
   int32 accountType = 6;
   int64 firstDay = 7;
   bool first = 8;
-  int32 gameVersion = 9;
+  bool green = 9;
   // Description:
   LoginWalletVO walletVO = 10;
+
+}
+
+// Description:
+message HomepageGameVO {
+  repeated HomepageGamesResponse games = 1;
 
 }
 
@@ -81,54 +126,11 @@ message PictureResponse {
 }
 
 // Description:
-message HomepageGameDTO {
-  int32 productId = 1;
-  string appVersion = 2;
-  int32 appResVersion = 3;
-
-}
-
-// Description:
-message UserUpdateNicknameDTO {
-  string nickname = 1;
-
-}
-
-// Description:
-message HomepageGameVO {
-  repeated HomepageGamesResponse games = 1;
-
-}
-
-// Description:
 message LoginWalletVO {
   int64 depositBalance = 1;
   int64 withdrawBalance = 2;
   int64 totalCashBalance = 3;
   int64 freeBalance = 4;
-
-}
-
-// Description:
-message LoginDTO {
-  string appChannel = 1;
-  string appVersion = 2;
-  string bundleId = 3;
-  string appName = 4;
-  string platform = 5;
-  string devId = 6;
-  string userId = 7;
-  string sessionId = 8;
-  string mobile = 9;
-  string mobilePassword = 10;
-  string code = 11;
-  string invitationCode = 12;
-  string invitationType = 13;
-  string imei = 14;
-  string afId = 15;
-  string gaId = 16;
-  string fbId = 17;
-  string uuid = 18;
 
 }
 

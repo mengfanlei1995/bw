@@ -1,5 +1,6 @@
 import SysConfig from "../../data/SysConfig";
 import { REPORT_EVT } from "../../enum/DeskEnum";
+import { SYS_CONST } from "../../enum/SysEventEnum";
 import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
 import StorageMgr from "../../mgr/StorageMgr";
@@ -11,6 +12,7 @@ import LogUtil from "../../utils/LogUtil";
 import RegexUtil from "../../utils/RegexUtil";
 import UIMgr from "../UIMgr";
 import UIScene from "../UIScene";
+import { DialogType } from "../ui/common/DiaLog";
 
 
 const { ccclass, property } = cc._decorator;
@@ -41,6 +43,18 @@ export default class Login extends UIScene {
     /**验证码按钮 */
     @property(cc.Button)
     btn_otp: cc.Button = null;
+
+    /**phone按钮 */
+    @property(cc.Button)
+    btn_phone: cc.Button = null;
+
+    /**guest按钮 */
+    @property(cc.Button)
+    btn_guest: cc.Button = null;
+
+    /**fb按钮 */
+    @property(cc.Button)
+    btn_fb: cc.Button = null;
 
     /**注册Toggle */
     @property(cc.Toggle)
@@ -147,23 +161,28 @@ export default class Login extends UIScene {
         JsbUitl.loginFB({});
     }
 
-    async onGuestLogin() {
+    async onGuestLogin(e: cc.Event.EventTouch) {
+        this._setButtonVaild(false);
         let result = await SendMgr.sendLogin();
         if (result) {
             this._loginSuccess();
+        } else {
+            this._setButtonVaild(true);
         }
     }
 
     async onCodeOTP(e: cc.Event.EventTouch) {
         let mobile: string = this.ed_loginPhoneNumber.string;
         if (RegexUtil.isValidPhoneNumber(mobile)) {
+            this.btn_otp.interactable = false;
             let result = await SendMgr.sendSms({ mobile });
             if (result) {
-                this.btn_otp.interactable = false;
                 // this.lb_second.node.parent.active = true;
                 this.second = 60;
                 this.lb_second.string = `(${this.second}S)`;
                 this.schedule(this._updateSecond, 1);
+            } else {
+                this.btn_otp.interactable = true;
             }
         } else {
             UIMgr.showToast(LangMgr.sentence('e0006'));
@@ -186,15 +205,29 @@ export default class Login extends UIScene {
         }
         let code = this.ed_code.string;
         if (this.toggle_Login.isChecked) {
-            SendMgr.sendLogin({ mobile, mobilePassword }, Login_PhoneCmd);
+            this._setButtonVaild(false);
+            let result = await SendMgr.sendLogin({ mobile, mobilePassword }, Login_PhoneCmd);
+            if (!result) {
+                this._setButtonVaild(true);
+            }
         } else {
             if (code && code.length == 4) {
-                SendMgr.sendLogin({ mobile, code, mobilePassword }, Login_PhoneRegisterCmd);
+                this._setButtonVaild(false);
+                let result = await SendMgr.sendLogin({ mobile, code, mobilePassword }, Login_PhoneRegisterCmd);
+                if (!result) {
+                    this._setButtonVaild(true);
+                }
             } else {
                 UIMgr.showToast(LangMgr.sentence('e0053'));
             }
         }
 
+    }
+
+    _setButtonVaild(isValid: boolean) {
+        this.btn_fb.interactable = isValid;
+        this.btn_phone.interactable = isValid;
+        this.btn_guest.interactable = isValid;
     }
 
     onClearLoginPhone(e: cc.Event.EventTouch) {
@@ -217,5 +250,22 @@ export default class Login extends UIScene {
     _loginSuccess() {
         // UIMgr.goHall();
     }
+
+    // protected onEnable(): void {
+    //     EventMgr.on(SYS_CONST.BACK, this.onBackEvent, this);
+    // }
+
+    // protected onDisable(): void {
+    //     EventMgr.off(SYS_CONST.BACK, this.onBackEvent, this)
+    // }
+
+    // onBackEvent() {
+    //     UIMgr.showDialog({
+    //         type: DialogType.OkCancelBtn,
+    //         okCb: () => {
+    //             cc.game.end();
+    //         }
+    //     });
+    // }
 
 }

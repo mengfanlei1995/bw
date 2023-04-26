@@ -84,6 +84,7 @@ export default class DiceThree extends UIGame {
 
     onEventShow() {
         this._reset();
+        this.isReload = true;
         this._enterRoom();
     }
 

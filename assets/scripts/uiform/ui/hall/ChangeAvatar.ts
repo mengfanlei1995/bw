@@ -17,6 +17,7 @@ export default class ChangeAvatar extends UIScreen {
 
     /**修改头像 */
     async onClickCheckAvatar(e: cc.Event.EventTouch, type: string) {
+        if (type == UserData.userInfo.headPic) return;
         let result = await SendMgr.sendChangeHead(type);
         if (result) {
             UIMgr.showToast(LangMgr.sentence("e0030"));

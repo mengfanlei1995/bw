@@ -99,6 +99,7 @@ export default class TigerVsElephant extends UIGame {
 
     onEventShow() {
         this._reset();
+        this.isReload = true;
         this._enterRoom();
     }
 
@@ -204,7 +205,6 @@ export default class TigerVsElephant extends UIGame {
     }
 
     _reset() {
-        this.isReload = false;
         this.card1Skel.setAnimation(0, "Cards_z1", false);
         this.card2Skel.setAnimation(0, "Cards_y1", false);
         this.pokerNode1.active = false;

@@ -115,14 +115,14 @@ class JsbUitl {
             StorageMgr.cocosVersion = SysConfig.version;
             if (StorageMgr.devId != device_id) StorageMgr.devId = device_id;
             EventMgr.emit(REPORT_EVT.INSTALL);
-            this.postFirebaseEvent({
-                eventName: FirebaseEvent.APP_OPEN,
-                params: { deviceId: SysConfig.systemInfo.device_id, userId: StorageMgr.userId }
-            })
-            this.postFacebookEvent({
-                eventName: FirebaseEvent.APP_OPEN,
-                params: { deviceId: SysConfig.systemInfo.device_id, userId: StorageMgr.userId }
-            })
+            // this.postFirebaseEvent({
+            //     eventName: FirebaseEvent.APP_OPEN,
+            //     params: { deviceId: SysConfig.systemInfo.device_id, userId: StorageMgr.userId }
+            // })
+            // this.postFacebookEvent({
+            //     eventName: FirebaseEvent.APP_OPEN,
+            //     params: { deviceId: SysConfig.systemInfo.device_id, userId: StorageMgr.userId }
+            // })
             ListenerMgr.create(() => {
                 cc.game.emit(SYS_CONST.ON_HIDE)
             }, callBackEnum.onHide)
@@ -132,10 +132,9 @@ class JsbUitl {
             }, callBackEnum.onShow)
 
             ListenerMgr.create(() => {
-                
+                // EventMgr.emit(SYS_CONST.BACK);
             }, callBackEnum.onKeyDownEvent)
 
-            //目前项目未接入facebook登陆，暂时注释掉
             ListenerMgr.create(
                 async (loginInfo: string) => {
                     // LogUtil.log(`facebook已登陆：`, JSON.stringify(loginInfo))

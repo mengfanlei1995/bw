@@ -94,6 +94,7 @@ export default class WhellOfForunce extends UIGame {
 
     onEventShow() {
         this._reset();
+        this.isReload = true;
         this._enterRoom();
     }
 
@@ -102,18 +103,18 @@ export default class WhellOfForunce extends UIGame {
      */
     async rotateWheelSkel() {
         let gameNum = this.gameNum;
-        if (!cc.isValid(this.node) || gameNum != this.gameNum || this.isReload) return;
+        if (this.isReturn(gameNum)) return;
         this.wheelNode.angle = 0
         this.wheelAction = cc.tween(this.wheelNode).to(7, { angle: -360 * 8 }, { easing: 'sineInOut' }).start()
         this.pointerSkel.setAnimation(0, "turntable_1", false)
         await CocosUtil.sleepSync(0.5)
-        if (!cc.isValid(this.node) || gameNum != this.gameNum || this.isReload) return;
+        if (this.isReturn(gameNum)) return;
         this.pointerSkel.setAnimation(0, "turntable_2", true)
         await CocosUtil.sleepSync(1.5)
-        if (!cc.isValid(this.node) || gameNum != this.gameNum || this.isReload) return;
+        if (this.isReturn(gameNum)) return;
         this.pointerSkel.setAnimation(0, "turntable_3", true)
         // await CocosUtil.sleepSync(1.5)
-        // if (!cc.isValid(this.node) || gameNum != this.gameNum || this.isReload) return;
+        // if (this.isReturn(gameNum)) return;
         // this.pointerSkel.setAnimation(0, "turntable_4", false)
     }
 

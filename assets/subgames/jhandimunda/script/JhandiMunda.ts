@@ -421,6 +421,7 @@ export default class JhandiMunda extends UIGame {
 
     onEventShow() {
         this._reset();
+        this.isReload = true;
         this._enterRoom();
     }
 

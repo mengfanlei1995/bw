@@ -4,13 +4,14 @@ import StorageMgr from "../mgr/StorageMgr";
 import { LoginWalletVO } from "../net/proto/hall";
 import { LoginVO } from "../net/proto/hall";
 import LongUtil from "../utils/LongUtil";
+import SysConfig from "./SysConfig";
 class UserData {
 
     /**玩家信息 */
     userInfo: UserInfo = {};
 
     initUserInfo(userInfo: LoginVO) {
-        let { userId, nickName, headPic, phone, accountType, firstDay, first, walletVO, gameVersion, sessionId } = userInfo;
+        let { userId, nickName, headPic, phone, accountType, firstDay, first, walletVO, green, sessionId } = userInfo;
         this.userInfo.userId = userId;
         this.userInfo.nickName = nickName;
         this.userInfo.headPic = headPic;
@@ -20,7 +21,7 @@ class UserData {
         this.userInfo.first = first;
         StorageMgr.phone = phone;
         StorageMgr.userId = userId;
-        gameVersion && (this.userInfo.gameVersion = gameVersion);
+        SysConfig.isGreen = green;
         sessionId && (StorageMgr.sessionId = sessionId);
         this.initWalletInfo(walletVO);
     }
@@ -49,7 +50,6 @@ interface UserInfo {
     accountType?: number;
     firstDay?: number;
     first?: boolean;
-    gameVersion?: number;
     walletInfo?: WalletInfo;
 }
 

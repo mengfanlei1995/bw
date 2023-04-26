@@ -376,7 +376,7 @@ export default class UIGame extends UIScene {
      */
     async buyBetChips(areaType: string, selfBetLabel: cc.Label, chipsLabel: cc.Label) {
         let chips = this.betNums[this.betIndex];
-        let bonus: number = UserData.userInfo.gameVersion == 3 ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance
+        let bonus: number = SysConfig.isGreen ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance
         if (chips * 100 > bonus) {
             // if (StorageMgr.clickAddCashTimes < 2) {
             //     StorageMgr.clickAddCashTimes++;
@@ -428,7 +428,7 @@ export default class UIGame extends UIScene {
     }
 
     isReturn(gameNum) {
-        return !cc.isValid(this.node) || gameNum != this.gameNum;
+        return !cc.isValid(this.node) || gameNum != this.gameNum || this.isReload;
     }
 
     initAreaPos() {
@@ -466,6 +466,7 @@ export default class UIGame extends UIScene {
         this.countDownTime();
         this.schedule(this.countDownTime, 1);
         if (this.isBetTime) {
+            this.isReload = false;
             if (this.isFirstInto) this.statusTipSkel.setAnimation(0, "start", false);
             this.timeTipLabel.string = LangMgr.sentence("e0320");
         } else {

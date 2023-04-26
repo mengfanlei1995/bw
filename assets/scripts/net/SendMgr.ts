@@ -56,7 +56,9 @@ const loginCommonParams = function (): LoginDTO {
         imei: SysConfig.systemInfo?.android_id || '',
         gaId: SysConfig.systemInfo?.gaid || '',
         uuid: StorageMgr.UUID,
-        appName: SysConfig.appName
+        appName: SysConfig.appName,
+        simulator: SysConfig.systemInfo?.simulator,
+        root: SysConfig.systemInfo?.root
         // fbId: ''
     }
     return common;

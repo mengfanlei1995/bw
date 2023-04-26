@@ -265,6 +265,7 @@ export default class LuckyDice extends UIGame {
 
     onEventShow() {
         this._reset();
+        this.isReload = true;
         this._enterRoom();
     }
 

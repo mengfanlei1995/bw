@@ -27,6 +27,8 @@ class SysConfig {
     /**是否处于后台模式 */
     isHide: boolean = false;
 
+    isGreen: boolean = true;
+
     //ws://192.168.124.13:1005/websocket 本地
     //wss://test.bestbw.net/websocket 测试服
     //wss://bestbw.net/websocket 正式服
@@ -180,4 +182,6 @@ export interface AppSysInfo {
     afUid?: string //接入af后，获取afuid,
     app_package_name?: string //包名
     gaid?: string //google广告id
+    simulator?: boolean //是否为模拟器
+    root?: boolean //是否root
 }

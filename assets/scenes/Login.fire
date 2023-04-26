@@ -7578,6 +7578,15 @@
     "btn_otp": {
       "__id__": 106
     },
+    "btn_phone": {
+      "__id__": 118
+    },
+    "btn_guest": {
+      "__id__": 129
+    },
+    "btn_fb": {
+      "__id__": 125
+    },
     "toggle_Register": {
       "__id__": 34
     },

@@ -6,5 +6,7 @@ export const SYS_CONST = cc.Enum({
     ON_HIDE: 'SYS_02',
     /**系统事件 */
     SYS_EVNET: 'SYS_EVNET',
+    /**返回 */
+    BACK: 'BACK'
 })
 
