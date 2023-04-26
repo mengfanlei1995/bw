@@ -7,6 +7,7 @@ class SoundMgr {
     private audioCache: { [key: string]: cc.AudioClip } = cc.js.createMap();
     private currEffectId: number = -1;
     private currMusicId: number = -1;
+    public bundleAudioCache: { [key: string]: cc.AudioClip } = cc.js.createMap();
 
     init() {
         let volume = this.getVolumeToLocal();
@@ -17,7 +18,7 @@ class SoundMgr {
             this.volume.effectVolume = 1;
         }
         this.setVolumeToLocal();
-        // this.playMusic();
+        this.playMusic();
     }
 
     /** volume */
@@ -82,12 +83,12 @@ class SoundMgr {
         if (StorageMgr.effectPercent == 0) return;
         if (!url || url === '') return;
 
-        if (this.audioCache[bundleName + url]) {
-            cc.audioEngine.playEffect(this.audioCache[bundleName + url], loop);
+        if (this.bundleAudioCache[bundleName + url]) {
+            cc.audioEngine.playEffect(this.bundleAudioCache[bundleName + url], loop);
             return;
         }
         let sound = await BundleUtil.loadResSync<cc.AudioClip>(bundleName, url);
-        this.audioCache[bundleName + url] = sound;
+        this.bundleAudioCache[bundleName + url] = sound;
         this.currEffectId = cc.audioEngine.playEffect(sound, loop);
     }
 

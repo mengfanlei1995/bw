@@ -24,13 +24,13 @@ class UIBundleMgr {
     public async show(bundleName: string, url: string, name: string, params: any = null, isRepeat: boolean = false, target?: cc.Node): Promise<cc.Node> {
         let node: cc.Node = this.nodeMap.get(name) || null;
         if (!isRepeat && cc.isValid(node)) {
-            LogUtil.warn("节点已存在场景中!!!");
+            LogUtil.warn("节点已存在场景中!!!", url);
             return node;
         }
         let prefab: cc.Prefab = this.assetMap.get(name) || null;
         if (!cc.isValid(prefab)) prefab = await this.getPrefab(bundleName, url);
         if (!cc.isValid(prefab)) {
-            LogUtil.error("资源不存在！");
+            LogUtil.error("资源不存在！", url);
             return null;
         }
         let parent: cc.Node = target ? target : cc.find('Canvas');

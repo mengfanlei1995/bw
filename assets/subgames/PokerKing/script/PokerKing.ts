@@ -35,7 +35,7 @@ export default class PokerKing extends UIGame {
     start(): void {
         this.gameId = SysConfig.GameIDConfig.PokeKing;
         this.gameCmd = PokerKingCmd;
-        this.gameName = 'PokeKing';
+        this.gameName = 'PokerKing';
         this.historyName = 'PokerKingHistory';
         this.singleAreaMaxChipsNum = 20;
         this._start();

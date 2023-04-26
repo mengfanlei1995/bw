@@ -10,6 +10,7 @@ import LogUtil from "../../utils/LogUtil";
 import { Login_SessionCmd, Push_WalletCmd, Push_Wallet_ChangeCmd } from "../CmdData";
 import CmdMgr from "../CmdMgr";
 import HandleMgr from "../HandleMgr";
+import NetMgr from "../NetMgr";
 import SendMgr from "../SendMgr";
 import WsPushMgr from "../WsPushMgr";
 import { ExternalMessage, decodeExternalMessage } from "../proto/ExternalMessage";
@@ -25,8 +26,8 @@ class SocketClient implements ISocket {
     private SocketState: number;
     private webScoket: WebSocket = null;
     private heart: number = null;
-    /**是否自动重连 */
-    private autoConnect: boolean = true;
+    /**是否立即重连 */
+    private autoConnect: boolean = false;
 
 
     constructor() {
@@ -58,7 +59,9 @@ class SocketClient implements ISocket {
         this.SocketState = this.SocketState_Connected;
         UIMgr.hideLoading();
         this.sendHeart();
-        if (UserData.userInfo.userId) SendMgr.sendLogin({}, Login_SessionCmd);
+        if (UserData.userInfo.userId) {
+            SendMgr.sendLogin({}, Login_SessionCmd);
+        }
         EventMgr.emit(SocketEvent.WS_CONNECTED);
     }
 
@@ -127,11 +130,10 @@ class SocketClient implements ISocket {
             clearInterval(this.heart);
             this.heart = null;
         }
-        if (this.autoConnect) {
-            setTimeout(() => {
-                this.connect();
-            }, 3000);
-        }
+        setTimeout(async () => {
+            // await NetMgr.getIp();
+            this.connect();
+        }, this.autoConnect ? 0 : 3000);
     }
 
 

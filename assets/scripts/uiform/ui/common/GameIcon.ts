@@ -21,8 +21,12 @@ export default class GameIcon extends cc.Component {
         cc.tween(child).delay(row * .15).to(0.5, { y: 0 }, { easing: 'backOut' }).start()
     }
 
-    onClickEnterRoom() {
-        UIMgr.enterGame(this.gameData.name);
+    async onClickEnterRoom(e: cc.Event.EventTouch) {
+        this.node.getComponent(cc.Button).interactable = false;
+        let result = await UIMgr.enterGame(this.gameData.name);
+        if (!result) {
+            this.node.getComponent(cc.Button).interactable = true;
+        }
     }
 
 }

@@ -1,0 +1,153 @@
+
+zhaocaimaojinbi.png
+size: 327,327
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+coins1
+  rotate: false
+  xy: 267, 251
+  size: 56, 74
+  orig: 135, 135
+  offset: 44, 25
+  index: -1
+coins10
+  rotate: false
+  xy: 73, 4
+  size: 69, 73
+  orig: 135, 135
+  offset: 30, 26
+  index: -1
+coins11
+  rotate: false
+  xy: 264, 175
+  size: 61, 74
+  orig: 135, 135
+  offset: 33, 25
+  index: -1
+coins12
+  rotate: true
+  xy: 178, 121
+  size: 56, 74
+  orig: 135, 135
+  offset: 35, 25
+  index: -1
+coins13
+  rotate: false
+  xy: 178, 44
+  size: 45, 75
+  orig: 135, 135
+  offset: 41, 24
+  index: -1
+coins14
+  rotate: true
+  xy: 225, 58
+  size: 38, 75
+  orig: 135, 135
+  offset: 45, 24
+  index: -1
+coins15
+  rotate: false
+  xy: 144, 8
+  size: 24, 75
+  orig: 135, 135
+  offset: 53, 24
+  index: -1
+coins16
+  rotate: true
+  xy: 77, 85
+  size: 17, 75
+  orig: 135, 135
+  offset: 58, 24
+  index: -1
+coins17
+  rotate: false
+  xy: 306, 98
+  size: 17, 75
+  orig: 135, 135
+  offset: 61, 24
+  index: -1
+coins18
+  rotate: false
+  xy: 77, 146
+  size: 32, 75
+  orig: 135, 135
+  offset: 55, 24
+  index: -1
+coins19
+  rotate: true
+  xy: 170, 3
+  size: 39, 75
+  orig: 135, 135
+  offset: 52, 24
+  index: -1
+coins2
+  rotate: false
+  xy: 111, 104
+  size: 65, 73
+  orig: 135, 135
+  offset: 39, 26
+  index: -1
+coins20
+  rotate: false
+  xy: 254, 98
+  size: 50, 75
+  orig: 135, 135
+  offset: 47, 24
+  index: -1
+coins3
+  rotate: false
+  xy: 2, 4
+  size: 69, 73
+  orig: 135, 135
+  offset: 36, 26
+  index: -1
+coins4
+  rotate: true
+  xy: 2, 151
+  size: 70, 73
+  orig: 135, 135
+  offset: 36, 26
+  index: -1
+coins5
+  rotate: false
+  xy: 114, 179
+  size: 73, 72
+  orig: 135, 135
+  offset: 32, 27
+  index: -1
+coins6
+  rotate: false
+  xy: 191, 253
+  size: 74, 72
+  orig: 135, 135
+  offset: 31, 27
+  index: -1
+coins7
+  rotate: false
+  xy: 114, 253
+  size: 75, 72
+  orig: 135, 135
+  offset: 30, 27
+  index: -1
+coins8
+  rotate: false
+  xy: 189, 179
+  size: 73, 72
+  orig: 135, 135
+  offset: 29, 27
+  index: -1
+coins9
+  rotate: true
+  xy: 2, 79
+  size: 70, 73
+  orig: 135, 135
+  offset: 30, 26
+  index: -1
+xx
+  rotate: false
+  xy: 2, 223
+  size: 110, 102
+  orig: 113, 104
+  offset: 2, 1
+  index: -1

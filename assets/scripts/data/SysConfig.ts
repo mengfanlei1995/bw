@@ -5,7 +5,7 @@ import LongUtil from "../utils/LongUtil";
 
 class SysConfig {
     /**调试模式 */
-    readonly isDebug: number = 0;
+    readonly isDebug: number = 1;
     /**带有af统计的默认渠道值 */
     readonly defaultChannel: string = 'Organic';
     /**是否是测试环境 */
@@ -17,7 +17,7 @@ class SysConfig {
     /**当前最新版本 */
     readonly version: string = '1.0.1';
     /**app名字 */
-    readonly appName: string = "Big Winner";
+    readonly appName: string = "Big Wheel";
     /**ISO货币编号 356印度卢比 */
     readonly currencyCode: string = '356';
     /**从原生端获取的信息，用此变量存储，便于使用 */
@@ -31,6 +31,8 @@ class SysConfig {
     //wss://test.bestbw.net/websocket 测试服
     //wss://bestbw.net/websocket 正式服
     readonly WsUrl: string = this.isTest ? 'wss://test.bestbw.net/websocket' : 'wss://bestbw.net/websocket';
+
+    readonly HttpUrl: string = this.isTest ? 'https://test.bestbw.net/bwweb' : 'https://bestbw.net/bwweb';
 
     set settling(isSettling: boolean) {
         this.isSettling = isSettling;
@@ -177,4 +179,5 @@ export interface AppSysInfo {
     appName?: string //游戏名称
     afUid?: string //接入af后，获取afuid,
     app_package_name?: string //包名
+    gaid?: string //google广告id
 }

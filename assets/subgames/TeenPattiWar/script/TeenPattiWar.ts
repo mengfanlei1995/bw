@@ -179,6 +179,7 @@ export default class TeenPattiWar extends UIGame {
                     this.addAwardRecord(id);
                     if (this.winBonus > 0) {
                         this._flyPlayerArea(id);
+                        this.playGoldAnimation();
                     } else {
                         this.flyChipsProductSource()
                         SysConfig.settling = false;

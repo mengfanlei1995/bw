@@ -2,7 +2,8 @@ import SysConfig from "../../data/SysConfig";
 import { REPORT_EVT } from "../../enum/DeskEnum";
 import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
-import { Login_PhoneCmd } from "../../net/CmdData";
+import StorageMgr from "../../mgr/StorageMgr";
+import { Login_PhoneCmd, Login_PhoneRegisterCmd } from "../../net/CmdData";
 import SendMgr from "../../net/SendMgr";
 import CocosUtil from "../../utils/CocosUtil";
 import JsbUitl from "../../utils/JsbUitl";
@@ -21,6 +22,10 @@ export default class Login extends UIScene {
     @property(cc.EditBox)
     ed_loginPhoneNumber: cc.EditBox = null;
 
+    /**密码 */
+    @property(cc.EditBox)
+    ed_password: cc.EditBox = null;
+
     /**验证码 */
     @property(cc.EditBox)
     ed_code: cc.EditBox = null;
@@ -37,11 +42,33 @@ export default class Login extends UIScene {
     @property(cc.Button)
     btn_otp: cc.Button = null;
 
+    /**注册Toggle */
+    @property(cc.Toggle)
+    toggle_Register: cc.Toggle = null;
+
+    /**登陆Toggle */
+    @property(cc.Toggle)
+    toggle_Login: cc.Toggle = null;
+
+    @property(cc.Node)
+    btn_forget: cc.Node = null;
+
+    @property(cc.Sprite)
+    sp_pass: cc.Sprite = null;
+
+    @property(cc.SpriteFrame)
+    spf_passYes: cc.SpriteFrame = null;
+
+    @property(cc.SpriteFrame)
+    spf_passNo: cc.SpriteFrame = null;
+
     @property(cc.Layout)
     content: cc.Layout = null;
 
     //验证码倒计时
     private second: number = 60;
+
+    private isShowPass: boolean = false;
 
     start(): void {
         this.resetContent();
@@ -49,19 +76,40 @@ export default class Login extends UIScene {
     }
 
     _init() {
-        this.lb_version.string = SysConfig.version;
+        this.lb_version.string = `ver:${SysConfig.isTest ? 'T-' : ''}${SysConfig.version}`;
+        let isPhone: boolean = !!StorageMgr.phone;
+        this.toggle_Register.isChecked = !isPhone;
+        this.toggle_Login.isChecked = isPhone;
+        this.ed_code.node.parent.active = !isPhone;
+        this.btn_forget.active = isPhone;
     }
 
     onClickRegister() {
-
+        // if (this.toggle_Register.isChecked) return;
+        this.ed_code.node.parent.active = true;
+        this.btn_forget.active = false;
     }
 
     onClickLogin() {
-
+        // if (this.toggle_Login.isChecked) return;
+        this.ed_code.node.parent.active = false;
+        this.btn_forget.active = true;
     }
 
     onClickForget() {
+        UIMgr.show('prefab/login/ForgetPassWord', 'ForgetPassWord');
+    }
 
+    onClickShowHidePass() {
+        if (this.isShowPass) {
+            this.isShowPass = false;
+            this.sp_pass.spriteFrame = this.spf_passNo;
+            this.ed_password.inputFlag = cc.EditBox.InputFlag.PASSWORD;
+        } else {
+            this.isShowPass = true;
+            this.sp_pass.spriteFrame = this.spf_passYes;
+            this.ed_password.inputFlag = cc.EditBox.InputFlag.DEFAULT;
+        }
     }
 
     onClickPolicy() {
@@ -107,9 +155,9 @@ export default class Login extends UIScene {
     }
 
     async onCodeOTP(e: cc.Event.EventTouch) {
-        let phone: string = this.ed_loginPhoneNumber.string;
-        if (RegexUtil.isValidPhoneNumber(phone)) {
-            let result = await SendMgr.sendSms(phone);
+        let mobile: string = this.ed_loginPhoneNumber.string;
+        if (RegexUtil.isValidPhoneNumber(mobile)) {
+            let result = await SendMgr.sendSms({ mobile });
             if (result) {
                 this.btn_otp.interactable = false;
                 // this.lb_second.node.parent.active = true;
@@ -122,7 +170,7 @@ export default class Login extends UIScene {
         }
     }
 
-    async onLogin(e: cc.Event.EventTouch) {
+    async onPhoneLogin(e: cc.Event.EventTouch) {
         EventMgr.emit(REPORT_EVT.CLICK, {
             element_id: "btn_phoneLogin",
             element_name: "登录界面手机登录按钮",
@@ -131,16 +179,22 @@ export default class Login extends UIScene {
             element_content: 'luckyDice',
         });
         let mobile: string = this.ed_loginPhoneNumber.string;
+        let mobilePassword: string = this.ed_password.string;
         if (!RegexUtil.isValidPhoneNumber(mobile)) {
             UIMgr.showToast(LangMgr.sentence('e0006'));
-            return
+            return;
         }
         let code = this.ed_code.string;
-        if (code && code.length == 4) {
-            SendMgr.sendLogin({ mobile, code }, Login_PhoneCmd);
+        if (this.toggle_Login.isChecked) {
+            SendMgr.sendLogin({ mobile, mobilePassword }, Login_PhoneCmd);
         } else {
-            UIMgr.showToast(LangMgr.sentence('e0053'));
+            if (code && code.length == 4) {
+                SendMgr.sendLogin({ mobile, code, mobilePassword }, Login_PhoneRegisterCmd);
+            } else {
+                UIMgr.showToast(LangMgr.sentence('e0053'));
+            }
         }
+
     }
 
     onClearLoginPhone(e: cc.Event.EventTouch) {
@@ -151,16 +205,17 @@ export default class Login extends UIScene {
     _updateSecond() {
         if (this.second > 1) {
             this.second--;
+            this.lb_second.string = `(${this.second}S)`;
         } else {
             this.unschedule(this._updateSecond);
             this.btn_otp.interactable = true;
+            this.lb_second.string = 'OTP';
             // this.lb_second.node.parent.active = false;
         }
-        this.lb_second.string = `(${this.second}S)`;
     }
 
     _loginSuccess() {
-        UIMgr.goHall();
+        // UIMgr.goHall();
     }
 
 }

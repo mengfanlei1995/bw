@@ -3,6 +3,9 @@ export const LoginCmd: number = 1;
 export const Login_GuestCmd: number = 1;
 export const Login_PhoneCmd: number = 2;
 export const Login_SessionCmd: number = 3;
+export const Login_FBCmd: number = 4;
+export const Login_OTPCmd: number = 5;
+export const Login_PhoneRegisterCmd: number = 6;
 //用户
 export const UserCmd: number = 2;
 export const User_InfoCmd: number = 1;

@@ -39,13 +39,13 @@ class UIMgr {
     public async show(url: string, name: string, params: any = null, isRepeat: boolean = false, target?: cc.Node): Promise<cc.Node> {
         let node: cc.Node = this.nodeMap.get(name) || null;
         if (!isRepeat && cc.isValid(node)) {
-            LogUtil.warn("节点已存在场景中!!!");
+            LogUtil.warn("节点已存在场景中!!!", url);
             return node;
         }
         let prefab: cc.Prefab = this.assetMap.get(name) || null;
         if (!cc.isValid(prefab)) prefab = await this.getPrefab(url);
         if (!cc.isValid(prefab)) {
-            LogUtil.error("资源不存在！");
+            LogUtil.error("资源不存在！", url);
             return null;
         }
         let parent: cc.Node = target ? target : cc.find('Canvas');
@@ -116,7 +116,7 @@ class UIMgr {
                 (node, index) => {
                     if (cc.isValid(node)) {
                         cc.tween(node).stop();
-                        cc.tween(node).to(0.15, { y: (total - index) * 54 }).start()
+                        cc.tween(node).to(0.15, { y: (total - index) * 74 }).start()
                     }
                 }
             )
@@ -209,32 +209,40 @@ class UIMgr {
     }
 
     /**进入游戏 */
-    public async enterGame(name: string) {
+    public async enterGame(name: string): Promise<boolean> {
         //先加载公共bundle
-        await BundleUtil.getBundle('common');
+        let common: cc.AssetManager.Bundle = await BundleUtil.getBundle('common');
+        if (!common) {
+            return false;
+        }
         //加载游戏bundle
         let bundle: cc.AssetManager.Bundle = await BundleUtil.getBundle(name);
         if (!bundle) {
             LogUtil.error('bundleName error');
             BundleUtil.clearAllBundle();
-            return;
+            return false;
         }
-        BundleUtil.loadBundleScene(name, name);
+        if (cc.director.getScene().name != name) {
+            BundleUtil.loadBundleScene(name, name);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**回到大厅 */
     public goHall() {
-        cc.director.loadScene('Hall');
+        if (cc.director.getScene().name != 'Hall') cc.director.loadScene('Hall');
     }
 
     /**login界面 */
     public goLogin() {
-        cc.director.loadScene('Login');
+        if (cc.director.getScene().name != 'Login') cc.director.loadScene('Login');
     }
 
     /**热更新界面 */
     public goHotUpdate() {
-        cc.director.loadScene('HotUpdate');
+        if (cc.director.getScene().name != 'HotUpdate') cc.director.loadScene('HotUpdate');
     }
 
 }

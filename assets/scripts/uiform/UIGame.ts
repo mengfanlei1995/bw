@@ -120,6 +120,7 @@ export default class UIGame extends UIScene {
 
     _start(): void {
         // this.fixedBg(this.node);
+        this.isBundle = 1;
         this.statusTipSkel.node.zIndex = 3;
         this.statusWaitingSkel.node.zIndex = 3;
         this.chipsSourcePos = this.chipsSourceNode.getPosition();
@@ -174,7 +175,7 @@ export default class UIGame extends UIScene {
 
     initChipsNum(betCoinList) {
         for (let i = 0; i < this.betChoiceList.length; i++) {
-            let node: cc.Node = this.betChoiceList[i].node;
+            let node: cc.Node = this.betChoiceList[i].node.getChildByName('chipSprite');
             let lb_chips: cc.Label = cc.find("lb_chips", node).getComponent(cc.Label);
             lb_chips.string = `${this.longToNumber(betCoinList[i]) / 100}`;
             this.betNums[i] = this.longToNumber(betCoinList[i]) / 100;
@@ -195,12 +196,12 @@ export default class UIGame extends UIScene {
      * @param chipNumArray 
      */
     async flyChips(isSelf: boolean, areaType: string[], chipNum: number[]) {
-        // SoundMgr.playEffectByBundle('audio/betchips');
         this.getChipsSkel.node.active = true;
         let moveTime: number = isSelf ? 0.2 : 0.4;
         let sourcePos = isSelf ? this.selfChipsSourcePos : this.chipsSourcePos;
         for (let i = 0; i < areaType.length; i++) {
             await CocosUtil.sleepSync(i * 0.01);
+            if (i % 5 == 0) SoundMgr.playEffectByBundle('common', 'audio/betchips');
             if (SysConfig.isHide) break;
             if (!isSelf) this.getChipsSkel.setAnimation(0, "chu", false);
             if (!cc.isValid(this.node) || this.curTime <= 0) return;
@@ -416,10 +417,12 @@ export default class UIGame extends UIScene {
     }
 
     updateChipsCircleSkel() {
-        let btn: cc.Button
         for (let i = 0; i < this.betChoiceList.length; i++) {
-            btn = this.betChoiceList[i]
-            btn.node.getChildByName("circleSkel").active = (this.isBetTime && i == this.betIndex)
+            let betChoice: cc.Node = this.betChoiceList[i].node;
+            let chipSprite: cc.Node = betChoice.getChildByName("chipSprite");
+            chipSprite.getChildByName("circleSkel").active = (this.isBetTime && i == this.betIndex);
+            chipSprite.y = this.isBetTime && i == this.betIndex ? 4 : 0;
+            chipSprite.scale = this.isBetTime && i == this.betIndex ? 1.2 : 1;
         }
         this.drawTimeBetMask.active = !this.isBetTime
     }
@@ -520,6 +523,17 @@ export default class UIGame extends UIScene {
                 })
                 .start()
         }
+    }
+
+    /**播放金币动画 */
+    playGoldAnimation() {
+        let spine: sp.Skeleton = this.node.getChildByName('goldAnimation').getComponent(sp.Skeleton);
+        spine.node.active = true;
+        spine.setAnimation(1, 'animation', false);
+        spine.setCompleteListener(() => {
+            if (!cc.isValid(this.node)) return;
+            spine.node.active = false;
+        })
     }
 
     reset() {

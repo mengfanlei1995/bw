@@ -48,7 +48,9 @@ export default class GameRules extends UIWindow {
             this.text.string = LangMgr.sentence(lang);
             await CocosUtil.sleepSync(0.05)
             if (this.text.node.height >= 127.8) {
-                this.root.height += this.text.node.height - 127.8;
+                let height: number = this.text.node.height - 127.8;
+                this.root.height += height;
+                this.root.children[0].height += height;
             }
         }
     }

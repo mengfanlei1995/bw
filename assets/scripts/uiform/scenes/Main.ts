@@ -4,6 +4,7 @@ import LangMgr from "../../mgr/LangMgr";
 import SoundMgr from "../../mgr/SoundMgr";
 import StorageMgr from "../../mgr/StorageMgr";
 import { Login_SessionCmd } from "../../net/CmdData";
+import NetMgr from "../../net/NetMgr";
 import SendMgr from "../../net/SendMgr";
 import SocketMgr from "../../net/SocketMgr";
 import SocketClient from "../../net/ws/SocketClient";
@@ -23,15 +24,28 @@ export default class Main extends UIScene {
     @property({ displayName: '进度条', type: cc.Node })
     progress: cc.Node = null;
 
-    start() {
+    async start() {
         this.mockProgress();
         SoundMgr.init();
         LangMgr.init();
         JsbUitl.initInfo();
         StorageMgr.initSetting();
         StorageMgr.refreshCrossDayData();
+        EventMgr.on(SocketEvent.WS_CONNECTED, this.wsConnected, this);
         SocketMgr.connect();
-        EventMgr.on(SocketEvent.WS_CONNECTED, this.wsConnected, this)
+    }
+
+    getIpAddress() {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://api.ipify.org/?format=json');
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                const ip = response.ip;
+                // cc.log(ip);
+            }
+        };
+        xhr.send();
     }
 
     /**模拟进度条，对下个场景预加载时使用，避免进去时，下个场景出现卡顿现象 */
@@ -63,19 +77,13 @@ export default class Main extends UIScene {
         EventMgr.off(SocketEvent.WS_CONNECTED, this.wsConnected, this)
     }
 
-    async wsConnected() {
+    wsConnected() {
         this.setPercent(1);
         if (StorageMgr.sessionId) {
-            let result = await SendMgr.sendLogin({}, Login_SessionCmd);
-            if (result) {
-                UIMgr.goHall();
-            } else {
-                UIMgr.goLogin();
-            }
+            SendMgr.sendLogin({}, Login_SessionCmd);
         } else {
             UIMgr.goLogin();
         }
-
     }
 
 }

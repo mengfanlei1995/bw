@@ -457,9 +457,7 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_spriteFrame": {
-      "__uuid__": "43a71ad4-2b9e-4cb2-9762-585a1a6ff54d"
-    },
+    "_spriteFrame": null,
     "_type": 0,
     "_sizeMode": 1,
     "_fillType": 0,
@@ -545,8 +543,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 64,
-      "height": 64
+      "width": 52,
+      "height": 36
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -598,7 +596,7 @@
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
     "_spriteFrame": {
-      "__uuid__": "e1f69a5c-1203-4806-b169-607a999e6b3b"
+      "__uuid__": "ef135a85-d878-42a0-b76f-c79dfc92f7b7"
     },
     "_type": 0,
     "_sizeMode": 1,
@@ -625,9 +623,9 @@
     "alignMode": 1,
     "_target": null,
     "_alignFlags": 9,
-    "_left": 31,
+    "_left": 37,
     "_right": 14,
-    "_top": 13,
+    "_top": 27,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,
@@ -4833,7 +4831,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 307.2,
+      "width": 310.93,
       "height": 24
     },
     "_anchorPoint": {
@@ -4896,8 +4894,8 @@
     ],
     "_srcBlendFactor": 770,
     "_dstBlendFactor": 771,
-    "_string": "You don’t have any records",
-    "_N$string": "You don’t have any records",
+    "_string": "You don't have any records",
+    "_N$string": "You don't have any records",
     "_fontSize": 24,
     "_lineHeight": 24,
     "_enableWrapText": true,
@@ -5122,8 +5120,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 243.68,
-      "height": 30.24
+      "width": 247.47,
+      "height": 24
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -5180,7 +5178,7 @@
     "_lineHeight": 24,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "3430807d-7054-4103-9d4a-a35742c18efa"
+      "__uuid__": "2efa4c17-a573-41a0-9cb6-c3e9141d956e"
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
@@ -5207,7 +5205,7 @@
     "_alignFlags": 1,
     "_left": 0,
     "_right": 0,
-    "_top": -15.12,
+    "_top": -12,
     "_bottom": 0,
     "_verticalCenter": 0,
     "_horizontalCenter": 0,

@@ -1,15 +1,17 @@
 import SysConfig from "../data/SysConfig";
 import UserData from "../data/UserData";
 import StorageMgr from "../mgr/StorageMgr";
+import UIMgr from "../uiform/UIMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, ExitRoomCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, RecordListCmd, User_InfoCmd } from "./CmdData";
+import { BetCmd, ExitRoomCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_OTPCmd, RecordListCmd, User_ChangeNameCmd, User_InfoCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
 import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
+import NetMgr from "./NetMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage, encodeExternalMessage } from "./proto/ExternalMessage";
-import { HomepageResponse, decodeHomepageGameVO, decodeHomepageResponse } from "./proto/hall";
+import { HomepageResponse, LoginMobileSmsVO, decodeHomepageGameVO, decodeHomepageResponse, decodeLoginMobileSmsVO } from "./proto/hall";
 import { encodeUserUpdateHeadPicDTO } from "./proto/hall";
 import { UserUpdateNicknameDTO } from "./proto/hall";
 import { HomepageUserInfoResponse } from "./proto/hall";
@@ -39,20 +41,23 @@ const commonParams = function (mergeCmd: number, data: Uint8Array, cmdCode: numb
 const loginCommonParams = function (): LoginDTO {
     let common: LoginDTO = {
         appChannel: StorageMgr.mediaId,
-        appName: SysConfig.appName,
         appVersion: SysConfig.version,
-        appResVersion: 1,
         bundleId: SysConfig.pkgName,
         // code: '11',
         devId: StorageMgr.devId,
         invitationCode: StorageMgr.invateCode,
         invitationType: StorageMgr.invateType,
         // mobile: StorageMgr.phone,
+        // mobilePassword:'',
         platform: 'android',
-        productId: 11,
         userId: StorageMgr.userId,
         sessionId: StorageMgr.sessionId,
-        appsflyerId: StorageMgr.afId
+        afId: StorageMgr.afId,
+        imei: SysConfig.systemInfo?.android_id || '',
+        gaId: SysConfig.systemInfo?.gaid || '',
+        uuid: StorageMgr.UUID,
+        appName: SysConfig.appName
+        // fbId: ''
     }
     return common;
 }
@@ -73,13 +78,37 @@ class SendMgr {
     public async sendLogin(params: LoginDTO = {}, loginType: number = Login_GuestCmd): Promise<LoginVO> {
         params = Object.assign(loginCommonParams(), params);
         if (loginType == Login_SessionCmd && !StorageMgr.sessionId) return;
+        await NetMgr.getIp();
         return new Promise<LoginVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, loginType), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
                 if (code === 0) {
                     let userInfo: LoginVO = decodeLoginVO(data);
                     UserData.initUserInfo(userInfo);
+                    UIMgr.goHall();
+                } else {
+                    StorageMgr.sessionId = '';
+                    StorageMgr.userId = '';
+                    UserData.userInfo = {};
+                    UIMgr.goLogin();
                 }
                 resolve(code == 0 ? decodeLoginVO(data) : null);
+            })
+        })
+    }
+
+    /**
+     * 登陆
+     * @param params 登陆数据
+     * @param loginType 登陆类型
+     */
+    public async sendSms(params: LoginDTO = {}): Promise<string> {
+        params = Object.assign(loginCommonParams(), params);
+        return new Promise<string>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, Login_OTPCmd), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
+                if (code == 0) {
+                    console.log(decodeLoginMobileSmsVO(data).smsCode);
+                }
+                resolve(code == 0 ? decodeLoginMobileSmsVO(data).smsCode : null);
             })
         })
     }
@@ -116,7 +145,7 @@ class SendMgr {
             nickname: nickname
         }
         return new Promise<boolean>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(UserCmd, User_ChangeHeadCmd), encodeUserUpdateNicknameDTO(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(UserCmd, User_ChangeNameCmd), encodeUserUpdateNicknameDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0);
             })
         })

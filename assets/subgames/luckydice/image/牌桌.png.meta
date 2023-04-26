@@ -9,7 +9,7 @@
   "genMipmaps": false,
   "packable": true,
   "width": 750,
-  "height": 998,
+  "height": 1280,
   "platformSettings": {},
   "subMetas": {
     "牌桌": {
@@ -25,9 +25,9 @@
       "trimX": 0,
       "trimY": 0,
       "width": 750,
-      "height": 998,
+      "height": 1280,
       "rawWidth": 750,
-      "rawHeight": 998,
+      "rawHeight": 1280,
       "borderTop": 0,
       "borderBottom": 0,
       "borderLeft": 0,

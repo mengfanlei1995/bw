@@ -2,25 +2,26 @@ syntax = "proto3";
 package pb.hall;
 
 // Description:
-message HomepageResponse {
-  // Description:
-  HomepageUserInfoResponse userInfo = 1;
-  repeated PictureResponse rotationPictures = 2;
-  map<string,bool> redDot = 3;
+message HomepageUserInfoResponse {
+  double bonus = 1;
+  int32 vipLevel = 2;
+  int32 club = 3;
+  bool recharge = 4;
+  bool brokeCoupon = 5;
+  string invitationCode = 6;
 
 }
 
 // Description:
-message UserUpdateNicknameDTO {
-  string nickname = 1;
+message UserUpdateHeadPicDTO {
+  // 头像编号
+  string headpic = 1;
 
 }
 
 // Description:
-message HomepageGameDTO {
-  int32 productId = 1;
-  string appVersion = 2;
-  int32 appResVersion = 3;
+message LoginMobileSmsVO {
+  string smsCode = 1;
 
 }
 
@@ -59,21 +60,6 @@ message HomepageGamesResponse {
 
 }
 
-// Description:
-message HomepageGameVO {
-  repeated HomepageGamesResponse games = 1;
-
-}
-
-// Description:
-message LoginWalletVO {
-  int64 depositBalance = 1;
-  int64 withdrawBalance = 2;
-  int64 totalCashBalance = 3;
-  int64 freeBalance = 4;
-
-}
-
 // Created by IntelliJ IDEA 2020.1.2
 message PictureResponse {
   // id
@@ -95,40 +81,63 @@ message PictureResponse {
 }
 
 // Description:
-message HomepageUserInfoResponse {
-  double bonus = 1;
-  int32 vipLevel = 2;
-  int32 club = 3;
-  bool recharge = 4;
-  bool brokeCoupon = 5;
-  string invitationCode = 6;
+message HomepageGameDTO {
+  int32 productId = 1;
+  string appVersion = 2;
+  int32 appResVersion = 3;
 
 }
 
 // Description:
-message UserUpdateHeadPicDTO {
-  // 头像编号
-  string headpic = 1;
+message UserUpdateNicknameDTO {
+  string nickname = 1;
+
+}
+
+// Description:
+message HomepageGameVO {
+  repeated HomepageGamesResponse games = 1;
+
+}
+
+// Description:
+message LoginWalletVO {
+  int64 depositBalance = 1;
+  int64 withdrawBalance = 2;
+  int64 totalCashBalance = 3;
+  int64 freeBalance = 4;
 
 }
 
 // Description:
 message LoginDTO {
   string appChannel = 1;
-  string appName = 2;
-  string appVersion = 3;
-  int32 appResVersion = 4;
-  string bundleId = 5;
-  string code = 6;
-  string devId = 7;
-  string invitationCode = 8;
-  string invitationType = 9;
-  string mobile = 10;
-  string platform = 11;
-  int32 productId = 12;
-  string userId = 13;
-  string sessionId = 14;
-  string appsflyerId = 15;
+  string appVersion = 2;
+  string bundleId = 3;
+  string appName = 4;
+  string platform = 5;
+  string devId = 6;
+  string userId = 7;
+  string sessionId = 8;
+  string mobile = 9;
+  string mobilePassword = 10;
+  string code = 11;
+  string invitationCode = 12;
+  string invitationType = 13;
+  string imei = 14;
+  string afId = 15;
+  string gaId = 16;
+  string fbId = 17;
+  string uuid = 18;
+
+}
+
+// Description:
+message HomepageResponse {
+  // Description:
+  HomepageUserInfoResponse userInfo = 1;
+  repeated PictureResponse rotationPictures = 2;
+  map<string,bool> redDot = 3;
 
 }
 

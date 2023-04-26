@@ -18,6 +18,7 @@ class JSZipUtil {
                 if (zip && zip.hasOwnProperty("files")) {
                     let names: string[] = Object.keys(zip.files);
                     if (names) {
+                        let sum: number = 0;
                         names.forEach((name: string, index: number) => {
                             onProgress && onProgress(index, names.length);
                             let path: string = rootPath + name;
@@ -30,10 +31,13 @@ class JSZipUtil {
                                 zip.file(name).async('uint8array').then((data: Uint8Array) => {
                                     // jsb.fileUtils.writeDataToFile(data, path);
                                     jsb.fileUtils.writeValueMapToFile(data, path)
+                                    sum++;
+                                    if (sum == names.length) {
+                                        resolve(true);
+                                    }
                                 });
                             }
                         })
-                        resolve(true);
                     } else {
                         resolve(false);
                     }

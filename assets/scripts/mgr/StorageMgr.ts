@@ -12,6 +12,8 @@ const StorageKey = cc.Enum({
     SESSIONID: 'SESSIONID',
     /**设备号 */
     DEVID: 'DEVID',
+    /**UUID */
+    UUID: 'UUID',
     /**昵称 */
     NICK: 'NICK',
     /**头像 */
@@ -130,6 +132,13 @@ class StorageMgr {
     }
     public get devId(): string {
         return pageParams.device || this.loadItem(StorageKey.DEVID);
+    }
+
+    public set UUID(uuid: string) {
+        this.saveItem(StorageKey.UUID, uuid);
+    }
+    public get UUID(): string {
+        return this.loadItem(StorageKey.UUID) || '';
     }
 
     /**登陆用户ID */

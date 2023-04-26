@@ -1,4 +1,5 @@
 
+import SoundMgr from "../mgr/SoundMgr";
 import UIBase from "./UIBase";
 import UIBundleMgr from "./UIBundleMgr";
 import UIMgr, { UIType } from "./UIMgr";
@@ -29,6 +30,7 @@ export default class UIScene extends UIBase {
         });
         if (this.isBundle) {
             UIBundleMgr.hideAll();
+            SoundMgr.bundleAudioCache={};
         } else {
             UIMgr.hideAll();
         }

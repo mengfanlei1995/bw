@@ -160,7 +160,7 @@ export default class GameRecord extends UIScreen {
             winLost: this.type
         }
         let infos: Uint8Array = await SendMgr.sendRecordList(data, this.gameCmd);
-        if (!infos) return;
+        if (!infos || !cc.isValid(this.node)) return;
         let info: ResponseRoomPageRecordVO = decodeResponseRoomPageRecordVO(infos);
         let { records, total } = info;
         if (records && records.length > 0) {

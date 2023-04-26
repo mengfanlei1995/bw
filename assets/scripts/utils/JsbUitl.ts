@@ -74,7 +74,9 @@ const callBackEnum = cc.Enum({
     /**setUserId */
     setFirebaseUserId: "setFirebaseUserId",
     /**设置用户属性 */
-    setFirebaseUserProperty: 'setFirebaseUserProperty'
+    setFirebaseUserProperty: 'setFirebaseUserProperty',
+    /**返回 */
+    onKeyDownEvent: 'onKeyDownEvent'
 })
 
 /**
@@ -101,7 +103,10 @@ class JsbUitl {
     /**初始化信息 */
     public initInfo(): void {
         if (this.jsbInited) return;
-        this.jsbInited = true
+        this.jsbInited = true;
+        if (!StorageMgr.UUID) {
+            StorageMgr.UUID = CommonUtil.randomStr(32).toUpperCase();
+        }
         if (cc.sys.isNative) {
             let sysInfo: AppSysInfo = this.getSystemInfoSync();
             let { device_id } = sysInfo;
@@ -126,18 +131,22 @@ class JsbUitl {
                 cc.game.emit(SYS_CONST.ON_SHOW)
             }, callBackEnum.onShow)
 
+            ListenerMgr.create(() => {
+                
+            }, callBackEnum.onKeyDownEvent)
 
             //目前项目未接入facebook登陆，暂时注释掉
             ListenerMgr.create(
-                async (loginInfo: any) => {
-                    LogUtil.log(`facebook已登陆：`, JSON.stringify(loginInfo))
-                    NetMgr.inst.facebookQuickLogin(loginInfo)
+                async (loginInfo: string) => {
+                    // LogUtil.log(`facebook已登陆：`, JSON.stringify(loginInfo))
+                    let params: any = JSON.stringify(loginInfo);
+                    SendMgr.sendLogin({ fbId: params.token });
                 },
                 callBackEnum.faceBookLogined
             )
 
             ListenerMgr.create(
-                (failInfo: any) => {
+                (failInfo: string) => {
                     LogUtil.log(`facebook登陆失败：`, JSON.stringify(failInfo))
                 },
                 callBackEnum.faceBookLoginFail
@@ -151,9 +160,10 @@ class JsbUitl {
             )
 
             ListenerMgr.create(
-                async (loginInfo: any) => {
-                    LogUtil.log(`facebook登陆成功：`, JSON.stringify(loginInfo))
-                    NetMgr.inst.facebookQuickLogin(loginInfo)
+                async (loginInfo: string) => {
+                    // LogUtil.log(`facebook登陆成功：`, JSON.stringify(loginInfo))
+                    let params: any = JSON.stringify(loginInfo);
+                    SendMgr.sendLogin({ fbId: params.token });
                 },
                 callBackEnum.faceBookLoginSuccess
             )
@@ -198,12 +208,12 @@ class JsbUitl {
                 callBackEnum.nativeSceneReport
             )
 
-            ListenerMgr.create(
-                (params: AppClickParams) => {
-                    EventMgr.emit(REPORT_EVT.CLICK, params);
-                },
-                callBackEnum.nativeClickReport
-            )
+            // ListenerMgr.create(
+            //     (params: AppClickParams) => {
+            //         EventMgr.emit(REPORT_EVT.CLICK, params);
+            //     },
+            //     callBackEnum.nativeClickReport
+            // )
 
             ListenerMgr.create(
                 () => {
@@ -305,7 +315,7 @@ class JsbUitl {
      * @param success 
      */
     public getSystemInfoSync(): AppSysInfo {
-        var result = callMethod(callBackEnum.getSystemInfoSync, "()Ljava/lang/String;");
+        let result = callMethod(callBackEnum.getSystemInfoSync, "()Ljava/lang/String;");
         let json = CommonUtil.isJsonString(result) ? JSON.parse(result) : {};
         let res = json.data || {};
         /* for (let key in res) {

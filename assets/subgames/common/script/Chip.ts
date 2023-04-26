@@ -21,7 +21,7 @@ export default class Chip extends cc.Component {
         var sp = this.node.getComponent(cc.Sprite);
         let index = this.getChipByValue(value);
         sp.spriteFrame = this.chipsSpriteList[index];
-        let color: cc.Color[] = [cc.color(160, 60, 4), cc.color(0, 120, 72), cc.color(160, 60, 4), cc.color(108, 28, 173), cc.color(110, 11, 23), cc.color(31, 31, 31)]
+        let color: cc.Color[] = [cc.color(160, 60, 4), cc.color(0, 120, 72), cc.color(6, 73, 160), cc.color(108, 28, 173), cc.color(110, 11, 23), cc.color(31, 31, 31)]
         this.lb_chip1.string = `${this.chipIndexArray[index]}`;
         this.lb_chip2.string = `${this.chipIndexArray[index]}`;
         this.lb_chip2.node.color = color[index];
