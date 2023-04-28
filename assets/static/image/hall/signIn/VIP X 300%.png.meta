@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "7c69b213-a22a-4e0c-ba03-a5267a3aa706",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 107,
+  "height": 19,
+  "platformSettings": {},
+  "subMetas": {
+    "VIP X 300%": {
+      "ver": "1.0.6",
+      "uuid": "0ef83264-2079-4b96-aa53-e10ca75983db",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "7c69b213-a22a-4e0c-ba03-a5267a3aa706",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -1,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 105,
+      "height": 19,
+      "rawWidth": 107,
+      "rawHeight": 19,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

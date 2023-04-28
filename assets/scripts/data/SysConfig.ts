@@ -29,7 +29,7 @@ class SysConfig {
 
     isGreen: boolean = true;
 
-    //ws://192.168.124.13:1005/websocket 本地
+    //ws://192.168.124.13:1005/websocket 本地  http://192.168.124.13:9001
     //wss://test.bestbw.net/websocket 测试服
     //wss://bestbw.net/websocket 正式服
     readonly WsUrl: string = this.isTest ? 'wss://test.bestbw.net/websocket' : 'wss://bestbw.net/websocket';

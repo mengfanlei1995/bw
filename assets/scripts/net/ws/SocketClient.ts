@@ -132,6 +132,7 @@ class SocketClient implements ISocket {
         }
         setTimeout(async () => {
             // await NetMgr.getIp();
+            this.autoConnect = false;
             this.connect();
         }, this.autoConnect ? 0 : 3000);
     }

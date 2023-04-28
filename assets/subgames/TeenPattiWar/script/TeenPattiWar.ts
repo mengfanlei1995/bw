@@ -163,7 +163,7 @@ export default class TeenPattiWar extends UIGame {
                     this.setWinSkel(win == 2 ? this.winKSkel : this.winQSkel);
                 }).start()
                 for (let i = 0; i < id.length; i++) {
-                    this.awardNode[+id - 1].active = true;
+                    if (cc.isValid(this.awardNode[+id - 1])) this.awardNode[+id - 1].active = true;
                 }
                 for (let i = 1; i <= 3; i++) {
                     if (i != id[0] && i != id[1]) {

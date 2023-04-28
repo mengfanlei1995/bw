@@ -37,8 +37,29 @@ export const WhellOfForuneCmd: number = 12;
 //TPWar
 export const TPWarCmd: number = 13;
 
+//email
+export const EmailCmd: number = 15;
+//获取邮件
+export const Email_InfoCmd: number = 1;
+//读取邮件
+export const Email_ReadCmd: number = 2;
+//领取邮件奖励
+export const Email_CollectCmd: number = 3;
+//删除邮件
+export const Email_DeleteCmd: number = 4;
 
-
+//代理
+export const ReferCmd: number = 16;
+//查询代理分销描述
+export const Refer_InvitationCmd: number = 1;
+//查询代理分销邀请码链接
+export const Refer_InvitationLinkCmd: number = 2;
+//My Rewards界面分页查询
+export const Refer_MyRewardCmd: number = 3;
+//My Invitation
+export const Refer_MyInvitationCmd: number = 4;
+//top20
+export const Refer_Top20Cmd: number = 5;
 
 
 

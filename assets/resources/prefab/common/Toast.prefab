@@ -166,9 +166,9 @@
     "_N$string": "Label",
     "_fontSize": 32,
     "_lineHeight": 32,
-    "_enableWrapText": true,
+    "_enableWrapText": false,
     "_N$file": {
-      "__uuid__": "3430807d-7054-4103-9d4a-a35742c18efa"
+      "__uuid__": "2efa4c17-a573-41a0-9cb6-c3e9141d956e"
     },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
@@ -179,7 +179,7 @@
     "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 2,
-    "_N$cacheMode": 0,
+    "_N$cacheMode": 1,
     "_id": ""
   },
   {
@@ -254,7 +254,7 @@
     "_spriteFrame": {
       "__uuid__": "bc864da8-ab7e-4d93-91f6-f61963bcb244"
     },
-    "_type": 0,
+    "_type": 1,
     "_sizeMode": 1,
     "_fillType": 0,
     "_fillCenter": {

@@ -96,6 +96,7 @@ export default class Login extends UIScene {
         this.toggle_Login.isChecked = isPhone;
         this.ed_code.node.parent.active = !isPhone;
         this.btn_forget.active = isPhone;
+        isPhone && (this.ed_loginPhoneNumber.string = StorageMgr.phone);
     }
 
     onClickRegister() {
@@ -201,6 +202,10 @@ export default class Login extends UIScene {
         let mobilePassword: string = this.ed_password.string;
         if (!RegexUtil.isValidPhoneNumber(mobile)) {
             UIMgr.showToast(LangMgr.sentence('e0006'));
+            return;
+        }
+        if (!mobilePassword) {
+            UIMgr.showToast(LangMgr.sentence('e0345'));
             return;
         }
         let code = this.ed_code.string;

@@ -42,7 +42,7 @@ export default class Main extends UIScene {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 const response = JSON.parse(xhr.responseText);
                 const ip = response.ip;
-                // cc.log(ip);
+                cc.log(ip);
             }
         };
         xhr.send();

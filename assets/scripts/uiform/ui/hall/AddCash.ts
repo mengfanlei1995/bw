@@ -1,0 +1,231 @@
+import SysConfig from "../../../data/SysConfig";
+import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import EventMgr from "../../../mgr/EventMgr";
+import LangMgr from "../../../mgr/LangMgr";
+import CommonUtil from "../../../utils/CommonUtil";
+import JsbUitl from "../../../utils/JsbUitl";
+import UIMgr from "../../UIMgr";
+import UIScreen from "../../UIScreen";
+import { DialogType } from "../common/DiaLog";
+
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class AddCash extends UIScreen {
+
+    @property({ tooltip: '按钮点击区域', type: cc.Node })
+    node_amount: cc.Node = null;
+
+    //活动
+    @property({ tooltip: '活动节点', type: cc.Node })
+    node_activity: cc.Node = null;
+
+    @property({ tooltip: 'totalGet', type: cc.Label })
+    lb_totalGet: cc.Label = null;
+
+    @property({ tooltip: 'addCash', type: cc.Label })
+    lb_addCash: cc.Label = null;
+
+    @property({ tooltip: 'cashBack', type: cc.Label })
+    lb_cashBack: cc.Label = null;
+
+    @property({ tooltip: 'bonus', type: cc.Label })
+    lb_bonus: cc.Label = null;
+
+    @property({ tooltip: 'time', type: cc.Label })
+    lb_time: cc.Label = null;
+
+    @property({ tooltip: 'btnAddCash', type: cc.Button })
+    btnAddCash: cc.Button = null;
+
+    @property({ tooltip: '活动角标图片', type: [cc.SpriteFrame] })
+    sp_ac: cc.SpriteFrame[] = [];
+
+    private amont: number = 0;
+    private activityId: string = "";
+    private amountArray: number[] = [100, 300, 500, 1000, 3000, 5000, 10000, 20000, 30000];
+    private rechargeInfoList = [];
+    private seconds: number = 0;
+    private curCheckIndex: number = 0;
+
+    protected onEnable(): void {
+        this.amont = this.amountArray[0];
+        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `addCash` })
+        EventMgr.on(HALL_EVT.DESK_RELOAD, this.init, this);
+        EventMgr.on(HALL_EVT.GOLD_CHANGE, this.init, this);
+    }
+
+    protected onDisable(): void {
+        EventMgr.off(HALL_EVT.DESK_RELOAD, this.init, this);
+        EventMgr.off(HALL_EVT.GOLD_CHANGE, this.init, this);
+    }
+
+    public onShow(param: any = { vipInto: false, vipLevel: 0 }): void {
+        this.getRechargeInfo(param);
+    }
+
+    init() {
+        this.getRechargeInfo();
+    }
+
+    /**是否已经获取过信息 */
+    private isLoad: boolean = false;
+
+    /**
+     * 初始化充值页面 相关信息
+     * @param param  vipInto 是否从vip界面打开的充值界面 vipLevel 从哪个vip等级进入的充值界面
+     */
+    async getRechargeInfo(param: any = { vipInto: false, vipLevel: 0 }) {
+        let { vipInto, vipLevel } = param;
+        let result = await NetMgr.inst.rechargeInfo({ vipInto: vipInto, vipLevel: vipLevel });
+        if (cc.isValid(this.node)) this.btnAddCash.interactable = false;
+        if (result && cc.isValid(this.node)) {
+            let { actLeftSeconds, rechargeInfoList, rechargeIndex } = result
+            this.seconds = actLeftSeconds;
+            this.rechargeInfoList = rechargeInfoList;
+            this.onClickCheckAmount(null, this.isLoad ? this.curCheckIndex : rechargeIndex >= 0 ? rechargeIndex : 1);
+            this.isLoad = true;
+            let node: cc.Node = this.node_amount;
+            this.updateTime();
+            this.schedule(this.updateTime, 1);
+            for (let i = 0; i < node.childrenCount; i++) {
+                let child: cc.Node = node.children[i];
+                let bonus: cc.Label = cc.find("bonus", child).getComponent(cc.Label);
+                bonus.string = `₹${rechargeInfoList[i].oriMoney / 100}`
+                this.amountArray[i] = rechargeInfoList[i].oriMoney / 100;
+                let activity: cc.Node = cc.find("activity", child);
+                if (rechargeInfoList[i].morePercent) {
+                    activity.active = true
+                    activity.getComponent(cc.Sprite).spriteFrame = this.sp_ac[+rechargeInfoList[i].showTag];
+                    let lb_activity: cc.Label = cc.find("bonus", activity).getComponent(cc.Label);
+                    lb_activity.string = `${rechargeInfoList[i].morePercent}%`
+                } else {
+                    activity.active = false
+                }
+                let get: cc.Node = cc.find("get", child);
+                let lb_get: cc.Label = cc.find("bonus", get).getComponent(cc.Label);
+                if (rechargeInfoList[i].extraMoney) {
+                    lb_get.string = `${LangMgr.sentence("e0338")} +${rechargeInfoList[i].extraMoney / 100}`
+                } else {
+                    lb_get.string = ""
+                }
+            }
+        }
+    }
+
+    /**
+     * 充值活动倒计时
+     * @returns 
+     */
+    updateTime() {
+        this.seconds--;
+        if (this.seconds <= 0) {
+            this.unschedule(this.updateTime);
+            this.lb_time.node.active = false;
+            return;
+        }
+        let runTime = this.seconds;
+        let day = Math.floor(runTime / 86400);
+        runTime = runTime % 86400;
+        let hour = Math.floor(runTime / 3600);
+        runTime = runTime % 3600;
+        let minute = Math.floor(runTime / 60);
+        runTime = runTime % 60;
+        let second = runTime;
+        this.lb_time.string = `${day > 0 ? "0" + day + "D" : ""} ${hour < 10 ? "0" + hour : hour}:${minute < 10 ? "0" + minute : minute}:${second < 10 ? "0" + second : second}`
+    }
+
+
+    onClickBack() {
+        this.hide();
+    }
+
+    onClickRecord() {
+        UIMgr.show('prefab/hall/MoneyRecords', 'MoneyRecords');
+    }
+
+    async onClickAddCash() {
+        EventMgr.emit(REPORT_EVT.CLICK, {
+            element_id: "btn_submit_byAddCash",
+            element_name: "提交充值界面的提交按钮",
+            element_type: "button",
+            element_position: '',
+            element_content: 'luckyDice',
+        });
+        let data = {
+            productId: 0,
+            amount: this.amont,
+            activityId: this.activityId
+        }
+        EventMgr.emit(REPORT_EVT.CLICK, {
+            element_id: "api_addcash",
+            element_name: "调用充值接口",
+            element_type: "button",
+            element_position: '',
+            element_content: '',
+        });
+        let result = await NetMgr.inst.recharge(data)
+        if (result) {
+            this.openUrl(result.url);
+        }
+        EventMgr.emit(REPORT_EVT.CLICK, {
+            element_id: result ? "api_addcash_success" : "api_addcash_fail",
+            element_name: "调用充值接口" + result ? "成功" : "失败",
+            element_type: "button",
+            element_position: '',
+            element_content: '',
+        });
+    }
+
+    /**打开充值链接 */
+    openUrl(url: string = "") {
+        if (cc.sys.isBrowser) {
+            cc.sys.openURL(url);
+        } else {
+            JsbUitl.openWebView(url);
+        }
+    }
+
+    /**金额选择 */
+    onClickCheckAmount(e: cc.Event.EventTouch, index: number) {
+        this.amont = this.amountArray[index];
+        this.curCheckIndex = index;
+        this.checkAmount(index);
+        this.updateActivityInfo(index)
+    }
+
+    /**更新选中金额信息 */
+    updateActivityInfo(index: number) {
+        let info = this.rechargeInfoList[index];
+        if (!info) {
+            this.getRechargeInfo();
+            UIMgr.showToast(LangMgr.sentence("e0000"));
+            return;
+        }
+        this.lb_addCash.string = `₹${this.amountArray[index]}`;
+        this.lb_cashBack.string = `₹${info.giveDeposit / 100}`;
+        this.lb_bonus.string = `₹${info.giveBonus / 100}`;
+        this.lb_totalGet.string = `₹${(info.totalGet + info.giveBonus) / 100}`;
+        this.activityId = info.activityId;
+    }
+
+    /**更新选中框 */
+    checkAmount(index: number) {
+        let node: cc.Node = this.node_amount;
+        for (let i = 0; i < node.childrenCount; i++) {
+            let child: cc.Node = node.children[i];
+            let checkmark: cc.Node = cc.find("checkmark", child);
+            checkmark.active = index == i;
+        }
+    }
+
+    onClickOpenTips() {
+        UIMgr.showDialog({
+            word: LangMgr.sentence('e0150'),
+            type: DialogType.OnlyOkBtn,
+            okTxt: 'Yes',
+            title: 'Details'
+        });
+    }
+
+}

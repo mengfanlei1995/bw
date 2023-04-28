@@ -1,0 +1,69 @@
+import LangMgr from "../../../mgr/LangMgr";
+import UIMgr from "../../UIMgr";
+
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class TaskItem extends cc.Component {
+
+    /**任务描述 */
+    @property(cc.Label)
+    lb_cname: cc.Label = null;
+
+    /**任务奖励金额 */
+    @property(cc.Label)
+    lb_bonus: cc.Label = null;
+
+    /**进度 */
+    @property(cc.Label)
+    lb_progress: cc.Label = null;
+
+    /**任务完成进度 */
+    @property(cc.Sprite)
+    sp_progress: cc.Sprite = null;
+
+    private data: TaskInfo = null;
+
+    private isLoad: boolean = false;
+
+    /**初始化任务UI */
+    async init(data: TaskInfo, index) {
+        if (!data) {
+            this.node.destroy();
+            return;
+        }
+        this.data = data;
+        this.lb_cname.string = data.title;
+        this.lb_bonus.string = `₹${data.awardAmount}`;
+        this.sp_progress.fillRange = data.processMin / data.processMax;
+        this.lb_progress.string = data.processMin + "/" + data.processMax
+        if (!this.isLoad) {
+            this.isLoad = true;
+            let root: cc.Node = cc.find("root", this.node);
+            cc.tween(root).delay(index * 0.1)
+                .to(0.5, { y: 0, opacity: 255 }, { easing: 'backOut' })
+                .call(() => {
+                    if (this.data.state == 2) {
+                        this.node.opacity = 155;
+                    }
+                })
+                .start();
+        }
+    }
+
+    /**领取任务 */
+    async onClickReceive() {
+        if (this.data.state == 0) {
+            UIMgr.showToast(LangMgr.sentence("e0038"))
+        } else if (this.data.state == 1) {
+            let result = await NetMgr.inst.dailybonusEvent({ eventId: this.data.id })
+            if (result) {
+                UIMgr.showToast(LangMgr.sentence("e0040"))
+                this.data.state = 2;
+                this.node.opacity = 155;
+            }
+        } else if (this.data.state == 2) {
+            UIMgr.showToast(LangMgr.sentence("e0039"))
+        }
+    }
+}

@@ -1,0 +1,207 @@
+import UserData from "../../../data/UserData";
+import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import EventMgr from "../../../mgr/EventMgr";
+import LangMgr from "../../../mgr/LangMgr";
+import StorageMgr from "../../../mgr/StorageMgr";
+import CommonUtil from "../../../utils/CommonUtil";
+import UIMgr from "../../UIMgr";
+import UIScreen from "../../UIScreen";
+import { DialogType } from "../common/DiaLog";
+
+const { ccclass, property } = cc._decorator;
+
+@ccclass
+export default class Withdraw extends UIScreen {
+
+    @property({ tooltip: '按钮点击区域', type: cc.Node })
+    node_amount: cc.Node = null;
+
+    @property({ tooltip: '银行卡号', type: cc.Label })
+    lb_bank: cc.Label = null;
+
+    @property({ tooltip: '提现次数', type: cc.Label })
+    lb_withdraw: cc.Label = null;
+
+    @property({ tooltip: '时间', type: cc.Label })
+    lb_time: cc.Label = null;
+
+    /**提现最小金额 */
+    private withdraw_min_money: number = 300;
+    private withdraw_max_money: number = 20000;
+
+    /**银行卡信息 */
+    private bankInfo: any = null;
+    private amount: number = 0;
+
+    /**提现审核金额 */
+    audit: number = 0;
+    /**提现费率比例 */
+    ratio: number = 0;
+
+    /**可选提现金额 */
+    private amountArray: number[] = [110, 300, 500, 1000, 3000, 5000, 10000, 30000];
+
+    private levelWithdraw = null;
+
+    protected onEnable(): void {
+        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `withdraw` });
+        this.initWithdrawInfo();
+    }
+
+    /** 
+    * 获取提现信息 刷新UI 
+    */
+    async initWithdrawInfo() {
+        let info = await NetMgr.inst.withdrawInfo()
+        if (info && cc.isValid(this.node)) {
+            let { audit, ratio, withdrawAmounts, bankInfo, vip } = info;
+            this.lb_withdraw.string = `${vip?.withdrawNumber}`;
+            this.lb_time.node.active = !vip?.withdrawNumber;
+            this.levelWithdraw = vip?.levelWithdraw;
+            if (!vip?.withdrawNumber) {
+                this.updateTime();
+                this.schedule(this.updateTime.bind(this), 1);
+            }
+            this.bankInfo = bankInfo;
+            if (bankInfo.accNo) {
+                this.lb_bank.string = bankInfo.accNo;
+            }
+            this.audit = +audit
+            this.ratio = +ratio
+            this.amountArray = withdrawAmounts
+            this.withdraw_min_money = withdrawAmounts[0];
+            this.withdraw_max_money = withdrawAmounts[withdrawAmounts.length - 1];
+            let node: cc.Node = this.node_amount;
+            for (let i = 0; i < node.childrenCount; i++) {
+                let child: cc.Node = node.children[i];
+                let bonus: cc.Label = cc.find("bonus", child).getComponent(cc.Label);
+                bonus.string = `₹${this.amountArray[i]}`
+            }
+        }
+    }
+
+    updateTime() {
+        let { hour, minute, second } = getNowTimeDate();
+        if (hour == 0 && minute == 0 && second == 0) {
+            this.unschedule(this.updateTime);
+            this.initWithdrawInfo();
+        }
+        this.lb_time.string = `${hour < 10 ? "0" + hour : hour}:${minute < 10 ? "0" + minute : minute}:${second < 10 ? "0" + second : second}`;
+    }
+
+    onClickBack() {
+        this.hide();
+    }
+
+    onClickRecord() {
+        UIMgr.show('prefab/hall/MoneyRecords', 'MoneyRecords');
+    }
+
+
+    /**提现 */
+    async onClickWithdraw() {
+        if (!StorageMgr.phone) {
+            SceneMgr.open(UIConfig.BindPhone.prefab, 1)
+            return;
+        }
+        if (!this.bankInfo || !this.bankInfo.accName || !this.bankInfo.accNo || !this.bankInfo.ifsc) {
+            SceneMgr.open(UIConfig.Bank.prefab)
+            return;
+        }
+        if (!this.amount || this.amount < this.withdraw_min_money) {
+            UIMgr.showToast(CommonUtil.format(LangMgr.sentence("e0034"), this.withdraw_min_money))
+            return;
+        }
+
+        if (this.amount > UserData.userInfo.walletInfo.withdrawBalance) {
+            UIMgr.showDialog({
+                word: CommonUtil.format(LangMgr.sentence('e0052'), this.amount),
+                type: DialogType.OnlyOkBtn
+            })
+            return;
+        }
+
+        EventMgr.emit(REPORT_EVT.CLICK, {
+            element_id: "api_withdraw",
+            element_name: "调用提现接口",
+            element_type: "button",
+            element_position: '',
+            element_content: '',
+        });
+
+        let result = await NetMgr.inst.withdraw({
+            amount: this.amount
+        })
+        if (result) {
+            this.initWithdrawInfo();
+            UIMgr.showToast(LangMgr.sentence("e0035"));
+        }
+        EventMgr.emit(REPORT_EVT.CLICK, {
+            element_id: result ? "api_withdraw_success" : "api_withdraw_fail",
+            element_name: "调用提现接口" + result ? "成功" : "失败",
+            element_type: "button",
+            element_position: '',
+            element_content: '',
+        });
+    }
+
+    /**选中提现金额 */
+    onClickCheckAmount(e: cc.Event.EventTouch, index: number) {
+        this.amount = this.amountArray[index];
+        this.checkAmount(index);
+    }
+
+    checkAmount(index: number) {
+        let node: cc.Node = this.node_amount;
+        for (let i = 0; i < node.childrenCount; i++) {
+            let child: cc.Node = node.children[i];
+            let checkmark: cc.Node = cc.find("checkmark", child);
+            checkmark.active = index == i
+        }
+    }
+
+    onChangeHandler() {
+        let amount: number = this.amount;
+        if (amount >= this.withdraw_max_money) {
+            amount = this.withdraw_max_money
+            this.amount = amount;
+        }
+        for (let i = 0; i < this.amountArray.length; i++) {
+            if (this.amountArray[i] == amount) {
+                this.checkAmount(i);
+                break;
+            }
+            if (i == this.amountArray.length - 1) {
+                this.checkAmount(-1);
+            }
+        }
+    }
+
+    /**vip介绍界面 */
+    onClickHelp() {
+        WindowMgr.open(UIConfig.Description.prefab, this.levelWithdraw);
+    }
+
+    /**打开vip界面 */
+    onClickVip() {
+        FixedMgr.open(UIConfig.VipPrivileges.prefab)
+    }
+
+    /**绑定银行卡 */
+    onClickAddCard() {
+        if (!StorageMgr.phone) {
+            SceneMgr.open(UIConfig.BindPhone.prefab, 1)
+            return;
+        }
+        SceneMgr.open(UIConfig.Bank.prefab)
+    }
+
+}
+
+function getNowTimeDate() {
+    let date = new Date();
+    let hour: number = 23 - date.getHours();
+    let minute: number = 60 - date.getMinutes();
+    let second: number = 60 - date.getSeconds();
+    return { hour, minute, second };
+}

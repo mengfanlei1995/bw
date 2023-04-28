@@ -1,5 +1,6 @@
 import SysConfig from "../../../data/SysConfig";
 import SendMgr from "../../../net/SendMgr";
+import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
 import GameIcon from "../common/GameIcon";
 
@@ -39,6 +40,10 @@ export default class Home extends UIScreen {
             node.getComponent(GameIcon).init(index, value);
             this.gameContent.addChild(node);
         })
+    }
+
+    onClickAddCash() {
+        UIMgr.show('prefab/hall/AddCash', 'AddCash');
     }
 
 }

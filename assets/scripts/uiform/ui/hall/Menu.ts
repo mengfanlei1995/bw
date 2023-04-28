@@ -29,19 +29,19 @@ export default class Menu extends UIScreen {
         this.setMenuIndex(+index);
     }
 
-    setMenuIndex(index: number) {
+    async setMenuIndex(index: number) {
         if (index == this.curIndex) return;
-        let uiName: string[] = ['Home', '', '', '', 'Mine'];
-        if (!uiName[index]) return;
-        UIMgr.show(`prefab/hall/${uiName[index]}`, uiName[index]);
-        UIMgr.hide(uiName[this.curIndex]);
-        this.curIndex = index;
         let color: cc.Color[] = [new cc.Color(255, 193, 147, 255), new cc.Color(147, 183, 255, 255)];
         this.toggle_menu[index].isChecked = true;
         for (let i = 0; i < this.toggle_menu.length; i++) {
             let text: cc.Node = this.toggle_menu[i].node.children[2];
             text.color = color[i == index ? 0 : 1];
         }
+        let uiName: string[] = ['Home', 'DaliyBonus', 'Rank', 'Email', 'Mine'];
+        if (!uiName[index]) return;
+        await UIMgr.show(`prefab/hall/${uiName[index]}`, uiName[index]);
+        UIMgr.hide(uiName[this.curIndex]);
+        this.curIndex = index;
     }
 
 }

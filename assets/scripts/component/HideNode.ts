@@ -7,7 +7,7 @@ const { ccclass, property } = cc._decorator;
 export default class HideNode extends cc.Component {
 
     protected onLoad(): void {
-        this.node.active = !SysConfig.isGreen;
+        this.node.active = SysConfig.isGreen;
     }
 
 }

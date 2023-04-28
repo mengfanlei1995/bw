@@ -109,17 +109,7 @@ export default class UIGame extends UIScene {
         return LongUtil.longToNumber(long);
     }
 
-    fixedBg(root: cc.Node) {
-        let distance: number = SysConfig?.systemInfo?.isPieScreen ? 50 : 0;
-        if (cc.isValid(root) && distance) {
-            let bg: cc.Node = root.children[0]
-            if (bg.getComponent(cc.Widget).enabled)
-                bg.getComponent(cc.Widget).top = -50;
-        }
-    }
-
     _start(): void {
-        // this.fixedBg(this.node);
         this.isBundle = 1;
         this.statusTipSkel.node.zIndex = 3;
         this.statusWaitingSkel.node.zIndex = 3;
@@ -639,14 +629,14 @@ export default class UIGame extends UIScene {
     }
 
     onAddCashClick(e: cc.Event.EventTouch) {
-        // FixedMgr.open(UIConfig.AddCash.prefab)
-        // EventMgr.emit(REPORT_EVT.CLICK, {
-        //     element_id: "btn_addcash_byGame",
-        //     element_name: "游戏房间中间充值按钮",
-        //     element_type: "button",
-        //     element_position: '',
-        //     element_content: 'diceThree',
-        // });
+        UIMgr.show('prefab/hall/AddCash', 'AddCash');
+        EventMgr.emit(REPORT_EVT.CLICK, {
+            element_id: "btn_addcash_byGame",
+            element_name: "游戏房间中间充值按钮",
+            element_type: "button",
+            element_position: '',
+            element_content: this.gameName,
+        });
     }
 
     /**
@@ -657,8 +647,8 @@ export default class UIGame extends UIScene {
      * @returns cc.Node
      */
     public productChipsNode(value: number, areaType: string, betNums: number[]): cc.Node {
-        let node: cc.Node = PoolMgr.getNode(this.chipPrefab)
-        node.getComponent('Chip').init(value, areaType, betNums)
+        let node: cc.Node = PoolMgr.getNode(this.chipPrefab);
+        node.getComponent('Chip').init(value, areaType, betNums);
         return node;
     }
 

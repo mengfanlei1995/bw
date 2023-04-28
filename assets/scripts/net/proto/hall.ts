@@ -1,3 +1,682 @@
+export interface RedDotVO {
+  redDot?: boolean;
+}
+
+export function encodeRedDotVO(message: RedDotVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeRedDotVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeRedDotVO(message: RedDotVO, bb: ByteBuffer): void {
+  // optional bool redDot = 1;
+  let $redDot = message.redDot;
+  if ($redDot !== undefined) {
+    writeVarint32(bb, 8);
+    writeByte(bb, $redDot ? 1 : 0);
+  }
+}
+
+export function decodeRedDotVO(binary: Uint8Array): RedDotVO {
+  return _decodeRedDotVO(wrapByteBuffer(binary));
+}
+
+function _decodeRedDotVO(bb: ByteBuffer): RedDotVO {
+  let message: RedDotVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional bool redDot = 1;
+      case 1: {
+        message.redDot = !!readByte(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferTop20VO {
+  headPic?: string;
+  nickName?: string;
+  reward?: Long;
+  rate?: number;
+}
+
+export function encodeReferTop20VO(message: ReferTop20VO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferTop20VO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferTop20VO(message: ReferTop20VO, bb: ByteBuffer): void {
+  // optional string headPic = 1;
+  let $headPic = message.headPic;
+  if ($headPic !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $headPic);
+  }
+
+  // optional string nickName = 2;
+  let $nickName = message.nickName;
+  if ($nickName !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $nickName);
+  }
+
+  // optional int64 reward = 3;
+  let $reward = message.reward;
+  if ($reward !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, $reward);
+  }
+
+  // optional double rate = 4;
+  let $rate = message.rate;
+  if ($rate !== undefined) {
+    writeVarint32(bb, 33);
+    writeDouble(bb, $rate);
+  }
+}
+
+export function decodeReferTop20VO(binary: Uint8Array): ReferTop20VO {
+  return _decodeReferTop20VO(wrapByteBuffer(binary));
+}
+
+function _decodeReferTop20VO(bb: ByteBuffer): ReferTop20VO {
+  let message: ReferTop20VO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string headPic = 1;
+      case 1: {
+        message.headPic = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string nickName = 2;
+      case 2: {
+        message.nickName = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int64 reward = 3;
+      case 3: {
+        message.reward = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional double rate = 4;
+      case 4: {
+        message.rate = readDouble(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface MailOptDTO {
+  id?: Long;
+}
+
+export function encodeMailOptDTO(message: MailOptDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeMailOptDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeMailOptDTO(message: MailOptDTO, bb: ByteBuffer): void {
+  // optional int64 id = 1;
+  let $id = message.id;
+  if ($id !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $id);
+  }
+}
+
+export function decodeMailOptDTO(binary: Uint8Array): MailOptDTO {
+  return _decodeMailOptDTO(wrapByteBuffer(binary));
+}
+
+function _decodeMailOptDTO(bb: ByteBuffer): MailOptDTO {
+  let message: MailOptDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 id = 1;
+      case 1: {
+        message.id = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferInvitationTotalVO {
+  todayInvited?: number;
+  totalInvited?: number;
+  childList?: ReferInvitationTotalChildVO[];
+  total?: Long;
+}
+
+export function encodeReferInvitationTotalVO(message: ReferInvitationTotalVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferInvitationTotalVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferInvitationTotalVO(message: ReferInvitationTotalVO, bb: ByteBuffer): void {
+  // optional int32 todayInvited = 1;
+  let $todayInvited = message.todayInvited;
+  if ($todayInvited !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($todayInvited));
+  }
+
+  // optional int32 totalInvited = 2;
+  let $totalInvited = message.totalInvited;
+  if ($totalInvited !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($totalInvited));
+  }
+
+  // repeated ReferInvitationTotalChildVO childList = 3;
+  let array$childList = message.childList;
+  if (array$childList !== undefined) {
+    for (let value of array$childList) {
+      writeVarint32(bb, 26);
+      let nested = popByteBuffer();
+      _encodeReferInvitationTotalChildVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional int64 total = 4;
+  let $total = message.total;
+  if ($total !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, $total);
+  }
+}
+
+export function decodeReferInvitationTotalVO(binary: Uint8Array): ReferInvitationTotalVO {
+  return _decodeReferInvitationTotalVO(wrapByteBuffer(binary));
+}
+
+function _decodeReferInvitationTotalVO(bb: ByteBuffer): ReferInvitationTotalVO {
+  let message: ReferInvitationTotalVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 todayInvited = 1;
+      case 1: {
+        message.todayInvited = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 totalInvited = 2;
+      case 2: {
+        message.totalInvited = readVarint32(bb);
+        break;
+      }
+
+      // repeated ReferInvitationTotalChildVO childList = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.childList || (message.childList = []);
+        values.push(_decodeReferInvitationTotalChildVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional int64 total = 4;
+      case 4: {
+        message.total = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferTotalPageDTO {
+  relation?: number;
+  pageNum?: number;
+}
+
+export function encodeReferTotalPageDTO(message: ReferTotalPageDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferTotalPageDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferTotalPageDTO(message: ReferTotalPageDTO, bb: ByteBuffer): void {
+  // optional int32 relation = 1;
+  let $relation = message.relation;
+  if ($relation !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($relation));
+  }
+
+  // optional int32 pageNum = 2;
+  let $pageNum = message.pageNum;
+  if ($pageNum !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($pageNum));
+  }
+}
+
+export function decodeReferTotalPageDTO(binary: Uint8Array): ReferTotalPageDTO {
+  return _decodeReferTotalPageDTO(wrapByteBuffer(binary));
+}
+
+function _decodeReferTotalPageDTO(bb: ByteBuffer): ReferTotalPageDTO {
+  let message: ReferTotalPageDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 relation = 1;
+      case 1: {
+        message.relation = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 pageNum = 2;
+      case 2: {
+        message.pageNum = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferRewardDateVO {
+  time?: Long;
+  totalBonus?: Long;
+  totalInviteBonus?: Long;
+  totalDepositBonus?: Long;
+}
+
+export function encodeReferRewardDateVO(message: ReferRewardDateVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferRewardDateVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferRewardDateVO(message: ReferRewardDateVO, bb: ByteBuffer): void {
+  // optional int64 time = 1;
+  let $time = message.time;
+  if ($time !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $time);
+  }
+
+  // optional int64 totalBonus = 2;
+  let $totalBonus = message.totalBonus;
+  if ($totalBonus !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, $totalBonus);
+  }
+
+  // optional int64 totalInviteBonus = 3;
+  let $totalInviteBonus = message.totalInviteBonus;
+  if ($totalInviteBonus !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, $totalInviteBonus);
+  }
+
+  // optional int64 totalDepositBonus = 4;
+  let $totalDepositBonus = message.totalDepositBonus;
+  if ($totalDepositBonus !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, $totalDepositBonus);
+  }
+}
+
+export function decodeReferRewardDateVO(binary: Uint8Array): ReferRewardDateVO {
+  return _decodeReferRewardDateVO(wrapByteBuffer(binary));
+}
+
+function _decodeReferRewardDateVO(bb: ByteBuffer): ReferRewardDateVO {
+  let message: ReferRewardDateVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 time = 1;
+      case 1: {
+        message.time = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 totalBonus = 2;
+      case 2: {
+        message.totalBonus = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 totalInviteBonus = 3;
+      case 3: {
+        message.totalInviteBonus = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 totalDepositBonus = 4;
+      case 4: {
+        message.totalDepositBonus = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface MailVO {
+  id?: Long;
+  title?: string;
+  content?: string;
+  sendTime?: string;
+  read?: boolean;
+  attachments?: MailAttachmentVO[];
+  attachmentState?: number;
+}
+
+export function encodeMailVO(message: MailVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeMailVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeMailVO(message: MailVO, bb: ByteBuffer): void {
+  // optional int64 id = 1;
+  let $id = message.id;
+  if ($id !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $id);
+  }
+
+  // optional string title = 2;
+  let $title = message.title;
+  if ($title !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $title);
+  }
+
+  // optional string content = 3;
+  let $content = message.content;
+  if ($content !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $content);
+  }
+
+  // optional string sendTime = 4;
+  let $sendTime = message.sendTime;
+  if ($sendTime !== undefined) {
+    writeVarint32(bb, 34);
+    writeString(bb, $sendTime);
+  }
+
+  // optional bool read = 5;
+  let $read = message.read;
+  if ($read !== undefined) {
+    writeVarint32(bb, 40);
+    writeByte(bb, $read ? 1 : 0);
+  }
+
+  // repeated MailAttachmentVO attachments = 6;
+  let array$attachments = message.attachments;
+  if (array$attachments !== undefined) {
+    for (let value of array$attachments) {
+      writeVarint32(bb, 50);
+      let nested = popByteBuffer();
+      _encodeMailAttachmentVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional int32 attachmentState = 7;
+  let $attachmentState = message.attachmentState;
+  if ($attachmentState !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($attachmentState));
+  }
+}
+
+export function decodeMailVO(binary: Uint8Array): MailVO {
+  return _decodeMailVO(wrapByteBuffer(binary));
+}
+
+function _decodeMailVO(bb: ByteBuffer): MailVO {
+  let message: MailVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 id = 1;
+      case 1: {
+        message.id = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional string title = 2;
+      case 2: {
+        message.title = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string content = 3;
+      case 3: {
+        message.content = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string sendTime = 4;
+      case 4: {
+        message.sendTime = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional bool read = 5;
+      case 5: {
+        message.read = !!readByte(bb);
+        break;
+      }
+
+      // repeated MailAttachmentVO attachments = 6;
+      case 6: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.attachments || (message.attachments = []);
+        values.push(_decodeMailAttachmentVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional int32 attachmentState = 7;
+      case 7: {
+        message.attachmentState = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferRuleVO {
+  rank?: string;
+  rate?: number;
+}
+
+export function encodeReferRuleVO(message: ReferRuleVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferRuleVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferRuleVO(message: ReferRuleVO, bb: ByteBuffer): void {
+  // optional string rank = 1;
+  let $rank = message.rank;
+  if ($rank !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $rank);
+  }
+
+  // optional double rate = 2;
+  let $rate = message.rate;
+  if ($rate !== undefined) {
+    writeVarint32(bb, 17);
+    writeDouble(bb, $rate);
+  }
+}
+
+export function decodeReferRuleVO(binary: Uint8Array): ReferRuleVO {
+  return _decodeReferRuleVO(wrapByteBuffer(binary));
+}
+
+function _decodeReferRuleVO(bb: ByteBuffer): ReferRuleVO {
+  let message: ReferRuleVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string rank = 1;
+      case 1: {
+        message.rank = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional double rate = 2;
+      case 2: {
+        message.rate = readDouble(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferRankTop20DTO {
+  type?: number;
+}
+
+export function encodeReferRankTop20DTO(message: ReferRankTop20DTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferRankTop20DTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferRankTop20DTO(message: ReferRankTop20DTO, bb: ByteBuffer): void {
+  // optional int32 type = 1;
+  let $type = message.type;
+  if ($type !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($type));
+  }
+}
+
+export function decodeReferRankTop20DTO(binary: Uint8Array): ReferRankTop20DTO {
+  return _decodeReferRankTop20DTO(wrapByteBuffer(binary));
+}
+
+function _decodeReferRankTop20DTO(bb: ByteBuffer): ReferRankTop20DTO {
+  let message: ReferRankTop20DTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 type = 1;
+      case 1: {
+        message.type = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
 export interface LoginMobileSmsVO {
   smsCode?: string;
 }
@@ -34,6 +713,142 @@ function _decodeLoginMobileSmsVO(bb: ByteBuffer): LoginMobileSmsVO {
       // optional string smsCode = 1;
       case 1: {
         message.smsCode = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface HomepageGameDTO {
+  productId?: number;
+  appVersion?: string;
+  appResVersion?: number;
+}
+
+export function encodeHomepageGameDTO(message: HomepageGameDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeHomepageGameDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeHomepageGameDTO(message: HomepageGameDTO, bb: ByteBuffer): void {
+  // optional int32 productId = 1;
+  let $productId = message.productId;
+  if ($productId !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($productId));
+  }
+
+  // optional string appVersion = 2;
+  let $appVersion = message.appVersion;
+  if ($appVersion !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $appVersion);
+  }
+
+  // optional int32 appResVersion = 3;
+  let $appResVersion = message.appResVersion;
+  if ($appResVersion !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($appResVersion));
+  }
+}
+
+export function decodeHomepageGameDTO(binary: Uint8Array): HomepageGameDTO {
+  return _decodeHomepageGameDTO(wrapByteBuffer(binary));
+}
+
+function _decodeHomepageGameDTO(bb: ByteBuffer): HomepageGameDTO {
+  let message: HomepageGameDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 productId = 1;
+      case 1: {
+        message.productId = readVarint32(bb);
+        break;
+      }
+
+      // optional string appVersion = 2;
+      case 2: {
+        message.appVersion = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 appResVersion = 3;
+      case 3: {
+        message.appResVersion = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface MailPageDTO {
+  pageNo?: number;
+  pageCount?: number;
+}
+
+export function encodeMailPageDTO(message: MailPageDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeMailPageDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeMailPageDTO(message: MailPageDTO, bb: ByteBuffer): void {
+  // optional int32 pageNo = 1;
+  let $pageNo = message.pageNo;
+  if ($pageNo !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($pageNo));
+  }
+
+  // optional int32 pageCount = 2;
+  let $pageCount = message.pageCount;
+  if ($pageCount !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($pageCount));
+  }
+}
+
+export function decodeMailPageDTO(binary: Uint8Array): MailPageDTO {
+  return _decodeMailPageDTO(wrapByteBuffer(binary));
+}
+
+function _decodeMailPageDTO(bb: ByteBuffer): MailPageDTO {
+  let message: MailPageDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 pageNo = 1;
+      case 1: {
+        message.pageNo = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 pageCount = 2;
+      case 2: {
+        message.pageCount = readVarint32(bb);
         break;
       }
 
@@ -358,223 +1173,63 @@ function _decodeLoginDTO(bb: ByteBuffer): LoginDTO {
   return message;
 }
 
-export interface HomepageUserInfoResponse {
-  bonus?: number;
-  vipLevel?: number;
-  club?: number;
-  recharge?: boolean;
-  brokeCoupon?: boolean;
-  invitationCode?: string;
+export interface TransactionVO {
+  id?: string;
+  time?: Long;
+  title?: string;
+  amount?: Long;
+  withdrawAmount?: Long;
 }
 
-export function encodeHomepageUserInfoResponse(message: HomepageUserInfoResponse): Uint8Array {
+export function encodeTransactionVO(message: TransactionVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeHomepageUserInfoResponse(message, bb);
+  _encodeTransactionVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeHomepageUserInfoResponse(message: HomepageUserInfoResponse, bb: ByteBuffer): void {
-  // optional double bonus = 1;
-  let $bonus = message.bonus;
-  if ($bonus !== undefined) {
-    writeVarint32(bb, 9);
-    writeDouble(bb, $bonus);
-  }
-
-  // optional int32 vipLevel = 2;
-  let $vipLevel = message.vipLevel;
-  if ($vipLevel !== undefined) {
-    writeVarint32(bb, 16);
-    writeVarint64(bb, intToLong($vipLevel));
-  }
-
-  // optional int32 club = 3;
-  let $club = message.club;
-  if ($club !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($club));
-  }
-
-  // optional bool recharge = 4;
-  let $recharge = message.recharge;
-  if ($recharge !== undefined) {
-    writeVarint32(bb, 32);
-    writeByte(bb, $recharge ? 1 : 0);
-  }
-
-  // optional bool brokeCoupon = 5;
-  let $brokeCoupon = message.brokeCoupon;
-  if ($brokeCoupon !== undefined) {
-    writeVarint32(bb, 40);
-    writeByte(bb, $brokeCoupon ? 1 : 0);
-  }
-
-  // optional string invitationCode = 6;
-  let $invitationCode = message.invitationCode;
-  if ($invitationCode !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $invitationCode);
-  }
-}
-
-export function decodeHomepageUserInfoResponse(binary: Uint8Array): HomepageUserInfoResponse {
-  return _decodeHomepageUserInfoResponse(wrapByteBuffer(binary));
-}
-
-function _decodeHomepageUserInfoResponse(bb: ByteBuffer): HomepageUserInfoResponse {
-  let message: HomepageUserInfoResponse = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional double bonus = 1;
-      case 1: {
-        message.bonus = readDouble(bb);
-        break;
-      }
-
-      // optional int32 vipLevel = 2;
-      case 2: {
-        message.vipLevel = readVarint32(bb);
-        break;
-      }
-
-      // optional int32 club = 3;
-      case 3: {
-        message.club = readVarint32(bb);
-        break;
-      }
-
-      // optional bool recharge = 4;
-      case 4: {
-        message.recharge = !!readByte(bb);
-        break;
-      }
-
-      // optional bool brokeCoupon = 5;
-      case 5: {
-        message.brokeCoupon = !!readByte(bb);
-        break;
-      }
-
-      // optional string invitationCode = 6;
-      case 6: {
-        message.invitationCode = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface HomepageGameDTO {
-  productId?: number;
-  appVersion?: string;
-  appResVersion?: number;
-}
-
-export function encodeHomepageGameDTO(message: HomepageGameDTO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeHomepageGameDTO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeHomepageGameDTO(message: HomepageGameDTO, bb: ByteBuffer): void {
-  // optional int32 productId = 1;
-  let $productId = message.productId;
-  if ($productId !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($productId));
-  }
-
-  // optional string appVersion = 2;
-  let $appVersion = message.appVersion;
-  if ($appVersion !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $appVersion);
-  }
-
-  // optional int32 appResVersion = 3;
-  let $appResVersion = message.appResVersion;
-  if ($appResVersion !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, intToLong($appResVersion));
-  }
-}
-
-export function decodeHomepageGameDTO(binary: Uint8Array): HomepageGameDTO {
-  return _decodeHomepageGameDTO(wrapByteBuffer(binary));
-}
-
-function _decodeHomepageGameDTO(bb: ByteBuffer): HomepageGameDTO {
-  let message: HomepageGameDTO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 productId = 1;
-      case 1: {
-        message.productId = readVarint32(bb);
-        break;
-      }
-
-      // optional string appVersion = 2;
-      case 2: {
-        message.appVersion = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 appResVersion = 3;
-      case 3: {
-        message.appResVersion = readVarint32(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface UserUpdateNicknameDTO {
-  nickname?: string;
-}
-
-export function encodeUserUpdateNicknameDTO(message: UserUpdateNicknameDTO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeUserUpdateNicknameDTO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeUserUpdateNicknameDTO(message: UserUpdateNicknameDTO, bb: ByteBuffer): void {
-  // optional string nickname = 1;
-  let $nickname = message.nickname;
-  if ($nickname !== undefined) {
+function _encodeTransactionVO(message: TransactionVO, bb: ByteBuffer): void {
+  // optional string id = 1;
+  let $id = message.id;
+  if ($id !== undefined) {
     writeVarint32(bb, 10);
-    writeString(bb, $nickname);
+    writeString(bb, $id);
+  }
+
+  // optional int64 time = 2;
+  let $time = message.time;
+  if ($time !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, $time);
+  }
+
+  // optional string title = 3;
+  let $title = message.title;
+  if ($title !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $title);
+  }
+
+  // optional int64 amount = 4;
+  let $amount = message.amount;
+  if ($amount !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, $amount);
+  }
+
+  // optional int64 withdrawAmount = 5;
+  let $withdrawAmount = message.withdrawAmount;
+  if ($withdrawAmount !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, $withdrawAmount);
   }
 }
 
-export function decodeUserUpdateNicknameDTO(binary: Uint8Array): UserUpdateNicknameDTO {
-  return _decodeUserUpdateNicknameDTO(wrapByteBuffer(binary));
+export function decodeTransactionVO(binary: Uint8Array): TransactionVO {
+  return _decodeTransactionVO(wrapByteBuffer(binary));
 }
 
-function _decodeUserUpdateNicknameDTO(bb: ByteBuffer): UserUpdateNicknameDTO {
-  let message: UserUpdateNicknameDTO = {} as any;
+function _decodeTransactionVO(bb: ByteBuffer): TransactionVO {
+  let message: TransactionVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -583,9 +1238,375 @@ function _decodeUserUpdateNicknameDTO(bb: ByteBuffer): UserUpdateNicknameDTO {
       case 0:
         break end_of_message;
 
-      // optional string nickname = 1;
+      // optional string id = 1;
       case 1: {
-        message.nickname = readString(bb, readVarint32(bb));
+        message.id = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int64 time = 2;
+      case 2: {
+        message.time = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional string title = 3;
+      case 3: {
+        message.title = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int64 amount = 4;
+      case 4: {
+        message.amount = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 withdrawAmount = 5;
+      case 5: {
+        message.withdrawAmount = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface TimezoneTransactionVO {
+  offset?: number;
+  total?: Long;
+}
+
+export function encodeTimezoneTransactionVO(message: TimezoneTransactionVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeTimezoneTransactionVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeTimezoneTransactionVO(message: TimezoneTransactionVO, bb: ByteBuffer): void {
+  // optional int32 offset = 1;
+  let $offset = message.offset;
+  if ($offset !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($offset));
+  }
+
+  // optional int64 total = 2;
+  let $total = message.total;
+  if ($total !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, $total);
+  }
+}
+
+export function decodeTimezoneTransactionVO(binary: Uint8Array): TimezoneTransactionVO {
+  return _decodeTimezoneTransactionVO(wrapByteBuffer(binary));
+}
+
+function _decodeTimezoneTransactionVO(bb: ByteBuffer): TimezoneTransactionVO {
+  let message: TimezoneTransactionVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 offset = 1;
+      case 1: {
+        message.offset = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 total = 2;
+      case 2: {
+        message.total = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferInvitationUrlVO {
+  title?: string;
+  url?: string;
+}
+
+export function encodeReferInvitationUrlVO(message: ReferInvitationUrlVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferInvitationUrlVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferInvitationUrlVO(message: ReferInvitationUrlVO, bb: ByteBuffer): void {
+  // optional string title = 1;
+  let $title = message.title;
+  if ($title !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $title);
+  }
+
+  // optional string url = 2;
+  let $url = message.url;
+  if ($url !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $url);
+  }
+}
+
+export function decodeReferInvitationUrlVO(binary: Uint8Array): ReferInvitationUrlVO {
+  return _decodeReferInvitationUrlVO(wrapByteBuffer(binary));
+}
+
+function _decodeReferInvitationUrlVO(bb: ByteBuffer): ReferInvitationUrlVO {
+  let message: ReferInvitationUrlVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string title = 1;
+      case 1: {
+        message.title = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string url = 2;
+      case 2: {
+        message.url = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface PictureResponse {
+  id?: number;
+  pictureUrl?: string;
+  skipPage?: string;
+  skipType?: number;
+  activityId?: string;
+  skipData?: string;
+  skipParams?: string;
+  redDot?: boolean;
+}
+
+export function encodePictureResponse(message: PictureResponse): Uint8Array {
+  let bb = popByteBuffer();
+  _encodePictureResponse(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodePictureResponse(message: PictureResponse, bb: ByteBuffer): void {
+  // optional int32 id = 1;
+  let $id = message.id;
+  if ($id !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($id));
+  }
+
+  // optional string pictureUrl = 2;
+  let $pictureUrl = message.pictureUrl;
+  if ($pictureUrl !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $pictureUrl);
+  }
+
+  // optional string skipPage = 3;
+  let $skipPage = message.skipPage;
+  if ($skipPage !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $skipPage);
+  }
+
+  // optional int32 skipType = 4;
+  let $skipType = message.skipType;
+  if ($skipType !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($skipType));
+  }
+
+  // optional string activityId = 5;
+  let $activityId = message.activityId;
+  if ($activityId !== undefined) {
+    writeVarint32(bb, 42);
+    writeString(bb, $activityId);
+  }
+
+  // optional string skipData = 6;
+  let $skipData = message.skipData;
+  if ($skipData !== undefined) {
+    writeVarint32(bb, 50);
+    writeString(bb, $skipData);
+  }
+
+  // optional string skipParams = 7;
+  let $skipParams = message.skipParams;
+  if ($skipParams !== undefined) {
+    writeVarint32(bb, 58);
+    writeString(bb, $skipParams);
+  }
+
+  // optional bool redDot = 8;
+  let $redDot = message.redDot;
+  if ($redDot !== undefined) {
+    writeVarint32(bb, 64);
+    writeByte(bb, $redDot ? 1 : 0);
+  }
+}
+
+export function decodePictureResponse(binary: Uint8Array): PictureResponse {
+  return _decodePictureResponse(wrapByteBuffer(binary));
+}
+
+function _decodePictureResponse(bb: ByteBuffer): PictureResponse {
+  let message: PictureResponse = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 id = 1;
+      case 1: {
+        message.id = readVarint32(bb);
+        break;
+      }
+
+      // optional string pictureUrl = 2;
+      case 2: {
+        message.pictureUrl = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string skipPage = 3;
+      case 3: {
+        message.skipPage = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 skipType = 4;
+      case 4: {
+        message.skipType = readVarint32(bb);
+        break;
+      }
+
+      // optional string activityId = 5;
+      case 5: {
+        message.activityId = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string skipData = 6;
+      case 6: {
+        message.skipData = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string skipParams = 7;
+      case 7: {
+        message.skipParams = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional bool redDot = 8;
+      case 8: {
+        message.redDot = !!readByte(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface MailAttachmentVO {
+  id?: Long;
+  type?: string;
+  amount?: Long;
+}
+
+export function encodeMailAttachmentVO(message: MailAttachmentVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeMailAttachmentVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeMailAttachmentVO(message: MailAttachmentVO, bb: ByteBuffer): void {
+  // optional int64 id = 1;
+  let $id = message.id;
+  if ($id !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $id);
+  }
+
+  // optional string type = 2;
+  let $type = message.type;
+  if ($type !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $type);
+  }
+
+  // optional int64 amount = 3;
+  let $amount = message.amount;
+  if ($amount !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, $amount);
+  }
+}
+
+export function decodeMailAttachmentVO(binary: Uint8Array): MailAttachmentVO {
+  return _decodeMailAttachmentVO(wrapByteBuffer(binary));
+}
+
+function _decodeMailAttachmentVO(bb: ByteBuffer): MailAttachmentVO {
+  let message: MailAttachmentVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 id = 1;
+      case 1: {
+        message.id = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional string type = 2;
+      case 2: {
+        message.type = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int64 amount = 3;
+      case 3: {
+        message.amount = readVarint64(bb, /* unsigned */ false);
         break;
       }
 
@@ -633,6 +1654,413 @@ function _decodeUserUpdateHeadPicDTO(bb: ByteBuffer): UserUpdateHeadPicDTO {
       // optional string headpic = 1;
       case 1: {
         message.headpic = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LoginWalletVO {
+  depositBalance?: Long;
+  withdrawBalance?: Long;
+  totalCashBalance?: Long;
+  freeBalance?: Long;
+}
+
+export function encodeLoginWalletVO(message: LoginWalletVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLoginWalletVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLoginWalletVO(message: LoginWalletVO, bb: ByteBuffer): void {
+  // optional int64 depositBalance = 1;
+  let $depositBalance = message.depositBalance;
+  if ($depositBalance !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $depositBalance);
+  }
+
+  // optional int64 withdrawBalance = 2;
+  let $withdrawBalance = message.withdrawBalance;
+  if ($withdrawBalance !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, $withdrawBalance);
+  }
+
+  // optional int64 totalCashBalance = 3;
+  let $totalCashBalance = message.totalCashBalance;
+  if ($totalCashBalance !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, $totalCashBalance);
+  }
+
+  // optional int64 freeBalance = 4;
+  let $freeBalance = message.freeBalance;
+  if ($freeBalance !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, $freeBalance);
+  }
+}
+
+export function decodeLoginWalletVO(binary: Uint8Array): LoginWalletVO {
+  return _decodeLoginWalletVO(wrapByteBuffer(binary));
+}
+
+function _decodeLoginWalletVO(bb: ByteBuffer): LoginWalletVO {
+  let message: LoginWalletVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 depositBalance = 1;
+      case 1: {
+        message.depositBalance = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 withdrawBalance = 2;
+      case 2: {
+        message.withdrawBalance = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 totalCashBalance = 3;
+      case 3: {
+        message.totalCashBalance = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 freeBalance = 4;
+      case 4: {
+        message.freeBalance = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface HomepageGameVO {
+  games?: HomepageGamesResponse[];
+}
+
+export function encodeHomepageGameVO(message: HomepageGameVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeHomepageGameVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeHomepageGameVO(message: HomepageGameVO, bb: ByteBuffer): void {
+  // repeated HomepageGamesResponse games = 1;
+  let array$games = message.games;
+  if (array$games !== undefined) {
+    for (let value of array$games) {
+      writeVarint32(bb, 10);
+      let nested = popByteBuffer();
+      _encodeHomepageGamesResponse(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeHomepageGameVO(binary: Uint8Array): HomepageGameVO {
+  return _decodeHomepageGameVO(wrapByteBuffer(binary));
+}
+
+function _decodeHomepageGameVO(bb: ByteBuffer): HomepageGameVO {
+  let message: HomepageGameVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated HomepageGamesResponse games = 1;
+      case 1: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.games || (message.games = []);
+        values.push(_decodeHomepageGamesResponse(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferInvitationTotalChildVO {
+  uid?: string;
+  name?: string;
+  todayBonus?: Long;
+  totalBonus?: Long;
+}
+
+export function encodeReferInvitationTotalChildVO(message: ReferInvitationTotalChildVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferInvitationTotalChildVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferInvitationTotalChildVO(message: ReferInvitationTotalChildVO, bb: ByteBuffer): void {
+  // optional string uid = 1;
+  let $uid = message.uid;
+  if ($uid !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $uid);
+  }
+
+  // optional string name = 2;
+  let $name = message.name;
+  if ($name !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $name);
+  }
+
+  // optional int64 todayBonus = 3;
+  let $todayBonus = message.todayBonus;
+  if ($todayBonus !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, $todayBonus);
+  }
+
+  // optional int64 totalBonus = 4;
+  let $totalBonus = message.totalBonus;
+  if ($totalBonus !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, $totalBonus);
+  }
+}
+
+export function decodeReferInvitationTotalChildVO(binary: Uint8Array): ReferInvitationTotalChildVO {
+  return _decodeReferInvitationTotalChildVO(wrapByteBuffer(binary));
+}
+
+function _decodeReferInvitationTotalChildVO(bb: ByteBuffer): ReferInvitationTotalChildVO {
+  let message: ReferInvitationTotalChildVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string uid = 1;
+      case 1: {
+        message.uid = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string name = 2;
+      case 2: {
+        message.name = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int64 todayBonus = 3;
+      case 3: {
+        message.todayBonus = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 totalBonus = 4;
+      case 4: {
+        message.totalBonus = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface TimezoneReferRewardVO {
+  offset?: number;
+  totalBonus?: Long;
+  totalInviteBonus?: Long;
+  totalDepositBonus?: Long;
+  rewardList?: ReferRewardDateVO[];
+  total?: Long;
+}
+
+export function encodeTimezoneReferRewardVO(message: TimezoneReferRewardVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeTimezoneReferRewardVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeTimezoneReferRewardVO(message: TimezoneReferRewardVO, bb: ByteBuffer): void {
+  // optional int32 offset = 1;
+  let $offset = message.offset;
+  if ($offset !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($offset));
+  }
+
+  // optional int64 totalBonus = 2;
+  let $totalBonus = message.totalBonus;
+  if ($totalBonus !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, $totalBonus);
+  }
+
+  // optional int64 totalInviteBonus = 3;
+  let $totalInviteBonus = message.totalInviteBonus;
+  if ($totalInviteBonus !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, $totalInviteBonus);
+  }
+
+  // optional int64 totalDepositBonus = 4;
+  let $totalDepositBonus = message.totalDepositBonus;
+  if ($totalDepositBonus !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, $totalDepositBonus);
+  }
+
+  // repeated ReferRewardDateVO rewardList = 5;
+  let array$rewardList = message.rewardList;
+  if (array$rewardList !== undefined) {
+    for (let value of array$rewardList) {
+      writeVarint32(bb, 42);
+      let nested = popByteBuffer();
+      _encodeReferRewardDateVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional int64 total = 6;
+  let $total = message.total;
+  if ($total !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, $total);
+  }
+}
+
+export function decodeTimezoneReferRewardVO(binary: Uint8Array): TimezoneReferRewardVO {
+  return _decodeTimezoneReferRewardVO(wrapByteBuffer(binary));
+}
+
+function _decodeTimezoneReferRewardVO(bb: ByteBuffer): TimezoneReferRewardVO {
+  let message: TimezoneReferRewardVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 offset = 1;
+      case 1: {
+        message.offset = readVarint32(bb);
+        break;
+      }
+
+      // optional int64 totalBonus = 2;
+      case 2: {
+        message.totalBonus = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 totalInviteBonus = 3;
+      case 3: {
+        message.totalInviteBonus = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 totalDepositBonus = 4;
+      case 4: {
+        message.totalDepositBonus = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // repeated ReferRewardDateVO rewardList = 5;
+      case 5: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.rewardList || (message.rewardList = []);
+        values.push(_decodeReferRewardDateVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional int64 total = 6;
+      case 6: {
+        message.total = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface MailRedDotVO {
+  redDot?: boolean;
+}
+
+export function encodeMailRedDotVO(message: MailRedDotVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeMailRedDotVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeMailRedDotVO(message: MailRedDotVO, bb: ByteBuffer): void {
+  // optional bool redDot = 1;
+  let $redDot = message.redDot;
+  if ($redDot !== undefined) {
+    writeVarint32(bb, 8);
+    writeByte(bb, $redDot ? 1 : 0);
+  }
+}
+
+export function decodeMailRedDotVO(binary: Uint8Array): MailRedDotVO {
+  return _decodeMailRedDotVO(wrapByteBuffer(binary));
+}
+
+function _decodeMailRedDotVO(bb: ByteBuffer): MailRedDotVO {
+  let message: MailRedDotVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional bool redDot = 1;
+      case 1: {
+        message.redDot = !!readByte(bb);
         break;
       }
 
@@ -823,37 +2251,55 @@ function _decodeLoginVO(bb: ByteBuffer): LoginVO {
   return message;
 }
 
-export interface HomepageGameVO {
-  games?: HomepageGamesResponse[];
+export interface TransactionDTO {
+  startDate?: string;
+  endDate?: string;
+  type?: number;
+  pageNum?: number;
 }
 
-export function encodeHomepageGameVO(message: HomepageGameVO): Uint8Array {
+export function encodeTransactionDTO(message: TransactionDTO): Uint8Array {
   let bb = popByteBuffer();
-  _encodeHomepageGameVO(message, bb);
+  _encodeTransactionDTO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodeHomepageGameVO(message: HomepageGameVO, bb: ByteBuffer): void {
-  // repeated HomepageGamesResponse games = 1;
-  let array$games = message.games;
-  if (array$games !== undefined) {
-    for (let value of array$games) {
-      writeVarint32(bb, 10);
-      let nested = popByteBuffer();
-      _encodeHomepageGamesResponse(value, nested);
-      writeVarint32(bb, nested.limit);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
+function _encodeTransactionDTO(message: TransactionDTO, bb: ByteBuffer): void {
+  // optional string startDate = 1;
+  let $startDate = message.startDate;
+  if ($startDate !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $startDate);
+  }
+
+  // optional string endDate = 2;
+  let $endDate = message.endDate;
+  if ($endDate !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $endDate);
+  }
+
+  // optional int32 type = 3;
+  let $type = message.type;
+  if ($type !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($type));
+  }
+
+  // optional int32 pageNum = 4;
+  let $pageNum = message.pageNum;
+  if ($pageNum !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($pageNum));
   }
 }
 
-export function decodeHomepageGameVO(binary: Uint8Array): HomepageGameVO {
-  return _decodeHomepageGameVO(wrapByteBuffer(binary));
+export function decodeTransactionDTO(binary: Uint8Array): TransactionDTO {
+  return _decodeTransactionDTO(wrapByteBuffer(binary));
 }
 
-function _decodeHomepageGameVO(bb: ByteBuffer): HomepageGameVO {
-  let message: HomepageGameVO = {} as any;
+function _decodeTransactionDTO(bb: ByteBuffer): TransactionDTO {
+  let message: TransactionDTO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -862,12 +2308,556 @@ function _decodeHomepageGameVO(bb: ByteBuffer): HomepageGameVO {
       case 0:
         break end_of_message;
 
-      // repeated HomepageGamesResponse games = 1;
+      // optional string startDate = 1;
+      case 1: {
+        message.startDate = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string endDate = 2;
+      case 2: {
+        message.endDate = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 type = 3;
+      case 3: {
+        message.type = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 pageNum = 4;
+      case 4: {
+        message.pageNum = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferRewardPageDTO {
+  pageNum?: number;
+}
+
+export function encodeReferRewardPageDTO(message: ReferRewardPageDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferRewardPageDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferRewardPageDTO(message: ReferRewardPageDTO, bb: ByteBuffer): void {
+  // optional int32 pageNum = 1;
+  let $pageNum = message.pageNum;
+  if ($pageNum !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, intToLong($pageNum));
+  }
+}
+
+export function decodeReferRewardPageDTO(binary: Uint8Array): ReferRewardPageDTO {
+  return _decodeReferRewardPageDTO(wrapByteBuffer(binary));
+}
+
+function _decodeReferRewardPageDTO(bb: ByteBuffer): ReferRewardPageDTO {
+  let message: ReferRewardPageDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int32 pageNum = 1;
+      case 1: {
+        message.pageNum = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferRankVO {
+  prizePool?: Long;
+  yourScore?: Long;
+  rule?: ReferRuleVO[];
+  top20?: ReferTop20VO[];
+}
+
+export function encodeReferRankVO(message: ReferRankVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferRankVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferRankVO(message: ReferRankVO, bb: ByteBuffer): void {
+  // optional int64 prizePool = 1;
+  let $prizePool = message.prizePool;
+  if ($prizePool !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $prizePool);
+  }
+
+  // optional int64 yourScore = 2;
+  let $yourScore = message.yourScore;
+  if ($yourScore !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, $yourScore);
+  }
+
+  // repeated ReferRuleVO rule = 3;
+  let array$rule = message.rule;
+  if (array$rule !== undefined) {
+    for (let value of array$rule) {
+      writeVarint32(bb, 26);
+      let nested = popByteBuffer();
+      _encodeReferRuleVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // repeated ReferTop20VO top20 = 4;
+  let array$top20 = message.top20;
+  if (array$top20 !== undefined) {
+    for (let value of array$top20) {
+      writeVarint32(bb, 34);
+      let nested = popByteBuffer();
+      _encodeReferTop20VO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeReferRankVO(binary: Uint8Array): ReferRankVO {
+  return _decodeReferRankVO(wrapByteBuffer(binary));
+}
+
+function _decodeReferRankVO(bb: ByteBuffer): ReferRankVO {
+  let message: ReferRankVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 prizePool = 1;
+      case 1: {
+        message.prizePool = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional int64 yourScore = 2;
+      case 2: {
+        message.yourScore = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // repeated ReferRuleVO rule = 3;
+      case 3: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.rule || (message.rule = []);
+        values.push(_decodeReferRuleVO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // repeated ReferTop20VO top20 = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.top20 || (message.top20 = []);
+        values.push(_decodeReferTop20VO(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface HomepageUserInfoResponse {
+  bonus?: number;
+  vipLevel?: number;
+  club?: number;
+  recharge?: boolean;
+  brokeCoupon?: boolean;
+  invitationCode?: string;
+}
+
+export function encodeHomepageUserInfoResponse(message: HomepageUserInfoResponse): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeHomepageUserInfoResponse(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeHomepageUserInfoResponse(message: HomepageUserInfoResponse, bb: ByteBuffer): void {
+  // optional double bonus = 1;
+  let $bonus = message.bonus;
+  if ($bonus !== undefined) {
+    writeVarint32(bb, 9);
+    writeDouble(bb, $bonus);
+  }
+
+  // optional int32 vipLevel = 2;
+  let $vipLevel = message.vipLevel;
+  if ($vipLevel !== undefined) {
+    writeVarint32(bb, 16);
+    writeVarint64(bb, intToLong($vipLevel));
+  }
+
+  // optional int32 club = 3;
+  let $club = message.club;
+  if ($club !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($club));
+  }
+
+  // optional bool recharge = 4;
+  let $recharge = message.recharge;
+  if ($recharge !== undefined) {
+    writeVarint32(bb, 32);
+    writeByte(bb, $recharge ? 1 : 0);
+  }
+
+  // optional bool brokeCoupon = 5;
+  let $brokeCoupon = message.brokeCoupon;
+  if ($brokeCoupon !== undefined) {
+    writeVarint32(bb, 40);
+    writeByte(bb, $brokeCoupon ? 1 : 0);
+  }
+
+  // optional string invitationCode = 6;
+  let $invitationCode = message.invitationCode;
+  if ($invitationCode !== undefined) {
+    writeVarint32(bb, 50);
+    writeString(bb, $invitationCode);
+  }
+}
+
+export function decodeHomepageUserInfoResponse(binary: Uint8Array): HomepageUserInfoResponse {
+  return _decodeHomepageUserInfoResponse(wrapByteBuffer(binary));
+}
+
+function _decodeHomepageUserInfoResponse(bb: ByteBuffer): HomepageUserInfoResponse {
+  let message: HomepageUserInfoResponse = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional double bonus = 1;
+      case 1: {
+        message.bonus = readDouble(bb);
+        break;
+      }
+
+      // optional int32 vipLevel = 2;
+      case 2: {
+        message.vipLevel = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 club = 3;
+      case 3: {
+        message.club = readVarint32(bb);
+        break;
+      }
+
+      // optional bool recharge = 4;
+      case 4: {
+        message.recharge = !!readByte(bb);
+        break;
+      }
+
+      // optional bool brokeCoupon = 5;
+      case 5: {
+        message.brokeCoupon = !!readByte(bb);
+        break;
+      }
+
+      // optional string invitationCode = 6;
+      case 6: {
+        message.invitationCode = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface UserUpdateNicknameDTO {
+  nickname?: string;
+}
+
+export function encodeUserUpdateNicknameDTO(message: UserUpdateNicknameDTO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeUserUpdateNicknameDTO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeUserUpdateNicknameDTO(message: UserUpdateNicknameDTO, bb: ByteBuffer): void {
+  // optional string nickname = 1;
+  let $nickname = message.nickname;
+  if ($nickname !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $nickname);
+  }
+}
+
+export function decodeUserUpdateNicknameDTO(binary: Uint8Array): UserUpdateNicknameDTO {
+  return _decodeUserUpdateNicknameDTO(wrapByteBuffer(binary));
+}
+
+function _decodeUserUpdateNicknameDTO(bb: ByteBuffer): UserUpdateNicknameDTO {
+  let message: UserUpdateNicknameDTO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string nickname = 1;
+      case 1: {
+        message.nickname = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferInvitationMapUrlVO {
+  urlMap?: { [key: string]: ReferInvitationUrlVO };
+}
+
+export function encodeReferInvitationMapUrlVO(message: ReferInvitationMapUrlVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferInvitationMapUrlVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferInvitationMapUrlVO(message: ReferInvitationMapUrlVO, bb: ByteBuffer): void {
+  // optional map<string, ReferInvitationUrlVO> urlMap = 1;
+  let map$urlMap = message.urlMap;
+  if (map$urlMap !== undefined) {
+    for (let key in map$urlMap) {
+      let nested = popByteBuffer();
+      let value = map$urlMap[key];
+      writeVarint32(nested, 10);
+      writeString(nested, key);
+      writeVarint32(nested, 18);
+      let nestedValue = popByteBuffer();
+      _encodeReferInvitationUrlVO(value, nestedValue);
+      writeVarint32(nested, nestedValue.limit);
+      writeByteBuffer(nested, nestedValue);
+      pushByteBuffer(nestedValue);
+      writeVarint32(bb, 10);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeReferInvitationMapUrlVO(binary: Uint8Array): ReferInvitationMapUrlVO {
+  return _decodeReferInvitationMapUrlVO(wrapByteBuffer(binary));
+}
+
+function _decodeReferInvitationMapUrlVO(bb: ByteBuffer): ReferInvitationMapUrlVO {
+  let message: ReferInvitationMapUrlVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional map<string, ReferInvitationUrlVO> urlMap = 1;
+      case 1: {
+        let values = message.urlMap || (message.urlMap = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: string | undefined;
+        let value: ReferInvitationUrlVO | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readString(bb, readVarint32(bb));
+              break;
+            }
+            case 2: {
+              let valueLimit = pushTemporaryLength(bb);
+              value = _decodeReferInvitationUrlVO(bb);
+              bb.limit = valueLimit;
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: urlMap");
+        values[key] = value;
+        bb.limit = outerLimit;
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface HomepageResponse {
+  userInfo?: HomepageUserInfoResponse;
+  rotationPictures?: PictureResponse[];
+  redDot?: { [key: string]: boolean };
+}
+
+export function encodeHomepageResponse(message: HomepageResponse): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeHomepageResponse(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeHomepageResponse(message: HomepageResponse, bb: ByteBuffer): void {
+  // optional HomepageUserInfoResponse userInfo = 1;
+  let $userInfo = message.userInfo;
+  if ($userInfo !== undefined) {
+    writeVarint32(bb, 10);
+    let nested = popByteBuffer();
+    _encodeHomepageUserInfoResponse($userInfo, nested);
+    writeVarint32(bb, nested.limit);
+    writeByteBuffer(bb, nested);
+    pushByteBuffer(nested);
+  }
+
+  // repeated PictureResponse rotationPictures = 2;
+  let array$rotationPictures = message.rotationPictures;
+  if (array$rotationPictures !== undefined) {
+    for (let value of array$rotationPictures) {
+      writeVarint32(bb, 18);
+      let nested = popByteBuffer();
+      _encodePictureResponse(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+
+  // optional map<string, bool> redDot = 3;
+  let map$redDot = message.redDot;
+  if (map$redDot !== undefined) {
+    for (let key in map$redDot) {
+      let nested = popByteBuffer();
+      let value = map$redDot[key];
+      writeVarint32(nested, 10);
+      writeString(nested, key);
+      writeVarint32(nested, 16);
+      writeByte(nested, value ? 1 : 0);
+      writeVarint32(bb, 26);
+      writeVarint32(bb, nested.offset);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeHomepageResponse(binary: Uint8Array): HomepageResponse {
+  return _decodeHomepageResponse(wrapByteBuffer(binary));
+}
+
+function _decodeHomepageResponse(bb: ByteBuffer): HomepageResponse {
+  let message: HomepageResponse = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional HomepageUserInfoResponse userInfo = 1;
       case 1: {
         let limit = pushTemporaryLength(bb);
-        let values = message.games || (message.games = []);
-        values.push(_decodeHomepageGamesResponse(bb));
+        message.userInfo = _decodeHomepageUserInfoResponse(bb);
         bb.limit = limit;
+        break;
+      }
+
+      // repeated PictureResponse rotationPictures = 2;
+      case 2: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.rotationPictures || (message.rotationPictures = []);
+        values.push(_decodePictureResponse(bb));
+        bb.limit = limit;
+        break;
+      }
+
+      // optional map<string, bool> redDot = 3;
+      case 3: {
+        let values = message.redDot || (message.redDot = {});
+        let outerLimit = pushTemporaryLength(bb);
+        let key: string | undefined;
+        let value: boolean | undefined;
+        end_of_entry: while (!isAtEnd(bb)) {
+          let tag = readVarint32(bb);
+          switch (tag >>> 3) {
+            case 0:
+              break end_of_entry;
+            case 1: {
+              key = readString(bb, readVarint32(bb));
+              break;
+            }
+            case 2: {
+              value = !!readByte(bb);
+              break;
+            }
+            default:
+              skipUnknownField(bb, tag & 7);
+          }
+        }
+        if (key === undefined || value === undefined)
+          throw new Error("Invalid data for map: redDot");
+        values[key] = value;
+        bb.limit = outerLimit;
         break;
       }
 
@@ -1108,301 +3098,85 @@ function _decodeHomepageGamesResponse(bb: ByteBuffer): HomepageGamesResponse {
   return message;
 }
 
-export interface PictureResponse {
-  id?: number;
-  pictureUrl?: string;
-  skipPage?: string;
-  skipType?: number;
-  activityId?: string;
-  skipData?: string;
-  skipParams?: string;
-  redDot?: boolean;
+export interface ReferInvitationNowVO {
+  friendDeposit?: number;
+  friendReg?: number;
+  mutualFriendDeposit?: number;
+  mutualFriendReg?: number;
+  rechargeRateResponseList?: ReferInvitationRechargeRateVO[];
+  top?: string;
+  bottom?: string;
 }
 
-export function encodePictureResponse(message: PictureResponse): Uint8Array {
+export function encodeReferInvitationNowVO(message: ReferInvitationNowVO): Uint8Array {
   let bb = popByteBuffer();
-  _encodePictureResponse(message, bb);
+  _encodeReferInvitationNowVO(message, bb);
   return toUint8Array(bb);
 }
 
-function _encodePictureResponse(message: PictureResponse, bb: ByteBuffer): void {
-  // optional int32 id = 1;
-  let $id = message.id;
-  if ($id !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, intToLong($id));
+function _encodeReferInvitationNowVO(message: ReferInvitationNowVO, bb: ByteBuffer): void {
+  // optional double friendDeposit = 1;
+  let $friendDeposit = message.friendDeposit;
+  if ($friendDeposit !== undefined) {
+    writeVarint32(bb, 9);
+    writeDouble(bb, $friendDeposit);
   }
 
-  // optional string pictureUrl = 2;
-  let $pictureUrl = message.pictureUrl;
-  if ($pictureUrl !== undefined) {
-    writeVarint32(bb, 18);
-    writeString(bb, $pictureUrl);
-  }
-
-  // optional string skipPage = 3;
-  let $skipPage = message.skipPage;
-  if ($skipPage !== undefined) {
-    writeVarint32(bb, 26);
-    writeString(bb, $skipPage);
-  }
-
-  // optional int32 skipType = 4;
-  let $skipType = message.skipType;
-  if ($skipType !== undefined) {
-    writeVarint32(bb, 32);
-    writeVarint64(bb, intToLong($skipType));
-  }
-
-  // optional string activityId = 5;
-  let $activityId = message.activityId;
-  if ($activityId !== undefined) {
-    writeVarint32(bb, 42);
-    writeString(bb, $activityId);
-  }
-
-  // optional string skipData = 6;
-  let $skipData = message.skipData;
-  if ($skipData !== undefined) {
-    writeVarint32(bb, 50);
-    writeString(bb, $skipData);
-  }
-
-  // optional string skipParams = 7;
-  let $skipParams = message.skipParams;
-  if ($skipParams !== undefined) {
-    writeVarint32(bb, 58);
-    writeString(bb, $skipParams);
-  }
-
-  // optional bool redDot = 8;
-  let $redDot = message.redDot;
-  if ($redDot !== undefined) {
-    writeVarint32(bb, 64);
-    writeByte(bb, $redDot ? 1 : 0);
-  }
-}
-
-export function decodePictureResponse(binary: Uint8Array): PictureResponse {
-  return _decodePictureResponse(wrapByteBuffer(binary));
-}
-
-function _decodePictureResponse(bb: ByteBuffer): PictureResponse {
-  let message: PictureResponse = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int32 id = 1;
-      case 1: {
-        message.id = readVarint32(bb);
-        break;
-      }
-
-      // optional string pictureUrl = 2;
-      case 2: {
-        message.pictureUrl = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string skipPage = 3;
-      case 3: {
-        message.skipPage = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional int32 skipType = 4;
-      case 4: {
-        message.skipType = readVarint32(bb);
-        break;
-      }
-
-      // optional string activityId = 5;
-      case 5: {
-        message.activityId = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string skipData = 6;
-      case 6: {
-        message.skipData = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional string skipParams = 7;
-      case 7: {
-        message.skipParams = readString(bb, readVarint32(bb));
-        break;
-      }
-
-      // optional bool redDot = 8;
-      case 8: {
-        message.redDot = !!readByte(bb);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
-  }
-
-  return message;
-}
-
-export interface LoginWalletVO {
-  depositBalance?: Long;
-  withdrawBalance?: Long;
-  totalCashBalance?: Long;
-  freeBalance?: Long;
-}
-
-export function encodeLoginWalletVO(message: LoginWalletVO): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeLoginWalletVO(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeLoginWalletVO(message: LoginWalletVO, bb: ByteBuffer): void {
-  // optional int64 depositBalance = 1;
-  let $depositBalance = message.depositBalance;
-  if ($depositBalance !== undefined) {
-    writeVarint32(bb, 8);
-    writeVarint64(bb, $depositBalance);
-  }
-
-  // optional int64 withdrawBalance = 2;
-  let $withdrawBalance = message.withdrawBalance;
-  if ($withdrawBalance !== undefined) {
+  // optional int32 friendReg = 2;
+  let $friendReg = message.friendReg;
+  if ($friendReg !== undefined) {
     writeVarint32(bb, 16);
-    writeVarint64(bb, $withdrawBalance);
+    writeVarint64(bb, intToLong($friendReg));
   }
 
-  // optional int64 totalCashBalance = 3;
-  let $totalCashBalance = message.totalCashBalance;
-  if ($totalCashBalance !== undefined) {
-    writeVarint32(bb, 24);
-    writeVarint64(bb, $totalCashBalance);
+  // optional double mutualFriendDeposit = 3;
+  let $mutualFriendDeposit = message.mutualFriendDeposit;
+  if ($mutualFriendDeposit !== undefined) {
+    writeVarint32(bb, 25);
+    writeDouble(bb, $mutualFriendDeposit);
   }
 
-  // optional int64 freeBalance = 4;
-  let $freeBalance = message.freeBalance;
-  if ($freeBalance !== undefined) {
+  // optional int32 mutualFriendReg = 4;
+  let $mutualFriendReg = message.mutualFriendReg;
+  if ($mutualFriendReg !== undefined) {
     writeVarint32(bb, 32);
-    writeVarint64(bb, $freeBalance);
-  }
-}
-
-export function decodeLoginWalletVO(binary: Uint8Array): LoginWalletVO {
-  return _decodeLoginWalletVO(wrapByteBuffer(binary));
-}
-
-function _decodeLoginWalletVO(bb: ByteBuffer): LoginWalletVO {
-  let message: LoginWalletVO = {} as any;
-
-  end_of_message: while (!isAtEnd(bb)) {
-    let tag = readVarint32(bb);
-
-    switch (tag >>> 3) {
-      case 0:
-        break end_of_message;
-
-      // optional int64 depositBalance = 1;
-      case 1: {
-        message.depositBalance = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 withdrawBalance = 2;
-      case 2: {
-        message.withdrawBalance = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 totalCashBalance = 3;
-      case 3: {
-        message.totalCashBalance = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      // optional int64 freeBalance = 4;
-      case 4: {
-        message.freeBalance = readVarint64(bb, /* unsigned */ false);
-        break;
-      }
-
-      default:
-        skipUnknownField(bb, tag & 7);
-    }
+    writeVarint64(bb, intToLong($mutualFriendReg));
   }
 
-  return message;
-}
-
-export interface HomepageResponse {
-  userInfo?: HomepageUserInfoResponse;
-  rotationPictures?: PictureResponse[];
-  redDot?: { [key: string]: boolean };
-}
-
-export function encodeHomepageResponse(message: HomepageResponse): Uint8Array {
-  let bb = popByteBuffer();
-  _encodeHomepageResponse(message, bb);
-  return toUint8Array(bb);
-}
-
-function _encodeHomepageResponse(message: HomepageResponse, bb: ByteBuffer): void {
-  // optional HomepageUserInfoResponse userInfo = 1;
-  let $userInfo = message.userInfo;
-  if ($userInfo !== undefined) {
-    writeVarint32(bb, 10);
-    let nested = popByteBuffer();
-    _encodeHomepageUserInfoResponse($userInfo, nested);
-    writeVarint32(bb, nested.limit);
-    writeByteBuffer(bb, nested);
-    pushByteBuffer(nested);
-  }
-
-  // repeated PictureResponse rotationPictures = 2;
-  let array$rotationPictures = message.rotationPictures;
-  if (array$rotationPictures !== undefined) {
-    for (let value of array$rotationPictures) {
-      writeVarint32(bb, 18);
+  // repeated ReferInvitationRechargeRateVO rechargeRateResponseList = 5;
+  let array$rechargeRateResponseList = message.rechargeRateResponseList;
+  if (array$rechargeRateResponseList !== undefined) {
+    for (let value of array$rechargeRateResponseList) {
+      writeVarint32(bb, 42);
       let nested = popByteBuffer();
-      _encodePictureResponse(value, nested);
+      _encodeReferInvitationRechargeRateVO(value, nested);
       writeVarint32(bb, nested.limit);
       writeByteBuffer(bb, nested);
       pushByteBuffer(nested);
     }
   }
 
-  // optional map<string, bool> redDot = 3;
-  let map$redDot = message.redDot;
-  if (map$redDot !== undefined) {
-    for (let key in map$redDot) {
-      let nested = popByteBuffer();
-      let value = map$redDot[key];
-      writeVarint32(nested, 10);
-      writeString(nested, key);
-      writeVarint32(nested, 16);
-      writeByte(nested, value ? 1 : 0);
-      writeVarint32(bb, 26);
-      writeVarint32(bb, nested.offset);
-      writeByteBuffer(bb, nested);
-      pushByteBuffer(nested);
-    }
+  // optional string top = 6;
+  let $top = message.top;
+  if ($top !== undefined) {
+    writeVarint32(bb, 50);
+    writeString(bb, $top);
+  }
+
+  // optional string bottom = 7;
+  let $bottom = message.bottom;
+  if ($bottom !== undefined) {
+    writeVarint32(bb, 58);
+    writeString(bb, $bottom);
   }
 }
 
-export function decodeHomepageResponse(binary: Uint8Array): HomepageResponse {
-  return _decodeHomepageResponse(wrapByteBuffer(binary));
+export function decodeReferInvitationNowVO(binary: Uint8Array): ReferInvitationNowVO {
+  return _decodeReferInvitationNowVO(wrapByteBuffer(binary));
 }
 
-function _decodeHomepageResponse(bb: ByteBuffer): HomepageResponse {
-  let message: HomepageResponse = {} as any;
+function _decodeReferInvitationNowVO(bb: ByteBuffer): ReferInvitationNowVO {
+  let message: ReferInvitationNowVO = {} as any;
 
   end_of_message: while (!isAtEnd(bb)) {
     let tag = readVarint32(bb);
@@ -1411,50 +3185,180 @@ function _decodeHomepageResponse(bb: ByteBuffer): HomepageResponse {
       case 0:
         break end_of_message;
 
-      // optional HomepageUserInfoResponse userInfo = 1;
+      // optional double friendDeposit = 1;
       case 1: {
-        let limit = pushTemporaryLength(bb);
-        message.userInfo = _decodeHomepageUserInfoResponse(bb);
-        bb.limit = limit;
+        message.friendDeposit = readDouble(bb);
         break;
       }
 
-      // repeated PictureResponse rotationPictures = 2;
+      // optional int32 friendReg = 2;
       case 2: {
+        message.friendReg = readVarint32(bb);
+        break;
+      }
+
+      // optional double mutualFriendDeposit = 3;
+      case 3: {
+        message.mutualFriendDeposit = readDouble(bb);
+        break;
+      }
+
+      // optional int32 mutualFriendReg = 4;
+      case 4: {
+        message.mutualFriendReg = readVarint32(bb);
+        break;
+      }
+
+      // repeated ReferInvitationRechargeRateVO rechargeRateResponseList = 5;
+      case 5: {
         let limit = pushTemporaryLength(bb);
-        let values = message.rotationPictures || (message.rotationPictures = []);
-        values.push(_decodePictureResponse(bb));
+        let values = message.rechargeRateResponseList || (message.rechargeRateResponseList = []);
+        values.push(_decodeReferInvitationRechargeRateVO(bb));
         bb.limit = limit;
         break;
       }
 
-      // optional map<string, bool> redDot = 3;
+      // optional string top = 6;
+      case 6: {
+        message.top = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string bottom = 7;
+      case 7: {
+        message.bottom = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ReferInvitationRechargeRateVO {
+}
+
+export function encodeReferInvitationRechargeRateVO(message: ReferInvitationRechargeRateVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeReferInvitationRechargeRateVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeReferInvitationRechargeRateVO(message: ReferInvitationRechargeRateVO, bb: ByteBuffer): void {
+}
+
+export function decodeReferInvitationRechargeRateVO(binary: Uint8Array): ReferInvitationRechargeRateVO {
+  return _decodeReferInvitationRechargeRateVO(wrapByteBuffer(binary));
+}
+
+function _decodeReferInvitationRechargeRateVO(bb: ByteBuffer): ReferInvitationRechargeRateVO {
+  let message: ReferInvitationRechargeRateVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface MailPageVO {
+  totalPageCount?: Long;
+  officialWebSite?: string;
+  facebook?: string;
+  mails?: MailVO[];
+}
+
+export function encodeMailPageVO(message: MailPageVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeMailPageVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeMailPageVO(message: MailPageVO, bb: ByteBuffer): void {
+  // optional int64 totalPageCount = 1;
+  let $totalPageCount = message.totalPageCount;
+  if ($totalPageCount !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64(bb, $totalPageCount);
+  }
+
+  // optional string officialWebSite = 2;
+  let $officialWebSite = message.officialWebSite;
+  if ($officialWebSite !== undefined) {
+    writeVarint32(bb, 18);
+    writeString(bb, $officialWebSite);
+  }
+
+  // optional string facebook = 3;
+  let $facebook = message.facebook;
+  if ($facebook !== undefined) {
+    writeVarint32(bb, 26);
+    writeString(bb, $facebook);
+  }
+
+  // repeated MailVO mails = 4;
+  let array$mails = message.mails;
+  if (array$mails !== undefined) {
+    for (let value of array$mails) {
+      writeVarint32(bb, 34);
+      let nested = popByteBuffer();
+      _encodeMailVO(value, nested);
+      writeVarint32(bb, nested.limit);
+      writeByteBuffer(bb, nested);
+      pushByteBuffer(nested);
+    }
+  }
+}
+
+export function decodeMailPageVO(binary: Uint8Array): MailPageVO {
+  return _decodeMailPageVO(wrapByteBuffer(binary));
+}
+
+function _decodeMailPageVO(bb: ByteBuffer): MailPageVO {
+  let message: MailPageVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional int64 totalPageCount = 1;
+      case 1: {
+        message.totalPageCount = readVarint64(bb, /* unsigned */ false);
+        break;
+      }
+
+      // optional string officialWebSite = 2;
+      case 2: {
+        message.officialWebSite = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional string facebook = 3;
       case 3: {
-        let values = message.redDot || (message.redDot = {});
-        let outerLimit = pushTemporaryLength(bb);
-        let key: string | undefined;
-        let value: boolean | undefined;
-        end_of_entry: while (!isAtEnd(bb)) {
-          let tag = readVarint32(bb);
-          switch (tag >>> 3) {
-            case 0:
-              break end_of_entry;
-            case 1: {
-              key = readString(bb, readVarint32(bb));
-              break;
-            }
-            case 2: {
-              value = !!readByte(bb);
-              break;
-            }
-            default:
-              skipUnknownField(bb, tag & 7);
-          }
-        }
-        if (key === undefined || value === undefined)
-          throw new Error("Invalid data for map: redDot");
-        values[key] = value;
-        bb.limit = outerLimit;
+        message.facebook = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // repeated MailVO mails = 4;
+      case 4: {
+        let limit = pushTemporaryLength(bb);
+        let values = message.mails || (message.mails = []);
+        values.push(_decodeMailVO(bb));
+        bb.limit = limit;
         break;
       }
 

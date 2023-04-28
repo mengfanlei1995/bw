@@ -48,6 +48,12 @@ class UIMgr {
             LogUtil.error("资源不存在！", url);
             return null;
         }
+        //防止短时间连续调用异步问题会重复加载页面
+        node = this.nodeMap.get(name) || null;
+        if (!isRepeat && cc.isValid(node)) {
+            LogUtil.warn("节点已存在场景中!!!", url);
+            return node;
+        }
         let parent: cc.Node = target ? target : cc.find('Canvas');
         node = cc.instantiate(prefab);
         let script: UIBase = node.getComponent(name);

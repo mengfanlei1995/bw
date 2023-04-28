@@ -4,14 +4,14 @@ import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, ExitRoomCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_OTPCmd, RecordListCmd, User_ChangeNameCmd, User_InfoCmd } from "./CmdData";
+import { BetCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_OTPCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, User_ChangeNameCmd, User_InfoCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
 import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
 import NetMgr from "./NetMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage, encodeExternalMessage } from "./proto/ExternalMessage";
-import { HomepageResponse, LoginMobileSmsVO, decodeHomepageGameVO, decodeHomepageResponse, decodeLoginMobileSmsVO } from "./proto/hall";
+import { HomepageResponse, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneReferRewardVO, decodeHomepageGameVO, decodeHomepageResponse, decodeLoginMobileSmsVO, decodeMailPageVO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneReferRewardVO, encodeMailOptDTO, encodeMailPageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO } from "./proto/hall";
 import { encodeUserUpdateHeadPicDTO } from "./proto/hall";
 import { UserUpdateNicknameDTO } from "./proto/hall";
 import { HomepageUserInfoResponse } from "./proto/hall";
@@ -80,7 +80,7 @@ class SendMgr {
     public async sendLogin(params: LoginDTO = {}, loginType: number = Login_GuestCmd): Promise<LoginVO> {
         params = Object.assign(loginCommonParams(), params);
         if (loginType == Login_SessionCmd && !StorageMgr.sessionId) return;
-        await NetMgr.getIp();
+        // await NetMgr.getIp();
         return new Promise<LoginVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, loginType), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
                 if (code === 0) {
@@ -208,6 +208,87 @@ class SendMgr {
         return new Promise<Uint8Array>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, RecordListCmd), encodeRoomRecordDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? data : null);
+            })
+        })
+    }
+
+    /**获取邮件 */
+    public async sendEmailList(params: MailPageDTO): Promise<MailPageVO> {
+        return new Promise<MailPageVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(EmailCmd, Email_InfoCmd), encodeMailPageDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeMailPageVO(data) : null);
+            })
+        })
+    }
+
+    /**读取邮件 */
+    public async sendReadEmail(params: MailOptDTO): Promise<RedDotVO> {
+        return new Promise<RedDotVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(EmailCmd, Email_ReadCmd), encodeMailOptDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeRedDotVO(data) : null);
+            })
+        })
+    }
+
+    /**领取邮件奖励 */
+    public async sendEmailCollect(params: MailOptDTO): Promise<boolean> {
+        return new Promise<boolean>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(EmailCmd, Email_CollectCmd), encodeMailOptDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0);
+            })
+        })
+    }
+
+    /**删除邮件 */
+    public async sendDeleteEmail(params: MailOptDTO): Promise<RedDotVO> {
+        return new Promise<RedDotVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(EmailCmd, Email_DeleteCmd), encodeMailOptDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeRedDotVO(data) : null);
+            })
+        })
+    }
+
+    /**查询代理分销描述 */
+    public async sendReferInvitation(): Promise<ReferInvitationNowVO> {
+        return new Promise<ReferInvitationNowVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(ReferCmd, Refer_InvitationCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeReferInvitationNowVO(data) : null);
+            })
+        })
+    }
+
+    /**查询代理分销邀请码链接 */
+    public async sendReferInvitationLink(): Promise<ReferInvitationMapUrlVO> {
+        return new Promise<ReferInvitationMapUrlVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(ReferCmd, Refer_InvitationLinkCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeReferInvitationMapUrlVO(data) : null);
+            })
+        })
+    }
+
+    /**My Rewards界面分页查询 */
+    public async sendMyRewards(params: ReferRewardPageDTO): Promise<TimezoneReferRewardVO> {
+        return new Promise<TimezoneReferRewardVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(ReferCmd, Refer_MyRewardCmd), encodeReferRewardPageDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeTimezoneReferRewardVO(data) : null);
+            })
+        })
+    }
+
+    /**My Rewards界面分页查询 */
+    public async sendMyInvitation(params: ReferTotalPageDTO): Promise<ReferInvitationTotalVO> {
+        return new Promise<ReferInvitationTotalVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(ReferCmd, Refer_MyInvitationCmd), encodeReferTotalPageDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeReferInvitationTotalVO(data) : null);
+            })
+        })
+    }
+
+    /**top20查询 */
+    public async sendTop20(params: ReferRankTop20DTO): Promise<ReferRankVO> {
+        return new Promise<ReferRankVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(ReferCmd, Refer_MyInvitationCmd), encodeReferRankTop20DTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeReferRankVO(data) : null);
             })
         })
     }

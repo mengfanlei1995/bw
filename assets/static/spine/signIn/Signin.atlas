@@ -1,0 +1,125 @@
+
+Signin.png
+size: 675,675
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1DAY
+  rotate: true
+  xy: 581, 4
+  size: 109, 29
+  orig: 109, 29
+  offset: 0, 0
+  index: -1
+2DAY
+  rotate: false
+  xy: 288, 19
+  size: 113, 29
+  orig: 113, 29
+  offset: 0, 0
+  index: -1
+3DAY
+  rotate: false
+  xy: 117, 18
+  size: 112, 29
+  orig: 112, 29
+  offset: 0, 0
+  index: -1
+4DAY
+  rotate: false
+  xy: 413, 44
+  size: 114, 29
+  orig: 114, 29
+  offset: 0, 0
+  index: -1
+5DAY
+  rotate: true
+  xy: 631, 489
+  size: 112, 29
+  orig: 112, 29
+  offset: 0, 0
+  index: -1
+6DAY
+  rotate: false
+  xy: 403, 13
+  size: 113, 29
+  orig: 113, 29
+  offset: 0, 0
+  index: -1
+7DAY
+  rotate: false
+  xy: 2, 18
+  size: 113, 29
+  orig: 113, 29
+  offset: 0, 0
+  index: -1
+DB
+  rotate: false
+  xy: 2, 603
+  size: 671, 70
+  orig: 711, 81
+  offset: 35, 11
+  index: -1
+di1
+  rotate: false
+  xy: 417, 75
+  size: 162, 186
+  orig: 162, 186
+  offset: 0, 0
+  index: -1
+di2
+  rotate: true
+  xy: 443, 263
+  size: 338, 186
+  orig: 338, 186
+  offset: 0, 0
+  index: -1
+gift7
+  rotate: true
+  xy: 288, 179
+  size: 134, 127
+  orig: 134, 127
+  offset: 0, 0
+  index: -1
+gift_red
+  rotate: true
+  xy: 581, 115
+  size: 66, 65
+  orig: 83, 76
+  offset: 8, 9
+  index: -1
+jb
+  rotate: false
+  xy: 581, 183
+  size: 75, 78
+  orig: 75, 78
+  offset: 0, 0
+  index: -1
+shu
+  rotate: true
+  xy: 288, 50
+  size: 127, 123
+  orig: 145, 153
+  offset: 7, 6
+  index: -1
+xx
+  rotate: false
+  xy: 612, 53
+  size: 58, 60
+  orig: 64, 64
+  offset: 2, 2
+  index: -1
+xz
+  rotate: true
+  xy: 2, 49
+  size: 264, 284
+  orig: 274, 294
+  offset: 5, 5
+  index: -1
+xz1
+  rotate: false
+  xy: 2, 315
+  size: 439, 286
+  orig: 449, 296
+  offset: 5, 5
+  index: -1

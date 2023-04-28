@@ -61,15 +61,19 @@ export default class Mine extends UIScreen {
     }
 
     onAddCashClick(e: cc.Event.EventTouch) {
+        UIMgr.show('prefab/hall/AddCash', 'AddCash');
     }
 
     onWithdrawClick(e: cc.Event.EventTouch) {
+        UIMgr.show('prefab/hall/Withdraw', 'Withdraw');
     }
 
     onTransactionsClick(e: cc.Event.EventTouch) {
+        UIMgr.show('prefab/hall/Transactions', 'Transactions');
     }
 
     onSupportClick(e: cc.Event.EventTouch) {
+        UIMgr.show('prefab/hall/Support', 'Support');
     }
 
     onLanguageClick(e: cc.Event.EventTouch) {
