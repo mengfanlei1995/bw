@@ -1,6 +1,23 @@
 syntax = "proto3";
 package pb.core;
 
+// Created by IntelliJ IDEA 2020.1.2
+message HallPopVO {
+  // 模板内容
+  string templateContent = 1;
+  // 模板参数
+  repeated string templateParams = 2;
+  // 1参数需拼接
+  int32 templateType = 3;
+  // 播放次数
+  int32 playTimes = 4;
+  // 播放间隔
+  int32 playInterval = 5;
+  // 越低越靠前播放
+  int32 popLevel = 6;
+
+}
+
 // Description:
 message GameUserWalletNotifyVO {
   string userId = 1;
@@ -11,6 +28,11 @@ message GameUserWalletNotifyVO {
   int64 balance = 6;
   int64 free = 7;
   int64 bonus = 8;
+
+}
+
+// Description:
+message MyBaseActionVO {
 
 }
 

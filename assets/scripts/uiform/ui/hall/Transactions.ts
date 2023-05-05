@@ -1,7 +1,10 @@
 import { REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
+import SendMgr from "../../../net/SendMgr";
+import { TimezoneTransactionVO, TransactionVO } from "../../../net/proto/hall";
 import CommonUtil from "../../../utils/CommonUtil";
+import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
 import UISuperLayout from "../../UISuperLayout";
@@ -42,9 +45,9 @@ export default class Transactions extends UIScreen {
     /**每页数量 */
     private pageSize: number = 10;
 
-    private detailsData: DetailsData;
+    private detailsData: TimezoneTransactionVO;
 
-    private datas: Transaction[] = [];
+    private datas: TransactionVO[] = [];
 
     private startDate: string = CommonUtil.formatDate(new Date().getTime(), "yyyy-MM-dd");
     private endDate: string = CommonUtil.formatDate(new Date().getTime(), "yyyy-MM-dd");
@@ -108,7 +111,7 @@ export default class Transactions extends UIScreen {
         let lb_time: cc.Label = cc.find("lb_time", node).getComponent(cc.Label);
         let lb_text: cc.Label = cc.find("lb_text", node).getComponent(cc.Label);
         lb_time.string = CommonUtil.getDate(info.time);
-        let amount = info.amount + info.withdrawAmount
+        let amount = LongUtil.longToNumber(info.amount) + LongUtil.longToNumber(info.withdrawAmount);
         lb_amount.string = amount >= 0 ? `+₹${amount}` : `-₹${Math.abs(amount)}`
         lb_amount.node.color = amount >= 0 ? cc.color(241, 156, 113, 255) : cc.color(231, 255, 107, 255)
         lb_type.string = info.title;
@@ -153,7 +156,7 @@ export default class Transactions extends UIScreen {
             this.footer.scaleY = event.progress >= 1 ? 1 : event.progress
         }
         if (event.action) {
-            if (this.currentPage >= this.detailsData.total) {
+            if (this.currentPage >= LongUtil.longToNumber(this.detailsData.total)) {
                 UIMgr.showToast(LangMgr.sentence('e0009'))
                 this.layout.scrollView.release();
                 return;
@@ -171,7 +174,7 @@ export default class Transactions extends UIScreen {
             type: this.type,
             pageNum: this.currentPage
         }
-        let detailsInfo: DetailsData = await NetMgr.inst.detailsData(data);
+        let detailsInfo: TimezoneTransactionVO = await SendMgr.sendTransaction(data);
         if (!detailsInfo || !cc.isValid(this.node)) return;
         if (detailsInfo) {
             this.detailsData = detailsInfo;
@@ -180,7 +183,7 @@ export default class Transactions extends UIScreen {
                     this.datas.push(detailsInfo.transactions[i]);
                 }
             } else {
-                if (detailsInfo.total == 0) {
+                if (LongUtil.longToNumber(detailsInfo.total) == 0) {
                     this.datas = [];
                     this.layout.total(this.datas.length)
                 }

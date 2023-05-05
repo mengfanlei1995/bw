@@ -6,11 +6,12 @@ import SendMgr from "../../../net/SendMgr";
 import RegexUtil from "../../../utils/RegexUtil";
 import UIMgr from "../../UIMgr";
 import UIScene from "../../UIScene";
+import UIScreen from "../../UIScreen";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class ForgetPassWord extends UIScene {
+export default class ForgetPassWord extends UIScreen {
 
     /**登录手机号 */
     @property(cc.EditBox)

@@ -1,0 +1,69 @@
+
+Congratulations.png
+size: 789,789
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Frame
+  rotate: false
+  xy: 2, 2
+  size: 750, 379
+  orig: 750, 463
+  offset: 0, 69
+  index: -1
+gx1
+  rotate: false
+  xy: 35, 659
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+gx2
+  rotate: false
+  xy: 165, 659
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+gx3
+  rotate: false
+  xy: 2, 401
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+gx4
+  rotate: false
+  xy: 260, 383
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+gx5
+  rotate: false
+  xy: 518, 383
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+lizi2
+  rotate: true
+  xy: 18, 773
+  size: 14, 15
+  orig: 18, 17
+  offset: 2, 1
+  index: -1
+lizi3
+  rotate: true
+  xy: 2, 774
+  size: 13, 14
+  orig: 17, 17
+  offset: 2, 2
+  index: -1
+word
+  rotate: false
+  xy: 295, 641
+  size: 439, 146
+  orig: 446, 154
+  offset: 3, 4
+  index: -1

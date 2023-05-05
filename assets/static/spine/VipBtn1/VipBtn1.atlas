@@ -1,0 +1,20 @@
+
+VipBtn1.png
+size: 352,352
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Btn1
+  rotate: false
+  xy: 2, 290
+  size: 222, 60
+  orig: 222, 60
+  offset: 0, 0
+  index: -1
+saoguang
+  rotate: false
+  xy: 226, 286
+  size: 124, 64
+  orig: 128, 64
+  offset: 1, 0
+  index: -1

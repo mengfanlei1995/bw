@@ -32,7 +32,7 @@ export default class Email extends UIScreen {
     private emailInfos: MailPageVO;
 
     protected onEnable(): void {
-        this.node.zIndex = 1;
+        // this.node.zIndex = 2;
         this._initEmailData();
         EventMgr.on(HALL_EVT.UPDATE_EMAIL, this._updateEmail, this)
     }

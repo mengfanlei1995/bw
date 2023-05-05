@@ -29,8 +29,15 @@ export default class Menu extends UIScreen {
         this.setMenuIndex(+index);
     }
 
-    async setMenuIndex(index: number) {
+    setBtnVaild(isValid: boolean) {
+        this.toggle_menu.forEach((toggle) => {
+            toggle.interactable = isValid;
+        })
+    }
+
+    private async setMenuIndex(index: number) {
         if (index == this.curIndex) return;
+        this.setBtnVaild(false);
         let color: cc.Color[] = [new cc.Color(255, 193, 147, 255), new cc.Color(147, 183, 255, 255)];
         this.toggle_menu[index].isChecked = true;
         for (let i = 0; i < this.toggle_menu.length; i++) {
@@ -42,6 +49,7 @@ export default class Menu extends UIScreen {
         await UIMgr.show(`prefab/hall/${uiName[index]}`, uiName[index]);
         UIMgr.hide(uiName[this.curIndex]);
         this.curIndex = index;
+        this.setBtnVaild(true);
     }
 
 }

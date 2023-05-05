@@ -9,7 +9,7 @@ export default class SelfVip extends cc.Component {
 
 
     start() {
-        this.updateVip()
+        this.updateVip();
     }
 
     onEnable() {
@@ -21,6 +21,6 @@ export default class SelfVip extends cc.Component {
     }
 
     updateVip() {
-        this.node.getComponent(cc.Label).string = `VIP${UserData.vipLevel}`;
+        this.node.getComponent(cc.Label).string = `${UserData.vipLevel}`;
     }
 }

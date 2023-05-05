@@ -1,0 +1,258 @@
+
+PlayerWin.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BL1
+  rotate: true
+  xy: 1681, 137
+  size: 251, 253
+  orig: 255, 286
+  offset: 2, 16
+  index: -1
+BL2
+  rotate: true
+  xy: 1698, 580
+  size: 242, 281
+  orig: 255, 286
+  offset: 6, 3
+  index: -1
+BL3
+  rotate: true
+  xy: 1698, 824
+  size: 255, 286
+  orig: 255, 286
+  offset: 0, 0
+  index: -1
+BgGuang
+  rotate: false
+  xy: 0, 0
+  size: 1080, 1079
+  orig: 1080, 1080
+  offset: 0, 0
+  index: -1
+Guang01
+  rotate: true
+  xy: 1936, 166
+  size: 109, 110
+  orig: 128, 130
+  offset: 12, 11
+  index: -1
+HuangGuan
+  rotate: false
+  xy: 1082, 228
+  size: 217, 141
+  orig: 219, 143
+  offset: 1, 1
+  index: -1
+LaBa1
+  rotate: false
+  xy: 1526, 372
+  size: 153, 109
+  orig: 160, 111
+  offset: 6, 1
+  index: -1
+LaBa2
+  rotate: true
+  xy: 1981, 658
+  size: 126, 66
+  orig: 133, 68
+  offset: 6, 1
+  index: -1
+MaiShui1
+  rotate: true
+  xy: 1936, 95
+  size: 69, 110
+  orig: 71, 112
+  offset: 1, 1
+  index: -1
+MaiShui2
+  rotate: false
+  xy: 1964, 463
+  size: 75, 36
+  orig: 79, 39
+  offset: 2, 1
+  index: -1
+MaiShui3
+  rotate: false
+  xy: 1630, 108
+  size: 29, 64
+  orig: 32, 66
+  offset: 2, 1
+  index: -1
+MaiShui4
+  rotate: false
+  xy: 1986, 1046
+  size: 61, 33
+  orig: 64, 37
+  offset: 1, 2
+  index: -1
+MaiShui5
+  rotate: true
+  xy: 1964, 425
+  size: 36, 75
+  orig: 40, 77
+  offset: 2, 1
+  index: -1
+VipHt
+  rotate: false
+  xy: 1082, 371
+  size: 442, 110
+  orig: 445, 114
+  offset: 1, 2
+  index: -1
+VipNum0
+  rotate: false
+  xy: 1986, 852
+  size: 57, 64
+  orig: 69, 86
+  offset: 8, 14
+  index: -1
+VipNum1
+  rotate: false
+  xy: 1630, 174
+  size: 40, 64
+  orig: 69, 86
+  offset: 8, 14
+  index: -1
+VipNum2
+  rotate: true
+  xy: 1206, 115
+  size: 54, 64
+  orig: 69, 86
+  offset: 8, 14
+  index: -1
+VipNum3
+  rotate: false
+  xy: 1986, 786
+  size: 55, 64
+  orig: 69, 86
+  offset: 7, 14
+  index: -1
+VipNum4
+  rotate: true
+  xy: 1206, 171
+  size: 55, 64
+  orig: 69, 86
+  offset: 6, 14
+  index: -1
+VipNum5
+  rotate: true
+  xy: 1387, 69
+  size: 52, 64
+  orig: 69, 86
+  offset: 7, 14
+  index: -1
+VipNum6
+  rotate: true
+  xy: 1206, 59
+  size: 54, 64
+  orig: 69, 86
+  offset: 7, 14
+  index: -1
+VipNum7
+  rotate: true
+  xy: 1964, 501
+  size: 54, 76
+  orig: 69, 86
+  offset: 8, 6
+  index: -1
+VipNum8
+  rotate: true
+  xy: 1272, 21
+  size: 52, 64
+  orig: 69, 86
+  offset: 8, 14
+  index: -1
+VipNum9
+  rotate: true
+  xy: 1387, 123
+  size: 53, 64
+  orig: 69, 86
+  offset: 8, 14
+  index: -1
+VipNumVIP1
+  rotate: false
+  xy: 1526, 306
+  size: 150, 64
+  orig: 162, 73
+  offset: 6, 5
+  index: -1
+VipNumVIP2
+  rotate: false
+  xy: 1511, 240
+  size: 150, 64
+  orig: 162, 73
+  offset: 6, 5
+  index: -1
+XuanZhuan
+  rotate: true
+  xy: 1082, 483
+  size: 596, 614
+  orig: 635, 662
+  offset: 14, 23
+  index: -1
+YuMao1
+  rotate: false
+  xy: 1272, 75
+  size: 113, 101
+  orig: 113, 101
+  offset: 0, 0
+  index: -1
+YuMao2
+  rotate: false
+  xy: 1493, 114
+  size: 135, 124
+  orig: 135, 124
+  offset: 0, 0
+  index: -1
+YuMao3
+  rotate: false
+  xy: 1698, 390
+  size: 264, 188
+  orig: 264, 188
+  offset: 0, 0
+  index: -1
+YuMao4
+  rotate: true
+  xy: 1964, 277
+  size: 146, 70
+  orig: 146, 70
+  offset: 0, 0
+  index: -1
+YuMao5
+  rotate: true
+  xy: 1986, 918
+  size: 126, 57
+  orig: 126, 57
+  offset: 0, 0
+  index: -1
+YuMao6
+  rotate: false
+  xy: 1301, 272
+  size: 208, 97
+  orig: 208, 97
+  offset: 0, 0
+  index: -1
+YuMao7
+  rotate: false
+  xy: 1301, 178
+  size: 190, 92
+  orig: 190, 92
+  offset: 0, 0
+  index: -1
+YuMao8
+  rotate: true
+  xy: 1981, 557
+  size: 99, 65
+  orig: 99, 65
+  offset: 0, 0
+  index: -1
+YuMao9
+  rotate: false
+  xy: 1082, 104
+  size: 122, 122
+  orig: 122, 122
+  offset: 0, 0
+  index: -1

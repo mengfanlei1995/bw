@@ -30,4 +30,26 @@ export default class Top20Item extends cc.Component {
         let spriteFrame: cc.SpriteFrame = new cc.SpriteFrame(texture);
         this.spAvatar.spriteFrame = spriteFrame;
     }
+
+    update() {
+        let is = this.isInsideCanvas(this.node);
+        this.node.opacity = is ? 255 : 0;
+    }
+
+    private isInsideCanvas(target: cc.Node): boolean {
+        let size: cc.Size = cc.view.getVisibleSize();
+        let worldPos: cc.Vec3 = target.parent.convertToWorldSpaceAR(target.position);
+        let xMin: number = worldPos.x - target.width / 2;
+        let xMax: number = worldPos.x + target.width / 2;
+        let yMin: number = worldPos.y - target.height / 2;
+        let yMax: number = worldPos.y + target.height / 2;
+
+        if (xMin > size.width || xMax < 0 || yMin > size.height || yMax < 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
 }

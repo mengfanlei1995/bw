@@ -2,6 +2,7 @@ import LangMgr from "../../../mgr/LangMgr";
 import SendMgr from "../../../net/SendMgr";
 import { TimezoneReferRewardVO } from "../../../net/proto/hall";
 import CommonUtil from "../../../utils/CommonUtil";
+import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
 import UISuperLayout from "../../UISuperLayout";
 import { UISuperHeaderAndFooterEvent } from "../../UISuperScrollView";
@@ -101,9 +102,9 @@ export default class MyRewards extends cc.Component {
         if (!result || !cc.isValid(this.node)) return;
         let { total, rewardList, totalBonus, totalDepositBonus, totalInviteBonus } = result;
         this.rewardInfo = result;
-        this.lb_totalBonus.string = `₹${totalBonus}`;
-        this.lb_inviteBonus.string = `₹${totalInviteBonus}`;
-        this.lb_depositBonus.string = `₹${totalDepositBonus}`;
+        this.lb_totalBonus.string = `₹${LongUtil.longToNumber(totalBonus)}`;
+        this.lb_inviteBonus.string = `₹${LongUtil.longToNumber(totalInviteBonus)}`;
+        this.lb_depositBonus.string = `₹${LongUtil.longToNumber(totalDepositBonus)}`;
         if (rewardList && rewardList.length > 0) {
             this.datas = rewardList;
             this.node_noDetails.active = false;
@@ -114,24 +115,24 @@ export default class MyRewards extends cc.Component {
     }
 
     onClickGetListInfo(e: cc.Event.EventTouch, day: number) {
-        this.lb_btnText.string = e.target.getComponentInChildren(cc.Label).string
+        this.lb_btnText.string = e.target.getComponentInChildren(cc.Label).string;
         this.node_daysView.active = false;
         this.isOpen = false;
-        let close: cc.Node = this.btnOpenDaysView.children[1].children[0]
-        let open: cc.Node = this.btnOpenDaysView.children[1].children[1]
-        close.active = true
-        open.active = false
+        let close: cc.Node = this.btnOpenDaysView.children[1].children[0];
+        let open: cc.Node = this.btnOpenDaysView.children[1].children[1];
+        close.active = true;
+        open.active = false;
     }
 
     private isOpen: boolean = false;
 
     onClickOpenDaysView(e: cc.Event.EventTouch) {
         this.isOpen = !this.isOpen;
-        this.node_daysView.active = this.isOpen
-        let close: cc.Node = e.target.children[1].children[0]
-        let open: cc.Node = e.target.children[1].children[1]
-        close.active = !this.isOpen
-        open.active = this.isOpen
+        this.node_daysView.active = this.isOpen;
+        let close: cc.Node = e.target.children[1].children[0];
+        let open: cc.Node = e.target.children[1].children[1];
+        close.active = !this.isOpen;
+        open.active = this.isOpen;
     }
 
     private onRefreshEvent(node: cc.Node, index: number) {
@@ -150,7 +151,7 @@ export default class MyRewards extends cc.Component {
     protected onDisable(): void {
         this.lblArr.forEach(
             (node) => {
-                node.opacity = 0
+                node.opacity = 0;
             }
         )
     }

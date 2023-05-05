@@ -2,8 +2,12 @@ import SysConfig from "../../../data/SysConfig";
 import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
+import StorageMgr from "../../../mgr/StorageMgr";
+import SendMgr from "../../../net/SendMgr";
+import { RechargeInfoVO } from "../../../net/proto/hall";
 import CommonUtil from "../../../utils/CommonUtil";
 import JsbUitl from "../../../utils/JsbUitl";
+import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
 import { DialogType } from "../common/DiaLog";
@@ -44,7 +48,7 @@ export default class AddCash extends UIScreen {
     private amont: number = 0;
     private activityId: string = "";
     private amountArray: number[] = [100, 300, 500, 1000, 3000, 5000, 10000, 20000, 30000];
-    private rechargeInfoList = [];
+    private rechargeInfoList: RechargeInfoVO[] = [];
     private seconds: number = 0;
     private curCheckIndex: number = 0;
 
@@ -77,12 +81,12 @@ export default class AddCash extends UIScreen {
      */
     async getRechargeInfo(param: any = { vipInto: false, vipLevel: 0 }) {
         let { vipInto, vipLevel } = param;
-        let result = await NetMgr.inst.rechargeInfo({ vipInto: vipInto, vipLevel: vipLevel });
-        if (cc.isValid(this.node)) this.btnAddCash.interactable = false;
+        let result = await SendMgr.sendRechargeInfo({ vipInto: vipInto, vipLevel: vipLevel });
+        if (cc.isValid(this.node)) this.btnAddCash.interactable = true;
         if (result && cc.isValid(this.node)) {
-            let { actLeftSeconds, rechargeInfoList, rechargeIndex } = result
-            this.seconds = actLeftSeconds;
-            this.rechargeInfoList = rechargeInfoList;
+            let { actLeftSeconds, rechargeInfoVOList, rechargeIndex } = result;
+            this.seconds = LongUtil.longToNumber(actLeftSeconds);
+            this.rechargeInfoList = rechargeInfoVOList;
             this.onClickCheckAmount(null, this.isLoad ? this.curCheckIndex : rechargeIndex >= 0 ? rechargeIndex : 1);
             this.isLoad = true;
             let node: cc.Node = this.node_amount;
@@ -91,23 +95,25 @@ export default class AddCash extends UIScreen {
             for (let i = 0; i < node.childrenCount; i++) {
                 let child: cc.Node = node.children[i];
                 let bonus: cc.Label = cc.find("bonus", child).getComponent(cc.Label);
-                bonus.string = `₹${rechargeInfoList[i].oriMoney / 100}`
-                this.amountArray[i] = rechargeInfoList[i].oriMoney / 100;
+                let oriMoney: number = LongUtil.longToNumber(rechargeInfoVOList[i].oriMoney);
+                let extraMoney: number = LongUtil.longToNumber(rechargeInfoVOList[i].extraMoney);
+                bonus.string = `₹${oriMoney / 100}`;
+                this.amountArray[i] = oriMoney / 100;
                 let activity: cc.Node = cc.find("activity", child);
-                if (rechargeInfoList[i].morePercent) {
+                if (rechargeInfoVOList[i].morePercent) {
                     activity.active = true
-                    activity.getComponent(cc.Sprite).spriteFrame = this.sp_ac[+rechargeInfoList[i].showTag];
+                    activity.getComponent(cc.Sprite).spriteFrame = this.sp_ac[+rechargeInfoVOList[i].showTag];
                     let lb_activity: cc.Label = cc.find("bonus", activity).getComponent(cc.Label);
-                    lb_activity.string = `${rechargeInfoList[i].morePercent}%`
+                    lb_activity.string = `${rechargeInfoVOList[i].morePercent}%`;
                 } else {
-                    activity.active = false
+                    activity.active = false;
                 }
                 let get: cc.Node = cc.find("get", child);
                 let lb_get: cc.Label = cc.find("bonus", get).getComponent(cc.Label);
-                if (rechargeInfoList[i].extraMoney) {
-                    lb_get.string = `${LangMgr.sentence("e0338")} +${rechargeInfoList[i].extraMoney / 100}`
+                if (rechargeInfoVOList[i].extraMoney) {
+                    lb_get.string = `${LangMgr.sentence("e0338")} +${extraMoney / 100}`;
                 } else {
-                    lb_get.string = ""
+                    lb_get.string = "";
                 }
             }
         }
@@ -141,10 +147,14 @@ export default class AddCash extends UIScreen {
     }
 
     onClickRecord() {
-        UIMgr.show('prefab/hall/MoneyRecords', 'MoneyRecords');
+        UIMgr.show('prefab/hall/MoneyRecords', 'MoneyRecords', 0);
     }
 
     async onClickAddCash() {
+        if (!StorageMgr.phone) {
+            UIMgr.show('prefab/hall/BindPhone', 'BindPhone');
+            return;
+        }
         EventMgr.emit(REPORT_EVT.CLICK, {
             element_id: "btn_submit_byAddCash",
             element_name: "提交充值界面的提交按钮",
@@ -164,7 +174,7 @@ export default class AddCash extends UIScreen {
             element_position: '',
             element_content: '',
         });
-        let result = await NetMgr.inst.recharge(data)
+        let result = await SendMgr.sendPay(data);
         if (result) {
             this.openUrl(result.url);
         }
@@ -203,9 +213,9 @@ export default class AddCash extends UIScreen {
             return;
         }
         this.lb_addCash.string = `₹${this.amountArray[index]}`;
-        this.lb_cashBack.string = `₹${info.giveDeposit / 100}`;
-        this.lb_bonus.string = `₹${info.giveBonus / 100}`;
-        this.lb_totalGet.string = `₹${(info.totalGet + info.giveBonus) / 100}`;
+        this.lb_cashBack.string = `₹${LongUtil.longToNumber(info.giveDeposit) / 100}`;
+        this.lb_bonus.string = `₹${LongUtil.longToNumber(info.giveBonus) / 100}`;
+        this.lb_totalGet.string = `₹${(LongUtil.longToNumber(info.totalGet) + LongUtil.longToNumber(info.giveBonus)) / 100}`;
         this.activityId = info.activityId;
     }
 

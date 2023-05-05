@@ -2,22 +2,387 @@ syntax = "proto3";
 package pb.hall;
 
 // Description:
-message ReferRankVO {
-  int64 prizePool = 1;
-  int64 yourScore = 2;
-  repeated ReferRuleVO rule = 3;
-  repeated ReferTop20VO top20 = 4;
+message PopupDTO {
+  string sceneId = 1;
 
 }
 
 // Description:
-message RedDotVO {
-  bool redDot = 1;
+message TimezoneReferRewardVO {
+  int32 offset = 1;
+  int64 totalBonus = 2;
+  int64 totalInviteBonus = 3;
+  int64 totalDepositBonus = 4;
+  repeated ReferRewardDateVO rewardList = 5;
+  int64 total = 6;
+
+}
+
+// Description:
+message PhoneSmsDTO {
+  string bundleId = 1;
+  string appName = 2;
+  string mobile = 3;
+
+}
+
+// Description:
+message WithdrawSuccessNotifyVO {
+
+}
+
+// Description:
+message HomepageGamesVO {
+  string roomId = 1;
+  string gameType = 2;
+  string gameImgUrl = 3;
+  string gameIconUrl = 4;
+  string remoteUrl = 5;
+  string version = 6;
+  bool download = 7;
+  int32 state = 8;
+  int32 select = 9;
+  int64 minIn = 10;
+  int32 flag = 11;
+  string file = 12;
+  string name = 13;
+  int32 cmd = 14;
+
+}
+
+// Created by IntelliJ IDEA 2020.1.2
+message DailyBonusVO {
+  int64 timeStamp = 1;
+  int64 weekSignInDay = 2;
+  bool todaySignIn = 3;
+  repeated string signInTitles = 4;
+  repeated DailyBonusEventVO events = 5;
+
+}
+
+// Description:
+message RechargeActivityNotifyVO {
+  string userId = 1;
+  int64 time = 2;
+  int32 activityType = 3;
+  string expand = 4;
+
+}
+
+// Description:
+message TransactionVO {
+  string id = 1;
+  int64 time = 2;
+  string title = 3;
+  int64 amount = 4;
+  int64 withdrawAmount = 5;
+
+}
+
+// Description:
+message DailyBonusSignInVipAwardVO {
+  int64 normalAmount = 1;
+  int64 vipAmount = 2;
+  int32 vipRatio = 3;
+
+}
+
+// Description:
+message HomepageGameVO {
+  repeated HomepageGamesVO games = 1;
+
+}
+
+// Description:
+message VipInfoV2VO {
+  int32 currentLevel = 1;
+  repeated VipLevelV2VO levels = 2;
+
+}
+
+// Description:
+message ReferInvitationTotalVO {
+  int32 todayInvited = 1;
+  int32 totalInvited = 2;
+  repeated ReferInvitationTotalChildVO childList = 3;
+  int64 total = 4;
+
+}
+
+// Description:
+message ReferRankTop20DTO {
+  int32 type = 1;
+
+}
+
+// Description:
+message UserUpdateNicknameDTO {
+  string nickname = 1;
+
+}
+
+// Description:
+message WithdrawPageDTO {
+  string startDate = 1;
+  string endDate = 2;
+  int32 type = 3;
+  int32 pageNum = 4;
+
+}
+
+// Description:
+message RechargeNotifyVO {
+
+}
+
+// Description:
+message RechargeInfoResponseV2VO {
+  int64 actLeftSeconds = 1;
+  double vipRatio = 2;
+  repeated RechargeInfoVO rechargeInfoVOList = 3;
+  int32 rechargeIndex = 4;
+
+}
+
+// Description:
+message NextDayRechargeVO {
+  bool showFlag = 1;
+  string activityId = 2;
+  int32 depositDay1 = 3;
+  int32 depositDay2 = 4;
+  int32 depositDay3 = 5;
+  int32 bonusDay1 = 6;
+  int32 bonusDay2 = 7;
+  int32 bonusDay3 = 8;
+  int32 totalGet = 9;
+  int32 oriRecharge = 10;
+  int64 leftSeconds = 11;
+  int32 days = 12;
+  bool stateDay1 = 13;
+  bool stateDay2 = 14;
+  bool stateDay3 = 15;
+  bool buy = 16;
+
+}
+
+// Description:
+message UserUpdateHeadPicDTO {
+  // 头像编号
+  string headpic = 1;
+
+}
+
+// Description:
+message VipUpgradeNotifyVO {
+  string userId = 1;
+  int64 time = 2;
+  int32 beforeLevel = 3;
+  int32 currentLevel = 4;
+
+}
+
+// Description:
+message HomepageUserInfoVO {
+  double bonus = 1;
+  int32 vipLevel = 2;
+  int32 club = 3;
+  bool recharge = 4;
+  bool brokeCoupon = 5;
+  string invitationCode = 6;
+
+}
+
+// Description:
+message HomepageGameDTO {
+  int32 productId = 1;
+  string appVersion = 2;
+  int32 appResVersion = 3;
+
+}
+
+// Description:
+message WithdrawVO {
+  string id = 1;
+  int64 time = 2;
+  int32 state = 3;
+  double withdraw = 4;
+  double get = 5;
+  string remark = 6;
+
+}
+
+// Description:
+message ReferInvitationNowVO {
+  double friendDeposit = 1;
+  int32 friendReg = 2;
+  double mutualFriendDeposit = 3;
+  int32 mutualFriendReg = 4;
+  repeated ReferInvitationRechargeRateVO rechargeRateResponseList = 5;
+  string top = 6;
+  string bottom = 7;
+
+}
+
+// Description:
+message TransactionDTO {
+  string startDate = 1;
+  string endDate = 2;
+  int32 type = 3;
+  int32 pageNum = 4;
+
+}
+
+// Description:
+message VipGiftV2VO {
+  string activityId = 1;
+  int32 pay = 2;
+  int32 bonus = 3;
+  int32 deposit = 4;
+  bool canPay = 5;
+
+}
+
+// Description:
+message TimezoneRechargeVO {
+  int32 offset = 1;
+  repeated RechargeVO recharges = 2;
+  int64 total = 3;
+
+}
+
+// Created by IntelliJ IDEA 2020.1.2
+message DailyBonusEventVO {
+  int64 id = 1;
+  string title = 2;
+  int32 processMin = 3;
+  int32 processMax = 4;
+  int64 awardAmount = 5;
+  // 0不可领取 1可领取 2已领取
+  int32 state = 6;
+
+}
+
+// Description:
+message WithdrawInfoVO {
+  // 提现扣除比例，返回给客户端计算
+  string ratio = 1;
+  // 需要审核的额度
+  string audit = 2;
+  // Created by IntelliJ IDEA 2020.1.2
+  WithdrawBankInfoVO bankInfo = 3;
+  repeated double withdrawAmounts = 4;
+  // Description:
+  WithdrawVipVO vip = 5;
+
+}
+
+// Description:
+message PayRechargeOrderVO {
+  string url = 1;
+
+}
+
+// Description:
+message WithdrawBankDTO {
+  string accName = 1;
+  string accNo = 2;
+  string ifsc = 3;
+  string bankType = 4;
+
+}
+
+// Description:
+message ReferInvitationTotalChildVO {
+  string uid = 1;
+  string name = 2;
+  int64 todayBonus = 3;
+  int64 totalBonus = 4;
+
+}
+
+// Description:
+message MailPageDTO {
+  int32 pageNo = 1;
+  int32 pageCount = 2;
+
+}
+
+// Description:
+message RechargeEventMonthVO {
+  bool has = 1;
+  double remain = 2;
+  int32 days = 3;
+
+}
+
+// Description:
+message ReferTop20VO {
+  string headPic = 1;
+  string nickName = 2;
+  int64 reward = 3;
+  double rate = 4;
+
+}
+
+// Description:
+message ReferInvitationMapUrlVO {
+  map<string,ReferInvitationUrlVO> urlMap = 1;
 
 }
 
 // Description:
 message LoginMobileSmsVO {
+  string smsCode = 1;
+
+}
+
+// Description:
+message GullakMainInfoV2VO {
+  int64 total = 1;
+  int64 cash = 2;
+  int32 ratio = 3;
+
+}
+
+// Created by IntelliJ IDEA 2020.1.2
+message MailPageVO {
+  int64 totalPageCount = 1;
+  string officialWebSite = 2;
+  string facebook = 3;
+  repeated MailVO mails = 4;
+
+}
+
+// Description:
+message PayRechargeOrderDTO {
+  string payType = 1;
+  int32 amount = 2;
+  string activityId = 3;
+  string monthRechargeId = 4;
+  int32 gullakLevelId = 5;
+
+}
+
+// Description:
+message VipLevelV2VO {
+  int64 levelId = 1;
+  int64 processMin = 2;
+  int64 processMax = 3;
+  repeated VipPrivilegeV2VO privilegeList = 4;
+  // Description:
+  VipGiftV2VO giftBag = 5;
+
+}
+
+// Description:
+message WithdrawVipVO {
+  int64 withdrawNumber = 1;
+  map<int64,int32> levelWithdraw = 2;
+
+}
+
+// Description:
+message PhoneSmsVO {
   string smsCode = 1;
 
 }
@@ -38,80 +403,8 @@ message LoginVO {
 
 }
 
-// Description:
-message HomepageGameDTO {
-  int32 productId = 1;
-  string appVersion = 2;
-  int32 appResVersion = 3;
-
-}
-
-// Description:
-message MailPageDTO {
-  int32 pageNo = 1;
-  int32 pageCount = 2;
-
-}
-
-// Description:
-message UserUpdateNicknameDTO {
-  string nickname = 1;
-
-}
-
-// Description:
-message ReferRewardPageDTO {
-  int32 pageNum = 1;
-
-}
-
-// Description:
-message VipUpgradeNotifyVO {
-  string userId = 1;
-  int64 time = 2;
-  int32 beforeLevel = 3;
-  int32 currentLevel = 4;
-
-}
-
-// Description:
-message ReferInvitationTotalChildVO {
-  string uid = 1;
-  string name = 2;
-  int64 todayBonus = 3;
-  int64 totalBonus = 4;
-
-}
-
-// Description:
-message TransactionVO {
-  string id = 1;
-  int64 time = 2;
-  string title = 3;
-  int64 amount = 4;
-  int64 withdrawAmount = 5;
-
-}
-
-// Description:
-message ReferTop20VO {
-  string headPic = 1;
-  string nickName = 2;
-  int64 reward = 3;
-  double rate = 4;
-
-}
-
-// Description:
-message GullakMainInfoV2VO {
-  int64 total = 1;
-  int64 cash = 2;
-  int32 ratio = 3;
-
-}
-
 // Created by IntelliJ IDEA 2020.1.2
-message PictureResponse {
+message PictureVO {
   // id
   int32 id = 1;
   // 图片链接
@@ -131,28 +424,14 @@ message PictureResponse {
 }
 
 // Description:
-message MailOptDTO {
-  int64 id = 1;
-
-}
-
-// Created by IntelliJ IDEA 2020.1.2
-message DailyBonusEventVO {
-  int64 id = 1;
-  string title = 2;
-  int32 processMin = 3;
-  int32 processMax = 4;
-  int64 awardAmount = 5;
-  // 0不可领取 1可领取 2已领取
-  int32 state = 6;
+message PopupListVO {
+  repeated PopupVO vos = 1;
 
 }
 
 // Description:
-message DailyBonusSignInVipAwardVO {
-  int64 normalAmount = 1;
-  int64 vipAmount = 2;
-  int32 vipRatio = 3;
+message MailOptDTO {
+  int64 id = 1;
 
 }
 
@@ -166,36 +445,18 @@ message ReferRewardDateVO {
 }
 
 // Description:
-message ReferInvitationUrlVO {
-  string title = 1;
-  string url = 2;
+message ReferInvitationRechargeRateVO {
+  int64 min = 1;
+  int64 max = 2;
+  double rate = 3;
 
 }
 
-// Created by IntelliJ IDEA 2020.1.2
-message MailPageVO {
-  int64 totalPageCount = 1;
-  string officialWebSite = 2;
-  string facebook = 3;
-  repeated MailVO mails = 4;
-
-}
-
-// Created by IntelliJ IDEA 2020.1.2
-message MailVO {
-  int64 id = 1;
-  // 标题
-  string title = 2;
-  // 内容
-  string content = 3;
-  // 邮件发送时间
-  string sendTime = 4;
-  // 是否已读
-  bool read = 5;
-  // 附件内容
-  repeated MailAttachmentVO attachments = 6;
-  // 附件状态(0默认状态 1未领取未过期 2未领取已过期 3已领取)
-  int32 attachmentState = 7;
+// Description:
+message ActNextDayNotifyVO {
+  string userId = 1;
+  int64 time = 2;
+  string expand = 3;
 
 }
 
@@ -209,65 +470,43 @@ message LoginWalletVO {
 }
 
 // Description:
-message TimezoneTransactionVO {
+message ReferRuleVO {
+  string rank = 1;
+  double rate = 2;
+
+}
+
+// Created by IntelliJ IDEA 2020.1.2
+message MailAttachmentVO {
+  int64 id = 1;
+  string type = 2;
+  int64 amount = 3;
+
+}
+
+// Description:
+message TimezoneWithdrawVO {
   int32 offset = 1;
-  int64 total = 2;
+  repeated WithdrawVO withdraws = 2;
+  int64 total = 3;
 
 }
 
 // Description:
-message HomepageResponse {
-  // Description:
-  HomepageUserInfoResponse userInfo = 1;
-  repeated PictureResponse rotationPictures = 2;
-  map<string,bool> redDot = 3;
+message ReferRewardPageDTO {
+  int32 pageNum = 1;
 
 }
 
 // Description:
-message VipInfoV2VO {
-  int32 currentLevel = 1;
-  repeated VipLevelV2VO levels = 2;
+message PopupVO {
+  string popEvent = 1;
+  string popInfo = 2;
 
 }
 
 // Description:
-message TimezoneReferRewardVO {
-  int32 offset = 1;
-  int64 totalBonus = 2;
-  int64 totalInviteBonus = 3;
-  int64 totalDepositBonus = 4;
-  repeated ReferRewardDateVO rewardList = 5;
-  int64 total = 6;
-
-}
-
-// Description:
-message VipLevelV2VO {
-  int64 levelId = 1;
-  int64 processMin = 2;
-  int64 processMax = 3;
-  repeated VipPrivilegeV2VO privilegeList = 4;
-  // Description:
-  VipGiftV2VO giftBag = 5;
-
-}
-
-// Description:
-message UserUpdateHeadPicDTO {
-  // 头像编号
-  string headpic = 1;
-
-}
-
-// Description:
-message ReferInvitationMapUrlVO {
-  map<string,ReferInvitationUrlVO> urlMap = 1;
-
-}
-
-// Description:
-message MailRedDotVO {
+message RedDotVO {
   bool redDot = 1;
 
 }
@@ -280,28 +519,50 @@ message ReferTotalPageDTO {
 }
 
 // Description:
-message DailyBonusLongVO {
-  int64 award = 1;
-
-}
-
-// Description:
-message VipGiftV2VO {
-  string activityId = 1;
-  int32 pay = 2;
-  int32 bonus = 3;
-  int32 deposit = 4;
-  bool canPay = 5;
-
-}
-
-// Description:
 message VipPrivilegeV2VO {
   string id = 1;
   string title = 2;
   string content = 3;
   string tableContent = 4;
   bool show = 5;
+
+}
+
+// Description:
+message PhoneDTO {
+  string mobile = 1;
+  string code = 2;
+  string mobilePassword = 3;
+
+}
+
+// Description:
+message DailyBonusAwardDTO {
+  int64 eventId = 1;
+
+}
+
+// Description:
+message VipLevelWithdrawVO {
+  int32 vipLevel = 1;
+  int64 withdrawNumber = 2;
+
+}
+
+// Description:
+message ReferInvitationUrlVO {
+  string title = 1;
+  string url = 2;
+
+}
+
+// Created by IntelliJ IDEA 2020.1.2
+message WithdrawBankInfoVO {
+  string accName = 1;
+  string accNo = 2;
+  string ifsc = 3;
+  string bankType = 4;
+  string mobile = 5;
 
 }
 
@@ -331,54 +592,66 @@ message LoginDTO {
 }
 
 // Created by IntelliJ IDEA 2020.1.2
-message MailAttachmentVO {
+message MailVO {
   int64 id = 1;
-  string type = 2;
-  int64 amount = 3;
+  // 标题
+  string title = 2;
+  // 内容
+  string content = 3;
+  // 邮件发送时间
+  string sendTime = 4;
+  // 是否已读
+  bool read = 5;
+  // 附件内容
+  repeated MailAttachmentVO attachments = 6;
+  // 附件状态(0默认状态 1未领取未过期 2未领取已过期 3已领取)
+  int32 attachmentState = 7;
 
 }
 
 // Description:
-message HomepageGameVO {
-  repeated HomepageGamesResponse games = 1;
+message ReferRankVO {
+  int64 prizePool = 1;
+  int64 yourScore = 2;
+  repeated ReferRuleVO rule = 3;
+  repeated ReferTop20VO top20 = 4;
 
 }
 
 // Description:
-message ReferRankTop20DTO {
-  int32 type = 1;
+message RechargeInfoVO {
+  string showTag = 1;
+  string activityId = 2;
+  int32 morePercent = 3;
+  int64 oriMoney = 4;
+  int64 giveDeposit = 5;
+  int64 giveBonus = 6;
+  int64 extraMoney = 7;
+  int64 totalGet = 8;
 
 }
 
 // Description:
-message HomepageGamesResponse {
-  string roomId = 1;
-  string gameType = 2;
-  string gameImgUrl = 3;
-  string gameIconUrl = 4;
-  string remoteUrl = 5;
-  string version = 6;
-  bool download = 7;
-  int32 state = 8;
-  int32 select = 9;
-  int64 minIn = 10;
-  int32 flag = 11;
-  string file = 12;
-  string name = 13;
-  int32 cmd = 14;
+message TimezoneTransactionVO {
+  int32 offset = 1;
+  int64 total = 2;
+  repeated TransactionVO transactions = 3;
 
 }
 
 // Description:
-message ReferInvitationRechargeRateVO {
-  int64 min = 1;
-  int64 max = 2;
-  double rate = 3;
+message HomepageVO {
+  // Description:
+  HomepageUserInfoVO userInfo = 1;
+  repeated PictureVO rotationPictures = 2;
+  map<string,bool> redDot = 3;
+  // Description:
+  NextDayRechargeVO nextDayRechargeVO = 4;
 
 }
 
 // Description:
-message TransactionDTO {
+message RechargePageDTO {
   string startDate = 1;
   string endDate = 2;
   int32 type = 3;
@@ -387,57 +660,37 @@ message TransactionDTO {
 }
 
 // Description:
-message ReferInvitationTotalVO {
-  int32 todayInvited = 1;
-  int32 totalInvited = 2;
-  repeated ReferInvitationTotalChildVO childList = 3;
-  int64 total = 4;
-
-}
-
-// Created by IntelliJ IDEA 2020.1.2
-message DailyBonusVO {
-  int64 timeStamp = 1;
-  int64 weekSignInDay = 2;
-  bool todaySignIn = 3;
-  repeated string signInTitles = 4;
-  repeated DailyBonusEventVO events = 5;
+message PayWithdrawOrderDTO {
+  double amount = 1;
+  bool ganesh = 2;
 
 }
 
 // Description:
-message ReferRuleVO {
-  string rank = 1;
-  double rate = 2;
-
-}
-
-// Description:
-message HomepageUserInfoResponse {
-  double bonus = 1;
+message RechargeInfoV2DTO {
+  bool vipInto = 1;
   int32 vipLevel = 2;
-  int32 club = 3;
-  bool recharge = 4;
-  bool brokeCoupon = 5;
-  string invitationCode = 6;
 
 }
 
 // Description:
-message ReferInvitationNowVO {
-  double friendDeposit = 1;
-  int32 friendReg = 2;
-  double mutualFriendDeposit = 3;
-  int32 mutualFriendReg = 4;
-  repeated ReferInvitationRechargeRateVO rechargeRateResponseList = 5;
-  string top = 6;
-  string bottom = 7;
+message RechargeVO {
+  string id = 1;
+  int64 time = 2;
+  int32 state = 3;
+  double get = 4;
 
 }
 
 // Description:
-message DailyBonusAwardDTO {
-  int64 eventId = 1;
+message MailRedDotVO {
+  bool redDot = 1;
+
+}
+
+// Description:
+message DailyBonusLongVO {
+  int64 award = 1;
 
 }
 

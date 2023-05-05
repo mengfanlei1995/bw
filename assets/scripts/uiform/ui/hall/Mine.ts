@@ -61,7 +61,7 @@ export default class Mine extends UIScreen {
     }
 
     onAddCashClick(e: cc.Event.EventTouch) {
-        UIMgr.show('prefab/hall/AddCash', 'AddCash');
+        UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: false, vipLevel: 0 });
     }
 
     onWithdrawClick(e: cc.Event.EventTouch) {

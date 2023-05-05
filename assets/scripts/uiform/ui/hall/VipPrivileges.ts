@@ -27,11 +27,11 @@ export default class VipPrivileges extends UIScreen {
     @property({ tooltip: 'rightBonus', type: cc.Sprite })
     progress: cc.Sprite = null;
 
-    @property({ tooltip: 'vipSp', type: cc.Sprite })
-    sp_vipLeft: cc.Sprite = null;
+    // @property({ tooltip: 'vipSp', type: cc.Sprite })
+    // sp_vipLeft: cc.Sprite = null;
 
-    @property({ tooltip: 'vipSp', type: cc.Sprite })
-    sp_vipRight: cc.Sprite = null;
+    // @property({ tooltip: 'vipSp', type: cc.Sprite })
+    // sp_vipRight: cc.Sprite = null;
 
     @property({ tooltip: 'vipSpf', type: [cc.SpriteFrame] })
     spf_vip: cc.SpriteFrame[] = [];
@@ -41,6 +41,9 @@ export default class VipPrivileges extends UIScreen {
 
     @property({ tooltip: 'pageview', type: cc.PageView })
     pageview: cc.PageView = null;
+
+    @property({ tooltip: 'content', type: cc.Node })
+    content: cc.Node = null;
 
     private currentLevel: number = 0;
 
@@ -91,11 +94,15 @@ export default class VipPrivileges extends UIScreen {
      */
     initUI(level: number) {
         if (level < 0 || level >= this.levels.length) return;
-        this.lb_curVipLevel.string = `VIP${this.levels[level].levelId}`;
-        this.lb_leftVipLevel.string = `V${this.levels[level].levelId}`;
-        this.lb_rightVipLevel.string = `${level + 1 > this.levels.length - 1 ? "Max" : "V" + this.levels[level + 1].levelId}`;
+        for (let i = 0; i < this.content.childrenCount; i++) {
+            this.content.children[i].opacity = i >= level - 1 && i <= level + 1 ? 255 : 0;
+        }
+        let levelId: number = LongUtil.longToNumber(this.levels[level].levelId);
         let processMin: number = LongUtil.longToNumber(this.levels[level].processMin);
         let processMax: number = LongUtil.longToNumber(this.levels[level].processMax);
+        this.lb_curVipLevel.string = `VIP${levelId}`;
+        this.lb_leftVipLevel.string = `V${levelId}`;
+        this.lb_rightVipLevel.string = `${level + 1 > this.levels.length - 1 ? "MAX" : "V" + LongUtil.longToNumber(this.levels[level + 1].levelId)}`;
         this.lb_progress.string = `${processMin}/${processMax}`;
         this.progress.fillRange = processMin / processMax;
         let indexLeft = 0;
@@ -104,8 +111,8 @@ export default class VipPrivileges extends UIScreen {
         let indexRight = 0;
         if (level >= this.spf_vip.length) indexRight = this.spf_vip.length - 1;
         else indexRight = level;
-        this.sp_vipLeft.spriteFrame = this.spf_vip[indexLeft < 0 ? 0 : indexLeft];
-        this.sp_vipRight.spriteFrame = this.spf_vip[indexRight < 0 ? 0 : indexRight];
+        // this.sp_vipLeft.spriteFrame = this.spf_vip[indexLeft < 0 ? 0 : indexLeft];
+        // this.sp_vipRight.spriteFrame = this.spf_vip[indexRight < 0 ? 0 : indexRight];
     }
 
     onClickHelp() {
@@ -144,7 +151,7 @@ export default class VipPrivileges extends UIScreen {
     onClickLeft() {
         if (this.currentLevel == 0) return;
         this.currentLevel--;
-        this.pageview.scrollToPage(this.currentLevel, this.pageview.pageTurningSpeed)
+        this.pageview.scrollToPage(this.currentLevel, this.pageview.pageTurningSpeed);
         this.initUI(this.currentLevel);
         EventMgr.emit(REPORT_EVT.CLICK, {
             element_id: "vip_left",
@@ -158,7 +165,7 @@ export default class VipPrivileges extends UIScreen {
     onClickRight() {
         if (this.currentLevel >= this.levels.length - 1) return;
         this.currentLevel++;
-        this.pageview.scrollToPage(this.currentLevel, this.pageview.pageTurningSpeed)
+        this.pageview.scrollToPage(this.currentLevel, this.pageview.pageTurningSpeed);
         this.initUI(this.currentLevel);
         EventMgr.emit(REPORT_EVT.CLICK, {
             element_id: "vip_right",

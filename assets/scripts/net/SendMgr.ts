@@ -4,18 +4,17 @@ import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_OTPCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd } from "./CmdData";
+import { BetCmd, BindPhoneCmd, BindPhone_BindCmd, BindPhone_ChangeCmd, BindPhone_OTPCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_OTPCmd, PopupCmd, Popup_InfoCmd, RechargeCmd, Recharge_InfoCmd, Recharge_RecordCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, Refer_Top20Cmd, TransactionCmd, Transaction_InfoCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd, WithdrawCmd, Withdraw_BindBankCmd, Withdraw_InfoCmd, Withdraw_RecordCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
 import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
 import NetMgr from "./NetMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage, encodeExternalMessage } from "./proto/ExternalMessage";
-import { DailyBonusAwardDTO, DailyBonusLongVO, DailyBonusSignInVipAwardVO, DailyBonusVO, GullakMainInfoV2VO, HomepageResponse, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneReferRewardVO, VipInfoV2VO, decodeDailyBonusLongVO, decodeDailyBonusSignInVipAwardVO, decodeDailyBonusVO, decodeGullakMainInfoV2VO, decodeHomepageGameVO, decodeHomepageResponse, decodeLoginMobileSmsVO, decodeMailPageVO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneReferRewardVO, decodeVipInfoV2VO, encodeDailyBonusAwardDTO, encodeMailOptDTO, encodeMailPageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO } from "./proto/hall";
+import { MyBaseActionVO, decodeMyBaseActionVO } from "./proto/core";
+import { DailyBonusAwardDTO, DailyBonusLongVO, DailyBonusSignInVipAwardVO, DailyBonusVO, GullakMainInfoV2VO, HomepageVO, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, PayRechargeOrderDTO, PayRechargeOrderVO, PayWithdrawOrderDTO, PhoneDTO, PhoneSmsDTO, PhoneSmsVO, PopupDTO, PopupListVO, RechargeInfoResponseV2VO, RechargeInfoV2DTO, RechargePageDTO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneRechargeVO, TimezoneReferRewardVO, TimezoneTransactionVO, TimezoneWithdrawVO, TransactionDTO, VipInfoV2VO, WithdrawBankDTO, WithdrawInfoVO, WithdrawPageDTO, decodeDailyBonusLongVO, decodeDailyBonusSignInVipAwardVO, decodeDailyBonusVO, decodeGullakMainInfoV2VO, decodeHomepageGameVO, decodeHomepageVO, decodeLoginMobileSmsVO, decodeMailPageVO, decodePayRechargeOrderVO, decodePhoneSmsVO, decodePopupListVO, decodeRechargeInfoResponseV2VO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneRechargeVO, decodeTimezoneReferRewardVO, decodeTimezoneTransactionVO, decodeTimezoneWithdrawVO, decodeVipInfoV2VO, decodeWithdrawInfoVO, encodeDailyBonusAwardDTO, encodeMailOptDTO, encodeMailPageDTO, encodePayRechargeOrderDTO, encodePayWithdrawOrderDTO, encodePhoneDTO, encodePhoneSmsDTO, encodePopupDTO, encodeRechargeInfoV2DTO, encodeRechargePageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO, encodeTransactionDTO, encodeWithdrawBankDTO, encodeWithdrawPageDTO } from "./proto/hall";
 import { encodeUserUpdateHeadPicDTO } from "./proto/hall";
 import { UserUpdateNicknameDTO } from "./proto/hall";
-import { HomepageUserInfoResponse } from "./proto/hall";
-import { decodeHomepageUserInfoResponse } from "./proto/hall";
 import { HomepageGameDTO } from "./proto/hall";
 import { encodeHomepageGameDTO } from "./proto/hall";
 import { HomepageGameVO } from "./proto/hall";
@@ -154,10 +153,10 @@ class SendMgr {
     }
 
     /**大厅信息查询 */
-    public async sendHallInfo(): Promise<HomepageResponse> {
-        return new Promise<HomepageResponse>(resolve => {
+    public async sendHallInfo(): Promise<HomepageVO> {
+        return new Promise<HomepageVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(HallCmd, Hall_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
-                resolve(code === 0 ? decodeHomepageResponse(data) : null);
+                resolve(code === 0 ? decodeHomepageVO(data) : null);
             })
         })
     }
@@ -287,7 +286,7 @@ class SendMgr {
     /**top20查询 */
     public async sendTop20(params: ReferRankTop20DTO): Promise<ReferRankVO> {
         return new Promise<ReferRankVO>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(ReferCmd, Refer_MyInvitationCmd), encodeReferRankTop20DTO(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(ReferCmd, Refer_Top20Cmd), encodeReferRankTop20DTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodeReferRankVO(data) : null);
             })
         })
@@ -334,6 +333,114 @@ class SendMgr {
         return new Promise<VipInfoV2VO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(VipCmd, Vip_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodeVipInfoV2VO(data) : null);
+            })
+        })
+    }
+
+    /**充值主页面信息 */
+    public async sendRechargeInfo(params: RechargeInfoV2DTO): Promise<RechargeInfoResponseV2VO> {
+        return new Promise<RechargeInfoResponseV2VO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(RechargeCmd, Recharge_InfoCmd), encodeRechargeInfoV2DTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeRechargeInfoResponseV2VO(data) : null);
+            })
+        })
+    }
+
+    /**充值流水 */
+    public async sendRechargeRecord(params: RechargePageDTO): Promise<TimezoneRechargeVO> {
+        return new Promise<TimezoneRechargeVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(RechargeCmd, Recharge_RecordCmd), encodeRechargePageDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeTimezoneRechargeVO(data) : null);
+            })
+        })
+    }
+
+    /**提现主页面信息 */
+    public async sendWithdrawInfo(): Promise<WithdrawInfoVO> {
+        return new Promise<WithdrawInfoVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(WithdrawCmd, Withdraw_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeWithdrawInfoVO(data) : null);
+            })
+        })
+    }
+
+    /**绑定银行卡 */
+    public async sendBindBank(params: WithdrawBankDTO): Promise<MyBaseActionVO> {
+        return new Promise<MyBaseActionVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(WithdrawCmd, Withdraw_BindBankCmd), encodeWithdrawBankDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeMyBaseActionVO(data) : null);
+            })
+        })
+    }
+
+    /**提现流水 */
+    public async sendWithdrawRecord(params: WithdrawPageDTO): Promise<TimezoneWithdrawVO> {
+        return new Promise<TimezoneWithdrawVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(WithdrawCmd, Withdraw_RecordCmd), encodeWithdrawPageDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeTimezoneWithdrawVO(data) : null);
+            })
+        })
+    }
+
+    /**弹窗信息 */
+    public async sendPopupInfo(params: PopupDTO): Promise<PopupListVO> {
+        return new Promise<PopupListVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(PopupCmd, Popup_InfoCmd), encodePopupDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodePopupListVO(data) : null);
+            })
+        })
+    }
+
+    /**发起支付 */
+    public async sendPay(params: PayRechargeOrderDTO): Promise<PayRechargeOrderVO> {
+        return new Promise<PayRechargeOrderVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(PopupCmd, Popup_InfoCmd), encodePayRechargeOrderDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodePayRechargeOrderVO(data) : null);
+            })
+        })
+    }
+
+    /**发起提现 */
+    public async sendWithdraw(params: PayWithdrawOrderDTO): Promise<MyBaseActionVO> {
+        return new Promise<MyBaseActionVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(PopupCmd, Popup_InfoCmd), encodePayWithdrawOrderDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeMyBaseActionVO(data) : null);
+            })
+        })
+    }
+
+    /**绑定 发送验证码 */
+    public async sendBindSms(params: PhoneSmsDTO): Promise<PhoneSmsVO> {
+        return new Promise<PhoneSmsVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(BindPhoneCmd, BindPhone_OTPCmd), encodePhoneSmsDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodePhoneSmsVO(data) : null);
+            })
+        })
+    }
+
+    /**绑定手机号 */
+    public async sendBindPhone(params: PhoneDTO): Promise<boolean> {
+        return new Promise<boolean>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(BindPhoneCmd, BindPhone_BindCmd), encodePhoneDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0);
+            })
+        })
+    }
+
+    /**修改手机号 */
+    public async sendChangePhone(params: PhoneDTO): Promise<boolean> {
+        return new Promise<boolean>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(BindPhoneCmd, BindPhone_ChangeCmd), encodePhoneDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0);
+            })
+        })
+    }
+
+    /**流水 */
+    public async sendTransaction(params: TransactionDTO): Promise<TimezoneTransactionVO> {
+        return new Promise<TimezoneTransactionVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(TransactionCmd, Transaction_InfoCmd), encodeTransactionDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeTimezoneTransactionVO(data) : null);
             })
         })
     }

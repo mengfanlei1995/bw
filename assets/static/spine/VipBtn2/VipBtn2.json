@@ -1,0 +1,56 @@
+{
+"skeleton": { "hash": "mE1oOEjGugvZ0sRIp+gHQqO4vgQ", "spine": "3.8.99", "images": "./image/", "audio": "" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "x": -252.27, "y": 47.78, "scaleX": 1.7076, "scaleY": 2.6356 }
+],
+"slots": [
+	{ "name": "zhezhao", "bone": "root", "attachment": "zhezhao" },
+	{ "name": "saoguang", "bone": "bone", "color": "ffdb3fff", "attachment": "saoguang", "blend": "additive" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"saoguang": {
+				"saoguang": { "x": 0.64, "y": -16.3, "width": 128, "height": 64 }
+			},
+			"zhezhao": {
+				"zhezhao": {
+					"type": "clipping",
+					"end": "zhezhao",
+					"vertexCount": 26,
+					"vertices": [ -129.23, 32.91, -121.46, 37.4, -113.46, 39.37, 116, 39.06, 121.77, 37.29, 129.18, 32.86, 134.2, 27.54, 138.52, 20.37, 140.6, 12.83, 140.58, 4.49, 140.27, -2.46, 137.27, -8.9, 132.72, -15.65, 127.97, -20.07, 122.15, -23.82, 114.64, -25.91, -113.2, -26.43, -122.63, -22.93, -128.54, -19.66, -133.43, -14.91, -137.22, -9.03, -140.57, -2.38, -141.12, 5.32, -140.86, 14.06, -138.26, 21.72, -134.53, 27.81 ],
+					"color": "ce3a3aff"
+				}
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"saoguang": {
+				"color": [
+					{ "color": "fdff9200", "curve": "stepped" },
+					{ "time": 1.1667, "color": "fdff9200" },
+					{ "time": 1.9333, "color": "fdff92b7" },
+					{ "time": 1.9667, "color": "fdff9200", "curve": "stepped" },
+					{ "time": 3.3333, "color": "fdff9200" }
+				]
+			}
+		},
+		"bones": {
+			"bone": {
+				"translate": [
+					{ "curve": "stepped" },
+					{ "time": 1.1667 },
+					{ "time": 1.9667, "x": 482.09 },
+					{ "time": 2, "curve": "stepped" },
+					{ "time": 3.3333 }
+				]
+			}
+		}
+	}
+}
+}

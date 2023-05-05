@@ -1,3 +1,123 @@
+export interface HallPopVO {
+  templateContent?: string;
+  templateParams?: string[];
+  templateType?: number;
+  playTimes?: number;
+  playInterval?: number;
+  popLevel?: number;
+}
+
+export function encodeHallPopVO(message: HallPopVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeHallPopVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeHallPopVO(message: HallPopVO, bb: ByteBuffer): void {
+  // optional string templateContent = 1;
+  let $templateContent = message.templateContent;
+  if ($templateContent !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $templateContent);
+  }
+
+  // repeated string templateParams = 2;
+  let array$templateParams = message.templateParams;
+  if (array$templateParams !== undefined) {
+    for (let value of array$templateParams) {
+      writeVarint32(bb, 18);
+      writeString(bb, value);
+    }
+  }
+
+  // optional int32 templateType = 3;
+  let $templateType = message.templateType;
+  if ($templateType !== undefined) {
+    writeVarint32(bb, 24);
+    writeVarint64(bb, intToLong($templateType));
+  }
+
+  // optional int32 playTimes = 4;
+  let $playTimes = message.playTimes;
+  if ($playTimes !== undefined) {
+    writeVarint32(bb, 32);
+    writeVarint64(bb, intToLong($playTimes));
+  }
+
+  // optional int32 playInterval = 5;
+  let $playInterval = message.playInterval;
+  if ($playInterval !== undefined) {
+    writeVarint32(bb, 40);
+    writeVarint64(bb, intToLong($playInterval));
+  }
+
+  // optional int32 popLevel = 6;
+  let $popLevel = message.popLevel;
+  if ($popLevel !== undefined) {
+    writeVarint32(bb, 48);
+    writeVarint64(bb, intToLong($popLevel));
+  }
+}
+
+export function decodeHallPopVO(binary: Uint8Array): HallPopVO {
+  return _decodeHallPopVO(wrapByteBuffer(binary));
+}
+
+function _decodeHallPopVO(bb: ByteBuffer): HallPopVO {
+  let message: HallPopVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string templateContent = 1;
+      case 1: {
+        message.templateContent = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      // repeated string templateParams = 2;
+      case 2: {
+        let values = message.templateParams || (message.templateParams = []);
+        values.push(readString(bb, readVarint32(bb)));
+        break;
+      }
+
+      // optional int32 templateType = 3;
+      case 3: {
+        message.templateType = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 playTimes = 4;
+      case 4: {
+        message.playTimes = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 playInterval = 5;
+      case 5: {
+        message.playInterval = readVarint32(bb);
+        break;
+      }
+
+      // optional int32 popLevel = 6;
+      case 6: {
+        message.popLevel = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
 export interface GameUserWalletNotifyVO {
   userId?: string;
   type?: string;
@@ -134,6 +254,40 @@ function _decodeGameUserWalletNotifyVO(bb: ByteBuffer): GameUserWalletNotifyVO {
         message.bonus = readVarint64(bb, /* unsigned */ false);
         break;
       }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface MyBaseActionVO {
+}
+
+export function encodeMyBaseActionVO(message: MyBaseActionVO): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeMyBaseActionVO(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeMyBaseActionVO(message: MyBaseActionVO, bb: ByteBuffer): void {
+}
+
+export function decodeMyBaseActionVO(binary: Uint8Array): MyBaseActionVO {
+  return _decodeMyBaseActionVO(wrapByteBuffer(binary));
+}
+
+function _decodeMyBaseActionVO(bb: ByteBuffer): MyBaseActionVO {
+  let message: MyBaseActionVO = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
 
       default:
         skipUnknownField(bb, tag & 7);

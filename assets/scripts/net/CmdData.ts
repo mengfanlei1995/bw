@@ -37,6 +37,11 @@ export const WhellOfForuneCmd: number = 12;
 //TPWar
 export const TPWarCmd: number = 13;
 
+//Transaction
+export const TransactionCmd: number = 14;
+//流水
+export const Transaction_InfoCmd: number = 1;
+
 //email
 export const EmailCmd: number = 15;
 //获取邮件
@@ -84,9 +89,43 @@ export const VipCmd: number = 19;
 //vip主页面信息
 export const Vip_InfoCmd: number = 1;
 
+//充值相关
+export const RechargeCmd: number = 20;
+//充值主页面信息
+export const Recharge_InfoCmd: number = 1;
+//充值流水
+export const Recharge_RecordCmd: number = 2;
 
 
+//提现相关
+export const WithdrawCmd: number = 21;
+//提现主页面信息
+export const Withdraw_InfoCmd: number = 1;
+//绑定银行卡
+export const Withdraw_BindBankCmd: number = 2;
+//提现流水
+export const Withdraw_RecordCmd: number = 3;
 
+//弹窗相关
+export const PopupCmd: number = 22;
+//弹窗信息
+export const Popup_InfoCmd: number = 1;
+
+//Pay相关
+export const PayCmd: number = 23;
+//充值
+export const Pay_RechargeCmd: number = 1;
+//提现
+export const Pay_WithdrawCmd: number = 2;
+
+//绑定相关相关
+export const BindPhoneCmd: number = 24;
+//发送验证码
+export const BindPhone_OTPCmd: number = 1;
+//绑定手机号
+export const BindPhone_BindCmd: number = 2;
+//换绑手机号
+export const BindPhone_ChangeCmd: number = 3;
 
 
 
@@ -126,3 +165,26 @@ export const Push_PokerKingCmd: number = 1011;
 export const Push_WhellOfForuneCmd: number = 1012;
 //TPWar
 export const Push_TPWarCmd: number = 1013;
+
+//vip
+export const Push_VipCmd: number = 1014;
+//vip升级
+export const Push_VipUpgradeCmd: number = 1;
+
+//活动
+export const Push_ActivityCmd: number = 1015;
+//活动通知
+export const Push_ActivitySubCmd: number = 1;
+//隔日充值通知
+export const Push_ActivityNextDayCmd: number = 2;
+
+//金额
+export const Push_BonusCmd: number = 1016;
+//充值成功
+export const Push_BonusRechargeCmd: number = 1;
+//提现成功
+export const Push_BonusWithdrawCmd: number = 2;
+
+//跑马灯
+export const Push_MarqueeCmd: number = 1017;
+export const Push_MarqueeSubCmd: number = 1;

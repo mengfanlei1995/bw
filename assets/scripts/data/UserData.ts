@@ -1,16 +1,24 @@
 import { HALL_EVT } from "../enum/DeskEnum";
 import EventMgr from "../mgr/EventMgr";
 import StorageMgr from "../mgr/StorageMgr";
-import { LoginWalletVO } from "../net/proto/hall";
+import { LoginWalletVO, VipUpgradeNotifyVO } from "../net/proto/hall";
 import { LoginVO } from "../net/proto/hall";
+import UIMgr from "../uiform/UIMgr";
 import LongUtil from "../utils/LongUtil";
 import SysConfig from "./SysConfig";
 class UserData {
 
     /**玩家信息 */
     userInfo: UserInfo = {};
+
+    /**vip升级之前的等级 */
+    public beforeVipLevel: number = 0;
     
+    /**vip等级 */
     private _vipLevel: number = 0;
+
+    /**俱乐部等级 */
+    public clubLevel: number = 0;
 
     /**vip当前等级 */
     set vipLevel(_vipLevel: number) {
@@ -20,6 +28,18 @@ class UserData {
     /**vip当前等级 */
     get vipLevel(): number {
         return this._vipLevel
+    }
+
+    /**
+     * 升级vip
+     * @param vipInfo 
+     */
+    public vipUpgrade(vipInfo: VipUpgradeNotifyVO) {
+        let { beforeLevel, currentLevel } = vipInfo
+        this._vipLevel = currentLevel;
+        this.beforeVipLevel = beforeLevel
+        EventMgr.emit(HALL_EVT.UPDATE_VIP);
+        UIMgr.show('prefab/hall/VipUp', 'VipUp');
     }
 
     initUserInfo(userInfo: LoginVO) {

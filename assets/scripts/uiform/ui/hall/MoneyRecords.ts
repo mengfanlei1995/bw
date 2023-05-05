@@ -1,4 +1,5 @@
 import LangMgr from "../../../mgr/LangMgr";
+import SendMgr from "../../../net/SendMgr";
 import CommonUtil from "../../../utils/CommonUtil";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
@@ -6,7 +7,7 @@ import UISuperLayout from "../../UISuperLayout";
 import { UISuperHeaderAndFooterEvent } from "../../UISuperScrollView";
 import MoneyRecordItem from "./MoneyRecordItem";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class MoneyRecords extends UIScreen {
@@ -45,9 +46,9 @@ export default class MoneyRecords extends UIScreen {
     /**每页数量 */
     private pageSize: number = 10;
 
-    private detailsData: MoneyRecords;
+    private detailsData;
 
-    private datas: MoneyRecordInfo[] = [];
+    private datas = [];
 
     private startDate: string = CommonUtil.formatDate(new Date().getTime(), "yyyy-MM-dd");
     private endDate: string = CommonUtil.formatDate(new Date().getTime(), "yyyy-MM-dd");
@@ -206,11 +207,11 @@ export default class MoneyRecords extends UIScreen {
             type: this.process,
             pageNum: this.currentPage
         }
-        let detailsInfo: MoneyRecords = this.type == 0 ? await NetMgr.inst.addCashRecord(data) : await NetMgr.inst.withdrawRecord(data);
+        let detailsInfo: any = this.type == 0 ? await SendMgr.sendRechargeRecord(data) : await SendMgr.sendWithdrawRecord(data);
         if (!detailsInfo || !cc.isValid(this.node)) return;
         if (detailsInfo) {
             this.detailsData = detailsInfo;
-            let info: MoneyRecordInfo[] = this.type == 0 ? detailsInfo.recharges : detailsInfo.withdraws
+            let info = this.type == 0 ? detailsInfo.recharges : detailsInfo.withdraws
             if (info && info.length > 0) {
                 for (let i = 0; i < info.length; i++) {
                     this.datas.push(info[i]);
@@ -229,5 +230,5 @@ export default class MoneyRecords extends UIScreen {
             }
         }
     }
-    
+
 }

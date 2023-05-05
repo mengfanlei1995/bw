@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "54da9362-0986-417a-a7df-4225d367b1c0",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 395,
+  "height": 60,
+  "platformSettings": {},
+  "subMetas": {
+    "Recharge Income": {
+      "ver": "1.0.6",
+      "uuid": "3d85df19-51e4-4040-aa1e-21cd0caf7ffc",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "54da9362-0986-417a-a7df-4225d367b1c0",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 391,
+      "height": 56,
+      "rawWidth": 395,
+      "rawHeight": 60,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

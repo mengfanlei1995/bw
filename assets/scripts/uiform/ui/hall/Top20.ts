@@ -97,7 +97,7 @@ export default class Top20 extends cc.Component {
         else this.lbMyScore.node.parent.active = false;
         this.lblPrizePool.string = `₹${LongUtil.longToNumber(prizePool) / 100}`;
         let list: ReferTop20VO[] = top20;
-        if (list && list.length) {
+        if (list && list.length > 0) {
             this.noRecords.active = false;
             this.othersRankParent.parent.active = true;
             let top3: ReferTop20VO[] = list.splice(0, 3);
@@ -131,11 +131,6 @@ export default class Top20 extends cc.Component {
     }
 
     onRulesClick() {
-        UIMgr.showDialog({
-            word: this.rule,
-            type: DialogType.OnlyOkBtn,
-            okTxt: 'Ok',
-            title: 'BONUS RULES'
-        });
+        UIMgr.show('prefab/hall/RankRules', 'RankRules', this.rule);
     }
 }

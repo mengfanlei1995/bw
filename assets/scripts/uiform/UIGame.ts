@@ -629,7 +629,7 @@ export default class UIGame extends UIScene {
     }
 
     onAddCashClick(e: cc.Event.EventTouch) {
-        UIMgr.show('prefab/hall/AddCash', 'AddCash');
+        UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: false, vipLevel: 0 });
         EventMgr.emit(REPORT_EVT.CLICK, {
             element_id: "btn_addcash_byGame",
             element_name: "游戏房间中间充值按钮",

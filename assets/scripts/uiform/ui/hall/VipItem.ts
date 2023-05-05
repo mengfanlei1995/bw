@@ -1,6 +1,8 @@
 import SysConfig from "../../../data/SysConfig";
 import { REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
+import SendMgr from "../../../net/SendMgr";
+import { VipLevelV2VO } from "../../../net/proto/hall";
 import CommonUtil from "../../../utils/CommonUtil";
 import JsbUitl from "../../../utils/JsbUitl";
 
@@ -41,10 +43,10 @@ export default class VipItem extends cc.Component {
         root.getComponent(cc.Sprite).setMaterial(0, !show ? this.materialGray : this.material)
     }
 
-    private info;
+    private info: VipLevelV2VO;
 
     //初始化UI
-    init(info) {
+    init(info: VipLevelV2VO) {
         this.info = info;
         for (let i = 0; i < this.vipBg.childrenCount; i++) {
             let node: cc.Node = this.vipBg.children[i];
@@ -112,7 +114,7 @@ export default class VipItem extends cc.Component {
             element_position: '',
             element_content: '',
         });
-        let result = await NetMgr.inst.recharge(data)
+        let result = await SendMgr.sendPay(data)
         if (result) {
             this.openUrl(result.url);
         }

@@ -1,0 +1,13 @@
+
+VipBtn2.png
+size: 128,128
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+saoguang
+  rotate: false
+  xy: 2, 62
+  size: 124, 64
+  orig: 128, 64
+  offset: 1, 0
+  index: -1

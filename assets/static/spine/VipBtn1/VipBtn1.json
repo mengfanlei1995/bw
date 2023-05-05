@@ -1,0 +1,77 @@
+{
+"skeleton": {
+	"hash": "0uTa4GwMMt96wPWMBrN7vEvSIwE",
+	"spine": "3.8.99",
+	"x": -111,
+	"y": -30,
+	"width": 222,
+	"height": 60,
+	"images": "./image/",
+	"audio": ""
+},
+"bones": [
+	{ "name": "root" },
+	{
+		"name": "bone",
+		"parent": "root",
+		"rotation": 26.65,
+		"x": -252.27,
+		"y": 25.36,
+		"scaleX": 1.7076,
+		"scaleY": 3.1981
+	}
+],
+"slots": [
+	{ "name": "Btn1", "bone": "root", "attachment": "Btn1" },
+	{ "name": "zhezhao", "bone": "root", "attachment": "zhezhao" },
+	{ "name": "saoguang", "bone": "bone", "color": "ffdb3fff", "attachment": "saoguang", "blend": "additive" }
+],
+"skins": [
+	{
+		"name": "default",
+		"attachments": {
+			"Btn1": {
+				"Btn1": { "width": 222, "height": 60 }
+			},
+			"saoguang": {
+				"saoguang": { "x": 0.64, "y": -16.3, "width": 128, "height": 64 }
+			},
+			"zhezhao": {
+				"zhezhao": {
+					"type": "clipping",
+					"end": "zhezhao",
+					"vertexCount": 24,
+					"vertices": [ -105.21, 19.87, -100.14, 24.63, -94.53, 28.31, -88.23, 30.19, 89.66, 30.07, 95.4, 27.96, 100.99, 24.28, 105.57, 19.71, 109.45, 13.87, 111.07, 8.26, 111.04, -8.88, 108.56, -15.45, 104.99, -20.46, 100.79, -24.82, 94.85, -28.11, 89.28, -29.99, -89.67, -30.09, -96.17, -27.64, -100.6, -24.52, -105.01, -20.09, -108.85, -14.74, -111, -8.4, -111.16, 8.09, -108.97, 14.05 ],
+					"color": "ce3a3aff"
+				}
+			}
+		}
+	}
+],
+"animations": {
+	"animation": {
+		"slots": {
+			"saoguang": {
+				"color": [
+					{ "color": "ffda3c00" },
+					{ "time": 1.1667, "color": "ffd93d00" },
+					{ "time": 1.9333, "color": "ffda3dff" },
+					{ "time": 1.9667, "color": "ffda3d00", "curve": "stepped" },
+					{ "time": 3.3333, "color": "ffda3d00" }
+				]
+			}
+		},
+		"bones": {
+			"bone": {
+				"translate": [
+					{ "curve": "stepped" },
+					{ "time": 1.1667 },
+					{ "time": 1.9667, "x": 482.09 },
+					{ "time": 2, "curve": "stepped" },
+					{ "time": 3.3333 }
+				]
+			}
+		}
+	}
+}
+}

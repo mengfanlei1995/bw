@@ -1,6 +1,6 @@
 import CommonUtil from "../../../utils/CommonUtil";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class MoneyRecordItem extends cc.Component {
@@ -23,7 +23,7 @@ export default class MoneyRecordItem extends cc.Component {
     private typeText = [["All", "Progress", "Completed", "Failed"], ["All", "Review", "Process", "Rejected", "Refunded", "Completed"]];
     private color: cc.Color[][] = [[cc.color(255, 255, 255), cc.color(45, 139, 255), cc.color(0, 198, 23), cc.color(255, 67, 3)], [cc.color(255, 255, 255), cc.color(255, 255, 255), cc.color(45, 139, 255), cc.color(255, 1, 1), cc.color(255, 67, 3), cc.color(0, 198, 23)]];
 
-    init(type, info: MoneyRecordInfo) {
+    init(type, info) {
         this.lb_status.string = this.typeText[type][info.state];
         this.lb_status.node.color = this.color[type][info.state];
         this.lb_amount.string = `₹${info.get}`
@@ -32,5 +32,5 @@ export default class MoneyRecordItem extends cc.Component {
         this.lb_tips.string = info.remark;
         this.lb_tips.node.parent.active = !!info.remark;
     }
-    
+
 }

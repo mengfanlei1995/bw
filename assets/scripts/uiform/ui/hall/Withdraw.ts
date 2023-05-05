@@ -3,7 +3,9 @@ import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
+import SendMgr from "../../../net/SendMgr";
 import CommonUtil from "../../../utils/CommonUtil";
+import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
 import { DialogType } from "../common/DiaLog";
@@ -52,13 +54,14 @@ export default class Withdraw extends UIScreen {
     * 获取提现信息 刷新UI 
     */
     async initWithdrawInfo() {
-        let info = await NetMgr.inst.withdrawInfo()
+        let info = await SendMgr.sendWithdrawInfo();
         if (info && cc.isValid(this.node)) {
             let { audit, ratio, withdrawAmounts, bankInfo, vip } = info;
-            this.lb_withdraw.string = `${vip?.withdrawNumber}`;
-            this.lb_time.node.active = !vip?.withdrawNumber;
+            let withdrawNumber: number = LongUtil.longToNumber(vip?.withdrawNumber);
+            this.lb_withdraw.string = `${withdrawNumber}`;
+            this.lb_time.node.active = !withdrawNumber;
             this.levelWithdraw = vip?.levelWithdraw;
-            if (!vip?.withdrawNumber) {
+            if (!withdrawNumber) {
                 this.updateTime();
                 this.schedule(this.updateTime.bind(this), 1);
             }
@@ -94,18 +97,18 @@ export default class Withdraw extends UIScreen {
     }
 
     onClickRecord() {
-        UIMgr.show('prefab/hall/MoneyRecords', 'MoneyRecords');
+        UIMgr.show('prefab/hall/MoneyRecords', 'MoneyRecords', 1);
     }
 
 
     /**提现 */
     async onClickWithdraw() {
         if (!StorageMgr.phone) {
-            SceneMgr.open(UIConfig.BindPhone.prefab, 1)
+            UIMgr.show('prefab/hall/BindPhone', 'BindPhone');
             return;
         }
         if (!this.bankInfo || !this.bankInfo.accName || !this.bankInfo.accNo || !this.bankInfo.ifsc) {
-            SceneMgr.open(UIConfig.Bank.prefab)
+            UIMgr.show('prefab/hall/Bank', 'Bank');
             return;
         }
         if (!this.amount || this.amount < this.withdraw_min_money) {
@@ -129,7 +132,7 @@ export default class Withdraw extends UIScreen {
             element_content: '',
         });
 
-        let result = await NetMgr.inst.withdraw({
+        let result = await SendMgr.sendWithdraw({
             amount: this.amount
         })
         if (result) {
@@ -179,21 +182,21 @@ export default class Withdraw extends UIScreen {
 
     /**vip介绍界面 */
     onClickHelp() {
-        WindowMgr.open(UIConfig.Description.prefab, this.levelWithdraw);
+        UIMgr.show('prefab/hall/Description', 'Description', this.levelWithdraw);
     }
 
     /**打开vip界面 */
     onClickVip() {
-        FixedMgr.open(UIConfig.VipPrivileges.prefab)
+        UIMgr.show('prefab/hall/VipPrivileges', 'VipPrivileges');
     }
 
     /**绑定银行卡 */
     onClickAddCard() {
         if (!StorageMgr.phone) {
-            SceneMgr.open(UIConfig.BindPhone.prefab, 1)
+            UIMgr.show('prefab/hall/BindPhone', 'BindPhone');
             return;
         }
-        SceneMgr.open(UIConfig.Bank.prefab)
+        UIMgr.show('prefab/hall/Bank', 'Bank');
     }
 
 }
