@@ -4,14 +4,14 @@ import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_OTPCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, User_ChangeNameCmd, User_InfoCmd } from "./CmdData";
+import { BetCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_OTPCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
 import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
 import NetMgr from "./NetMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage, encodeExternalMessage } from "./proto/ExternalMessage";
-import { HomepageResponse, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneReferRewardVO, decodeHomepageGameVO, decodeHomepageResponse, decodeLoginMobileSmsVO, decodeMailPageVO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneReferRewardVO, encodeMailOptDTO, encodeMailPageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO } from "./proto/hall";
+import { DailyBonusAwardDTO, DailyBonusLongVO, DailyBonusSignInVipAwardVO, DailyBonusVO, GullakMainInfoV2VO, HomepageResponse, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneReferRewardVO, VipInfoV2VO, decodeDailyBonusLongVO, decodeDailyBonusSignInVipAwardVO, decodeDailyBonusVO, decodeGullakMainInfoV2VO, decodeHomepageGameVO, decodeHomepageResponse, decodeLoginMobileSmsVO, decodeMailPageVO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneReferRewardVO, decodeVipInfoV2VO, encodeDailyBonusAwardDTO, encodeMailOptDTO, encodeMailPageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO } from "./proto/hall";
 import { encodeUserUpdateHeadPicDTO } from "./proto/hall";
 import { UserUpdateNicknameDTO } from "./proto/hall";
 import { HomepageUserInfoResponse } from "./proto/hall";
@@ -56,7 +56,7 @@ const loginCommonParams = function (): LoginDTO {
         imei: SysConfig.systemInfo?.android_id || '',
         gaId: SysConfig.systemInfo?.gaid || '',
         uuid: StorageMgr.UUID,
-        appName: SysConfig.appName,
+        appName: SysConfig.systemInfo?.appName,
         simulator: SysConfig.systemInfo?.simulator,
         root: SysConfig.systemInfo?.root
         // fbId: ''
@@ -289,6 +289,51 @@ class SendMgr {
         return new Promise<ReferRankVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(ReferCmd, Refer_MyInvitationCmd), encodeReferRankTop20DTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodeReferRankVO(data) : null);
+            })
+        })
+    }
+
+    /**存钱罐 */
+    public async sendGullak(subCmd: number): Promise<GullakMainInfoV2VO> {
+        return new Promise<GullakMainInfoV2VO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(GullakCmd, subCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeGullakMainInfoV2VO(data) : null);
+            })
+        })
+    }
+
+    /**签到任务主页面信息 */
+    public async sendDailyBonusInfo(): Promise<DailyBonusVO> {
+        return new Promise<DailyBonusVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(DailyBonusCmd, DailyBonus_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeDailyBonusVO(data) : null);
+            })
+        })
+    }
+
+    /**签到 */
+    public async sendDailyBonusSign(): Promise<DailyBonusSignInVipAwardVO> {
+        return new Promise<DailyBonusSignInVipAwardVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(DailyBonusCmd, DailyBonus_SignCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeDailyBonusSignInVipAwardVO(data) : null);
+            })
+        })
+    }
+
+    /**领取任务 */
+    public async sendDailyBonusTaskReceive(params: DailyBonusAwardDTO): Promise<DailyBonusLongVO> {
+        return new Promise<DailyBonusLongVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(DailyBonusCmd, DailyBonus_TaskReceiveCmd), encodeDailyBonusAwardDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeDailyBonusLongVO(data) : null);
+            })
+        })
+    }
+
+    /**vip主页面信息 */
+    public async sendVipInfo(): Promise<VipInfoV2VO> {
+        return new Promise<VipInfoV2VO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(VipCmd, Vip_InfoCmd), new Uint8Array()), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeVipInfoV2VO(data) : null);
             })
         })
     }

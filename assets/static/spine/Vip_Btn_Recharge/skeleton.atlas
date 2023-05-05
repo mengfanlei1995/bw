@@ -1,0 +1,160 @@
+
+skeleton.png
+size: 2048,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+RS_01
+  rotate: true
+  xy: 0, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_02
+  rotate: true
+  xy: 83, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_03
+  rotate: true
+  xy: 166, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_04
+  rotate: true
+  xy: 249, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_05
+  rotate: true
+  xy: 332, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_06
+  rotate: true
+  xy: 415, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_07
+  rotate: true
+  xy: 498, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_08
+  rotate: true
+  xy: 581, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_09
+  rotate: true
+  xy: 664, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_10
+  rotate: true
+  xy: 747, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_11
+  rotate: true
+  xy: 830, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_12
+  rotate: true
+  xy: 913, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_13
+  rotate: true
+  xy: 996, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_14
+  rotate: true
+  xy: 1079, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_15
+  rotate: true
+  xy: 1162, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_16
+  rotate: true
+  xy: 1245, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_17
+  rotate: true
+  xy: 1328, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_18
+  rotate: true
+  xy: 1411, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_19
+  rotate: true
+  xy: 1494, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_20
+  rotate: true
+  xy: 1577, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_21
+  rotate: true
+  xy: 1660, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1
+RS_22
+  rotate: true
+  xy: 1743, 0
+  size: 226, 81
+  orig: 230, 83
+  offset: 2, 2
+  index: -1

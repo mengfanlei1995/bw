@@ -1,4 +1,7 @@
 import LangMgr from "../../../mgr/LangMgr";
+import SendMgr from "../../../net/SendMgr";
+import { DailyBonusEventVO } from "../../../net/proto/hall";
+import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
 
 const { ccclass, property } = cc._decorator;
@@ -22,19 +25,19 @@ export default class TaskItem extends cc.Component {
     @property(cc.Sprite)
     sp_progress: cc.Sprite = null;
 
-    private data: TaskInfo = null;
+    private data: DailyBonusEventVO = null;
 
     private isLoad: boolean = false;
 
     /**初始化任务UI */
-    async init(data: TaskInfo, index) {
+    async init(data: DailyBonusEventVO, index) {
         if (!data) {
             this.node.destroy();
             return;
         }
         this.data = data;
         this.lb_cname.string = data.title;
-        this.lb_bonus.string = `₹${data.awardAmount}`;
+        this.lb_bonus.string = `₹${LongUtil.longToNumber(data.awardAmount)}`;
         this.sp_progress.fillRange = data.processMin / data.processMax;
         this.lb_progress.string = data.processMin + "/" + data.processMax
         if (!this.isLoad) {
@@ -56,7 +59,7 @@ export default class TaskItem extends cc.Component {
         if (this.data.state == 0) {
             UIMgr.showToast(LangMgr.sentence("e0038"))
         } else if (this.data.state == 1) {
-            let result = await NetMgr.inst.dailybonusEvent({ eventId: this.data.id })
+            let result = await SendMgr.sendDailyBonusTaskReceive({ eventId: this.data.id })
             if (result) {
                 UIMgr.showToast(LangMgr.sentence("e0040"))
                 this.data.state = 2;

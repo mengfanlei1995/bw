@@ -21,6 +21,6 @@ export default class SelfVip extends cc.Component {
     }
 
     updateVip() {
-        this.node.getComponent(cc.Label).string = `VIP${UserData.userInfo.vipLevel}`;
+        this.node.getComponent(cc.Label).string = `VIP${UserData.vipLevel}`;
     }
 }

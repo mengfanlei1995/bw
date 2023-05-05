@@ -72,7 +72,7 @@ export default class Top20 extends cc.Component {
         cc.tween(this.top3Area).to(1.45, { opacity: 255 }, { easing: 'backOut' }).start()
     }
 
-    private acitveTab(e: cc.Event.EventTouch, type: string) {
+    public acitveTab(e: cc.Event.EventTouch, type: string) {
         let target: cc.Node = e.target as cc.Node;
         target.parent.children.forEach(
             node => {
@@ -91,7 +91,7 @@ export default class Top20 extends cc.Component {
             if (cc.isValid(this.node)) this.noRecords.active = true;
             return;
         }
-        let { top20, prizePool, rule, yourScore } = info
+        let { top20, prizePool, rule, yourScore } = info;
         this.rule = rule;
         if (LongUtil.longToNumber(yourScore) >= 0) this.lbMyScore.string = `₹${LongUtil.longToNumber(yourScore) / 100}`
         else this.lbMyScore.node.parent.active = false;

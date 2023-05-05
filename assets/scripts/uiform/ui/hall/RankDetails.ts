@@ -1,5 +1,6 @@
 
 import { ReferInvitationNowVO } from "../../../net/proto/hall";
+import LongUtil from "../../../utils/LongUtil";
 import UIWindow from "../../UIWindow";
 
 const { ccclass, property } = cc._decorator;
@@ -30,9 +31,9 @@ export default class RankDetails extends UIWindow {
                 node.children.forEach((child, index) => {
                     let label: cc.Label = child.children[1].getComponent(cc.Label);
                     if (index == 0) {
-                        label.string = `${i + 1}`
+                        label.string = `${i + 1}`;
                     } else if (index == 1) {
-                        label.string = `${rechargeRateResponseList[i].min / 100}<=C<${rechargeRateResponseList[i].max / 100}`;
+                        label.string = `${LongUtil.longToNumber(rechargeRateResponseList[i].min) / 100}<=C<${LongUtil.longToNumber(rechargeRateResponseList[i].max) / 100}`;
                     } else {
                         label.string = `${rechargeRateResponseList[i].rate}%`;
                     }

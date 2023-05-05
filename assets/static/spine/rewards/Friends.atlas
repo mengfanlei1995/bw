@@ -1,69 +1,69 @@
 
 Friends.png
-size: 512,1024
+size: 549,549
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 b1
   rotate: false
-  xy: 2, 245
-  size: 250, 35
+  xy: 2, 22
+  size: 244, 35
   orig: 269, 35
   offset: 0, 0
   index: -1
 b2
   rotate: false
-  xy: 2, 173
-  size: 25, 28
-  orig: 25, 28
+  xy: 509, 164
+  size: 35, 28
+  orig: 35, 28
   offset: 0, 0
   index: -1
 hy0
-  rotate: false
-  xy: 72, 141
-  size: 51, 102
+  rotate: true
+  xy: 244, 107
+  size: 50, 100
   orig: 102, 102
-  offset: 51, 0
+  offset: 52, 1
   index: -1
 hy1
   rotate: false
-  xy: 254, 208
-  size: 72, 72
+  xy: 366, 121
+  size: 71, 71
   orig: 102, 102
-  offset: 15, 15
+  offset: 16, 16
   index: -1
 q
   rotate: false
-  xy: 2, 203
+  xy: 439, 152
   size: 68, 40
   orig: 68, 40
   offset: 0, 0
   index: -1
 t1
   rotate: false
-  xy: 2, 448
-  size: 361, 391
+  xy: 2, 159
+  size: 362, 388
   orig: 362, 392
-  offset: 0, 1
+  offset: 0, 3
   index: -1
 t1a
-  rotate: false
-  xy: 2, 282
-  size: 354, 164
-  orig: 355, 166
-  offset: 1, 1
+  rotate: true
+  xy: 366, 194
+  size: 353, 181
+  orig: 356, 182
+  offset: 2, 1
   index: -1
 tex
   rotate: false
-  xy: 2, 2
-  size: 239, 99
-  orig: 239, 99
+  xy: 2, 59
+  size: 240, 98
+  orig: 240, 98
   offset: 0, 0
   index: -1
 xz
   rotate: false
-  xy: 125, 103
-  size: 223, 103
+  xy: 248, 2
+  size: 222, 103
   orig: 227, 107
   offset: 2, 2
   index: -1

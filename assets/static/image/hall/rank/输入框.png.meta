@@ -8,8 +8,8 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
-  "width": 57,
-  "height": 55,
+  "width": 70,
+  "height": 47,
   "platformSettings": {},
   "subMetas": {
     "输入框": {
@@ -21,17 +21,17 @@
       "trimThreshold": 1,
       "rotated": false,
       "offsetX": 0,
-      "offsetY": -2,
-      "trimX": 5,
-      "trimY": 6,
-      "width": 47,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 70,
       "height": 47,
-      "rawWidth": 57,
-      "rawHeight": 55,
+      "rawWidth": 70,
+      "rawHeight": 47,
       "borderTop": 7,
       "borderBottom": 15,
-      "borderLeft": 7,
-      "borderRight": 7,
+      "borderLeft": 27,
+      "borderRight": 27,
       "subMetas": {}
     }
   }

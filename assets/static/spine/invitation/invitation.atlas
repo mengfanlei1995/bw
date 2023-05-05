@@ -1,76 +1,41 @@
 
 invitation.png
-size: 2048,128
+size: 301,301
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 a1
   rotate: false
-  xy: 1490, 0
-  size: 183, 103
-  orig: 183, 103
-  offset: 0, 0
-  index: -1
-b1
-  rotate: false
-  xy: 274, 14
-  size: 233, 89
-  orig: 233, 89
-  offset: 0, 0
+  xy: 184, 182
+  size: 115, 117
+  orig: 117, 117
+  offset: 1, 0
   index: -1
 b2
-  rotate: false
-  xy: 509, 14
-  size: 239, 89
-  orig: 239, 89
-  offset: 0, 0
-  index: -1
-c1
-  rotate: false
-  xy: 1108, 4
-  size: 189, 99
-  orig: 189, 99
-  offset: 0, 0
-  index: -1
-c2
-  rotate: false
-  xy: 750, 5
-  size: 177, 98
-  orig: 177, 98
-  offset: 0, 0
-  index: -1
-c3
-  rotate: false
-  xy: 929, 5
-  size: 177, 98
-  orig: 177, 98
-  offset: 0, 0
-  index: -1
-c4
-  rotate: false
-  xy: 1299, 4
-  size: 189, 99
-  orig: 189, 99
+  rotate: true
+  xy: 2, 5
+  size: 134, 135
+  orig: 134, 135
   offset: 0, 0
   index: -1
 x1
   rotate: true
-  xy: 81, 66
-  size: 37, 67
-  orig: 37, 67
+  xy: 139, 48
+  size: 91, 126
+  orig: 91, 126
   offset: 0, 0
   index: -1
 x2
   rotate: true
-  xy: 0, 99
-  size: 4, 79
-  orig: 4, 79
+  xy: 139, 44
+  size: 2, 126
+  orig: 2, 126
   offset: 0, 0
   index: -1
 x3
-  rotate: true
-  xy: 150, 32
-  size: 71, 122
-  orig: 71, 122
+  rotate: false
+  xy: 2, 141
+  size: 180, 158
+  orig: 180, 158
   offset: 0, 0
   index: -1

@@ -62,14 +62,27 @@ export const Refer_MyInvitationCmd: number = 4;
 export const Refer_Top20Cmd: number = 5;
 
 
+//存钱罐
+export const GullakCmd: number = 17;
+//存钱罐主页面信息
+export const Gullak_InfoCmd: number = 1;
+//存钱罐领取
+export const Gullak_ReceiveCmd: number = 2;
+
+//签到任务
+export const DailyBonusCmd: number = 18;
+//签到任务主页面信息
+export const DailyBonus_InfoCmd: number = 1;
+//每日签到
+export const DailyBonus_SignCmd: number = 3;
+//领取任务奖励
+export const DailyBonus_TaskReceiveCmd: number = 4;
 
 
-
-
-
-
-
-
+//vip
+export const VipCmd: number = 19;
+//vip主页面信息
+export const Vip_InfoCmd: number = 1;
 
 
 

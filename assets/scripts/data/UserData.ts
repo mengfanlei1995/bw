@@ -9,6 +9,18 @@ class UserData {
 
     /**玩家信息 */
     userInfo: UserInfo = {};
+    
+    private _vipLevel: number = 0;
+
+    /**vip当前等级 */
+    set vipLevel(_vipLevel: number) {
+        this._vipLevel = _vipLevel;
+        EventMgr.emit(HALL_EVT.UPDATE_VIP);
+    }
+    /**vip当前等级 */
+    get vipLevel(): number {
+        return this._vipLevel
+    }
 
     initUserInfo(userInfo: LoginVO) {
         let { userId, nickName, headPic, phone, accountType, firstDay, first, walletVO, green, sessionId } = userInfo;

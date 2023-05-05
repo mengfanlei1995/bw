@@ -2,7 +2,10 @@ import { AutoList } from "../../../component/AutoList";
 import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
+import SendMgr from "../../../net/SendMgr";
+import { DailyBonusEventVO } from "../../../net/proto/hall";
 import CocosUtil from "../../../utils/CocosUtil";
+import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
 import TaskItem from "./TaskItem";
@@ -46,15 +49,15 @@ export default class DaliyBonus extends UIScreen {
 
     //更新签到信息
     async _initSign() {
-        let result = await NetMgr.inst.dailybonusInfo();
+        let result = await SendMgr.sendDailyBonusInfo();
         if (!result || !cc.isValid(this.node)) return;
         if (this.isLoad) return;
         this.isLoad = true;
         let { events, timeStamp, todaySignIn, weekSignInDay, signInTitles } = result;
         this.todaySignIn = todaySignIn;
-        this.weekSignInDay = weekSignInDay;
-        this.lb_week.string = getWeekDate(timeStamp);
-        this.lb_date.string = getNowFormatDate(timeStamp);
+        this.weekSignInDay = LongUtil.longToNumber(weekSignInDay);
+        this.lb_week.string = getWeekDate(LongUtil.longToNumber(timeStamp));
+        this.lb_date.string = getNowFormatDate(LongUtil.longToNumber(timeStamp));
 
         //刷新今日剩余时间
         let updateTime = () => {
@@ -81,8 +84,8 @@ export default class DaliyBonus extends UIScreen {
             let bonusLabel: cc.Label = cc.find("bonusLabel", node)?.getComponent(cc.Label);
             bonusLabel!.string = signInTitles[i] && signInTitles[i];
             let received: cc.Node = cc.find("received", node);
-            received!.active = i <= weekSignInDay - 1;
-            if (!todaySignIn && i == weekSignInDay) {
+            received!.active = i <= this.weekSignInDay - 1;
+            if (!todaySignIn && i == this.weekSignInDay) {
                 let lightFX: cc.Node = cc.find("lightFX", node);
                 lightFX.active = true;
             }
@@ -104,8 +107,8 @@ export default class DaliyBonus extends UIScreen {
 
 
     //更新任务信息
-    async _initTask(events) {
-        let list: TaskInfo[] = events
+    async _initTask(events: DailyBonusEventVO[]) {
+        let list: DailyBonusEventVO[] = events;
         this.autoList = this.scrollView.getComponent(AutoList)
         this.autoList.updateItemData = this.updateItemData.bind(this)
         this.autoList.updateData(list)
@@ -114,7 +117,7 @@ export default class DaliyBonus extends UIScreen {
 
     private index = 0;
 
-    private updateItemData(node: cc.Node, data: TaskInfo) {
+    private updateItemData(node: cc.Node, data: DailyBonusEventVO) {
         if (data) {
             node.getComponent(TaskItem).init(data, this.index);
             this.index++;
@@ -124,7 +127,7 @@ export default class DaliyBonus extends UIScreen {
     /**签到 */
     async onClickSign() {
         if (!this.todaySignIn) {
-            let result = await NetMgr.inst.signin();
+            let result = await SendMgr.sendDailyBonusSign();
             //播放签到完成动画
             if (result && cc.isValid(this.node)) {
                 this.todaySignIn = true;

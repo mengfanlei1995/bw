@@ -1,4 +1,6 @@
 import SysConfig from "../../../data/SysConfig";
+import { HALL_EVT } from "../../../enum/DeskEnum";
+import EventMgr from "../../../mgr/EventMgr";
 import SendMgr from "../../../net/SendMgr";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
@@ -17,7 +19,7 @@ export default class Home extends UIScreen {
 
     start() {
         this.node.zIndex = 1;
-        // this.initHallInfo();
+        this.initHallInfo();
         this.initGameList();
     }
 
@@ -44,6 +46,14 @@ export default class Home extends UIScreen {
 
     onClickAddCash() {
         UIMgr.show('prefab/hall/AddCash', 'AddCash');
+    }
+
+    onClickVip() {
+        UIMgr.show('prefab/hall/VipPrivileges', 'VipPrivileges');
+    }
+
+    onClickHead() {
+        EventMgr.emit(HALL_EVT.CHANGE_MENU_ACTIVE, 4);
     }
 
 }

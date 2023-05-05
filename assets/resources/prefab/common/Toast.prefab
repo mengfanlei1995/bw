@@ -167,10 +167,8 @@
     "_fontSize": 32,
     "_lineHeight": 32,
     "_enableWrapText": false,
-    "_N$file": {
-      "__uuid__": "2efa4c17-a573-41a0-9cb6-c3e9141d956e"
-    },
-    "_isSystemFontUsed": false,
+    "_N$file": null,
+    "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_styleFlags": 0,
