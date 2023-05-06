@@ -3,12 +3,12 @@ import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
+import { DialogType } from "../../../model/DialogOptions";
 import SendMgr from "../../../net/SendMgr";
 import CommonUtil from "../../../utils/CommonUtil";
 import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
-import { DialogType } from "../common/DiaLog";
 
 const { ccclass, property } = cc._decorator;
 

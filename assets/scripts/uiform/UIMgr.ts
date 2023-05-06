@@ -1,9 +1,8 @@
+import { DialogOptions, DialogType } from "../model/DialogOptions";
 import AssetUtil from "../utils/AssetUtil";
 import BundleUtil from "../utils/BundleUtil";
 import LogUtil from "../utils/LogUtil";
 import UIBase from "./UIBase";
-import DiaLog, { DialogOptions, DialogType } from "./ui/common/DiaLog";
-import Toast from "./ui/common/Toast";
 
 export enum UIType {
     /**弹窗类型 */
@@ -135,7 +134,7 @@ class UIMgr {
             let toast: cc.Node = cc.instantiate(prefab);
             if (cc.isValid(toast)) {
                 toast.parent = cc.find('Canvas');
-                toast.getComponent(Toast).updateMsg(msg, seconds)
+                toast.getComponent('Toast').updateMsg(msg, seconds)
                 this.allToast.push(toast)
             }
             resolve()
@@ -188,7 +187,7 @@ class UIMgr {
         let layer: cc.Node = await this.show('prefab/common/DiaLog', 'DiaLog');
         if (cc.isValid(layer)) {
             layer.parent = cc.find('Canvas');
-            let script = layer.getComponent(DiaLog);
+            let script = layer.getComponent('DiaLog');
             if (script) {
                 switch (options.type) {
                     case DialogType.OnlyOkBtn:

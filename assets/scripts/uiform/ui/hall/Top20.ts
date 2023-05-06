@@ -3,7 +3,6 @@ import { ReferRankVO, ReferTop20VO } from "../../../net/proto/hall";
 import AssetUtil from "../../../utils/AssetUtil";
 import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
-import { DialogType } from "../common/DiaLog";
 import Top20Item from "./Top20Item";
 
 const { ccclass, property } = cc._decorator;
@@ -73,6 +72,7 @@ export default class Top20 extends cc.Component {
     }
 
     public acitveTab(e: cc.Event.EventTouch, type: string) {
+        if (+type == this.type) return;
         let target: cc.Node = e.target as cc.Node;
         target.parent.children.forEach(
             node => {
@@ -85,7 +85,10 @@ export default class Top20 extends cc.Component {
 
     private rule = null;
 
+    private type: number = 0;
+
     private async renderList(type: number) {
+        this.type = type;
         let info: ReferRankVO = await SendMgr.sendTop20({ type: type });
         if (!info || !cc.isValid(this.node)) {
             if (cc.isValid(this.node)) this.noRecords.active = true;

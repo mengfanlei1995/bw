@@ -1,25 +1,26 @@
 import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
+import { PictureVO } from "../../../net/proto/hall";
 import SwiperPage from "./SwiperPage";
 
-export interface SwiperData {
-    /**图片地址*/
-    pictureUrl: string
-    /**事件类型 - 0 纯展示不做任何互动 1 大厅内跳转 2 打开网页 3 弹窗 4 跳其它场景scene*/
-    skipType: number
+// export interface SwiperData {
+//     /**图片地址*/
+//     pictureUrl: string
+//     /**事件类型 - 0 纯展示不做任何互动 1 大厅内跳转 2 打开网页 3 弹窗 4 跳其它场景scene*/
+//     skipType: number
 
-    //以上2个参数必传，以下4项可不传
-    /**网页地址url，预制体名称，弹窗名称，场景scene名称*/
-    skipPage: string
-    /**需要设置的DataMgr里的变量名称*/
-    skipData: any;
-    /**业务参数，例如弹窗就是弹窗的参数 json字符串更加灵活和可扩展*/
-    skipParams: string;
-    /**活动id*/
-    activityId: string;
-    /**跳转下标 */
-    skipIndex: number
-}
+//     //以上2个参数必传，以下4项可不传
+//     /**网页地址url，预制体名称，弹窗名称，场景scene名称*/
+//     skipPage: string
+//     /**需要设置的DataMgr里的变量名称*/
+//     skipData: any;
+//     /**业务参数，例如弹窗就是弹窗的参数 json字符串更加灵活和可扩展*/
+//     skipParams: string;
+//     /**活动id*/
+//     activityId: string;
+//     /**跳转下标 */
+//     skipIndex: number
+// }
 
 const { ccclass, property } = cc._decorator;
 
@@ -45,7 +46,7 @@ export default class Swiper extends cc.Component {
         EventMgr.off(HALL_EVT.INIT_ROTATIONPICTRUES, this.init, this)
     }
 
-    init(data: SwiperData[], callback: Function) {
+    init(data: PictureVO[], callback: Function) {
         this.data = data
         let total = data ? data.length : 0;
         this.pages = total

@@ -13,7 +13,7 @@ class UserData {
 
     /**vip升级之前的等级 */
     public beforeVipLevel: number = 0;
-    
+
     /**vip等级 */
     private _vipLevel: number = 0;
 

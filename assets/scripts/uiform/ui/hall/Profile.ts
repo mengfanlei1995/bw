@@ -1,4 +1,6 @@
 import UserData from "../../../data/UserData";
+import { HALL_EVT } from "../../../enum/DeskEnum";
+import EventMgr from "../../../mgr/EventMgr";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
 
@@ -16,6 +18,21 @@ export default class Profile extends UIScreen {
     @property({ tooltip: 'phone', type: cc.Label })
     phoneLabel: cc.Label = null;
 
+    protected onEnable(): void {
+        this.updatePhone();
+        EventMgr.on(HALL_EVT.UPDATE_PHONE, this.updatePhone, this);
+    }
+
+    onDisable() {
+        EventMgr.off(HALL_EVT.UPDATE_PHONE, this.updatePhone, this);
+    }
+
+    updatePhone() {
+        this.phoneLabel.string = UserData.userInfo.phone ? UserData.userInfo.phone : "Not bound";
+        this.btnBonud.active = !UserData.userInfo.phone;
+        this.btnChange.active = !!UserData.userInfo.phone;
+    }
+
     onClickBack() {
         this.hide();
     }
@@ -31,9 +48,9 @@ export default class Profile extends UIScreen {
 
     onClickPhone() {
         if (UserData.userInfo.phone) {
-            // SceneMgr.open(UIConfig.BindPhone.prefab, 2)
+            UIMgr.show('prefab/hall/BindPhone', 'BindPhone', 2);
         } else {
-            // SceneMgr.open(UIConfig.BindPhone.prefab, 1)
+            UIMgr.show('prefab/hall/BindPhone', 'BindPhone', 1);
         }
     }
 

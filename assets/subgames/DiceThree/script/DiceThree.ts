@@ -15,7 +15,6 @@ import { ResponseD3EnterRoomVO, NotifyD3BeginBetVO, NotifyD3DrawVO, D3WinVO, Not
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import UIMgr from "../../../scripts/uiform/UIMgr";
-import { DialogType } from "../../../scripts/uiform/ui/common/DiaLog";
 import LogUtil from "../../../scripts/utils/LogUtil";
 
 

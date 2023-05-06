@@ -1,0 +1,174 @@
+
+Bankruptcy_Protection.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+135
+  rotate: false
+  xy: 1350, 3
+  size: 398, 107
+  orig: 402, 111
+  offset: 2, 2
+  index: -1
+Benefits
+  rotate: false
+  xy: 145, 199
+  size: 316, 79
+  orig: 320, 83
+  offset: 2, 2
+  index: -1
+Close
+  rotate: false
+  xy: 1739, 443
+  size: 45, 45
+  orig: 47, 47
+  offset: 1, 1
+  index: -1
+DepositNow
+  rotate: false
+  xy: 0, 58
+  size: 330, 90
+  orig: 432, 91
+  offset: 51, 0
+  index: -1
+Guang1
+  rotate: false
+  xy: 0, 361
+  size: 683, 652
+  orig: 685, 654
+  offset: 1, 1
+  index: -1
+Guang2
+  rotate: false
+  xy: 685, 383
+  size: 720, 630
+  orig: 722, 662
+  offset: 1, 16
+  index: -1
+Newcomer
+  rotate: false
+  xy: 0, 280
+  size: 501, 79
+  orig: 502, 81
+  offset: 0, 1
+  index: -1
+RechargeAndGet
+  rotate: false
+  xy: 1350, 112
+  size: 531, 88
+  orig: 535, 92
+  offset: 2, 2
+  index: -1
+banbiyan
+  rotate: false
+  xy: 1786, 437
+  size: 57, 19
+  orig: 59, 21
+  offset: 1, 1
+  index: -1
+beiban
+  rotate: true
+  xy: 1407, 436
+  size: 577, 330
+  orig: 667, 332
+  offset: 39, 1
+  index: -1
+biyan
+  rotate: false
+  xy: 1845, 437
+  size: 57, 19
+  orig: 59, 21
+  offset: 1, 1
+  index: -1
+cash
+  rotate: false
+  xy: 685, 169
+  size: 534, 212
+  orig: 543, 227
+  offset: 8, 8
+  index: -1
+erhuan
+  rotate: false
+  xy: 2014, 933
+  size: 28, 80
+  orig: 28, 80
+  offset: 0, 0
+  index: -1
+liusu
+  rotate: true
+  xy: 1786, 458
+  size: 30, 92
+  orig: 30, 92
+  offset: 0, 0
+  index: -1
+money
+  rotate: true
+  xy: 1739, 671
+  size: 342, 273
+  orig: 440, 360
+  offset: 85, 79
+  index: -1
+shenti
+  rotate: true
+  xy: 1407, 202
+  size: 232, 568
+  orig: 232, 568
+  offset: 0, 0
+  index: -1
+toufa1
+  rotate: false
+  xy: 1935, 452
+  size: 77, 99
+  orig: 77, 99
+  offset: 0, 0
+  index: -1
+toufa2
+  rotate: false
+  xy: 332, 65
+  size: 85, 132
+  orig: 85, 132
+  offset: 0, 0
+  index: -1
+toufa3
+  rotate: false
+  xy: 0, 150
+  size: 143, 128
+  orig: 143, 128
+  offset: 0, 0
+  index: -1
+toufa4
+  rotate: true
+  xy: 1739, 490
+  size: 179, 194
+  orig: 179, 194
+  offset: 0, 0
+  index: -1
+toufa5
+  rotate: false
+  xy: 1935, 553
+  size: 101, 116
+  orig: 101, 116
+  offset: 0, 0
+  index: -1
+toufa6
+  rotate: false
+  xy: 1883, 0
+  size: 135, 200
+  orig: 135, 200
+  offset: 0, 0
+  index: -1
+youshou
+  rotate: false
+  xy: 1221, 19
+  size: 127, 362
+  orig: 127, 362
+  offset: 0, 0
+  index: -1
+zuoshou
+  rotate: false
+  xy: 503, 144
+  size: 149, 215
+  orig: 149, 215
+  offset: 0, 0
+  index: -1

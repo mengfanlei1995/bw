@@ -1,6 +1,6 @@
 import SysConfig from "../../../data/SysConfig";
 import UserData from "../../../data/UserData";
-import { HALL_EVT } from "../../../enum/DeskEnum";
+import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
 import { Gullak_InfoCmd } from "../../../net/CmdData";
@@ -34,6 +34,9 @@ export default class Home extends UIScreen {
     @property({ tooltip: 'Mail按钮', type: cc.Node })
     btnMail: cc.Node = null;
 
+    @property({ tooltip: '轮播节点', type: cc.Node })
+    swiperNode: cc.Node = null;
+
     private nextDayRechargeInfo: NextDayRechargeVO = null;
 
     private gullakInfo: GullakMainInfoV2VO = null;
@@ -42,6 +45,19 @@ export default class Home extends UIScreen {
         this.node.zIndex = 1;
         this.initHallInfo();
         this.initGameList();
+        this.queryPopList();
+    }
+
+    protected onEnable(): void {
+        EventMgr.on(HALL_EVT.DESK_RELOAD, this.initHallInfo, this);
+        EventMgr.on(HALL_EVT.UPDATE_BONUS_RED, this.updateBonusRed, this);
+        EventMgr.on(HALL_EVT.OPEN_WINDOWS, this.openWindows, this);
+    }
+
+    protected onDisable(): void {
+        EventMgr.off(HALL_EVT.DESK_RELOAD, this.initHallInfo, this);
+        EventMgr.off(HALL_EVT.UPDATE_BONUS_RED, this.updateBonusRed, this);
+        EventMgr.off(HALL_EVT.OPEN_WINDOWS, this.openWindows, this);
     }
 
     /**bonus 信息 */
@@ -57,10 +73,14 @@ export default class Home extends UIScreen {
 
     /**请求弹窗列表 */
     async queryPopList() {
+        if (SysConfig.isGreen) {
+            return;
+        }
         let result = await SendMgr.sendPopupInfo({ sceneId: SysConfig.sceneId });
+        if (!cc.isValid(this.node)) return;
         if (!result || !result.vos || result.vos.length == 0 || !cc.isValid(this.node)) {
             if (StorageMgr.hallHandTimes == 0) {
-                FixedMgr.open(UIConfig.HandAni.prefab);
+                UIMgr.show('prefab/hall/HandAni', 'HandAni');
             }
             return;
         }
@@ -72,38 +92,38 @@ export default class Home extends UIScreen {
     /**主动弹窗  按照服务端顺序弹*/
     openWindows() {
         if (this.popData.length > 0) {
-            let data: any = this.popData[0]
+            let data: PopupVO = this.popData[0]
             this.popData.shift();
             if (data.popEvent == "pdd") {
-                let { windowState, window } = data.popInfo.ganesh;
-                this.pddWindows(windowState, window);
+                // let { windowState, window } = data.popInfo.ganesh;
+                // this.pddWindows(windowState, window);
             } else {
-                WindowMgr.open(data.popEvent, { isClick: false, info: data });
+                UIMgr.show(`prefab/hall/${data.popEvent}`, data.popEvent, { isClick: false, info: data });
             }
         } else {
             if (StorageMgr.hallHandTimes == 0) {
-                FixedMgr.open(UIConfig.HandAni.prefab);
+                UIMgr.show('prefab/hall/HandAni', 'HandAni');
             }
         }
     }
 
     /**pdd弹窗 */
-    pddWindows(windowState, window, click: boolean = false) {
-        switch (windowState) {
-            case 0:
-                if (click) FixedMgr.open(UIConfig.GaneshIntro.prefab);
-                break;
-            case 1:
-                FixedMgr.open(UIConfig.GaneshIntro.prefab);
-                break;
-            case 2:
-                FixedMgr.open(UIConfig.OpenGanesh.prefab, { windowState, window });
-                break;
-            case 3:
-                WindowMgr.open(UIConfig.GaneshInfo.prefab, { windowState, window });
-                break;
-        }
-    }
+    // pddWindows(windowState, window, click: boolean = false) {
+    //     switch (windowState) {
+    //         case 0:
+    //             if (click) FixedMgr.open(UIConfig.GaneshIntro.prefab);
+    //             break;
+    //         case 1:
+    //             FixedMgr.open(UIConfig.GaneshIntro.prefab);
+    //             break;
+    //         case 2:
+    //             FixedMgr.open(UIConfig.OpenGanesh.prefab, { windowState, window });
+    //             break;
+    //         case 3:
+    //             WindowMgr.open(UIConfig.GaneshInfo.prefab, { windowState, window });
+    //             break;
+    //     }
+    // }
 
     updateBonusRed(isActive: boolean) {
         this.getGullakInfo();
@@ -111,8 +131,13 @@ export default class Home extends UIScreen {
     }
 
     async initHallInfo() {
+        if (SysConfig.isGreen) {
+            this.swiperNode.opacity = 255;
+            return;
+        }
         let hallInfo = await SendMgr.sendHallInfo();
-        let { userInfo, redDot, nextDayRechargeVO } = hallInfo;
+        if (!cc.isValid(this.node)) return;
+        let { userInfo, redDot, nextDayRechargeVO, rotationPictures } = hallInfo;
         let { vipLevel, club } = userInfo
         let { mail, vip, gullak } = redDot;
         this.btnSuperBonus.active = nextDayRechargeVO.showFlag;
@@ -130,12 +155,16 @@ export default class Home extends UIScreen {
             this.hideRedDotAnim(this.btnVip);
         }
         this.updateBonusRed(gullak);
+        EventMgr.emit(HALL_EVT.INIT_ROTATIONPICTRUES, rotationPictures || [], () => {
+            cc.tween(this.swiperNode).to(0.45, { opacity: 255 }, { easing: 'backOut' }).start()
+        });
     }
 
     async initGameList() {
         let list = SysConfig.gameList;
         if (list.length === 0) {
             let info = await SendMgr.sendGameList();
+            if (!cc.isValid(this.node)) return;
             if (info && info.games && info.games.length > 0) {
                 SysConfig.setGameList(info.games);
             }
@@ -174,6 +203,28 @@ export default class Home extends UIScreen {
 
     onClickMail() {
         UIMgr.show('prefab/hall/Email', 'Email');
+    }
+
+    onClickGullak() {
+        UIMgr.show('prefab/hall/Bonus', 'Bonus', this.gullakInfo);
+        EventMgr.emit(REPORT_EVT.CLICK, {
+            element_id: "btn_gullak",
+            element_name: "大厅GULLAK按钮",
+            element_type: "button",
+            element_position: '',
+            element_content: '',
+        });
+    }
+
+    onClickSuperBonus() {
+        UIMgr.show('prefab/hall/SuperBonus', 'SuperBonus', { isClick: true, info: this.nextDayRechargeInfo });
+        EventMgr.emit(REPORT_EVT.CLICK, {
+            element_id: "btn_superbonus",
+            element_name: "大厅superbonus按钮",
+            element_type: "button",
+            element_position: '',
+            element_content: '',
+        });
     }
 
 }

@@ -1,28 +1,8 @@
+import { DialogOptions } from "../../../model/DialogOptions";
 import CocosUtil from "../../../utils/CocosUtil";
 import UIWindow from "../../UIWindow";
 
 const { ccclass, property } = cc._decorator;
-
-export class DialogOptions {
-    word?: string = ''
-    type?: number = DialogType.OnlyOkBtn
-    okCb?: Function = null
-    okTxt?: string
-    cancelCb?: Function = null
-    cancelTxt?: string
-    closeCb?: Function = null
-    showCb?: Function = null
-    hideCb?: Function = null
-    hAlign?: number = 0
-    title?: string = ''
-}
-
-export enum DialogType {
-    OnlyOkBtn = 0,
-    OkCancelBtn,
-    OkBtnAndNoCloseBtn,
-    OnlyClose
-}
 
 /**
  * 那个按钮被点击
@@ -144,7 +124,7 @@ export default class DiaLog extends UIWindow {
     /**根据文字内容更改高度 */
     async checkHeight(lblWord: cc.Label | cc.RichText) {
         // lblWord['_forceUpdateRenderData']();
-        await CocosUtil.sleepSync(0.05)
+        await CocosUtil.sleepSync(0.05);
         if (lblWord.node.height >= 130) {
             let root: cc.Node = this.node.getChildByName("root");
             root.height += lblWord.node.height - 130;

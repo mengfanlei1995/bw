@@ -1,10 +1,12 @@
 import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
+import { PictureVO } from "../../../net/proto/hall";
 import AssetUtil from "../../../utils/AssetUtil";
 import DownLoadUtil from "../../../utils/DownLoadUtil";
 import JsbUitl from "../../../utils/JsbUitl";
 import MD5 from "../../../utils/MD5";
-import { SwiperData } from "./Swiper";
+import UIMgr from "../../UIMgr";
+// import { SwiperData } from "./Swiper";
 
 const { ccclass, property } = cc._decorator;
 
@@ -13,9 +15,9 @@ export default class SwiperPage extends cc.Component {
     @property(cc.Sprite)
     sp_pictrue: cc.Sprite = null;
 
-    private swiperData: SwiperData = null;
+    private swiperData: PictureVO = null;
 
-    async init(data: SwiperData) {
+    async init(data: PictureVO) {
         this.swiperData = data;
         let texture = null;
         if (data.pictureUrl) {
@@ -40,18 +42,19 @@ export default class SwiperPage extends cc.Component {
         });
         switch (skipType) {
             case 1:
-                FixedMgr.open(UIConfig.AddCash.prefab);
+                UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: false, vipLevel: 0 });
                 break;
             case 2:
                 if (cc.sys.isNative) JsbUitl.openWebView(skipPage);
                 else cc.sys.openURL(skipPage);
                 break;
             case 3:
-                WindowMgr.open(skipPage)
+                UIMgr.show(`prefab/hall/${skipPage}`, skipPage);
                 break;
             case 4:
-                SceneMgr.open(skipPage)
-                if (skipData.skipIndex >= 0) EventMgr.emit(HALL_EVT.CHANGE_BOTTOM_UI, skipData.skipIndex);
+                let data = JSON.parse(skipData);
+                if (data && data?.skipIndex >= 0) EventMgr.emit(HALL_EVT.CHANGE_MENU_ACTIVE, data.skipIndex);
+                else UIMgr.show(`prefab/hall/${skipPage}`, skipPage);
                 break;
         }
     }

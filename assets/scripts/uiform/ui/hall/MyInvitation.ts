@@ -54,6 +54,7 @@ export default class MyInvitation extends cc.Component {
 
     acitveTab(e: cc.Event.EventTouch) {
         let target: cc.Node = e.target as cc.Node;
+        if (this.queryType == this.typeConf[target.name]) return;
         target.parent.children.forEach(
             node => {
                 node.children[0].active = node.name === target.name;
@@ -61,7 +62,7 @@ export default class MyInvitation extends cc.Component {
             }
         )
         this.hideAllLable()
-        this.queryType = this.typeConf[target.name]
+        this.queryType = this.typeConf[target.name];
         this.refreshData()
     }
 

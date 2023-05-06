@@ -4,6 +4,7 @@ import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
 import SoundMgr from "../../mgr/SoundMgr";
 import StorageMgr from "../../mgr/StorageMgr";
+import { DialogType } from "../../model/DialogOptions";
 import { ChannelConfig, WhiteConfig } from "../../model/ServerConfig";
 import { Login_GuestCmd, Login_SessionCmd } from "../../net/CmdData";
 import SendMgr from "../../net/SendMgr";
@@ -11,7 +12,6 @@ import CommonUtil from "../../utils/CommonUtil";
 import JsbUitl from "../../utils/JsbUitl";
 import UIMgr from "../UIMgr";
 import UIScene from "../UIScene";
-import { DialogType } from "../ui/common/DiaLog";
 
 
 const { ccclass, property } = cc._decorator;

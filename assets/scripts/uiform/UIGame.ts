@@ -110,6 +110,7 @@ export default class UIGame extends UIScene {
     }
 
     _start(): void {
+        SysConfig.sceneId = "fromGame";
         this.isBundle = 1;
         this.statusTipSkel.node.zIndex = 3;
         this.statusWaitingSkel.node.zIndex = 3;
@@ -155,12 +156,15 @@ export default class UIGame extends UIScene {
             this.curTime = 0;
         }
         let time = parseInt(`${this.curTime / 1000}`);
+        if (time <= 3 && time > 0 && this.isBetTime) {
+            SoundMgr.playEffectByBundle('common', 'audio/seconds');
+        }
         this.timeLeftLabel.string = `${time}`;
     }
 
     setOnLineNumber(onlinePlayers: number) {
         this.lbOnLine.string = `${onlinePlayers}`;
-        this.lbOnLine.node.parent.active = onlinePlayers && onlinePlayers > 0
+        this.lbOnLine.node.parent.active = onlinePlayers && onlinePlayers > 0;
     }
 
     initChipsNum(betCoinList) {
@@ -236,7 +240,7 @@ export default class UIGame extends UIScene {
      * 检测区域筹码数量是否超限
      * @param areaType 
      */
-    checkAreaChipNum(areaType: string, addNums) {
+    checkAreaChipNum(areaType: string, addNums: number) {
         let childrens: cc.Node[] = this.chipsProductAreaNode.children
         let areaNodes: cc.Node[] = []
         let node: cc.Node = null
@@ -557,6 +561,7 @@ export default class UIGame extends UIScene {
         this.updateChipsCircleSkel();
         let time = parseInt(`${this.curTime / 1000}`);
         this.timeLeftLabel.string = `${time}`;
+        SoundMgr.playEffectByBundle('common', 'audio/start');
     }
 
     gameBet(info) {

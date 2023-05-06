@@ -1,13 +1,13 @@
 import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
+import { DialogType } from "../../../model/DialogOptions";
 import SendMgr from "../../../net/SendMgr";
 import { MailVO } from "../../../net/proto/hall";
 import CocosUtil from "../../../utils/CocosUtil";
 import CommonUtil from "../../../utils/CommonUtil";
 import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
-import { DialogType } from "../common/DiaLog";
 
 const { ccclass, property } = cc._decorator;
 

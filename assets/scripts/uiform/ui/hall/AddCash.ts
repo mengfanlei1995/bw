@@ -3,6 +3,7 @@ import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
+import { DialogType } from "../../../model/DialogOptions";
 import SendMgr from "../../../net/SendMgr";
 import { RechargeInfoVO } from "../../../net/proto/hall";
 import CommonUtil from "../../../utils/CommonUtil";
@@ -10,7 +11,6 @@ import JsbUitl from "../../../utils/JsbUitl";
 import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
-import { DialogType } from "../common/DiaLog";
 
 const { ccclass, property } = cc._decorator;
 
@@ -151,10 +151,6 @@ export default class AddCash extends UIScreen {
     }
 
     async onClickAddCash() {
-        if (!StorageMgr.phone) {
-            UIMgr.show('prefab/hall/BindPhone', 'BindPhone');
-            return;
-        }
         EventMgr.emit(REPORT_EVT.CLICK, {
             element_id: "btn_submit_byAddCash",
             element_name: "提交充值界面的提交按钮",

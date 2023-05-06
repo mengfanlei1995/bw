@@ -1,6 +1,6 @@
 
 import UIBase from "./UIBase";
-import UIMgr, { UIType } from "./UIMgr";
+import { UIType } from "./UIMgr";
 
 const { ccclass, property } = cc._decorator;
 

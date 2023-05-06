@@ -13,7 +13,6 @@ import LogUtil from "../../utils/LogUtil";
 import LongUtil from "../../utils/LongUtil";
 import UIMgr from "../UIMgr";
 import UIScene from "../UIScene";
-import { DialogType } from "../ui/common/DiaLog";
 
 
 const { ccclass, property } = cc._decorator;

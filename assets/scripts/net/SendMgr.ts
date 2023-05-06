@@ -384,6 +384,7 @@ class SendMgr {
 
     /**弹窗信息 */
     public async sendPopupInfo(params: PopupDTO): Promise<PopupListVO> {
+        SysConfig.sceneId = "";
         return new Promise<PopupListVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(PopupCmd, Popup_InfoCmd), encodePopupDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodePopupListVO(data) : null);
@@ -393,6 +394,10 @@ class SendMgr {
 
     /**发起支付 */
     public async sendPay(params: PayRechargeOrderDTO): Promise<PayRechargeOrderVO> {
+        // if (!StorageMgr.phone) {
+        //     UIMgr.show('prefab/hall/BindPhone', 'BindPhone');
+        //     return;
+        // }
         return new Promise<PayRechargeOrderVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(PopupCmd, Popup_InfoCmd), encodePayRechargeOrderDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodePayRechargeOrderVO(data) : null);

@@ -1,5 +1,7 @@
 import SysConfig from "../data/SysConfig";
+import { HALL_EVT } from "../enum/DeskEnum";
 import CommonUtil from "../utils/CommonUtil";
+import EventMgr from "./EventMgr";
 
 const StorageKey = cc.Enum({
     /**语言 */
@@ -195,6 +197,7 @@ class StorageMgr {
      */
     public set phone(phone: string) {
         this.saveItem(StorageKey.PHONE, phone);
+        EventMgr.emit(HALL_EVT.UPDATE_PHONE);
     }
     public get phone(): string {
         return this.loadItem(StorageKey.PHONE);

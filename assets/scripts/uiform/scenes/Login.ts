@@ -12,8 +12,6 @@ import LogUtil from "../../utils/LogUtil";
 import RegexUtil from "../../utils/RegexUtil";
 import UIMgr from "../UIMgr";
 import UIScene from "../UIScene";
-import { DialogType } from "../ui/common/DiaLog";
-
 
 const { ccclass, property } = cc._decorator;
 
@@ -204,7 +202,7 @@ export default class Login extends UIScene {
             UIMgr.showToast(LangMgr.sentence('e0006'));
             return;
         }
-        if (!mobilePassword) {
+        if (!mobilePassword || mobilePassword.length < 6) {
             UIMgr.showToast(LangMgr.sentence('e0345'));
             return;
         }

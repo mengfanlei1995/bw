@@ -32,7 +32,7 @@ export default class SignWindows extends UIWindow {
         this.lb_bonus.string = `${LongUtil.longToNumber(normalAmount) / 100}`;
         this.lb_bonusVip.string = `${LongUtil.longToNumber(vipAmount) / 100}`;
         this.lb_ratio.string = `${vipRatio * 100}%`;
-        this.lb_vip.string = `V${UserData.vipLevel}`;
+        this.lb_vip.string = `${UserData.vipLevel}`;
         let index = 0;
         if (UserData.vipLevel >= this.spf_vip.length) index = this.spf_vip.length - 1;
         else index = UserData.vipLevel;
