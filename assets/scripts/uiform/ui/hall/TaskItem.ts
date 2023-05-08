@@ -30,7 +30,7 @@ export default class TaskItem extends cc.Component {
     private isLoad: boolean = false;
 
     /**初始化任务UI */
-    async init(data: DailyBonusEventVO, index) {
+    async init(data: DailyBonusEventVO, index: number) {
         if (!data) {
             this.node.destroy();
             return;

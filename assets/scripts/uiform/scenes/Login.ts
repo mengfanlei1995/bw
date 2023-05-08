@@ -4,7 +4,7 @@ import { SYS_CONST } from "../../enum/SysEventEnum";
 import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
 import StorageMgr from "../../mgr/StorageMgr";
-import { Login_PhoneCmd, Login_PhoneRegisterCmd } from "../../net/CmdData";
+import { Login_OTPCmd, Login_PhoneCmd, Login_PhoneRegisterCmd } from "../../net/CmdData";
 import SendMgr from "../../net/SendMgr";
 import CocosUtil from "../../utils/CocosUtil";
 import JsbUitl from "../../utils/JsbUitl";
@@ -133,6 +133,10 @@ export default class Login extends UIScene {
 
     }
 
+    onClickCustomer() {
+        UIMgr.show('prefab/hall/Customer', 'Customer');
+    }
+
     /**适配分辨率 */
     async resetContent() {
         this.content.node.opacity = 0;
@@ -174,7 +178,7 @@ export default class Login extends UIScene {
         let mobile: string = this.ed_loginPhoneNumber.string;
         if (RegexUtil.isValidPhoneNumber(mobile)) {
             this.btn_otp.interactable = false;
-            let result = await SendMgr.sendSms({ mobile });
+            let result = await SendMgr.sendSms(Login_OTPCmd, { mobile });
             if (result) {
                 // this.lb_second.node.parent.active = true;
                 this.second = 60;

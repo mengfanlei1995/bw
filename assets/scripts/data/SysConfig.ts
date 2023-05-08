@@ -53,6 +53,18 @@ class SysConfig {
         JhandiMunda: '400600',
         TeenPattiWar: '400500'
     }
+
+    readonly spineHash: any = {
+        '300200': { file: 'WheelofForune/WheelofForune', animation: 'WheelofForune' },
+        '300100': { file: 'TigerVSElephant/TigerVSElephant', animation: 'TigerVSElephant' },
+        '400300': { file: 'LuckyBall/Icon_WingoLottery', animation: 'animation' },
+        '400100': { file: 'LuckyDice/LuckyDice', animation: 'LuckyDice' },
+        '400400': { file: 'PokerKing/PokeKing', animation: 'PokeKing' },
+        '400200': { file: 'DiceThree/DICE_3', animation: 'animation' },
+        '400600': { file: 'JhandiMunda/JhandiMunda', animation: 'JhandiMunda' },
+        '400500': { file: 'TeenPattiWar/Icon_TPWar', animation: 'animation' }
+    }
+
     /**大厅游戏列表 */
     public gameList: GameListInfo[] = [];
 

@@ -21,17 +21,8 @@ export default class UIScene extends UIBase {
         }
     }
 
-    fixedBg(root: cc.Node) {
-        let distance: number = SysConfig?.systemInfo?.isPieScreen ? 50 : 0;
-        if (cc.isValid(root) && distance) {
-            if (root.getComponent(cc.Widget).enabled)
-                root.getComponent(cc.Widget).top = 50;
-        }
-    }
-
     onLoad() {
         this.UIType = UIType.SCENE;
-        // this.fixedBg(this.node);
     }
 
     onDestroy() {

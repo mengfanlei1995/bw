@@ -1,10 +1,10 @@
 import StorageMgr from "../../../mgr/StorageMgr";
-import UIScreen from "../../UIScreen";
+import UIFixed from "../../UIFixed";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class HandAni extends UIScreen {
+export default class HandAni extends UIFixed {
 
     onEnable() {
         StorageMgr.hallHandTimes = 1;

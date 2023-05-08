@@ -1,0 +1,125 @@
+
+WheelofForune.png
+size: 569,569
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Chip
+  rotate: false
+  xy: 310, 287
+  size: 85, 85
+  orig: 89, 89
+  offset: 2, 3
+  index: -1
+Frame
+  rotate: false
+  xy: 2, 227
+  size: 306, 340
+  orig: 306, 340
+  offset: 0, 0
+  index: -1
+Gold1
+  rotate: false
+  xy: 366, 10
+  size: 33, 19
+  orig: 33, 19
+  offset: 0, 0
+  index: -1
+Gold2
+  rotate: false
+  xy: 401, 13
+  size: 30, 16
+  orig: 30, 16
+  offset: 0, 0
+  index: -1
+Gold3
+  rotate: false
+  xy: 397, 339
+  size: 33, 33
+  orig: 33, 33
+  offset: 0, 0
+  index: -1
+Gold4
+  rotate: true
+  xy: 397, 268
+  size: 30, 33
+  orig: 31, 34
+  offset: 0, 1
+  index: -1
+Gold5
+  rotate: true
+  xy: 298, 3
+  size: 26, 33
+  orig: 26, 33
+  offset: 0, 0
+  index: -1
+Gold6
+  rotate: true
+  xy: 333, 8
+  size: 21, 31
+  orig: 21, 31
+  offset: 0, 0
+  index: -1
+Gold7
+  rotate: true
+  xy: 397, 300
+  size: 37, 28
+  orig: 37, 28
+  offset: 0, 0
+  index: -1
+Word
+  rotate: true
+  xy: 433, 86
+  size: 286, 88
+  orig: 289, 90
+  offset: 2, 1
+  index: -1
+d
+  rotate: false
+  xy: 310, 238
+  size: 28, 28
+  orig: 30, 30
+  offset: 1, 1
+  index: -1
+j
+  rotate: true
+  xy: 223, 5
+  size: 24, 73
+  orig: 25, 73
+  offset: 0, 0
+  index: -1
+w_zp
+  rotate: false
+  xy: 2, 5
+  size: 219, 220
+  orig: 220, 221
+  offset: 0, 1
+  index: -1
+xi
+  rotate: false
+  xy: 515, 30
+  size: 51, 54
+  orig: 64, 64
+  offset: 6, 5
+  index: -1
+y1
+  rotate: false
+  xy: 433, 2
+  size: 80, 82
+  orig: 85, 86
+  offset: 2, 2
+  index: -1
+y2
+  rotate: false
+  xy: 310, 374
+  size: 193, 193
+  orig: 194, 194
+  offset: 0, 0
+  index: -1
+y2g
+  rotate: false
+  xy: 223, 31
+  size: 194, 194
+  orig: 194, 194
+  offset: 0, 0
+  index: -1

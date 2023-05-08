@@ -1,10 +1,10 @@
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class RotationAnim extends cc.Component {
-    @property({displayName: '选择一周的耗时', type: cc.Integer})
+    @property({ displayName: '选择一周的耗时', type: cc.Integer })
     time: number = 0.45
-    @property({displayName: '旋转方向', type: cc.Integer})
+    @property({ displayName: '旋转方向', type: cc.Integer })
     dir: number = 1
 
     twEff: cc.Tween = null;
@@ -12,9 +12,9 @@ export default class RotationAnim extends cc.Component {
 
     onEnable() {
         this.twEff = cc.tween(this.node)
-        this.twEff.repeatForever(
-            this.twEff.by(this.time, { angle: 360 * this.dir  })
-        ).start()
+            .by(this.time, { angle: - 360 * this.dir })
+            .repeatForever(this.twEff)
+            .start();
     }
 
     onDisable() {

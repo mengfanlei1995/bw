@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "4f217e66-4463-4f3f-8f2b-587cc512e882",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 684,
+  "height": 684,
+  "platformSettings": {},
+  "subMetas": {
+    "Icon_WingoLottery": {
+      "ver": "1.0.6",
+      "uuid": "6db9c462-07d3-427e-91de-a852a0dd2f91",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "4f217e66-4463-4f3f-8f2b-587cc512e882",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": -187,
+      "offsetY": 0,
+      "trimX": 2,
+      "trimY": 2,
+      "width": 306,
+      "height": 680,
+      "rawWidth": 684,
+      "rawHeight": 684,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

@@ -1,0 +1,76 @@
+
+LuckyDice.png
+size: 527,527
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+dice
+  rotate: true
+  xy: 310, 47
+  size: 246, 54
+  orig: 249, 56
+  offset: 2, 1
+  index: -1
+s_1
+  rotate: true
+  xy: 366, 14
+  size: 97, 101
+  orig: 98, 102
+  offset: 0, 0
+  index: -1
+s_2
+  rotate: false
+  xy: 189, 97
+  size: 82, 86
+  orig: 82, 86
+  offset: 0, 0
+  index: -1
+s_2d
+  rotate: false
+  xy: 189, 25
+  size: 87, 70
+  orig: 91, 74
+  offset: 2, 2
+  index: -1
+s_3
+  rotate: false
+  xy: 469, 56
+  size: 54, 55
+  orig: 56, 55
+  offset: 1, 0
+  index: -1
+s_dd
+  rotate: false
+  xy: 2, 41
+  size: 185, 142
+  orig: 185, 142
+  offset: 0, 0
+  index: -1
+s_dy
+  rotate: true
+  xy: 310, 295
+  size: 230, 198
+  orig: 240, 210
+  offset: 5, 6
+  index: -1
+s_z
+  rotate: false
+  xy: 366, 113
+  size: 159, 180
+  orig: 159, 194
+  offset: 0, 1
+  index: -1
+tb
+  rotate: false
+  xy: 2, 185
+  size: 306, 340
+  orig: 306, 340
+  offset: 0, 0
+  index: -1
+xx
+  rotate: true
+  xy: 469, 3
+  size: 51, 54
+  orig: 64, 64
+  offset: 6, 5
+  index: -1

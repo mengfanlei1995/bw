@@ -4,7 +4,7 @@ import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, BindPhoneCmd, BindPhone_BindCmd, BindPhone_ChangeCmd, BindPhone_OTPCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_OTPCmd, PopupCmd, Popup_InfoCmd, RechargeCmd, Recharge_InfoCmd, Recharge_RecordCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, Refer_Top20Cmd, TransactionCmd, Transaction_InfoCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd, WithdrawCmd, Withdraw_BindBankCmd, Withdraw_InfoCmd, Withdraw_RecordCmd } from "./CmdData";
+import { BetCmd, BindPhoneCmd, BindPhone_BindCmd, BindPhone_ChangeCmd, BindPhone_OTPCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_ForgetSubmitCmd, Login_OTPCmd, PopupCmd, Popup_InfoCmd, RechargeCmd, Recharge_InfoCmd, Recharge_RecordCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, Refer_Top20Cmd, TransactionCmd, Transaction_InfoCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd, WithdrawCmd, Withdraw_BindBankCmd, Withdraw_InfoCmd, Withdraw_RecordCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
 import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
@@ -98,18 +98,25 @@ class SendMgr {
     }
 
     /**
-     * 登陆
-     * @param params 登陆数据
-     * @param loginType 登陆类型
+     * 发送验证码
      */
-    public async sendSms(params: LoginDTO = {}): Promise<string> {
+    public async sendSms(subCmd: number, params: LoginDTO = {}): Promise<string> {
         params = Object.assign(loginCommonParams(), params);
         return new Promise<string>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, Login_OTPCmd), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
-                if (code == 0) {
-                    console.log(decodeLoginMobileSmsVO(data).smsCode);
-                }
+            this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, subCmd), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
                 resolve(code == 0 ? decodeLoginMobileSmsVO(data).smsCode : null);
+            })
+        })
+    }
+
+    /**
+     * 发送修改密码
+     */
+    public async sendChangePass(params: LoginDTO = {}): Promise<boolean> {
+        params = Object.assign(loginCommonParams(), params);
+        return new Promise<boolean>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, Login_ForgetSubmitCmd), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
+                resolve(code == 0);
             })
         })
     }

@@ -7,10 +7,12 @@ import UIBase from "./UIBase";
 export enum UIType {
     /**弹窗类型 */
     WINDOW = 1,
-    /**通用类型 */
-    SCREEN = 2,
+    /**挂件类型 */
+    FIXED = 2,
+    /**全屏界面类型 */
+    SCREEN = 3,
     /**场景 */
-    SCENE = 3
+    SCENE = 4
 }
 
 /**

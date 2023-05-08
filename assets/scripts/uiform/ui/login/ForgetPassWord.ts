@@ -1,7 +1,8 @@
 import { REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
-import { Login_PhoneCmd } from "../../../net/CmdData";
+import StorageMgr from "../../../mgr/StorageMgr";
+import { Login_ForgetOTPCmd, Login_PhoneCmd } from "../../../net/CmdData";
 import SendMgr from "../../../net/SendMgr";
 import RegexUtil from "../../../utils/RegexUtil";
 import UIMgr from "../../UIMgr";
@@ -47,6 +48,10 @@ export default class ForgetPassWord extends UIScreen {
 
     private isShowPass: boolean = false;
 
+    protected start(): void {
+        StorageMgr.phone && (this.ed_loginPhoneNumber.string = StorageMgr.phone);
+    }
+
     onClickShowHidePass() {
         if (this.isShowPass) {
             this.isShowPass = false;
@@ -61,13 +66,21 @@ export default class ForgetPassWord extends UIScreen {
 
     async onClickSubmit(e: cc.Event.EventTouch) {
         let mobile: string = this.ed_loginPhoneNumber.string;
+        let mobilePassword: string = this.ed_password.string;
         if (!RegexUtil.isValidPhoneNumber(mobile)) {
             UIMgr.showToast(LangMgr.sentence('e0006'));
-            return
+            return;
+        }
+        if (!mobilePassword || mobilePassword.length < 6) {
+            UIMgr.showToast(LangMgr.sentence('e0345'));
+            return;
         }
         let code = this.ed_code.string;
         if (code && code.length == 4) {
-            SendMgr.sendLogin({ mobile, code }, Login_PhoneCmd);
+            let result = await SendMgr.sendChangePass({ mobile, mobilePassword, code });
+            if (result) {
+                this.hide();
+            }
         } else {
             UIMgr.showToast(LangMgr.sentence('e0053'));
         }
@@ -76,7 +89,7 @@ export default class ForgetPassWord extends UIScreen {
     async onCodeOTP(e: cc.Event.EventTouch) {
         let mobile: string = this.ed_loginPhoneNumber.string;
         if (RegexUtil.isValidPhoneNumber(mobile)) {
-            let result = await SendMgr.sendSms({ mobile });
+            let result = await SendMgr.sendSms(Login_ForgetOTPCmd, { mobile });
             if (result) {
                 this.btn_otp.interactable = false;
                 // this.lb_second.node.parent.active = true;

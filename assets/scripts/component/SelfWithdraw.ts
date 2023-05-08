@@ -23,6 +23,6 @@ export default class SelfWithdraw extends cc.Component {
     }
 
     updateBalance() {
-        this.node.getComponent(cc.Label).string = `${this.str}${UserData.userInfo.walletInfo.withdrawBalance}`;
+        this.node.getComponent(cc.Label).string = `${this.str}${UserData.userInfo.walletInfo.withdrawBalance / 100}`;
     }
 }

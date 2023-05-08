@@ -181,7 +181,7 @@ export default class TeenPattiWar extends UIGame {
                         this._flyPlayerArea(id);
                         // this.playGoldAnimation();
                     } else {
-                        this.flyChipsProductSource()
+                        this.flyChipsProductSource();
                         SysConfig.settling = false;
                     }
                 }).start()

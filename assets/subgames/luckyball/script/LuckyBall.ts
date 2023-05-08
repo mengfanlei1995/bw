@@ -294,7 +294,6 @@ export default class LuckyBall extends UIGame {
 
     async _gameEnd(data: Uint8Array) {
         let info: NotifyLBDrawVO = decodeNotifyLBDrawVO(data);
-        console.log('_gameEnd', info);
         let { gameResult } = info;
         this.gameEnd(info);
         let { ball, id } = gameResult

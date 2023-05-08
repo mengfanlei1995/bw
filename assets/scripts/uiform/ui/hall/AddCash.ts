@@ -54,7 +54,7 @@ export default class AddCash extends UIScreen {
 
     protected onEnable(): void {
         this.amont = this.amountArray[0];
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `addCash` })
+        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `addCash` });
         EventMgr.on(HALL_EVT.DESK_RELOAD, this.init, this);
         EventMgr.on(HALL_EVT.GOLD_CHANGE, this.init, this);
     }
@@ -232,6 +232,10 @@ export default class AddCash extends UIScreen {
             okTxt: 'Yes',
             title: 'Details'
         });
+    }
+
+    onClickCustomer() {
+        UIMgr.show('prefab/hall/Customer', 'Customer');
     }
 
 }

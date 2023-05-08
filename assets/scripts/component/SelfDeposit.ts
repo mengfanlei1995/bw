@@ -23,6 +23,6 @@ export default class SelfDeposit extends cc.Component {
     }
 
     updateBalance() {
-        this.node.getComponent(cc.Label).string = `${this.str}${UserData.userInfo.walletInfo.depositBalance}`;
+        this.node.getComponent(cc.Label).string = `${this.str}${UserData.userInfo.walletInfo.depositBalance / 100}`;
     }
 }

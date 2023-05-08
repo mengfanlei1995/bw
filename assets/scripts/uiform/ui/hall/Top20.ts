@@ -63,13 +63,11 @@ export default class Top20 extends cc.Component {
     ]
 
     protected start(): void {
+        this.top3Area.opacity = 0;
         this.renderList(0);
     }
 
-    protected onEnable(): void {
-        this.top3Area.opacity = 0;
-        cc.tween(this.top3Area).to(1.45, { opacity: 255 }, { easing: 'backOut' }).start()
-    }
+    private isFirst: boolean = true;
 
     public acitveTab(e: cc.Event.EventTouch, type: string) {
         if (+type == this.type) return;
@@ -94,9 +92,17 @@ export default class Top20 extends cc.Component {
             if (cc.isValid(this.node)) this.noRecords.active = true;
             return;
         }
+        if (this.isFirst) {
+            this.top3Area.opacity = 0;
+            cc.tween(this.top3Area).to(1.45, { opacity: 255 }, { easing: 'backOut' }).start()
+            this.isFirst = false;
+        }
         let { top20, prizePool, rule, yourScore } = info;
         this.rule = rule;
-        if (LongUtil.longToNumber(yourScore) >= 0) this.lbMyScore.string = `₹${LongUtil.longToNumber(yourScore) / 100}`
+        if (LongUtil.longToNumber(yourScore) >= 0) {
+            this.lbMyScore.node.parent.active = true;
+            this.lbMyScore.string = `₹${LongUtil.longToNumber(yourScore) / 100}`;
+        }
         else this.lbMyScore.node.parent.active = false;
         this.lblPrizePool.string = `₹${LongUtil.longToNumber(prizePool) / 100}`;
         let list: ReferTop20VO[] = top20;

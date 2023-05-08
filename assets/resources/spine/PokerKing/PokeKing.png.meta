@@ -1,0 +1,38 @@
+{
+  "ver": "2.3.7",
+  "uuid": "01f05c5e-f6c0-4081-bff9-8dad0a1b6062",
+  "importer": "texture",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 524,
+  "height": 524,
+  "platformSettings": {},
+  "subMetas": {
+    "PokeKing": {
+      "ver": "1.0.6",
+      "uuid": "601d8cec-a7fa-453b-9cc2-3bbb026661b6",
+      "importer": "sprite-frame",
+      "rawTextureUuid": "01f05c5e-f6c0-4081-bff9-8dad0a1b6062",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": -1.5,
+      "trimX": 2,
+      "trimY": 5,
+      "width": 520,
+      "height": 517,
+      "rawWidth": 524,
+      "rawHeight": 524,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

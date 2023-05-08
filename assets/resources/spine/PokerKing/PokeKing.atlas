@@ -1,0 +1,62 @@
+
+PokeKing.png
+size: 524,524
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+k_a
+  rotate: true
+  xy: 199, 19
+  size: 161, 92
+  orig: 161, 92
+  offset: 0, 0
+  index: -1
+k_asd
+  rotate: false
+  xy: 293, 5
+  size: 155, 55
+  orig: 155, 56
+  offset: 0, 1
+  index: -1
+k_dd
+  rotate: false
+  xy: 2, 182
+  size: 306, 340
+  orig: 306, 340
+  offset: 0, 0
+  index: -1
+k_pa
+  rotate: false
+  xy: 293, 62
+  size: 229, 118
+  orig: 229, 118
+  offset: 0, 0
+  index: -1
+k_sd
+  rotate: true
+  xy: 310, 264
+  size: 258, 130
+  orig: 264, 136
+  offset: 3, 3
+  index: -1
+k_wg
+  rotate: false
+  xy: 2, 16
+  size: 195, 164
+  orig: 196, 179
+  offset: 0, 0
+  index: -1
+poke
+  rotate: true
+  xy: 442, 272
+  size: 250, 54
+  orig: 252, 56
+  offset: 1, 1
+  index: -1
+xx
+  rotate: false
+  xy: 450, 5
+  size: 53, 55
+  orig: 64, 64
+  offset: 5, 4
+  index: -1

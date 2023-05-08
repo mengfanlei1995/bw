@@ -6,7 +6,6 @@ import DownLoadUtil from "../../../utils/DownLoadUtil";
 import JsbUitl from "../../../utils/JsbUitl";
 import MD5 from "../../../utils/MD5";
 import UIMgr from "../../UIMgr";
-// import { SwiperData } from "./Swiper";
 
 const { ccclass, property } = cc._decorator;
 
@@ -19,13 +18,14 @@ export default class SwiperPage extends cc.Component {
 
     async init(data: PictureVO) {
         this.swiperData = data;
-        let texture = null;
+        let texture: cc.Texture2D = null;
         if (data.pictureUrl) {
             let pictureUrl: string = data.pictureUrl;
             if (cc.sys.isNative) {
-                pictureUrl = await DownLoadUtil.downLoadImage(data.pictureUrl, 'swiper', MD5.hashString(data.pictureUrl));
+                pictureUrl = await DownLoadUtil.downLoadImage(data.pictureUrl, 'swiper', `${MD5.hashString(data.pictureUrl)}.png`);
             }
-            texture = await AssetUtil.loadRemoteSync(pictureUrl);
+            if (!pictureUrl) return;
+            texture = await AssetUtil.loadRemoteSync<cc.Texture2D>(pictureUrl);
         }
         if (texture && cc.isValid(this.sp_pictrue)) this.sp_pictrue.spriteFrame = new cc.SpriteFrame(texture);
     }
@@ -38,7 +38,7 @@ export default class SwiperPage extends cc.Component {
             element_name: "轮播图点击事件",
             element_type: "button",
             element_position: '',
-            element_content: JSON.stringify(this.swiperData),
+            element_content: JSON.stringify(this.swiperData)
         });
         switch (skipType) {
             case 1:

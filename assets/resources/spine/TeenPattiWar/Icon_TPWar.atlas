@@ -1,0 +1,76 @@
+
+Icon_TPWar.png
+size: 496,496
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+CardA
+  rotate: false
+  xy: 310, 268
+  size: 175, 226
+  orig: 175, 227
+  offset: 0, 1
+  index: -1
+CardB
+  rotate: false
+  xy: 310, 48
+  size: 168, 218
+  orig: 171, 219
+  offset: 0, 1
+  index: -1
+Frame
+  rotate: false
+  xy: 2, 154
+  size: 306, 340
+  orig: 306, 340
+  offset: 0, 0
+  index: -1
+Lightning
+  rotate: false
+  xy: 113, 15
+  size: 28, 81
+  orig: 31, 94
+  offset: 1, 1
+  index: -1
+Lightning01
+  rotate: true
+  xy: 2, 50
+  size: 46, 109
+  orig: 46, 109
+  offset: 0, 0
+  index: -1
+Lightning02
+  rotate: true
+  xy: 173, 106
+  size: 46, 109
+  orig: 46, 109
+  offset: 0, 0
+  index: -1
+Lightning03
+  rotate: true
+  xy: 2, 2
+  size: 46, 109
+  orig: 46, 109
+  offset: 0, 0
+  index: -1
+Lightning04
+  rotate: true
+  xy: 173, 58
+  size: 46, 109
+  orig: 46, 109
+  offset: 0, 0
+  index: -1
+Lightning05
+  rotate: true
+  xy: 143, 10
+  size: 46, 109
+  orig: 46, 109
+  offset: 0, 0
+  index: -1
+Word
+  rotate: false
+  xy: 2, 98
+  size: 169, 54
+  orig: 172, 56
+  offset: 1, 1
+  index: -1

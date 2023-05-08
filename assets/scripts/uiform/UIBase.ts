@@ -1,3 +1,4 @@
+import SysConfig from "../data/SysConfig";
 import UIBundleMgr from "./UIBundleMgr";
 import UIMgr, { UIType } from "./UIMgr";
 
@@ -38,6 +39,14 @@ export default class UIBase extends cc.Component {
             UIBundleMgr.hide(this.UIName);
         } else {
             UIMgr.hide(this.UIName);
+        }
+    }
+
+    fixedBg(root: cc.Node) {
+        let distance: number = SysConfig?.systemInfo?.isPieScreen ? 50 : 0;
+        if (cc.isValid(root) && distance) {
+            if (root.getComponent(cc.Widget).enabled)
+                root.getComponent(cc.Widget).top = distance;
         }
     }
 

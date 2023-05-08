@@ -7,6 +7,7 @@ import LangMgr from "../mgr/LangMgr";
 import PoolMgr from "../mgr/PoolMgr";
 import SoundMgr from "../mgr/SoundMgr";
 import StorageMgr from "../mgr/StorageMgr";
+import { DialogType } from "../model/DialogOptions";
 import SendMgr from "../net/SendMgr";
 import { PointBetCoinsVO, RoomBetDTO, RoomEnterDTO } from "../net/proto/room";
 import BundleUtil from "../utils/BundleUtil";
@@ -15,7 +16,6 @@ import LongUtil, { LongType } from "../utils/LongUtil";
 import UIBundleMgr from "./UIBundleMgr";
 import UIMgr from "./UIMgr";
 import UIScene from "./UIScene";
-import { DialogType } from "./ui/common/DiaLog";
 
 const { ccclass, property } = cc._decorator;
 

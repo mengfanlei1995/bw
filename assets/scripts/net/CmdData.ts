@@ -6,6 +6,8 @@ export const Login_SessionCmd: number = 3;
 export const Login_FBCmd: number = 4;
 export const Login_OTPCmd: number = 5;
 export const Login_PhoneRegisterCmd: number = 6;
+export const Login_ForgetOTPCmd: number = 7;
+export const Login_ForgetSubmitCmd: number = 8;
 //用户
 export const UserCmd: number = 2;
 export const User_InfoCmd: number = 1;

@@ -8,6 +8,7 @@ const { ccclass, property } = cc._decorator;
 export default class UIScreen extends UIBase {
 
     onLoad() {
+        this.fixedBg(this.node);
         this.UIType = UIType.SCREEN;
         this.node.zIndex = 98;
     }

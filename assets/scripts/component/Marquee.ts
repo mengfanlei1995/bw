@@ -1,11 +1,11 @@
 import MarqueeData from "../data/MarqueeData";
 import LangMgr from "../mgr/LangMgr";
-import UIScreen from "../uiform/UIScreen";
+import UIFixed from "../uiform/UIFixed";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Marquee extends UIScreen {
+export default class Marquee extends UIFixed {
 
     @property(cc.RichText)
     lb_str: cc.RichText = null;

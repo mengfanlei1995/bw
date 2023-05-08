@@ -1,10 +1,10 @@
+import UIFixed from "../../UIFixed";
 import UIMgr from "../../UIMgr";
-import UIScreen from "../../UIScreen";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Toast extends UIScreen {
+export default class Toast extends UIFixed {
 
     @property(cc.Label)
     label: cc.Label = null;

@@ -20,11 +20,11 @@ export default class SignWindows extends UIWindow {
     @property({ tooltip: 'ratio', type: cc.Label })
     lb_ratio: cc.Label = null;
 
-    @property({ tooltip: 'vipSp', type: cc.Sprite })
-    sp_vip: cc.Sprite = null;
+    // @property({ tooltip: 'vipSp', type: cc.Sprite })
+    // sp_vip: cc.Sprite = null;
 
-    @property({ tooltip: 'vipSpf', type: [cc.SpriteFrame] })
-    spf_vip: cc.SpriteFrame[] = [];
+    // @property({ tooltip: 'vipSpf', type: [cc.SpriteFrame] })
+    // spf_vip: cc.SpriteFrame[] = [];
 
     public onShow(params: DailyBonusSignInVipAwardVO): void {
         if (!params) return;
@@ -33,10 +33,10 @@ export default class SignWindows extends UIWindow {
         this.lb_bonusVip.string = `${LongUtil.longToNumber(vipAmount) / 100}`;
         this.lb_ratio.string = `${vipRatio * 100}%`;
         this.lb_vip.string = `${UserData.vipLevel}`;
-        let index = 0;
-        if (UserData.vipLevel >= this.spf_vip.length) index = this.spf_vip.length - 1;
-        else index = UserData.vipLevel;
-        this.sp_vip.spriteFrame = this.spf_vip[index];
+        // let index = 0;
+        // if (UserData.vipLevel >= this.spf_vip.length) index = this.spf_vip.length - 1;
+        // else index = UserData.vipLevel;
+        // this.sp_vip.spriteFrame = this.spf_vip[index];
     }
 
     onClickClose() {

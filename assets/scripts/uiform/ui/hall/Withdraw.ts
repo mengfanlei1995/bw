@@ -104,7 +104,7 @@ export default class Withdraw extends UIScreen {
     /**提现 */
     async onClickWithdraw() {
         if (!StorageMgr.phone) {
-            UIMgr.show('prefab/hall/BindPhone', 'BindPhone');
+            UIMgr.show('prefab/hall/BindPhone', 'BindPhone', 1);
             return;
         }
         if (!this.bankInfo || !this.bankInfo.accName || !this.bankInfo.accNo || !this.bankInfo.ifsc) {
@@ -193,10 +193,14 @@ export default class Withdraw extends UIScreen {
     /**绑定银行卡 */
     onClickAddCard() {
         if (!StorageMgr.phone) {
-            UIMgr.show('prefab/hall/BindPhone', 'BindPhone');
+            UIMgr.show('prefab/hall/BindPhone', 'BindPhone', 1);
             return;
         }
         UIMgr.show('prefab/hall/Bank', 'Bank');
+    }
+
+    onClickCustomer() {
+        UIMgr.show('prefab/hall/Customer', 'Customer');
     }
 
 }

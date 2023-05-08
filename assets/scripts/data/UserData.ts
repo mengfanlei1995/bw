@@ -35,9 +35,9 @@ class UserData {
      * @param vipInfo 
      */
     public vipUpgrade(vipInfo: VipUpgradeNotifyVO) {
-        let { beforeLevel, currentLevel } = vipInfo
+        let { beforeLevel, currentLevel } = vipInfo;
         this._vipLevel = currentLevel;
-        this.beforeVipLevel = beforeLevel
+        this.beforeVipLevel = beforeLevel;
         EventMgr.emit(HALL_EVT.UPDATE_VIP);
         UIMgr.show('prefab/hall/VipUp', 'VipUp');
     }

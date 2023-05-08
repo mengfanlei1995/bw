@@ -1,0 +1,55 @@
+
+DICE_3.png
+size: 447,447
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+slice01_01
+  rotate: true
+  xy: 344, 64
+  size: 78, 84
+  orig: 80, 86
+  offset: 1, 1
+  index: -1
+slice02_02
+  rotate: false
+  xy: 2, 17
+  size: 189, 86
+  orig: 191, 88
+  offset: 1, 1
+  index: -1
+slice05_05
+  rotate: false
+  xy: 193, 49
+  size: 149, 54
+  orig: 152, 56
+  offset: 2, 1
+  index: -1
+slice07_07
+  rotate: true
+  xy: 310, 144
+  size: 124, 128
+  orig: 126, 130
+  offset: 1, 1
+  index: -1
+slice08_08
+  rotate: false
+  xy: 2, 105
+  size: 306, 340
+  orig: 306, 340
+  offset: 0, 0
+  index: -1
+slice09_09
+  rotate: false
+  xy: 310, 270
+  size: 135, 175
+  orig: 137, 177
+  offset: 1, 1
+  index: -1
+x
+  rotate: false
+  xy: 344, 7
+  size: 53, 55
+  orig: 64, 64
+  offset: 5, 4
+  index: -1
