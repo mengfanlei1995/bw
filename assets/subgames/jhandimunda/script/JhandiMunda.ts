@@ -5,9 +5,9 @@ import EventMgr from "../../../scripts/mgr/EventMgr";
 import PoolMgr from "../../../scripts/mgr/PoolMgr";
 import SoundMgr from "../../../scripts/mgr/SoundMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
-import { JhandiMundaCmd, Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_JhandiMundaCmd } from "../../../scripts/net/CmdData";
+import { JhandiMundaCmd, Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_SelfBetCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_JhandiMundaCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { NotifyJMBeginBetVO, ResponseJMEnterRoomVO, NotifyBetVO, JMWinVO, JMWinIdRateVO, decodeNotifyJMBeginBetVO, decodeResponseJMEnterRoomVO, decodeNotifyBetVO, NotifyJMDrawVO, decodeNotifyJMDrawVO } from "../../../scripts/net/proto/room";
+import { NotifyJMBeginBetVO, ResponseJMEnterRoomVO, NotifyBetVO, JMWinVO, JMWinIdRateVO, decodeNotifyJMBeginBetVO, decodeResponseJMEnterRoomVO, decodeNotifyBetVO, NotifyJMDrawVO, decodeNotifyJMDrawVO, decodeAreaPointBetCoinsVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 
@@ -401,6 +401,10 @@ export default class JhandiMunda extends UIGame {
         let subCmd: number = CmdMgr.getSubCmd(mergeCmd);
         if (cmd == Push_GameCmd && subCmd == Push_Game_TackOutCmd) {
             this.tackOut();
+            return;
+        }
+        if (cmd == Push_GameCmd && subCmd == Push_Game_SelfBetCmd) {
+            this.selfBetChips(data ? decodeAreaPointBetCoinsVO(data) : null);
             return;
         }
         if (cmd != Push_JhandiMundaCmd) {

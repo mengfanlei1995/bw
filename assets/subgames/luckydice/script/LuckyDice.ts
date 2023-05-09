@@ -4,7 +4,7 @@ import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
 import PoolMgr from "../../../scripts/mgr/PoolMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
-import { Push_Game_TackOutCmd } from "../../../scripts/net/CmdData";
+import { Push_Game_SelfBetCmd, Push_Game_TackOutCmd } from "../../../scripts/net/CmdData";
 import { Push_Game_BetCmd } from "../../../scripts/net/CmdData";
 import { Push_Game_StartCmd } from "../../../scripts/net/CmdData";
 import { Push_LuckyDiceCmd } from "../../../scripts/net/CmdData";
@@ -12,7 +12,7 @@ import { Push_GameCmd } from "../../../scripts/net/CmdData";
 import { Push_Game_EndCmd } from "../../../scripts/net/CmdData";
 import { LuckyDiceCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { decodeNotifyLDBeginBetVO } from "../../../scripts/net/proto/room";
+import { decodeNotifyLDBeginBetVO, decodeAreaPointBetCoinsVO } from "../../../scripts/net/proto/room";
 import { decodeNotifyLDDrawVO } from "../../../scripts/net/proto/room";
 import { NotifyLDDrawVO } from "../../../scripts/net/proto/room";
 import { NotifyLDBeginBetVO } from "../../../scripts/net/proto/room";
@@ -245,6 +245,10 @@ export default class LuckyDice extends UIGame {
         let subCmd: number = CmdMgr.getSubCmd(mergeCmd);
         if (cmd == Push_GameCmd && subCmd == Push_Game_TackOutCmd) {
             this.tackOut();
+            return;
+        }
+        if (cmd == Push_GameCmd && subCmd == Push_Game_SelfBetCmd) {
+            this.selfBetChips(data ? decodeAreaPointBetCoinsVO(data) : null);
             return;
         }
         if (cmd != Push_LuckyDiceCmd) {

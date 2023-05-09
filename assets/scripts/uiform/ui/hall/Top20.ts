@@ -100,10 +100,10 @@ export default class Top20 extends cc.Component {
         let { top20, prizePool, rule, yourScore } = info;
         this.rule = rule;
         if (LongUtil.longToNumber(yourScore) >= 0) {
-            this.lbMyScore.node.parent.active = true;
+            this.lbMyScore.node.parent.parent.active = true;
             this.lbMyScore.string = `₹${LongUtil.longToNumber(yourScore) / 100}`;
         }
-        else this.lbMyScore.node.parent.active = false;
+        else this.lbMyScore.node.parent.parent.active = false;
         this.lblPrizePool.string = `₹${LongUtil.longToNumber(prizePool) / 100}`;
         let list: ReferTop20VO[] = top20;
         if (list && list.length > 0) {

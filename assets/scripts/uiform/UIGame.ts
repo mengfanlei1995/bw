@@ -9,7 +9,7 @@ import SoundMgr from "../mgr/SoundMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import { DialogType } from "../model/DialogOptions";
 import SendMgr from "../net/SendMgr";
-import { PointBetCoinsVO, RoomBetDTO, RoomEnterDTO } from "../net/proto/room";
+import { AreaPointBetCoinsVO, PointBetCoinsVO, RoomBetDTO, RoomEnterDTO } from "../net/proto/room";
 import BundleUtil from "../utils/BundleUtil";
 import CocosUtil from "../utils/CocosUtil";
 import LongUtil, { LongType } from "../utils/LongUtil";
@@ -361,6 +361,8 @@ export default class UIGame extends UIScene {
         }).start()
     }
 
+    /**延迟下注 */
+    private isNotBet: boolean = false;
 
     /**
      * 下注
@@ -368,7 +370,13 @@ export default class UIGame extends UIScene {
      * @param multi 
      * @returns 
      */
-    async buyBetChips(areaType: string, selfBetLabel: cc.Label, chipsLabel: cc.Label) {
+    async buyBetChips(areaType: string) {
+        if (this.isNotBet) return;
+        let deleayTime: number = 0.1;
+        this.isNotBet = true;
+        this.scheduleOnce(() => {
+            this.isNotBet = false;
+        }, deleayTime)
         let chips = this.betNums[this.betIndex];
         let bonus: number = SysConfig.isGreen ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance
         if (chips * 100 > bonus) {
@@ -388,8 +396,14 @@ export default class UIGame extends UIScene {
             betId: +areaType,
             gameNum: this.gameNum
         }
-        let result: boolean = await SendMgr.sendBet(params, this.gameCmd);
-        if (result && cc.isValid(this.node)) {
+        SendMgr.sendBet(params, this.gameCmd);
+    }
+
+    selfBetChips(data: AreaPointBetCoinsVO) {
+        if (data && cc.isValid(this.node)) {
+            let betId = data.betId;
+            let betCoins: number = this.longToNumber(data.areaCoins) / 100;
+            let coins: number = this.longToNumber(data.coins) / 100;
             EventMgr.emit(REPORT_EVT.CLICK, {
                 element_id: "btn_bet",
                 element_name: "成功下注",
@@ -398,15 +412,18 @@ export default class UIGame extends UIScene {
                 element_content: 'diceThree',
             });
             // SoundMgr.playEffectByBundle('audio/betchips');
-            this.flyChips(true, [areaType], [chips]);
+            this.flyChips(true, [`${betId}`], [coins]);
+            let selfBetLabel: cc.Label = this.selfBetChipsNumLabel[betId - 1];
+            let chipsLabel: cc.Label = this.chipsNumLabel[betId - 1];
             if (selfBetLabel) {
                 let selfBetLbNum: number = Number(selfBetLabel.string);
                 if (!selfBetLbNum) selfBetLbNum = 0;
-                selfBetLabel.string = `${selfBetLbNum + chips}`;
+                if (selfBetLbNum < betCoins)
+                    selfBetLabel.string = `${betCoins}`;
             }
             let chipsLbNum: number = Number(chipsLabel.string);
             if (!chipsLbNum) chipsLbNum = 0;
-            chipsLabel.string = `${chipsLbNum + chips}`;
+            chipsLabel.string = `${chipsLbNum + betCoins}`;
         }
     }
 
@@ -520,24 +537,13 @@ export default class UIGame extends UIScene {
         }
     }
 
-    /**播放金币动画 */
-    playGoldAnimation() {
-        let spine: sp.Skeleton = this.node.getChildByName('goldAnimation').getComponent(sp.Skeleton);
-        spine.node.active = true;
-        spine.setAnimation(1, 'animation', false);
-        spine.setCompleteListener(() => {
-            if (!cc.isValid(this.node)) return;
-            spine.node.active = false;
-        })
-    }
-
     reset() {
         this.isReload = false;
         SysConfig.settling = false;
         this.recordLayoutNode && (this.recordLayoutNode.getComponent(cc.Layout)!.enabled = true);
         this.winBonus = 0;
-        for (let i = 0; i < this.awardNode.length; i++) {
-            this.awardNode[i].active = false;
+        for (let i = 0; i < this.selfBetChipsNumLabel.length; i++) {
+            if (this.awardNode[i]) this.awardNode[i].active = false;
             this.selfBetChipsNumLabel[i].string = LangMgr.sentence("e0319");
             this.chipsNumLabel[i].string = "0";
         }
@@ -626,7 +632,7 @@ export default class UIGame extends UIScene {
     }
 
     onAreaClick(e: cc.Event.EventTouch, type: string) {
-        this.buyBetChips(type, this.selfBetChipsNumLabel[+type - 1], this.chipsNumLabel[+type - 1]);
+        this.buyBetChips(type);
     }
 
     onRecordClick() {

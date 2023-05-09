@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 slice01_01
   rotate: true
-  xy: 344, 64
+  xy: 329, 64
   size: 78, 84
   orig: 80, 86
   offset: 1, 1
@@ -20,9 +20,9 @@ slice02_02
   index: -1
 slice05_05
   rotate: false
-  xy: 193, 49
-  size: 149, 54
-  orig: 152, 56
+  xy: 193, 50
+  size: 134, 53
+  orig: 137, 55
   offset: 2, 1
   index: -1
 slice07_07
@@ -48,7 +48,7 @@ slice09_09
   index: -1
 x
   rotate: false
-  xy: 344, 7
+  xy: 329, 7
   size: 53, 55
   orig: 64, 64
   offset: 5, 4

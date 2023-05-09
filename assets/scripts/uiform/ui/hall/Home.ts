@@ -136,7 +136,7 @@ export default class Home extends UIScreen {
             return;
         }
         let hallInfo = await SendMgr.sendHallInfo();
-        if (!cc.isValid(this.node)) return;
+        if (!cc.isValid(this.node) || !hallInfo) return;
         let { userInfo, redDot, nextDayRechargeVO, rotationPictures } = hallInfo;
         let { vipLevel, club } = userInfo
         let { mail, vip, gullak } = redDot;

@@ -2,121 +2,6 @@ syntax = "proto3";
 package pb.room;
 
 // Description:
-message NotifyBetVO {
-  int32 notifyType = 1;
-  map<int32,int64> betCoinMap = 2;
-  repeated PointBetCoinsVO betList = 3;
-
-}
-
-// Description:
-message PointBetCoinsVO {
-  int64 betCoins = 1;
-  int32 betId = 2;
-
-}
-
-// Description:
-message D3GameInfoVO {
-  int32 gameNum = 1;
-  string bankerId = 2;
-  string currOptUserId = 3;
-  int32 totalOptSeconds = 4;
-  int32 leftOptSeconds = 5;
-  int64 dealCardMilliseconds = 6;
-  int32 leftPaiNum = 7;
-  string qiPai = 8;
-  int32 turnType = 9;
-  repeated OddsInfoVO oddsInfoList = 10;
-  repeated D3WinVO gameResultList = 11;
-
-}
-
-// Description:
-message NotifyJMDrawGameInfoVO {
-  int32 leftOptSeconds = 1;
-  int32 gameNum = 2;
-  int32 onlinePlayers = 3;
-
-}
-
-// Description:
-message NotifyDTDrawVO {
-  int32 notifyType = 1;
-  int32 playerResult = 2;
-  repeated NotifyDTWinnerVO headWinnerList = 3;
-  // Description:
-  NotifyDTDrawGameInfoVO gameInfo = 4;
-  repeated RoomUserVO userInfoList = 5;
-  int32 gameResult = 6;
-
-}
-
-// Description:
-message DTGameInfoVO {
-  int32 gameNum = 1;
-  string bankerId = 2;
-  string currOptUserId = 3;
-  int32 totalOptSeconds = 4;
-  int32 leftOptSeconds = 5;
-  int64 dealCardMilliseconds = 6;
-  int32 leftPaiNum = 7;
-  string qiPai = 8;
-  int32 turnType = 9;
-  repeated DTPokerResultVO pokerResultList = 10;
-  repeated OddsInfoVO OddsInfoList = 11;
-  repeated int32 gameResultList = 12;
-  repeated DTWinUserVO gameResultWinUserDtoList = 13;
-  int32 diPaiCount = 14;
-  int32 qiPaiCount = 15;
-
-}
-
-// Description:
-message NotifyTPWDrawVO {
-  int32 notifyType = 1;
-  int32 playerResult = 2;
-  // Description:
-  NotifyTPWDrawGameInfoVO gameInfo = 3;
-  repeated RoomUserVO userInfoList = 4;
-  // Description:
-  TPWWinVO gameResult = 5;
-
-}
-
-// Description:
-message ResponseJMEnterRoomVO {
-  string lastMsgId = 1;
-  string currMsgId = 2;
-  // 
-  RoomInfoVO roomInfo = 3;
-  // Description:
-  JMGameInfoVO gameInfo = 4;
-  repeated PointBetCoinsVO betList = 5;
-  map<int32,int64> betCoinMap = 6;
-  map<int32,int64> betSelfCoinMap = 7;
-  repeated int64 betCoinList = 8;
-  int32 onlinePlayers = 9;
-
-}
-
-// Description:
-message ResponseTPEnterRoomVO {
-  string lastMsgId = 1;
-  string currMsgId = 2;
-  // 
-  RoomInfoVO roomInfo = 3;
-  // Description:
-  TPWGameInfoVO gameInfo = 4;
-  repeated PointBetCoinsVO betList = 5;
-  map<int32,int64> betCoinMap = 6;
-  map<int32,int64> betSelfCoinMap = 7;
-  repeated int64 betCoinList = 8;
-  int32 onlinePlayers = 9;
-
-}
-
-// Description:
 message JMWinVO {
   int32 gameNum = 1;
   repeated JMWinIdRateVO idRates = 2;
@@ -124,249 +9,17 @@ message JMWinVO {
 
 }
 
-// 
-message RoomInfoVO {
+// Description:
+message JMWinIdRateVO {
+  int32 id = 1;
+  double rate = 2;
+  int32 count = 3;
+
+}
+
+// Description:
+message RoomExitDTO {
   string roomId = 1;
-  string lastMsgId = 2;
-  string currMsgId = 3;
-  string userId = 4;
-  bool playing = 5;
-  int32 gameType = 6;
-  int32 roomType = 7;
-  int32 roomLevel = 8;
-  int32 baseMultiple = 9;
-  int32 maxGameNum = 10;
-  int32 currGameNum = 11;
-  int32 roomState = 12;
-
-}
-
-// Description:
-message JMGameInfoVO {
-  int32 gameNum = 1;
-  string bankerId = 2;
-  string currOptUserId = 3;
-  int32 totalOptSeconds = 4;
-  int32 leftOptSeconds = 5;
-  int64 dealCardMilliseconds = 6;
-  int32 leftPaiNum = 7;
-  string qiPai = 8;
-  int32 turnType = 9;
-  repeated OddsInfoVO oddsInfoList = 10;
-  repeated JMWinVO gameResultList = 11;
-
-}
-
-// Description:
-message NotifyLBDrawVO {
-  int32 notifyType = 1;
-  int32 playerResult = 2;
-  // Description:
-  NotifyLBDrawGameInfoVO gameInfo = 3;
-  repeated RoomUserVO userInfoList = 4;
-  // Description:
-  LBWinVO gameResult = 5;
-
-}
-
-// Description:
-message NotifyLBBeginBetVO {
-  int32 notifyType = 1;
-  string lastMsgId = 2;
-  string currMsgId = 3;
-  // Description:
-  LBGameInfoVO gameInfo = 4;
-
-}
-
-// Description:
-message NotifyLDDrawGameInfoVO {
-  int32 leftOptSeconds = 1;
-  int32 gameNum = 2;
-  int32 onlinePlayers = 3;
-
-}
-
-// Description:
-message TPWOddsInfoVO {
-  int32 betId = 1;
-  double odds = 2;
-  map<int32,int32> luckyHitRate = 3;
-
-}
-
-// Description:
-message ResponseRYBEnterRoomVO {
-  string lastMsgId = 1;
-  string currMsgId = 2;
-  // 
-  RoomInfoVO roomInfo = 3;
-  // 
-  RYBGameInfoVO gameInfo = 4;
-  repeated PointBetCoinsVO betList = 5;
-  map<int32,int64> betCoinMap = 6;
-  map<int32,int64> betSelfCoinMap = 7;
-  repeated int64 betCoinList = 8;
-  int32 onlinePlayers = 9;
-
-}
-
-// Description:
-message NotifyPKDrawGameInfoVO {
-  int32 leftOptSeconds = 1;
-  int32 gameNum = 2;
-  int32 onlinePlayers = 3;
-
-}
-
-// Description:
-message DTWinUserVO {
-  int32 gameNum = 1;
-  // Description:
-  DTPokerResultVO dragon = 2;
-  // Description:
-  DTPokerResultVO tiger = 3;
-  int32 battleIdEnum = 4;
-
-}
-
-// 
-message NotifyDTWinnerVO {
-  string userId = 1;
-  string nickName = 2;
-  string portrait = 3;
-  int32 vipLevel = 4;
-  int64 winCoins = 5;
-
-}
-
-// Description:
-message LDGameInfoVO {
-  int32 gameNum = 1;
-  string bankerId = 2;
-  string currOptUserId = 3;
-  int32 totalOptSeconds = 4;
-  int32 leftOptSeconds = 5;
-  int64 dealCardMilliseconds = 6;
-  int32 leftPaiNum = 7;
-  string qiPai = 8;
-  int32 turnType = 9;
-  repeated OddsInfoVO oddsInfoList = 10;
-  repeated LDWinVO gameResultList = 11;
-
-}
-
-// Description:
-message ResponseRoomPageRecordVO {
-  int64 total = 1;
-  repeated ResponseRoomRecordVO records = 2;
-
-}
-
-// Description:
-message ResponseDTEnterRoomVO {
-  string lastMsgId = 1;
-  string currMsgId = 2;
-  // 
-  RoomInfoVO roomInfo = 3;
-  // Description:
-  DTGameInfoVO gameInfo = 4;
-  repeated PointBetCoinsVO betList = 5;
-  map<int32,int64> betCoinMap = 6;
-  map<int32,int64> betSelfCoinMap = 7;
-  repeated int64 betCoinList = 8;
-  int32 onlinePlayers = 9;
-
-}
-
-// Description:
-message NotifyLDBeginBetVO {
-  int32 notifyType = 1;
-  string lastMsgId = 2;
-  string currMsgId = 3;
-  // Description:
-  LDGameInfoVO gameInfo = 4;
-
-}
-
-// 
-message RYBGameInfoVO {
-  int32 gameNum = 1;
-  string bankerId = 2;
-  string currOptUserId = 3;
-  int32 totalOptSeconds = 4;
-  int32 leftOptSeconds = 5;
-  int64 dealCardMilliseconds = 6;
-  int32 leftPaiNum = 7;
-  string qiPai = 8;
-  int32 turnType = 9;
-  repeated OddsInfoVO OddsInfoList = 10;
-  repeated RYBWinVO gameResultList = 11;
-
-}
-
-// Description:
-message RoomRecordDTO {
-  int32 page = 1;
-  int32 dateType = 2;
-  int32 winLost = 3;
-
-}
-
-// 
-message OddsInfoVO {
-  int32 betId = 1;
-  double odds = 2;
-
-}
-
-// Description:
-message NotifyTPWDrawGameInfoVO {
-  int32 leftOptSeconds = 1;
-  int32 gameNum = 2;
-  int32 onlinePlayers = 3;
-
-}
-
-// Description:
-message TPWGameInfoVO {
-  int32 gameNum = 1;
-  string bankerId = 2;
-  string currOptUserId = 3;
-  int32 totalOptSeconds = 4;
-  int32 leftOptSeconds = 5;
-  int64 dealCardMilliseconds = 6;
-  int32 leftPaiNum = 7;
-  string qiPai = 8;
-  int32 turnType = 9;
-  repeated TPWOddsInfoVO oddsInfoList = 10;
-  repeated TPWWinVO gameResultList = 11;
-
-}
-
-// Description:
-message NotifyD3BeginBetVO {
-  int32 notifyType = 1;
-  string lastMsgId = 2;
-  string currMsgId = 3;
-  // Description:
-  D3GameInfoVO gameInfo = 4;
-
-}
-
-// Description:
-message LBGameInfoVO {
-  int32 gameNum = 1;
-  string bankerId = 2;
-  string currOptUserId = 3;
-  int32 totalOptSeconds = 4;
-  int32 leftOptSeconds = 5;
-  int64 dealCardMilliseconds = 6;
-  int32 leftPaiNum = 7;
-  string qiPai = 8;
-  int32 turnType = 9;
-  repeated OddsInfoVO oddsInfoList = 10;
-  repeated LBWinVO gameResultList = 11;
 
 }
 
@@ -396,37 +49,52 @@ message RoomUserVO {
 
 }
 
-// Description:
-message LDWinVO {
-  int32 gameNum = 1;
-  int32 id = 2;
-  repeated int32 dices = 3;
+// 
+message NotifyDTWinnerVO {
+  string userId = 1;
+  string nickName = 2;
+  string portrait = 3;
+  int32 vipLevel = 4;
+  int64 winCoins = 5;
 
 }
 
 // Description:
-message RoomEnterDTO {
-  int32 roomType = 1;
-  int32 gameType = 2;
-  int32 roomLevel = 3;
+message ResponseDTEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // 
+  RoomInfoVO roomInfo = 3;
+  // Description:
+  DTGameInfoVO gameInfo = 4;
+  repeated PointBetCoinsVO betList = 5;
+  map<int32,int64> betCoinMap = 6;
+  map<int32,int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
 
 }
 
 // Description:
-message NotifyDTDrawGameInfoVO {
+message NotifyTPWDrawGameInfoVO {
   int32 leftOptSeconds = 1;
-  repeated DTPokerResultVO pokerResultList = 2;
-  int32 gameNum = 3;
-  int32 onlinePlayers = 4;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
 
 }
 
 // Description:
-message ResponseRoomRecordVO {
-  int64 gameTime = 1;
-  int64 amount = 2;
-  int64 winAmount = 3;
-  int32 winnings = 4;
+message NotifyRYBDrawGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message PointBetCoinsVO {
+  int64 betCoins = 1;
+  int32 betId = 2;
 
 }
 
@@ -446,6 +114,24 @@ message ResponseD3EnterRoomVO {
 
 }
 
+// 
+message RYBWinVO {
+  int32 gameNum = 1;
+  int32 id = 2;
+  int32 reelIndex = 3;
+
+}
+
+// Description:
+message NotifyTPWBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  TPWGameInfoVO gameInfo = 4;
+
+}
+
 // Description:
 message NotifyPKDrawVO {
   int32 notifyType = 1;
@@ -459,58 +145,25 @@ message NotifyPKDrawVO {
 }
 
 // Description:
-message NotifyLBDrawGameInfoVO {
-  int32 leftOptSeconds = 1;
-  int32 gameNum = 2;
-  int32 onlinePlayers = 3;
+message ResponseRoomPageRecordVO {
+  int64 total = 1;
+  repeated ResponseRoomRecordVO records = 2;
 
 }
 
 // Description:
-message NotifyD3DrawGameInfoVO {
-  int32 leftOptSeconds = 1;
-  int32 gameNum = 2;
-  int32 onlinePlayers = 3;
-
-}
-
-// 
-message RYBWinVO {
-  int32 gameNum = 1;
-  int32 id = 2;
-  int32 reelIndex = 3;
-
-}
-
-// Description:
-message NotifyKickUserVO {
-  int32 notifyType = 1;
-  int32 gameType = 2;
-  string roomId = 3;
-  string lastMsgId = 4;
-  string currMsgId = 5;
-
-}
-
-// Description:
-message NotifyJMDrawVO {
-  int32 notifyType = 1;
-  int32 playerResult = 2;
+message ResponseJMEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // 
+  RoomInfoVO roomInfo = 3;
   // Description:
-  NotifyJMDrawGameInfoVO gameInfo = 3;
-  repeated RoomUserVO userInfoList = 4;
-  // Description:
-  JMWinVO gameResult = 5;
-
-}
-
-// Description:
-message NotifyTPWBeginBetVO {
-  int32 notifyType = 1;
-  string lastMsgId = 2;
-  string currMsgId = 3;
-  // Description:
-  TPWGameInfoVO gameInfo = 4;
+  JMGameInfoVO gameInfo = 4;
+  repeated PointBetCoinsVO betList = 5;
+  map<int32,int64> betCoinMap = 6;
+  map<int32,int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
 
 }
 
@@ -530,15 +183,379 @@ message ResponseLBEnterRoomVO {
 
 }
 
+// 
+message OddsInfoVO {
+  int32 betId = 1;
+  double odds = 2;
+
+}
+
 // Description:
-message NotifyD3DrawVO {
+message TPWWinVO {
+  int32 gameNum = 1;
+  repeated int32 id = 2;
+  // Description:
+  TPWPokerResultVO king = 3;
+  // Description:
+  TPWPokerResultVO queen = 4;
+
+}
+
+// Description:
+message NotifyRYBBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // 
+  RYBGameInfoVO gameInfo = 4;
+
+}
+
+// Description:
+message NotifyJMDrawVO {
   int32 notifyType = 1;
   int32 playerResult = 2;
   // Description:
-  NotifyD3DrawGameInfoVO gameInfo = 3;
+  NotifyJMDrawGameInfoVO gameInfo = 3;
   repeated RoomUserVO userInfoList = 4;
   // Description:
-  D3WinVO gameResult = 5;
+  JMWinVO gameResult = 5;
+
+}
+
+// Description:
+message LDGameInfoVO {
+  int32 gameNum = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+  repeated OddsInfoVO oddsInfoList = 10;
+  repeated LDWinVO gameResultList = 11;
+
+}
+
+// Description:
+message NotifyLDBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  LDGameInfoVO gameInfo = 4;
+
+}
+
+// Description:
+message NotifyKickUserVO {
+  int32 notifyType = 1;
+  int32 gameType = 2;
+  string roomId = 3;
+  string lastMsgId = 4;
+  string currMsgId = 5;
+
+}
+
+// Description:
+message NotifyLDDrawGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message PKWinVO {
+  int32 gameNum = 1;
+  repeated int32 id = 2;
+  string poker = 3;
+
+}
+
+// Description:
+message TPWPokerResultVO {
+  repeated string pais = 1;
+  int32 paisAttr = 2;
+
+}
+
+// Description:
+message TPWOddsInfoVO {
+  int32 betId = 1;
+  double odds = 2;
+  map<int32,int32> luckyHitRate = 3;
+
+}
+
+// Description:
+message D3GameInfoVO {
+  int32 gameNum = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+  repeated OddsInfoVO oddsInfoList = 10;
+  repeated D3WinVO gameResultList = 11;
+
+}
+
+// Description:
+message ResponseTPEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // 
+  RoomInfoVO roomInfo = 3;
+  // Description:
+  TPWGameInfoVO gameInfo = 4;
+  repeated PointBetCoinsVO betList = 5;
+  map<int32,int64> betCoinMap = 6;
+  map<int32,int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// Description:
+message ResponseRoomRecordVO {
+  int64 gameTime = 1;
+  int64 amount = 2;
+  int64 winAmount = 3;
+  int32 winnings = 4;
+
+}
+
+// Description:
+message RoomBetDTO {
+  string roomId = 1;
+  int64 betCoins = 2;
+  int32 betId = 3;
+  int32 gameNum = 4;
+
+}
+
+// Description:
+message RoomRecordDTO {
+  int32 page = 1;
+  int32 dateType = 2;
+  int32 winLost = 3;
+
+}
+
+// Description:
+message NotifyBetVO {
+  int32 notifyType = 1;
+  map<int32,int64> betCoinMap = 2;
+  repeated PointBetCoinsVO betList = 3;
+
+}
+
+// 
+message RoomInfoVO {
+  string roomId = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  string userId = 4;
+  bool playing = 5;
+  int32 gameType = 6;
+  int32 roomType = 7;
+  int32 roomLevel = 8;
+  int32 baseMultiple = 9;
+  int32 maxGameNum = 10;
+  int32 currGameNum = 11;
+  int32 roomState = 12;
+
+}
+
+// Description:
+message NotifyD3BeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  D3GameInfoVO gameInfo = 4;
+
+}
+
+// Description:
+message NotifyDTBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  DTGameInfoVO gameInfo = 4;
+
+}
+
+// 
+message RYBGameInfoVO {
+  int32 gameNum = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+  repeated OddsInfoVO OddsInfoList = 10;
+  repeated RYBWinVO gameResultList = 11;
+
+}
+
+// Description:
+message LBWinVO {
+  int32 gameNum = 1;
+  repeated int32 id = 2;
+  int32 ball = 3;
+
+}
+
+// Description:
+message ResponseRYBEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
+  // 
+  RoomInfoVO roomInfo = 3;
+  // 
+  RYBGameInfoVO gameInfo = 4;
+  repeated PointBetCoinsVO betList = 5;
+  map<int32,int64> betCoinMap = 6;
+  map<int32,int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
+
+}
+
+// Description:
+message LBGameInfoVO {
+  int32 gameNum = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+  repeated OddsInfoVO oddsInfoList = 10;
+  repeated LBWinVO gameResultList = 11;
+
+}
+
+// Description:
+message JMGameInfoVO {
+  int32 gameNum = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+  repeated OddsInfoVO oddsInfoList = 10;
+  repeated JMWinVO gameResultList = 11;
+
+}
+
+// Description:
+message DTGameInfoVO {
+  int32 gameNum = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+  repeated DTPokerResultVO pokerResultList = 10;
+  repeated OddsInfoVO OddsInfoList = 11;
+  repeated int32 gameResultList = 12;
+  repeated DTWinUserVO gameResultWinUserDtoList = 13;
+  int32 diPaiCount = 14;
+  int32 qiPaiCount = 15;
+
+}
+
+// Description:
+message NotifyLBDrawVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  NotifyLBDrawGameInfoVO gameInfo = 3;
+  repeated RoomUserVO userInfoList = 4;
+  // Description:
+  LBWinVO gameResult = 5;
+
+}
+
+// Description:
+message TPWGameInfoVO {
+  int32 gameNum = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+  repeated TPWOddsInfoVO oddsInfoList = 10;
+  repeated TPWWinVO gameResultList = 11;
+
+}
+
+// Description:
+message AreaPointBetCoinsVO {
+  int32 betId = 1;
+  int64 coins = 2;
+  int64 areaCoins = 3;
+
+}
+
+// Description:
+message DTPokerResultVO {
+  int32 id = 1;
+  string point = 2;
+
+}
+
+// Description:
+message DTWinUserVO {
+  int32 gameNum = 1;
+  // Description:
+  DTPokerResultVO dragon = 2;
+  // Description:
+  DTPokerResultVO tiger = 3;
+  int32 battleIdEnum = 4;
+
+}
+
+// Description:
+message NotifyLDDrawVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  NotifyLDDrawGameInfoVO gameInfo = 3;
+  repeated RoomUserVO userInfoList = 4;
+  // Description:
+  LDWinVO gameResult = 5;
+
+}
+
+// Description:
+message NotifyD3DrawGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
 
 }
 
@@ -555,45 +572,38 @@ message NotifyRYBDrawVO {
 }
 
 // Description:
-message JMWinIdRateVO {
-  int32 id = 1;
-  double rate = 2;
-  int32 count = 3;
-
-}
-
-// Description:
-message ResponseLDEnterRoomVO {
-  string lastMsgId = 1;
-  string currMsgId = 2;
-  // 
-  RoomInfoVO roomInfo = 3;
-  // Description:
-  LDGameInfoVO gameInfo = 4;
-  repeated PointBetCoinsVO betList = 5;
-  map<int32,int64> betCoinMap = 6;
-  map<int32,int64> betSelfCoinMap = 7;
-  repeated int64 betCoinList = 8;
-  int32 onlinePlayers = 9;
-
-}
-
-// Description:
-message TPWWinVO {
+message LDWinVO {
   int32 gameNum = 1;
-  repeated int32 id = 2;
-  // Description:
-  TPWPokerResultVO king = 3;
-  // Description:
-  TPWPokerResultVO queen = 4;
+  int32 id = 2;
+  repeated int32 dices = 3;
 
 }
 
 // Description:
-message PKWinVO {
-  int32 gameNum = 1;
-  repeated int32 id = 2;
-  string poker = 3;
+message NotifyJMDrawGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message NotifyPKDrawGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message NotifyTPWDrawVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  NotifyTPWDrawGameInfoVO gameInfo = 3;
+  repeated RoomUserVO userInfoList = 4;
+  // Description:
+  TPWWinVO gameResult = 5;
 
 }
 
@@ -608,14 +618,29 @@ message NotifyPKBeginBetVO {
 }
 
 // Description:
-message NotifyLDDrawVO {
+message NotifyLBDrawGameInfoVO {
+  int32 leftOptSeconds = 1;
+  int32 gameNum = 2;
+  int32 onlinePlayers = 3;
+
+}
+
+// Description:
+message NotifyDTDrawGameInfoVO {
+  int32 leftOptSeconds = 1;
+  repeated DTPokerResultVO pokerResultList = 2;
+  int32 gameNum = 3;
+  int32 onlinePlayers = 4;
+
+}
+
+// Description:
+message NotifyJMBeginBetVO {
   int32 notifyType = 1;
-  int32 playerResult = 2;
+  string lastMsgId = 2;
+  string currMsgId = 3;
   // Description:
-  NotifyLDDrawGameInfoVO gameInfo = 3;
-  repeated RoomUserVO userInfoList = 4;
-  // Description:
-  LDWinVO gameResult = 5;
+  JMGameInfoVO gameInfo = 4;
 
 }
 
@@ -636,55 +661,42 @@ message ResponsePKEnterRoomVO {
 }
 
 // Description:
-message PKGameInfoVO {
-  int32 gameNum = 1;
-  string bankerId = 2;
-  string currOptUserId = 3;
-  int32 totalOptSeconds = 4;
-  int32 leftOptSeconds = 5;
-  int64 dealCardMilliseconds = 6;
-  int32 leftPaiNum = 7;
-  string qiPai = 8;
-  int32 turnType = 9;
-  repeated OddsInfoVO oddsInfoList = 10;
-  repeated PKWinVO gameResultList = 11;
+message NotifyD3DrawVO {
+  int32 notifyType = 1;
+  int32 playerResult = 2;
+  // Description:
+  NotifyD3DrawGameInfoVO gameInfo = 3;
+  repeated RoomUserVO userInfoList = 4;
+  // Description:
+  D3WinVO gameResult = 5;
 
 }
 
 // Description:
-message NotifyRYBBeginBetVO {
-  int32 notifyType = 1;
-  string lastMsgId = 2;
-  string currMsgId = 3;
+message ResponseLDEnterRoomVO {
+  string lastMsgId = 1;
+  string currMsgId = 2;
   // 
-  RYBGameInfoVO gameInfo = 4;
-
-}
-
-// Description:
-message NotifyDTBeginBetVO {
-  int32 notifyType = 1;
-  string lastMsgId = 2;
-  string currMsgId = 3;
+  RoomInfoVO roomInfo = 3;
   // Description:
-  DTGameInfoVO gameInfo = 4;
+  LDGameInfoVO gameInfo = 4;
+  repeated PointBetCoinsVO betList = 5;
+  map<int32,int64> betCoinMap = 6;
+  map<int32,int64> betSelfCoinMap = 7;
+  repeated int64 betCoinList = 8;
+  int32 onlinePlayers = 9;
 
 }
 
 // Description:
-message NotifyJMBeginBetVO {
+message NotifyDTDrawVO {
   int32 notifyType = 1;
-  string lastMsgId = 2;
-  string currMsgId = 3;
+  int32 playerResult = 2;
+  repeated NotifyDTWinnerVO headWinnerList = 3;
   // Description:
-  JMGameInfoVO gameInfo = 4;
-
-}
-
-// Description:
-message DTPokerResultVO {
-  int32 id = 1;
-  string point = 2;
+  NotifyDTDrawGameInfoVO gameInfo = 4;
+  repeated RoomUserVO userInfoList = 5;
+  int32 gameResult = 6;
 
 }
 
@@ -697,40 +709,36 @@ message D3WinVO {
 }
 
 // Description:
-message TPWPokerResultVO {
-  repeated string pais = 1;
-  int32 paisAttr = 2;
+message NotifyLBBeginBetVO {
+  int32 notifyType = 1;
+  string lastMsgId = 2;
+  string currMsgId = 3;
+  // Description:
+  LBGameInfoVO gameInfo = 4;
 
 }
 
 // Description:
-message NotifyRYBDrawGameInfoVO {
-  int32 leftOptSeconds = 1;
-  int32 gameNum = 2;
-  int32 onlinePlayers = 3;
+message RoomEnterDTO {
+  int32 roomType = 1;
+  int32 gameType = 2;
+  int32 roomLevel = 3;
 
 }
 
 // Description:
-message LBWinVO {
+message PKGameInfoVO {
   int32 gameNum = 1;
-  repeated int32 id = 2;
-  int32 ball = 3;
-
-}
-
-// Description:
-message RoomBetDTO {
-  string roomId = 1;
-  int64 betCoins = 2;
-  int32 betId = 3;
-  int32 gameNum = 4;
-
-}
-
-// Description:
-message RoomExitDTO {
-  string roomId = 1;
+  string bankerId = 2;
+  string currOptUserId = 3;
+  int32 totalOptSeconds = 4;
+  int32 leftOptSeconds = 5;
+  int64 dealCardMilliseconds = 6;
+  int32 leftPaiNum = 7;
+  string qiPai = 8;
+  int32 turnType = 9;
+  repeated OddsInfoVO oddsInfoList = 10;
+  repeated PKWinVO gameResultList = 11;
 
 }
 

@@ -5,9 +5,9 @@ import EventMgr from "../../../scripts/mgr/EventMgr";
 import PoolMgr from "../../../scripts/mgr/PoolMgr";
 import SoundMgr from "../../../scripts/mgr/SoundMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
-import { Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_TPWarCmd, TPWarCmd } from "../../../scripts/net/CmdData";
+import { Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_SelfBetCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_TPWarCmd, TPWarCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { NotifyBetVO, NotifyTPWBeginBetVO, ResponseTPEnterRoomVO, NotifyTPWDrawVO, TPWWinVO, decodeNotifyBetVO, decodeNotifyTPWBeginBetVO, decodeResponseTPEnterRoomVO, decodeNotifyTPWDrawVO } from "../../../scripts/net/proto/room";
+import { NotifyBetVO, NotifyTPWBeginBetVO, ResponseTPEnterRoomVO, NotifyTPWDrawVO, TPWWinVO, decodeNotifyBetVO, decodeNotifyTPWBeginBetVO, decodeResponseTPEnterRoomVO, decodeNotifyTPWDrawVO, decodeAreaPointBetCoinsVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import Poker from "../../common/script/Poker";
@@ -316,6 +316,10 @@ export default class TeenPattiWar extends UIGame {
         let subCmd: number = CmdMgr.getSubCmd(mergeCmd);
         if (cmd == Push_GameCmd && subCmd == Push_Game_TackOutCmd) {
             this.tackOut();
+            return;
+        }
+        if (cmd == Push_GameCmd && subCmd == Push_Game_SelfBetCmd) {
+            this.selfBetChips(data ? decodeAreaPointBetCoinsVO(data) : null);
             return;
         }
         if (cmd != Push_TPWarCmd) {

@@ -61,7 +61,7 @@ export default class Marquee extends UIFixed {
         this.node.opacity = show ? 255 : 0;
 
         if (!show) {
-            this.scheduleOnce(this.checkNext.bind(this), 9)
+            this.scheduleOnce(this.checkNext.bind(this), 7);
         } else {
             this.lb_str.string = marqueInfo?.msg;
             this.scheduleOnce(() => {

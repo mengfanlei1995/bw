@@ -57,11 +57,11 @@ export default class TaskItem extends cc.Component {
     /**领取任务 */
     async onClickReceive() {
         if (this.data.state == 0) {
-            UIMgr.showToast(LangMgr.sentence("e0038"))
+            UIMgr.showToast(LangMgr.sentence("e0038"));
         } else if (this.data.state == 1) {
-            let result = await SendMgr.sendDailyBonusTaskReceive({ eventId: this.data.id })
+            let result = await SendMgr.sendDailyBonusTaskReceive({ eventId: this.data.id });
             if (result) {
-                UIMgr.showToast(LangMgr.sentence("e0040"))
+                UIMgr.showToast(LangMgr.sentence("e0040"));
                 this.data.state = 2;
                 this.node.opacity = 155;
             }

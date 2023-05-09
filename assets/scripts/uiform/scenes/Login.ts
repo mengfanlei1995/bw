@@ -74,6 +74,9 @@ export default class Login extends UIScene {
     @property(cc.SpriteFrame)
     spf_passNo: cc.SpriteFrame = null;
 
+    @property(cc.Label)
+    lb_btnLogin: cc.Label = null;
+
     @property(cc.Layout)
     content: cc.Layout = null;
 
@@ -94,6 +97,7 @@ export default class Login extends UIScene {
         this.toggle_Login.isChecked = isPhone;
         this.ed_code.node.parent.active = !isPhone;
         this.btn_forget.active = isPhone;
+        this.lb_btnLogin.string = isPhone ? 'Log in' : 'Register';
         isPhone && (this.ed_loginPhoneNumber.string = StorageMgr.phone);
     }
 
@@ -101,12 +105,14 @@ export default class Login extends UIScene {
         // if (this.toggle_Register.isChecked) return;
         this.ed_code.node.parent.active = true;
         this.btn_forget.active = false;
+        this.lb_btnLogin.string = 'Register';
     }
 
     onClickLogin() {
         // if (this.toggle_Login.isChecked) return;
         this.ed_code.node.parent.active = false;
         this.btn_forget.active = true;
+        this.lb_btnLogin.string = 'Log in';
     }
 
     onClickForget() {
@@ -126,11 +132,15 @@ export default class Login extends UIScene {
     }
 
     onClickPolicy() {
-
+        if (SysConfig.policyUrl) {
+            JsbUitl.openWebView(SysConfig.policyUrl);
+        }
     }
 
     onClickTC() {
-
+        if (SysConfig.tcUrl) {
+            JsbUitl.openWebView(SysConfig.tcUrl);
+        }
     }
 
     onClickCustomer() {

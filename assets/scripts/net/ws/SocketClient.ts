@@ -101,8 +101,9 @@ class SocketClient implements ISocket {
         let call = HandleMgr.packageHandler(data.cmdMerge, data.responseStatus, data.data);
         //返回错误
         if (data.responseStatus != 0) {
-            if (data.cmdMerge != 0) LogUtil.log("onmessage", data)
-            data.validMsg && UIMgr.showToast(data.validMsg);
+            if (data.cmdMerge != 0) LogUtil.log("onmessage", data);
+            if (data.validMsg && data.responseStatus > 0)
+                UIMgr.showToast(data.validMsg);
         } else {
             //处理推送消息  暂时先拿不到相应的函数发送推送
             if (!call && data.cmdMerge != 0) {

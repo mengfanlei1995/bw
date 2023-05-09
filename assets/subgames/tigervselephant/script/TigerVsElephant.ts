@@ -3,9 +3,9 @@ import { HALL_EVT, REPORT_EVT } from "../../../scripts/enum/DeskEnum";
 import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
-import { Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_TigerVsElephantCmd, TigerVsElephantCmd } from "../../../scripts/net/CmdData";
+import { Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_SelfBetCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_TigerVsElephantCmd, TigerVsElephantCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { NotifyDTBeginBetVO, ResponseDTEnterRoomVO, NotifyDTDrawVO, DTPokerResultVO, NotifyBetVO, decodeNotifyDTBeginBetVO, decodeResponseDTEnterRoomVO, decodeNotifyDTDrawVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
+import { NotifyDTBeginBetVO, ResponseDTEnterRoomVO, NotifyDTDrawVO, DTPokerResultVO, NotifyBetVO, decodeNotifyDTBeginBetVO, decodeResponseDTEnterRoomVO, decodeNotifyDTDrawVO, decodeNotifyBetVO, decodeAreaPointBetCoinsVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
@@ -248,6 +248,10 @@ export default class TigerVsElephant extends UIGame {
         let subCmd: number = CmdMgr.getSubCmd(mergeCmd);
         if (cmd == Push_GameCmd && subCmd == Push_Game_TackOutCmd) {
             this.tackOut();
+            return;
+        }
+        if (cmd == Push_GameCmd && subCmd == Push_Game_SelfBetCmd) {
+            this.selfBetChips(data ? decodeAreaPointBetCoinsVO(data) : null);
             return;
         }
         if (cmd != Push_TigerVsElephantCmd) {

@@ -4,9 +4,9 @@ import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
 import LangMgr from "../../../scripts/mgr/LangMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
-import { Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_WhellOfForuneCmd, WhellOfForuneCmd } from "../../../scripts/net/CmdData";
+import { Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_SelfBetCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_WhellOfForuneCmd, WhellOfForuneCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { NotifyBetVO, NotifyRYBBeginBetVO, ResponseRYBEnterRoomVO, NotifyRYBDrawVO, RYBWinVO, decodeNotifyBetVO, decodeNotifyRYBBeginBetVO, decodeResponseRYBEnterRoomVO, decodeNotifyRYBDrawVO } from "../../../scripts/net/proto/room";
+import { NotifyBetVO, NotifyRYBBeginBetVO, ResponseRYBEnterRoomVO, NotifyRYBDrawVO, RYBWinVO, decodeNotifyBetVO, decodeNotifyRYBBeginBetVO, decodeResponseRYBEnterRoomVO, decodeNotifyRYBDrawVO, decodeAreaPointBetCoinsVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
@@ -248,6 +248,10 @@ export default class WhellOfForunce extends UIGame {
         let subCmd: number = CmdMgr.getSubCmd(mergeCmd);
         if (cmd == Push_GameCmd && subCmd == Push_Game_TackOutCmd) {
             this.tackOut();
+            return;
+        }
+        if (cmd == Push_GameCmd && subCmd == Push_Game_SelfBetCmd) {
+            this.selfBetChips(data ? decodeAreaPointBetCoinsVO(data) : null);
             return;
         }
         if (cmd != Push_WhellOfForuneCmd) {

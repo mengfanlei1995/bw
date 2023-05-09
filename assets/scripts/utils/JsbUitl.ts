@@ -76,7 +76,11 @@ const callBackEnum = cc.Enum({
     /**设置用户属性 */
     setFirebaseUserProperty: 'setFirebaseUserProperty',
     /**返回 */
-    onKeyDownEvent: 'onKeyDownEvent'
+    onKeyDownEvent: 'onKeyDownEvent',
+    /**af上报事件 */
+    postAfEvent: "postAfEvent",
+    /**去google商店 */
+    goStore: "goStore"
 })
 
 /**
@@ -499,5 +503,20 @@ class JsbUitl {
     public postFacebookPurchase(info: any) {
         callMethod(callBackEnum.postFacebookPurchase, '(Ljava/lang/String;)V', info)
     }
+
+    /**
+     * af上报
+     * @param info - {eventName,params}
+     */
+    public postAfEvent(info: any) {
+        // info && (info.time = Date.now())
+        callMethod(callBackEnum.postAfEvent, '(Ljava/lang/String;)V', info)
+    }
+
+    /**拉起google商店 */
+    public goStore() {
+        callMethod(callBackEnum.goStore, '()V')
+    }
+
 }
 export default new JsbUitl();

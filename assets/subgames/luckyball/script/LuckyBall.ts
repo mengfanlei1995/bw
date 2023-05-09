@@ -6,9 +6,9 @@ import LangMgr from "../../../scripts/mgr/LangMgr";
 import PoolMgr from "../../../scripts/mgr/PoolMgr";
 import SoundMgr from "../../../scripts/mgr/SoundMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
-import { LuckyBallCmd, Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_LuckyBallCmd } from "../../../scripts/net/CmdData";
+import { LuckyBallCmd, Push_GameCmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_SelfBetCmd, Push_Game_StartCmd, Push_Game_TackOutCmd, Push_LuckyBallCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import { NotifyLBBeginBetVO, ResponseLBEnterRoomVO, NotifyLBDrawVO, LBWinVO, NotifyBetVO, decodeNotifyLBBeginBetVO, decodeResponseLBEnterRoomVO, decodeNotifyLBDrawVO, decodeNotifyBetVO } from "../../../scripts/net/proto/room";
+import { NotifyLBBeginBetVO, ResponseLBEnterRoomVO, NotifyLBDrawVO, LBWinVO, NotifyBetVO, decodeNotifyLBBeginBetVO, decodeResponseLBEnterRoomVO, decodeNotifyLBDrawVO, decodeNotifyBetVO, decodeAreaPointBetCoinsVO } from "../../../scripts/net/proto/room";
 import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 import CocosUtil from "../../../scripts/utils/CocosUtil";
@@ -351,6 +351,10 @@ export default class LuckyBall extends UIGame {
             this.tackOut();
             return;
         }
+        if (cmd == Push_GameCmd && subCmd == Push_Game_SelfBetCmd) {
+            this.selfBetChips(data ? decodeAreaPointBetCoinsVO(data) : null);
+            return;
+        }
         if (cmd != Push_LuckyBallCmd) {
             return;
         }
@@ -438,7 +442,7 @@ export default class LuckyBall extends UIGame {
         let chips = this.betNums[this.betIndex];
         if (!this.betSelfCoinMap[type]) this.betSelfCoinMap[type] = 0;
         this.betSelfCoinMap[type] = this.betSelfCoinMap[type] + chips;
-        this.buyBetChips(type, this.selfBetChipsNumLabel[+type - 1], this.chipsNumLabel[+type - 1]);
+        this.buyBetChips(type);
     }
 
 }

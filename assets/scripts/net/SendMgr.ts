@@ -4,7 +4,7 @@ import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, BindPhoneCmd, BindPhone_BindCmd, BindPhone_ChangeCmd, BindPhone_OTPCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_ForgetSubmitCmd, Login_OTPCmd, PopupCmd, Popup_InfoCmd, RechargeCmd, Recharge_InfoCmd, Recharge_RecordCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, Refer_Top20Cmd, TransactionCmd, Transaction_InfoCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd, WithdrawCmd, Withdraw_BindBankCmd, Withdraw_InfoCmd, Withdraw_RecordCmd } from "./CmdData";
+import { BetCmd, BindPhoneCmd, BindPhone_BindCmd, BindPhone_ChangeCmd, BindPhone_OTPCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_ForgetSubmitCmd, Login_OTPCmd, PopupCmd, Popup_InfoCmd, RechargeCmd, Recharge_InfoCmd, Recharge_RecordCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, Refer_Top20Cmd, SystemConfigCmd, SystemConfig_InfoCmd, TransactionCmd, Transaction_InfoCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd, WithdrawCmd, Withdraw_BindBankCmd, Withdraw_InfoCmd, Withdraw_RecordCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
 import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
@@ -12,7 +12,7 @@ import NetMgr from "./NetMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage, encodeExternalMessage } from "./proto/ExternalMessage";
 import { MyBaseActionVO, decodeMyBaseActionVO } from "./proto/core";
-import { DailyBonusAwardDTO, DailyBonusLongVO, DailyBonusSignInVipAwardVO, DailyBonusVO, GullakMainInfoV2VO, HomepageVO, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, PayRechargeOrderDTO, PayRechargeOrderVO, PayWithdrawOrderDTO, PhoneDTO, PhoneSmsDTO, PhoneSmsVO, PopupDTO, PopupListVO, RechargeInfoResponseV2VO, RechargeInfoV2DTO, RechargePageDTO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneRechargeVO, TimezoneReferRewardVO, TimezoneTransactionVO, TimezoneWithdrawVO, TransactionDTO, VipInfoV2VO, WithdrawBankDTO, WithdrawInfoVO, WithdrawPageDTO, decodeDailyBonusLongVO, decodeDailyBonusSignInVipAwardVO, decodeDailyBonusVO, decodeGullakMainInfoV2VO, decodeHomepageGameVO, decodeHomepageVO, decodeLoginMobileSmsVO, decodeMailPageVO, decodePayRechargeOrderVO, decodePhoneSmsVO, decodePopupListVO, decodeRechargeInfoResponseV2VO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneRechargeVO, decodeTimezoneReferRewardVO, decodeTimezoneTransactionVO, decodeTimezoneWithdrawVO, decodeVipInfoV2VO, decodeWithdrawInfoVO, encodeDailyBonusAwardDTO, encodeMailOptDTO, encodeMailPageDTO, encodePayRechargeOrderDTO, encodePayWithdrawOrderDTO, encodePhoneDTO, encodePhoneSmsDTO, encodePopupDTO, encodeRechargeInfoV2DTO, encodeRechargePageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO, encodeTransactionDTO, encodeWithdrawBankDTO, encodeWithdrawPageDTO } from "./proto/hall";
+import { BundleDTO, BundleVO, DailyBonusAwardDTO, DailyBonusLongVO, DailyBonusSignInVipAwardVO, DailyBonusVO, GullakMainInfoV2VO, HomepageVO, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, PayRechargeOrderDTO, PayRechargeOrderVO, PayWithdrawOrderDTO, PhoneDTO, PhoneSmsDTO, PhoneSmsVO, PopupDTO, PopupListVO, RechargeInfoResponseV2VO, RechargeInfoV2DTO, RechargePageDTO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneRechargeVO, TimezoneReferRewardVO, TimezoneTransactionVO, TimezoneWithdrawVO, TransactionDTO, VipInfoV2VO, WithdrawBankDTO, WithdrawInfoVO, WithdrawPageDTO, decodeBundleVO, decodeDailyBonusLongVO, decodeDailyBonusSignInVipAwardVO, decodeDailyBonusVO, decodeGullakMainInfoV2VO, decodeHomepageGameVO, decodeHomepageVO, decodeLoginMobileSmsVO, decodeMailPageVO, decodePayRechargeOrderVO, decodePhoneSmsVO, decodePopupListVO, decodeRechargeInfoResponseV2VO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneRechargeVO, decodeTimezoneReferRewardVO, decodeTimezoneTransactionVO, decodeTimezoneWithdrawVO, decodeVipInfoV2VO, decodeWithdrawInfoVO, encodeBundleDTO, encodeDailyBonusAwardDTO, encodeMailOptDTO, encodeMailPageDTO, encodePayRechargeOrderDTO, encodePayWithdrawOrderDTO, encodePhoneDTO, encodePhoneSmsDTO, encodePopupDTO, encodeRechargeInfoV2DTO, encodeRechargePageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO, encodeTransactionDTO, encodeWithdrawBankDTO, encodeWithdrawPageDTO } from "./proto/hall";
 import { encodeUserUpdateHeadPicDTO } from "./proto/hall";
 import { UserUpdateNicknameDTO } from "./proto/hall";
 import { HomepageGameDTO } from "./proto/hall";
@@ -22,7 +22,7 @@ import { encodeUserUpdateNicknameDTO } from "./proto/hall";
 import { UserUpdateHeadPicDTO, decodeLoginVO, encodeLoginDTO } from "./proto/hall";
 import { LoginDTO } from "./proto/hall";
 import { LoginVO } from "./proto/hall";
-import { RoomBetDTO, RoomEnterDTO, RoomExitDTO, RoomRecordDTO, encodeRoomBetDTO, encodeRoomEnterDTO, encodeRoomExitDTO, encodeRoomRecordDTO } from "./proto/room";
+import { PointBetCoinsVO, RoomBetDTO, RoomEnterDTO, RoomExitDTO, RoomRecordDTO, decodePointBetCoinsVO, encodeRoomBetDTO, encodeRoomEnterDTO, encodeRoomExitDTO, encodeRoomRecordDTO } from "./proto/room";
 import { NetCallFunc } from "./ws/NetInterface";
 
 const commonParams = function (mergeCmd: number, data: Uint8Array, cmdCode: number = 1, protocolSwitch: number = 0): ExternalMessage {
@@ -201,12 +201,8 @@ class SendMgr {
     }
 
     /**下注 */
-    public async sendBet(params: RoomBetDTO, gameCmd: number): Promise<boolean> {
-        return new Promise<boolean>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, BetCmd), encodeRoomBetDTO(params)), (code: number, data: Uint8Array) => {
-                resolve(code === 0);
-            })
-        })
+    public sendBet(params: RoomBetDTO, gameCmd: number): void {
+        this.send(commonParams(CmdMgr.getMergeCmd(gameCmd, BetCmd), encodeRoomBetDTO(params)), null);
     }
 
     /**流水 */
@@ -453,6 +449,15 @@ class SendMgr {
         return new Promise<TimezoneTransactionVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(TransactionCmd, Transaction_InfoCmd), encodeTransactionDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodeTimezoneTransactionVO(data) : null);
+            })
+        })
+    }
+
+    /**获取系统配置 */
+    public async sendSystemInfo(params: BundleDTO): Promise<BundleVO> {
+        return new Promise<BundleVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(SystemConfigCmd, SystemConfig_InfoCmd), encodeBundleDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeBundleVO(data) : null);
             })
         })
     }

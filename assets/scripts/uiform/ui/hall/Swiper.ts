@@ -56,8 +56,10 @@ export default class Swiper extends cc.Component {
                 let page = cc.instantiate(this.pagePrefab)
                 let _swiper: cc.Node = cc.instantiate(page);
                 _swiper.getComponent(SwiperPage).init(data[i]);
-                this.pageview.addPage(_swiper)
+                this.pageview.addPage(_swiper);
             }
+            this.pageview.node.scale = 1.1;
+            this.pageview.node.children[0].width = this.pageview.content.width / this.pageview.content.childrenCount;
         }
         if (!this.isLoad) {
             this.schedule(this.pageviewAutoScroll.bind(this), 1)

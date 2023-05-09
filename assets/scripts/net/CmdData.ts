@@ -129,7 +129,9 @@ export const BindPhone_BindCmd: number = 2;
 //换绑手机号
 export const BindPhone_ChangeCmd: number = 3;
 
-
+//系统配置
+export const SystemConfigCmd: number = 25;
+export const SystemConfig_InfoCmd: number = 1;
 
 
 
@@ -141,7 +143,7 @@ export const Push_Wallet_ChangeCmd: number = 1;
 //游戏推送
 export const Push_GameCmd: number = 1005;
 export const Push_Game_TackOutCmd: number = 1;
-
+export const Push_Game_SelfBetCmd: number = 3;
 
 //下注
 export const Push_Game_BetCmd: number = 1;
