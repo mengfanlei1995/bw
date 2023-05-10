@@ -1,5 +1,5 @@
 import SysConfig from "../../../scripts/data/SysConfig";
-import { HALL_EVT, REPORT_EVT } from "../../../scripts/enum/DeskEnum";
+import { HALL_EVT } from "../../../scripts/enum/DeskEnum";
 import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
 import PoolMgr from "../../../scripts/mgr/PoolMgr";
@@ -140,13 +140,6 @@ export default class TeenPattiWar extends UIGame {
      */
     openAward(gameResult: TPWWinVO) {
         let { id, king, queen, gameNum } = gameResult;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "gameResult",
-            element_name: "结算",
-            element_type: "event",
-            element_position: '',
-            element_content: 'TeenPattiWar',
-        });
         this.setPokerSkel(true, "Cards_y1");
         this.pokerSkel.setCompleteListener(() => {
             let flag: boolean = gameNum != this.gameNum || this.isReload;

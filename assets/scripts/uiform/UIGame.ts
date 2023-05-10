@@ -1,7 +1,6 @@
 // import Chip from "../../subgames/common/script/Chip";
 import SysConfig from "../data/SysConfig";
 import UserData from "../data/UserData";
-import { REPORT_EVT } from "../enum/DeskEnum";
 import EventMgr from "../mgr/EventMgr";
 import LangMgr from "../mgr/LangMgr";
 import PoolMgr from "../mgr/PoolMgr";
@@ -404,13 +403,6 @@ export default class UIGame extends UIScene {
             let betId = data.betId;
             let betCoins: number = this.longToNumber(data.areaCoins) / 100;
             let coins: number = this.longToNumber(data.coins) / 100;
-            EventMgr.emit(REPORT_EVT.CLICK, {
-                element_id: "btn_bet",
-                element_name: "成功下注",
-                element_type: "button",
-                element_position: '',
-                element_content: 'diceThree',
-            });
             // SoundMgr.playEffectByBundle('audio/betchips');
             this.flyChips(true, [`${betId}`], [coins]);
             let selfBetLabel: cc.Label = this.selfBetChipsNumLabel[betId - 1];
@@ -474,7 +466,8 @@ export default class UIGame extends UIScene {
         this.curTime = leftOptSeconds;
         this.isBetTime = roomState == 3;
         this.unschedule(this.countDownTime);
-        this.countDownTime();
+        let time = parseInt(`${this.curTime / 1000}`);
+        this.timeLeftLabel.string = `${time}`;
         this.schedule(this.countDownTime, 1);
         if (this.isBetTime) {
             this.isReload = false;
@@ -558,6 +551,8 @@ export default class UIGame extends UIScene {
 
     gameStart(info) {
         // console.log('_gameStart', info);
+        this.unschedule(this.countDownTime);
+        this.schedule(this.countDownTime, 1);
         let { gameInfo } = info;
         this.curTime = gameInfo?.leftOptSeconds;
         this.gameNum = gameInfo?.gameNum;
@@ -593,6 +588,8 @@ export default class UIGame extends UIScene {
 
     gameEnd(info) {
         // console.log('_gameEnd', info);
+        this.unschedule(this.countDownTime);
+        this.schedule(this.countDownTime, 1);
         let { gameInfo, gameResult, userInfoList } = info;
         this.curTime = gameInfo?.leftOptSeconds
         if (this.gameResultList.length >= 50) this.gameResultList.shift();
@@ -641,13 +638,6 @@ export default class UIGame extends UIScene {
 
     onAddCashClick(e: cc.Event.EventTouch) {
         UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: false, vipLevel: 0 });
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_addcash_byGame",
-            element_name: "游戏房间中间充值按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: this.gameName,
-        });
     }
 
     /**

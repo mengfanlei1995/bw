@@ -1,5 +1,4 @@
 import SysConfig from "../../data/SysConfig";
-import { REPORT_EVT } from "../../enum/DeskEnum";
 import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
 import SoundMgr from "../../mgr/SoundMgr";
@@ -34,7 +33,6 @@ export default class HotUpdate extends UIScene {
     async onLoad() {
         this._initView();
         let needUpdate: boolean = false
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `getversion_start` })
         //优先读取强更配置并检测是否需要强更
         // let config = await NetMgr.inst.getVersion();
         // this.stopMock = true;
@@ -42,12 +40,9 @@ export default class HotUpdate extends UIScene {
         let config = await NetMgr.inst.getServerVersion();
         if (config) {
             config = JSON.parse(config)
-            EventMgr.emit(REPORT_EVT.SCENE, { page_name: `getServerVersion_success` })
         } else {
-            EventMgr.emit(REPORT_EVT.SCENE, { page_name: `getServerVersion_fail` })
         }
         // } else {
-        //     EventMgr.emit(REPORT_EVT.SCENE, { page_name: `getversion_success` })
         // }
         // console.log(`getversion:`, JSON.stringify(config))
         if (config) {
@@ -135,20 +130,11 @@ export default class HotUpdate extends UIScene {
                 okCb: () => {
                     let apkUrl: string = packageUrl
                     JsbUitl.installUpdate({ apkUrl, updateTip: LangMgr.sentence('e0018'), isForceUpdate: isForce, apkVersion: configVer })
-                    EventMgr.emit(REPORT_EVT.CLICK, {
-                        element_id: `${isForce ? 'force_' : ''}apkupdate_001`,
-                        element_name: `${isForce ? "强制" : "非强制"}整包更新弹窗GO按钮`
-                    })
                 },
                 cancelCb: () => {
                     this._enterGame();
-                    EventMgr.emit(REPORT_EVT.CLICK, {
-                        element_id: `${isForce ? 'force_' : ''}apkupdate_002`,
-                        element_name: `${isForce ? "强制" : "非强制"}整包更新弹窗Later按钮`
-                    })
                 }
             });
-            EventMgr.emit(REPORT_EVT.SCENE, { page_name: `${isForce ? 'force_' : ''}apkupdate_pop` })
         } else {
             this.checkHotUpdate(isForce)
         }
@@ -211,18 +197,10 @@ export default class HotUpdate extends UIScene {
             //         // this.progress.getChildByName('pbg').active = true
             //         // this.progress.active = true
             //         HotUpdate.hotUpdate()
-            //         EventMgr.emit(REPORT_EVT.CLICK, {
-            //             element_id: `${isForce ? 'force_' : ''}hotupdate_001`,
-            //             element_name: `${isForce ? "强制" : "非强制"}热更弹窗Update按钮`
-            //         })
             //     },
             //     cancelCb: () => {
             //         HotUpdate.updateOver()
             //         this._enterGame();
-            //         EventMgr.emit(REPORT_EVT.CLICK, {
-            //             element_id: `${isForce ? 'force_' : ''}hotupdate_002`,
-            //             element_name: `${isForce ? "强制" : "非强制"}热更弹窗Later按钮`
-            //         })
             //     },
             //     closeCb: () => {
             //         HotUpdate.updateOver()
@@ -230,10 +208,6 @@ export default class HotUpdate extends UIScene {
             //     }
             // });
             HotUpdateData.hotUpdate()
-            EventMgr.emit(REPORT_EVT.CLICK, {
-                element_id: `silent_hotupdate`,
-                element_name: `静默热更`
-            })
         };
         options.OnNoNeedToUpdate = () => {
             //console.log('HOT-UPDAT', 'ddd 不需要更新...')
@@ -252,16 +226,11 @@ export default class HotUpdate extends UIScene {
                     okCb: () => {
                         HotUpdateData.init(this.manifest, options);
                         HotUpdateData.checkUpdate();
-                        EventMgr.emit(REPORT_EVT.CLICK, {
-                            element_id: 'hotupdate_003',
-                            element_name: '热更失败重试弹窗TryAgain按钮'
-                        })
                     }
                 });
             } else {
                 this._enterGame();
             }
-            EventMgr.emit(REPORT_EVT.SCENE, { page_name: `${isForce ? 'force_' : ''}hotupdate_fail_pop` })
         };
         options.OnReadManifestFailed = () => {
             /* this.tipsLabel.string = '无法读取配置';
@@ -273,7 +242,6 @@ export default class HotUpdate extends UIScene {
                     HotUpdate.checkUpdate()
                 }
             }); */
-            EventMgr.emit(REPORT_EVT.SCENE, { page_name: `hotupdate_readmanifestfailed` })
             //console.log('HOT-UPDAT', '找不到热更资源配置文件，不做热更');
             HotUpdateData.updateOver()
             this._enterGame();

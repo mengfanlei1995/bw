@@ -1,6 +1,4 @@
 import SysConfig from "../../data/SysConfig";
-import { REPORT_EVT } from "../../enum/DeskEnum";
-import { SYS_CONST } from "../../enum/SysEventEnum";
 import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
 import StorageMgr from "../../mgr/StorageMgr";
@@ -164,13 +162,6 @@ export default class Login extends UIScene {
     }
 
     onFacebookLogin(e: cc.Event.EventTouch) {
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_facebookLogin",
-            element_name: "登录界面Facebook登陆按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
         JsbUitl.loginFB({});
     }
 
@@ -203,13 +194,6 @@ export default class Login extends UIScene {
     }
 
     async onPhoneLogin(e: cc.Event.EventTouch) {
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_phoneLogin",
-            element_name: "登录界面手机登录按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: 'luckyDice',
-        });
         let mobile: string = this.ed_loginPhoneNumber.string;
         let mobilePassword: string = this.ed_password.string;
         if (!RegexUtil.isValidPhoneNumber(mobile)) {

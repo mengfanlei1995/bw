@@ -1,6 +1,6 @@
 import SysConfig from "../../../data/SysConfig";
 import UserData from "../../../data/UserData";
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
 import { Gullak_InfoCmd } from "../../../net/CmdData";
@@ -52,12 +52,14 @@ export default class Home extends UIScreen {
         EventMgr.on(HALL_EVT.DESK_RELOAD, this.initHallInfo, this);
         EventMgr.on(HALL_EVT.UPDATE_BONUS_RED, this.updateBonusRed, this);
         EventMgr.on(HALL_EVT.OPEN_WINDOWS, this.openWindows, this);
+        EventMgr.on(HALL_EVT.UPDATE_EMAIL_RED, this.changeEmailRed, this)
     }
 
     protected onDisable(): void {
         EventMgr.off(HALL_EVT.DESK_RELOAD, this.initHallInfo, this);
         EventMgr.off(HALL_EVT.UPDATE_BONUS_RED, this.updateBonusRed, this);
         EventMgr.off(HALL_EVT.OPEN_WINDOWS, this.openWindows, this);
+        EventMgr.off(HALL_EVT.UPDATE_EMAIL_RED, this.changeEmailRed, this)
     }
 
     /**bonus 信息 */
@@ -183,6 +185,10 @@ export default class Home extends UIScreen {
         }
     }
 
+    changeEmailRed(idShow: boolean) {
+        this.btnMail.getChildByName('RedDotAnim').active = idShow;
+    }
+
     hideRedDotAnim(target: cc.Node) {
         if (cc.isValid(target)) {
             target.getChildByName('RedDotAnim').active = false;
@@ -207,24 +213,10 @@ export default class Home extends UIScreen {
 
     onClickGullak() {
         UIMgr.show('prefab/hall/Bonus', 'Bonus', this.gullakInfo);
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_gullak",
-            element_name: "大厅GULLAK按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     onClickSuperBonus() {
         UIMgr.show('prefab/hall/SuperBonus', 'SuperBonus', { isClick: true, info: this.nextDayRechargeInfo });
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_superbonus",
-            element_name: "大厅superbonus按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
 }

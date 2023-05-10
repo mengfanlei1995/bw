@@ -1,5 +1,4 @@
 import SysConfig from "../../../data/SysConfig";
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
@@ -54,14 +53,6 @@ export default class AddCash extends UIScreen {
 
     protected onEnable(): void {
         this.amont = this.amountArray[0];
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `addCash` });
-        EventMgr.on(HALL_EVT.DESK_RELOAD, this.init, this);
-        EventMgr.on(HALL_EVT.GOLD_CHANGE, this.init, this);
-    }
-
-    protected onDisable(): void {
-        EventMgr.off(HALL_EVT.DESK_RELOAD, this.init, this);
-        EventMgr.off(HALL_EVT.GOLD_CHANGE, this.init, this);
     }
 
     public onShow(param: any = { vipInto: false, vipLevel: 0 }): void {
@@ -151,36 +142,15 @@ export default class AddCash extends UIScreen {
     }
 
     async onClickAddCash() {
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_submit_byAddCash",
-            element_name: "提交充值界面的提交按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: 'luckyDice',
-        });
         let data = {
             productId: 0,
             amount: this.amont,
             activityId: this.activityId
         }
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "api_addcash",
-            element_name: "调用充值接口",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
         let result = await SendMgr.sendPay(data);
         if (result) {
             this.openUrl(result.url);
         }
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: result ? "api_addcash_success" : "api_addcash_fail",
-            element_name: "调用充值接口" + result ? "成功" : "失败",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     /**打开充值链接 */

@@ -1,5 +1,5 @@
 import SysConfig from "../../../scripts/data/SysConfig";
-import { HALL_EVT, REPORT_EVT } from "../../../scripts/enum/DeskEnum";
+import { HALL_EVT } from "../../../scripts/enum/DeskEnum";
 import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
 import PoolMgr from "../../../scripts/mgr/PoolMgr";
@@ -114,13 +114,6 @@ export default class JhandiMunda extends UIGame {
         if (this.diceSkel.animation != "JhandiMunda_dice2") return;
         let gameNum = this.gameNum;
         let { dices, idRates } = gameResult;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "gameResult",
-            element_name: "结算",
-            element_type: "event",
-            element_position: '',
-            element_content: 'JhandiMunda',
-        });
         let track = this.diceSkel.setAnimation(0, "JhandiMunda_dice3", false)
         this.diceSkel.setTrackEventListener(track, (trackIdx, evt) => {
             let nodeArray: cc.Node[] = [];

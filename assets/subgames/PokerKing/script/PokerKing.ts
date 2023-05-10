@@ -1,5 +1,5 @@
 import SysConfig from "../../../scripts/data/SysConfig";
-import { HALL_EVT, REPORT_EVT } from "../../../scripts/enum/DeskEnum";
+import { HALL_EVT } from "../../../scripts/enum/DeskEnum";
 import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
 import PoolMgr from "../../../scripts/mgr/PoolMgr";
@@ -143,13 +143,6 @@ export default class PokerKing extends UIGame {
      * @returns 
      */
     openAward(awardCode: string) {
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "gameResult",
-            element_name: "结算",
-            element_type: "event",
-            element_position: '',
-            element_content: 'pokerKing',
-        });
         let huase = awardCode.slice(0, 1)
         let card = awardCode.slice(1)
         let random = Math.ceil(Math.random() * 3)

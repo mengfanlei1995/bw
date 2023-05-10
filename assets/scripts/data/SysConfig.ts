@@ -36,6 +36,9 @@ class SysConfig {
     /**服务条款 */
     tcUrl: string = '';
 
+    /**默认telegram账号 */
+    telegram: string = 'luckywinner001';
+
     //ws://192.168.124.13:1005/websocket 本地  http://192.168.124.13:9001
     //wss://test.bestbw.net/websocket 测试服
     //wss://bestbw.net/websocket 正式服

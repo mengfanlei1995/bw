@@ -1,3 +1,4 @@
+import SysConfig from "../../../data/SysConfig";
 import LangMgr from "../../../mgr/LangMgr";
 import JsbUitl from "../../../utils/JsbUitl";
 import UIMgr from "../../UIMgr";
@@ -15,7 +16,13 @@ export default class Customer extends UIWindow {
 
     /**拉起小飞机 */
     onClickTelegram() {
-        JsbUitl.chatInTelegram('');
+        if (!SysConfig.telegram) {
+            return;
+        }
+        let result = JsbUitl.chatInTelegram(SysConfig.telegram);
+        if (!result) {
+            cc.sys.openURL(SysConfig.telegram);
+        }
     }
 
     onClickCopy() {

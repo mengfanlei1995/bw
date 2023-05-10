@@ -1,4 +1,3 @@
-import { REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import SendMgr from "../../../net/SendMgr";
@@ -57,7 +56,6 @@ export default class Transactions extends UIScreen {
 
     protected async onEnable(): Promise<void> {
         this._initData();
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `transactions` })
     }
 
     protected onDisable(): void {
@@ -110,10 +108,10 @@ export default class Transactions extends UIScreen {
         let lb_amount: cc.Label = cc.find("lb_amount", node).getComponent(cc.Label);
         let lb_time: cc.Label = cc.find("lb_time", node).getComponent(cc.Label);
         let lb_text: cc.Label = cc.find("lb_text", node).getComponent(cc.Label);
-        lb_time.string = CommonUtil.getDate(info.time);
-        let amount = LongUtil.longToNumber(info.amount) + LongUtil.longToNumber(info.withdrawAmount);
-        lb_amount.string = amount >= 0 ? `+₹${amount}` : `-₹${Math.abs(amount)}`
-        lb_amount.node.color = amount >= 0 ? cc.color(241, 156, 113, 255) : cc.color(231, 255, 107, 255)
+        lb_time.string = CommonUtil.getDate(LongUtil.longToNumber(info.time));
+        let amount = LongUtil.longToNumber(info.amount) / 100 + LongUtil.longToNumber(info.withdrawAmount) / 100;
+        lb_amount.string = amount >= 0 ? `+₹${amount}` : `-₹${Math.abs(amount)}`;
+        lb_amount.node.color = amount >= 0 ? cc.color(241, 156, 113, 255) : cc.color(231, 255, 107, 255);
         lb_type.string = info.title;
         lb_text.string = `Source:${info.title}`;
     }

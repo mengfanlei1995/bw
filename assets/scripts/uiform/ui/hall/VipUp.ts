@@ -1,5 +1,4 @@
 import UserData from "../../../data/UserData";
-import { REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import UIWindow from "../../UIWindow";
 
@@ -29,7 +28,6 @@ export default class VipUp extends UIWindow {
     }
 
     onEnable() {
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `vipUp` });
         this.setAttachment(UserData.beforeVipLevel);
         this.skel.setAnimation(0, "animation_narrow", false);
         this.skel.setCompleteListener(() => {

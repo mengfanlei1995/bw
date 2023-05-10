@@ -43,9 +43,6 @@ export default class EmailItem extends cc.Component {
     @property({ tooltip: '领取按钮', type: cc.Node })
     node_receive: cc.Node = null;
 
-    @property({ tooltip: '领取过', type: cc.Node })
-    node_received: cc.Node = null;
-
     @property({ tooltip: '空节点 填充', type: cc.Node })
     node_null: cc.Node = null;
 
@@ -69,10 +66,10 @@ export default class EmailItem extends cc.Component {
         else this.sp_email.spriteFrame = this.spf_email[0];
         this.node_gold.active = emailData.attachments.length > 0;
         this.node_receive.active = emailData.attachments.length > 0;
-        this.node_received.active = emailData.attachmentState > 1
+        this.node_receive.getComponent(cc.Button).interactable = emailData.attachmentState <= 1;
         this.node_null.active = false;
         if (emailData.attachments.length > 0) {
-            this.lb_gold.string = `${LongUtil.longToNumber(emailData.attachments[0].amount)}`;
+            this.lb_gold.string = `${LongUtil.longToNumber(emailData.attachments[0].amount) / 100}`;
         } else {
             await CocosUtil.sleepSync(0.1)
             if (this.lblContent.node.height < 100) {
@@ -83,15 +80,18 @@ export default class EmailItem extends cc.Component {
 
     /**删除邮件 */
     async onClickDelete() {
+        let isFirst: boolean = true;
         UIMgr.showDialog({
             word: LangMgr.sentence('e0046'),
             type: DialogType.OkCancelBtn,
             okCb: async () => {
-                let data = await SendMgr.sendDeleteEmail({ id: this.emailData.id })
+                if (!isFirst) return;
+                isFirst = false;
+                let data = await SendMgr.sendDeleteEmail({ id: this.emailData.id });
                 if (data != null) {
                     this.remove(this.index);
                     EventMgr.emit(HALL_EVT.UPDATE_EMAIL)
-                    EventMgr.emit(HALL_EVT.UPDATE_EMAIL_RED, data)
+                    EventMgr.emit(HALL_EVT.UPDATE_EMAIL_RED, data.redDot)
                 }
             }
         })
@@ -99,13 +99,15 @@ export default class EmailItem extends cc.Component {
 
     /**打开邮件 */
     async onClickOpen() {
-        let data = await SendMgr.sendReadEmail({ id: this.emailData.id });
-        if (data != null) {
-            this.emailData.read = true;
-            this.sp_email.spriteFrame = this.spf_email[1];
-            EventMgr.emit(HALL_EVT.UPDATE_EMAIL_RED, data)
-        }
         this.contentNode.active = !this.contentNode.active;
+        if (!this.emailData.read) {
+            let data = await SendMgr.sendReadEmail({ id: this.emailData.id });
+            if (data != null) {
+                this.emailData.read = true;
+                this.sp_email.spriteFrame = this.spf_email[1];
+                EventMgr.emit(HALL_EVT.UPDATE_EMAIL_RED, data.redDot)
+            }
+        }
     }
 
     /**领取邮件奖励 */
@@ -113,7 +115,7 @@ export default class EmailItem extends cc.Component {
         let data = await SendMgr.sendEmailCollect({ id: this.emailData.id });
         if (data) {
             this.emailData.attachmentState = 3;
-            this.node_received.active = true;
+            this.node_receive.getComponent(cc.Button).interactable = false;
         }
     }
 

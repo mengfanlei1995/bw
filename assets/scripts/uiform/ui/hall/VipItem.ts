@@ -1,5 +1,4 @@
 import SysConfig from "../../../data/SysConfig";
-import { REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import SendMgr from "../../../net/SendMgr";
 import { VipLevelV2VO } from "../../../net/proto/hall";
@@ -95,36 +94,15 @@ export default class VipItem extends cc.Component {
     async onClickBuy() {
         let giftInfo = this.info.giftBag;
         if (!giftInfo.canPay) return;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_addcash_byVip",
-            element_name: "vip充值按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
         let data = {
             productId: 0,
             amount: giftInfo.pay / 100,
             activityId: giftInfo.activityId
         }
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "api_addcash",
-            element_name: "调用充值接口",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
         let result = await SendMgr.sendPay(data)
         if (result) {
             this.openUrl(result.url);
         }
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: result ? "api_addcash_success" : "api_addcash_fail",
-            element_name: "调用充值接口" + result ? "成功" : "失败",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     /**打开充值链接 */

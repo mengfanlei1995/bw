@@ -1,21 +1,12 @@
 import SysConfig from "../../../scripts/data/SysConfig";
-import UserData from "../../../scripts/data/UserData";
-import { HALL_EVT, REPORT_EVT } from "../../../scripts/enum/DeskEnum";
+import { HALL_EVT } from "../../../scripts/enum/DeskEnum";
 import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
-import LangMgr from "../../../scripts/mgr/LangMgr";
-import PoolMgr from "../../../scripts/mgr/PoolMgr";
-import SoundMgr from "../../../scripts/mgr/SoundMgr";
-import StorageMgr from "../../../scripts/mgr/StorageMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
 import { Dice3Cmd, Push_Dice3Cmd, Push_Game_BetCmd, Push_Game_EndCmd, Push_Game_StartCmd, Push_GameCmd, Push_Game_TackOutCmd, Push_Game_SelfBetCmd } from "../../../scripts/net/CmdData";
 import CmdMgr from "../../../scripts/net/CmdMgr";
-import SendMgr from "../../../scripts/net/SendMgr";
 import { ResponseD3EnterRoomVO, NotifyD3BeginBetVO, NotifyD3DrawVO, D3WinVO, NotifyBetVO, decodeResponseD3EnterRoomVO, decodeNotifyD3BeginBetVO, decodeNotifyD3DrawVO, decodeNotifyBetVO, decodeAreaPointBetCoinsVO } from "../../../scripts/net/proto/room";
-import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
-import UIMgr from "../../../scripts/uiform/UIMgr";
-import LogUtil from "../../../scripts/utils/LogUtil";
 
 
 const { ccclass, property } = cc._decorator;
@@ -146,13 +137,6 @@ export default class DiceThree extends UIGame {
      */
     openAward(array: number[], id: string) {
         if (this.diceSkel.animation != "dice_2") return;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "gameResult",
-            element_name: "结算",
-            element_type: "event",
-            element_position: '',
-            element_content: 'diceThree',
-        });
         this.diceSkel.setAttachment('tex/dice1', `tex/ds000${array[0]}`)
         this.diceSkel.setAttachment('tex/dice2', `tex/ds000${array[1]}`)
         this.diceSkel.setAttachment('tex/dice3', `tex/ds000${array[2]}`)

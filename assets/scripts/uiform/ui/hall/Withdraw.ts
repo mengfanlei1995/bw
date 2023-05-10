@@ -1,5 +1,4 @@
 import UserData from "../../../data/UserData";
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
@@ -46,7 +45,6 @@ export default class Withdraw extends UIScreen {
     private levelWithdraw = null;
 
     protected onEnable(): void {
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `withdraw` });
         this.initWithdrawInfo();
     }
 
@@ -124,14 +122,6 @@ export default class Withdraw extends UIScreen {
             return;
         }
 
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "api_withdraw",
-            element_name: "调用提现接口",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
-
         let result = await SendMgr.sendWithdraw({
             amount: this.amount
         })
@@ -139,13 +129,6 @@ export default class Withdraw extends UIScreen {
             this.initWithdrawInfo();
             UIMgr.showToast(LangMgr.sentence("e0035"));
         }
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: result ? "api_withdraw_success" : "api_withdraw_fail",
-            element_name: "调用提现接口" + result ? "成功" : "失败",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     /**选中提现金额 */

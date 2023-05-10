@@ -1,6 +1,6 @@
 import SysConfig, { AppSysInfo, afLaunchData } from "../data/SysConfig";
 import UserData from "../data/UserData";
-import { APPS_FLYER, HALL_EVT, REPORT_EVT } from "../enum/DeskEnum";
+import { APPS_FLYER, HALL_EVT } from "../enum/DeskEnum";
 import { FirebaseEvent } from "../enum/FirebaseEnum";
 import { SYS_CONST } from "../enum/SysEventEnum";
 import EventMgr from "../mgr/EventMgr";
@@ -118,7 +118,6 @@ class JsbUitl {
             SysConfig.systemInfo.timezone = SysConfig.pkgTimeZone;
             StorageMgr.cocosVersion = SysConfig.version;
             if (StorageMgr.devId != device_id) StorageMgr.devId = device_id;
-            EventMgr.emit(REPORT_EVT.INSTALL);
             // this.postFirebaseEvent({
             //     eventName: FirebaseEvent.APP_OPEN,
             //     params: { deviceId: SysConfig.systemInfo.device_id, userId: StorageMgr.userId }
@@ -206,14 +205,12 @@ class JsbUitl {
 
             ListenerMgr.create(
                 (params: any) => {
-                    EventMgr.emit(REPORT_EVT.SCENE, params);
                 },
                 callBackEnum.nativeSceneReport
             )
 
             // ListenerMgr.create(
             //     (params: AppClickParams) => {
-            //         EventMgr.emit(REPORT_EVT.CLICK, params);
             //     },
             //     callBackEnum.nativeClickReport
             // )
@@ -229,31 +226,14 @@ class JsbUitl {
 
             ListenerMgr.create(
                 (type: string) => {
-                    EventMgr.emit(REPORT_EVT.SCENE, {
-                        page_name: 'gps_set_pop'
-                    });
                     UIMgr.showDialog({
                         word: LangMgr.sentence('e0012'),
                         type: DialogType.OkCancelBtn,
                         hideCb: (witch) => {
                             EventMgr.emit(HALL_EVT.GET_GPS_FAIL);
                             if (witch == 0) {
-                                EventMgr.emit(REPORT_EVT.CLICK, {
-                                    element_id: "gps_00001",
-                                    element_name: "拒绝GPS拉起设置弹窗yes按钮",
-                                    element_type: "button",
-                                    element_position: '',
-                                    element_content: '',
-                                });
                                 this.pullUpSet(type);
                             } else {
-                                EventMgr.emit(REPORT_EVT.CLICK, {
-                                    element_id: "gps_00002",
-                                    element_name: "拒绝GPS拉起设置弹窗no按钮",
-                                    element_type: "button",
-                                    element_position: '',
-                                    element_content: '',
-                                });
                             }
                         }
                     })
@@ -263,12 +243,10 @@ class JsbUitl {
 
             cc.game.on(SYS_CONST.ON_HIDE, () => {
                 SysConfig.isHide = true
-                EventMgr.emit(REPORT_EVT.BACKGROUND);
             });
             cc.game.on(SYS_CONST.ON_SHOW, async () => {
                 await SocketMgr.clearHistoryMsgPool()
                 EventMgr.emit(HALL_EVT.DESK_RELOAD)
-                EventMgr.emit(REPORT_EVT.STARTONLINE);
                 SendMgr.sendGetUserInfo();
             });
         } else {
@@ -287,12 +265,10 @@ class JsbUitl {
 
                 cc.game.on(cc.game.EVENT_HIDE, () => {
                     SysConfig.isHide = true
-                    EventMgr.emit(REPORT_EVT.BACKGROUND);
                 });
                 cc.game.on(cc.game.EVENT_SHOW, async () => {
                     await SocketMgr.clearHistoryMsgPool()
                     EventMgr.emit(HALL_EVT.DESK_RELOAD);
-                    EventMgr.emit(REPORT_EVT.STARTONLINE);
                     SendMgr.sendGetUserInfo();
                 });
             } catch (e) { }
@@ -449,13 +425,6 @@ class JsbUitl {
      */
     public shareLink(info: any) {
         //let { platform, title, url } = info;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "share_click_" + info.platform,
-            element_name: "分享按钮" + info.platform,
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
         callMethod(callBackEnum.shareLink, '(Ljava/lang/String;)V', info)
     }
 

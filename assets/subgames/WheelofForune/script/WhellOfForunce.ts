@@ -1,5 +1,5 @@
 import SysConfig from "../../../scripts/data/SysConfig";
-import { HALL_EVT, REPORT_EVT } from "../../../scripts/enum/DeskEnum";
+import { HALL_EVT } from "../../../scripts/enum/DeskEnum";
 import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
 import LangMgr from "../../../scripts/mgr/LangMgr";
@@ -161,13 +161,6 @@ export default class WhellOfForunce extends UIGame {
      */
     async openAward(awardCode: string) {
         let gameNum = this.gameNum;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "gameResult",
-            element_name: "结算",
-            element_type: "event",
-            element_position: '',
-            element_content: 'fortuneWhell',
-        });
         this.isWheeling = false
         this.wheelMaskNode.active = true
         this.awardSkel.node.active = true

@@ -45,21 +45,6 @@ export const FINGER_TIPS = cc.Enum({
     SHOW: 'FNGT_02'
 })
 
-export const REPORT_EVT = cc.Enum({
-    /**上报界面 */
-    SCENE: "RPTE_01",
-    /**点击事件上报 */
-    CLICK: "RPTE_02",
-    /**安装APP上报 */
-    INSTALL: "RPTE_03",
-    /**切到后台 */
-    BACKGROUND: "RPTE_04",
-    /**在线时长 */
-    STARTONLINE: "RPTE_05",
-    LAUNCH: 'RPTE_06'
-})
-
-
 /**af事件 */
 export const APPS_FLYER = cc.Enum({
     SDK_INITED: 'AF_01'

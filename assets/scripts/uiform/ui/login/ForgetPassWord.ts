@@ -1,12 +1,9 @@
-import { REPORT_EVT } from "../../../enum/DeskEnum";
-import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
-import { Login_ForgetOTPCmd, Login_PhoneCmd } from "../../../net/CmdData";
+import { Login_ForgetOTPCmd } from "../../../net/CmdData";
 import SendMgr from "../../../net/SendMgr";
 import RegexUtil from "../../../utils/RegexUtil";
 import UIMgr from "../../UIMgr";
-import UIScene from "../../UIScene";
 import UIScreen from "../../UIScreen";
 
 const { ccclass, property } = cc._decorator;
@@ -79,6 +76,7 @@ export default class ForgetPassWord extends UIScreen {
         if (code && code.length == 4) {
             let result = await SendMgr.sendChangePass({ mobile, mobilePassword, code });
             if (result) {
+                UIMgr.showToast(LangMgr.sentence('e0030'));
                 this.hide();
             }
         } else {

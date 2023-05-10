@@ -1,4 +1,4 @@
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import { DialogType } from "../../../model/DialogOptions";
@@ -66,13 +66,6 @@ export default class Bonus extends UIWindow {
 
     onClickClose() {
         this.hide();
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "bonus_close",
-            element_name: "bonus关闭按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     onClickTips() {
@@ -84,10 +77,6 @@ export default class Bonus extends UIWindow {
         })
     }
 
-    protected start(): void {
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `Bonus` });
-    }
-
     /**提取bonus */
     async onClickCollect() {
         let cash: number = this.cash;
@@ -95,13 +84,6 @@ export default class Bonus extends UIWindow {
         let info = await SendMgr.sendGullak(Gullak_ReceiveCmd);
         this.init(info);
         EventMgr.emit(HALL_EVT.UPDATE_BONUS_RED, false);
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "bonus_Collect",
-            element_name: "bonusCollect按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
 }

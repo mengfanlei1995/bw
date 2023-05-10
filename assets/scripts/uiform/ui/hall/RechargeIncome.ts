@@ -1,4 +1,4 @@
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import UIWindow from "../../UIWindow";
 
@@ -14,7 +14,6 @@ export default class RechargeIncome extends UIWindow {
     lb_bonus: cc.Label = null;
 
     protected start(): void {
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `RechargeIncome` })
     }
 
     public onShow(params: any): void {

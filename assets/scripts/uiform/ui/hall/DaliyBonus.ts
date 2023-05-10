@@ -1,5 +1,5 @@
 import { AutoList } from "../../../component/AutoList";
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import SendMgr from "../../../net/SendMgr";
@@ -38,7 +38,6 @@ export default class DaliyBonus extends UIScreen {
 
     protected onEnable(): void {
         this.node.zIndex = 1;
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `dailyBonus` })
         EventMgr.on(HALL_EVT.DESK_RELOAD, this._initSign, this);
         this._initSign();
     }

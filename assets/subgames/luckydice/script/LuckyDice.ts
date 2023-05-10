@@ -1,8 +1,7 @@
 import SysConfig from "../../../scripts/data/SysConfig";
-import { HALL_EVT, REPORT_EVT } from "../../../scripts/enum/DeskEnum";
+import { HALL_EVT } from "../../../scripts/enum/DeskEnum";
 import { SocketEvent } from "../../../scripts/enum/SocketEnum";
 import EventMgr from "../../../scripts/mgr/EventMgr";
-import PoolMgr from "../../../scripts/mgr/PoolMgr";
 import { SocketPushConfig } from "../../../scripts/model/ServerConfig";
 import { Push_Game_SelfBetCmd, Push_Game_TackOutCmd } from "../../../scripts/net/CmdData";
 import { Push_Game_BetCmd } from "../../../scripts/net/CmdData";
@@ -20,7 +19,6 @@ import { LDWinVO } from "../../../scripts/net/proto/room";
 import { NotifyBetVO } from "../../../scripts/net/proto/room";
 import { decodeNotifyBetVO } from "../../../scripts/net/proto/room";
 import { ResponseLDEnterRoomVO, decodeResponseLDEnterRoomVO } from "../../../scripts/net/proto/room";
-import UIBundleMgr from "../../../scripts/uiform/UIBundleMgr";
 import UIGame from "../../../scripts/uiform/UIGame";
 
 
@@ -148,13 +146,6 @@ export default class LuckyDice extends UIGame {
      */
     openAward(array: number[], id: string) {
         if (this.diceSkel.animation != "dice_2") return;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "gameResult",
-            element_name: "结算",
-            element_type: "event",
-            element_position: '',
-            element_content: 'luckyDice',
-        });
         let skin: string = `D${array[0]}_${array[1]}`;
         this.diceSkel.setSkin(skin)
         this.diceSkel.setAnimation(0, "dice_3", false)

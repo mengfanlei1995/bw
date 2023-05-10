@@ -1,4 +1,4 @@
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import { PictureVO } from "../../../net/proto/hall";
 import AssetUtil from "../../../utils/AssetUtil";
@@ -33,13 +33,6 @@ export default class SwiperPage extends cc.Component {
     async onClickJump() {
         if (!this.swiperData) return;
         let { skipType, skipPage, skipParams, skipData, activityId } = this.swiperData;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "swiper_click",
-            element_name: "轮播图点击事件",
-            element_type: "button",
-            element_position: '',
-            element_content: JSON.stringify(this.swiperData)
-        });
         switch (skipType) {
             case 1:
                 UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: false, vipLevel: 0 });

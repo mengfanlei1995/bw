@@ -1,4 +1,4 @@
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import SendMgr from "../../../net/SendMgr";
 import { NextDayRechargeVO } from "../../../net/proto/hall";
@@ -96,10 +96,6 @@ export default class SuperBonus extends UIWindow {
         }
     }
 
-    protected start(): void {
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `SuperBonus` });
-    }
-
     private seconds: number = 0;
 
     updateTime() {
@@ -123,49 +119,21 @@ export default class SuperBonus extends UIWindow {
     onClickClose() {
         this.hide();
         EventMgr.emit(HALL_EVT.OPEN_WINDOWS);
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "superBonus_close",
-            element_name: "破冰活动关闭按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     /**购买破冰礼包 */
     async onClickRecharge() {
         if (!this.popInfo || this.popInfo.buy) return;
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "btn_addcash_bySuperBonus",
-            element_name: "破冰活动充值按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
         let data = {
             productId: 0,
             amount: this.popInfo.oriRecharge / 100,
             activityId: this.popInfo.activityId
         }
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "api_addcash",
-            element_name: "调用充值接口",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
         let result = await SendMgr.sendPay(data);
         if (result) {
             this.hide();
             this.openUrl(result.url)
         }
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: result ? "api_addcash_success" : "api_addcash_fail",
-            element_name: "调用充值接口" + result ? "成功" : "失败",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     /**打开充值链接 */

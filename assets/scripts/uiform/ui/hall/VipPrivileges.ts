@@ -1,4 +1,4 @@
-import { HALL_EVT, REPORT_EVT } from "../../../enum/DeskEnum";
+import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import SendMgr from "../../../net/SendMgr";
 import { VipLevelV2VO } from "../../../net/proto/hall";
@@ -50,10 +50,6 @@ export default class VipPrivileges extends UIScreen {
     private pages: number = 0;
 
     private levels: VipLevelV2VO[] = [];
-
-    protected start(): void {
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `Vip` })
-    }
 
     protected onEnable(): void {
         EventMgr.on(HALL_EVT.DESK_RELOAD, this.initVipInfo, this);
@@ -117,35 +113,14 @@ export default class VipPrivileges extends UIScreen {
 
     onClickHelp() {
         UIMgr.show('prefab/hall/VipDetails', 'VipDetails', this.levels);
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "vip_help",
-            element_name: "vip界面help按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     onClickBack() {
         this.hide();
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "vip_close",
-            element_name: "vip界面关闭按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     onClickAddCash() {
         UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: true, vipLevel: this.currentLevel });
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "vip_addcash",
-            element_name: "vip界面充值按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     onClickLeft() {
@@ -153,13 +128,6 @@ export default class VipPrivileges extends UIScreen {
         this.currentLevel--;
         this.pageview.scrollToPage(this.currentLevel, this.pageview.pageTurningSpeed);
         this.initUI(this.currentLevel);
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "vip_left",
-            element_name: "vip界面left按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     onClickRight() {
@@ -167,13 +135,6 @@ export default class VipPrivileges extends UIScreen {
         this.currentLevel++;
         this.pageview.scrollToPage(this.currentLevel, this.pageview.pageTurningSpeed);
         this.initUI(this.currentLevel);
-        EventMgr.emit(REPORT_EVT.CLICK, {
-            element_id: "vip_right",
-            element_name: "vip界面right按钮",
-            element_type: "button",
-            element_position: '',
-            element_content: '',
-        });
     }
 
     onPageEvent(e: cc.PageView) {

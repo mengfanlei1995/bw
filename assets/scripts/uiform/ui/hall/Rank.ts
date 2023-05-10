@@ -1,4 +1,3 @@
-import { REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import SendMgr from "../../../net/SendMgr";
 import { ReferInvitationMapUrlVO } from "../../../net/proto/hall";
@@ -30,7 +29,6 @@ export default class Rank extends UIScreen {
 
     protected start(): void {
         this.node.zIndex = 1;
-        EventMgr.emit(REPORT_EVT.SCENE, { page_name: `makeMoney` })
         this.getShareUrl();
     }
 

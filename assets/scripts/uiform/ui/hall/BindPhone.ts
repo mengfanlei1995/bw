@@ -1,6 +1,5 @@
 import SysConfig from "../../../data/SysConfig";
 import UserData from "../../../data/UserData";
-import { REPORT_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
@@ -90,6 +89,7 @@ export default class BindPhone extends UIScreen {
             if (result) {
                 UserData.userInfo.phone = mobile;
                 StorageMgr.phone = mobile;
+                UIMgr.showToast(LangMgr.sentence('e0030'));
                 this.hide();
             }
         } else {
