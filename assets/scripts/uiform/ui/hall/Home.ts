@@ -75,7 +75,7 @@ export default class Home extends UIScreen {
 
     /**请求弹窗列表 */
     async queryPopList() {
-        if (SysConfig.isGreen) {
+        if (StorageMgr.isGreen) {
             return;
         }
         let result = await SendMgr.sendPopupInfo({ sceneId: SysConfig.sceneId });
@@ -127,13 +127,13 @@ export default class Home extends UIScreen {
     //     }
     // }
 
-    updateBonusRed(isActive: boolean) {
+    updateBonusRed(isShow: boolean) {
         this.getGullakInfo();
-        this.btnGullak.getChildByName('RedDotAnim').active = isActive;
+        this.setRedDotAnim(this.btnGullak, isShow);
     }
 
     async initHallInfo() {
-        if (SysConfig.isGreen) {
+        if (StorageMgr.isGreen) {
             this.swiperNode.opacity = 255;
             return;
         }
@@ -146,16 +146,8 @@ export default class Home extends UIScreen {
         this.nextDayRechargeInfo = nextDayRechargeVO;
         UserData.clubLevel = club;
         UserData.vipLevel = vipLevel;
-        if (mail) {
-            this.playRedDotAnim(this.btnMail);
-        } else {
-            this.hideRedDotAnim(this.btnMail);
-        }
-        if (vip) {
-            this.playRedDotAnim(this.btnVip);
-        } else {
-            this.hideRedDotAnim(this.btnVip);
-        }
+        this.setRedDotAnim(this.btnMail, mail);
+        this.setRedDotAnim(this.btnVip, vip);
         this.updateBonusRed(gullak);
         EventMgr.emit(HALL_EVT.INIT_ROTATIONPICTRUES, rotationPictures || [], () => {
             cc.tween(this.swiperNode).to(0.45, { opacity: 255 }, { easing: 'backOut' }).start()
@@ -179,20 +171,14 @@ export default class Home extends UIScreen {
         })
     }
 
-    playRedDotAnim(target: cc.Node) {
+    setRedDotAnim(target: cc.Node, isShow: boolean) {
         if (cc.isValid(target)) {
-            target.getChildByName('RedDotAnim').active = true;
+            target.getChildByName('RedDotAnim').active = isShow;
         }
     }
 
-    changeEmailRed(idShow: boolean) {
-        this.btnMail.getChildByName('RedDotAnim').active = idShow;
-    }
-
-    hideRedDotAnim(target: cc.Node) {
-        if (cc.isValid(target)) {
-            target.getChildByName('RedDotAnim').active = false;
-        }
+    changeEmailRed(isShow: boolean) {
+        this.setRedDotAnim(this.btnMail, isShow);
     }
 
     onClickAddCash() {
@@ -200,6 +186,7 @@ export default class Home extends UIScreen {
     }
 
     onClickVip() {
+        this.setRedDotAnim(this.btnVip, false);
         UIMgr.show('prefab/hall/VipPrivileges', 'VipPrivileges');
     }
 

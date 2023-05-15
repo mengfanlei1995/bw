@@ -243,8 +243,8 @@ class UIMgr {
     }
 
     /**login界面 */
-    public goLogin() {
-        if (cc.director.getScene().name != 'Login') cc.director.loadScene('Login');
+    public goLogin(call: Function = null) {
+        if (cc.director.getScene().name != 'Login') cc.director.loadScene('Login', call);
     }
 
     /**热更新界面 */

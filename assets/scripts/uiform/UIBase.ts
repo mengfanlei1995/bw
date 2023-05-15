@@ -45,8 +45,11 @@ export default class UIBase extends cc.Component {
     fixedBg(root: cc.Node) {
         let distance: number = SysConfig?.systemInfo?.isPieScreen ? 50 : 0;
         if (cc.isValid(root) && distance) {
-            if (root.getComponent(cc.Widget).enabled)
+            if (root.getComponent(cc.Widget).enabled) {
                 root.getComponent(cc.Widget).top = distance;
+                let bg: cc.Node = root.getChildByName('bg');
+                if (cc.isValid(bg)) bg.y += distance;
+            }
         }
     }
 

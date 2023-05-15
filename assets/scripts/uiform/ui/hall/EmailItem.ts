@@ -64,11 +64,11 @@ export default class EmailItem extends cc.Component {
         this.lblContent.string = emailData.content;
         if (emailData.read) this.sp_email.spriteFrame = this.spf_email[1];
         else this.sp_email.spriteFrame = this.spf_email[0];
-        this.node_gold.active = emailData.attachments.length > 0;
-        this.node_receive.active = emailData.attachments.length > 0;
+        this.node_gold.active = emailData.attachments?.length > 0;
+        this.node_receive.active = emailData.attachments?.length > 0;
         this.node_receive.getComponent(cc.Button).interactable = emailData.attachmentState <= 1;
         this.node_null.active = false;
-        if (emailData.attachments.length > 0) {
+        if (emailData.attachments?.length > 0) {
             this.lb_gold.string = `${LongUtil.longToNumber(emailData.attachments[0].amount) / 100}`;
         } else {
             await CocosUtil.sleepSync(0.1)

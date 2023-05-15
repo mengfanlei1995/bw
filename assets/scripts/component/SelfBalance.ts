@@ -2,6 +2,7 @@ import { HALL_EVT } from "../enum/DeskEnum";
 import SysConfig from "../data/SysConfig";
 import EventMgr from "../mgr/EventMgr";
 import UserData from "../data/UserData";
+import StorageMgr from "../mgr/StorageMgr";
 
 const { ccclass, property } = cc._decorator;
 
@@ -25,8 +26,8 @@ export default class SelfBalance extends cc.Component {
 
     updateBalance() {
         if (SysConfig.isSettling) return;
-        if (SysConfig.isGreen) this.str = '';
-        let bonus: number = SysConfig.isGreen ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance;
+        if (StorageMgr.isGreen) this.str = '';
+        let bonus: number = StorageMgr.isGreen ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance;
         this.node.getComponent(cc.Label).string = `${this.str}${bonus / 100}`;
     }
 }

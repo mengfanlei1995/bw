@@ -122,7 +122,7 @@ export default class Email extends UIScreen {
             pageCount: this.pageCount
         }
         let emailInfos: MailPageVO = await SendMgr.sendEmailList(data);
-        if (emailInfos) {
+        if (emailInfos && cc.isValid(this.node)) {
             this.emailInfos = emailInfos;
             if (emailInfos.mails && emailInfos.mails.length > 0) {
                 for (let i = 0; i < emailInfos.mails.length; i++) {
@@ -131,7 +131,7 @@ export default class Email extends UIScreen {
             }
             if (this.datas && this.datas.length > 0) {
                 this.no_eamil.active = false;
-                this.layout.total(this.datas.length)
+                this.layout.total(this.datas.length);
             } else {
                 if (this.pageNo == 1) this.no_eamil.active = true;
                 else UIMgr.showToast(LangMgr.sentence("e0009"));

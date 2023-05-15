@@ -80,7 +80,9 @@ const callBackEnum = cc.Enum({
     /**af上报事件 */
     postAfEvent: "postAfEvent",
     /**去google商店 */
-    goStore: "goStore"
+    goStore: "goStore",
+    /**获取剪切板内容 */
+    getClipBoard: "getClipBoard"
 })
 
 /**
@@ -485,6 +487,10 @@ class JsbUitl {
     /**拉起google商店 */
     public goStore() {
         callMethod(callBackEnum.goStore, '()V')
+    }
+
+    public getClipBoard() {
+        return callMethod(callBackEnum.getClipBoard, '()Ljava/lang/String;');
     }
 
 }

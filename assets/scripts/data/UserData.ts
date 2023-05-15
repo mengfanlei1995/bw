@@ -51,9 +51,9 @@ class UserData {
         this.userInfo.accountType = accountType;
         this.userInfo.firstDay = LongUtil.longToNumber(firstDay);
         this.userInfo.first = first;
-        StorageMgr.phone = phone;
+        phone && (StorageMgr.phone = phone);
         StorageMgr.userId = userId;
-        SysConfig.isGreen = green;
+        StorageMgr.isGreen = green ? 1 : 0;
         sessionId && (StorageMgr.sessionId = sessionId);
         this.initWalletInfo(walletVO);
     }

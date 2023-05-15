@@ -164,7 +164,7 @@ export default class WhellOfForunce extends UIGame {
         this.isWheeling = false
         this.wheelMaskNode.active = true
         this.awardSkel.node.active = true
-        this.awardSkel.setAnimation(0, "turntable_fx", false)
+        this.awardSkel.setAnimation(0, "fx", false)
         this.awardPointSkel.node.active = true
         for (var i = 1; i < 4; i++) {
             if (i.toString() != awardCode) {

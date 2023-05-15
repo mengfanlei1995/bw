@@ -1,4 +1,5 @@
 import CommonUtil from "../../../utils/CommonUtil";
+import LongUtil from "../../../utils/LongUtil";
 
 const { ccclass, property } = cc._decorator;
 
@@ -27,7 +28,7 @@ export default class MoneyRecordItem extends cc.Component {
         this.lb_status.string = this.typeText[type][info.state];
         this.lb_status.node.color = this.color[type][info.state];
         this.lb_amount.string = `₹${info.get}`
-        this.lb_time.string = CommonUtil.getDate(info.time);
+        this.lb_time.string = CommonUtil.getDate(LongUtil.longToNumber(info.time));
         this.lb_orderId.string = info.id;
         this.lb_tips.string = info.remark;
         this.lb_tips.node.parent.active = !!info.remark;

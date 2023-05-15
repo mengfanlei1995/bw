@@ -52,6 +52,8 @@ const StorageKey = cc.Enum({
     CLICKADDCASH: 'CLICKADDCASH',
     /**是否播放过大厅手势动画 */
     HALLHANDANI: 'HALLHANDANI',
+    /**是否是绿色版本 */
+    ISGREEN: 'ISGREEN',
 });
 
 const pageParams = CommonUtil.paramsToJson()
@@ -290,6 +292,15 @@ class StorageMgr {
     public get hallHandTimes(): number {
         var item = this.loadItem(StorageKey.HALLHANDANI);
         return item ? Number(item) : 0;
+    }
+
+    /**是否是绿色版本 */
+    public set isGreen(isGreen: number) {
+        this.saveItem(StorageKey.ISGREEN, isGreen);
+    }
+    public get isGreen(): number {
+        var item = this.loadItem(StorageKey.ISGREEN);
+        return item ? Number(item) : 1;
     }
 
     /**弹过商城次数 */

@@ -1,48 +1,48 @@
 
-turntable.png
-size: 2048,2048
+WheelofFortune.png
+size: 1871,1871
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 d
   rotate: false
-  xy: 2, 1896
+  xy: 150, 81
   size: 28, 28
   orig: 30, 30
   offset: 1, 1
   index: -1
 g
-  rotate: false
-  xy: 492, 1253
+  rotate: true
+  xy: 2, 433
   size: 692, 671
   orig: 694, 671
   offset: 1, 0
   index: -1
 j
-  rotate: false
-  xy: 32, 1715
-  size: 66, 209
+  rotate: true
+  xy: 2, 2
+  size: 70, 211
   orig: 70, 211
-  offset: 2, 2
+  offset: 0, 0
   index: -1
 xg
   rotate: false
-  xy: 372, 1594
-  size: 118, 330
-  orig: 120, 335
-  offset: 1, 4
+  xy: 2, 74
+  size: 146, 357
+  orig: 150, 362
+  offset: 2, 3
   index: -1
 y1
   rotate: false
-  xy: 100, 1652
-  size: 270, 272
-  orig: 283, 289
-  offset: 5, 9
+  xy: 150, 111
+  size: 320, 320
+  orig: 330, 330
+  offset: 5, 5
   index: -1
 y3
   rotate: false
-  xy: 1186, 1182
+  xy: 2, 1127
   size: 738, 742
   orig: 740, 743
-  offset: 1, 1
+  offset: 0, 1
   index: -1

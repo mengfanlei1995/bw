@@ -219,16 +219,19 @@ export default class MoneyRecords extends UIScreen {
             } else {
                 if (detailsInfo.total == 0) {
                     this.datas = [];
-                    this.layout.total(this.datas.length)
                 }
             }
             if (this.datas && this.datas.length > 0) {
                 this.node_noRecord.active = false;
-                this.layout.total(this.datas.length)
             } else {
                 if (this.currentPage == 1) this.node_noRecord.active = true;
             }
+            this.layout.total(this.datas.length)
         }
+    }
+
+    onClickCustomer(){
+        UIMgr.show('prefab/hall/Customer', 'Customer');
     }
 
 }

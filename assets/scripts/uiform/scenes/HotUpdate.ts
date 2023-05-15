@@ -1,5 +1,4 @@
 import SysConfig from "../../data/SysConfig";
-import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
 import SoundMgr from "../../mgr/SoundMgr";
 import StorageMgr from "../../mgr/StorageMgr";
@@ -32,20 +31,11 @@ export default class HotUpdate extends UIScene {
 
     async onLoad() {
         this._initView();
-        let needUpdate: boolean = false
+        let needUpdate: boolean = false;
         //优先读取强更配置并检测是否需要强更
-        // let config = await NetMgr.inst.getVersion();
-        // this.stopMock = true;
-        // if (!config) {
         let config = await NetMgr.inst.getServerVersion();
         if (config) {
             config = JSON.parse(config)
-        } else {
-        }
-        // } else {
-        // }
-        // console.log(`getversion:`, JSON.stringify(config))
-        if (config) {
             let { device_id, apkVersion } = SysConfig.systemInfo
             /**设备号存在，并且只更新白名单，并且该设备号在白名单，则需要更新 */
             let whiteConfig: WhiteConfig = config.whiteConfig;
@@ -55,33 +45,26 @@ export default class HotUpdate extends UIScene {
             //走白名单的设备
             if (whiteChannelSwitchOn && inWhite) {
                 const { mode, force, ver } = whiteChannelConfig
-                let ret = CommonUtil.versionCompare(mode == 1 ? apkVersion : SysConfig.version, ver)
+                let ret = CommonUtil.versionCompare(mode == 1 ? apkVersion : SysConfig.version, ver);
                 //console.log(`检测白名单版本:`, ret)
                 if (ret < 0) {
-                    let isForce: boolean = !!force
-                    this.selectUpdateMode(mode, isForce, apkVersion, ver, config.packageUrl)
-                    needUpdate = true
+                    let isForce: boolean = !!force;
+                    this.selectUpdateMode(mode, isForce, apkVersion, ver, config.packageUrl);
+                    needUpdate = true;
                 }
-            }
-            //其它正常玩家
-            else {
-                //console.log(`其它正常玩家走通用配置:`)
+            } else {
+                //其它正常玩家
                 let normalConfig: ChannelConfig = config.commonConfig || new ChannelConfig(SysConfig.version);
-
-                const { mode, force, ver } = normalConfig
-
+                const { mode, force, ver } = normalConfig;
                 let switchOn: boolean = !!normalConfig.switch;
-
                 if (switchOn) {
-                    //console.log(`channelConfig`, JSON.stringify(normalConfig))
-                    //渠道更新开关
-                    let channelMode: number = mode
-                    let isForce: boolean = force == 1
-                    let ret = CommonUtil.versionCompare(channelMode == 1 ? apkVersion : SysConfig.version, ver)
+                    let channelMode: number = mode;
+                    let isForce: boolean = force == 1;
+                    let ret = CommonUtil.versionCompare(channelMode == 1 ? apkVersion : SysConfig.version, ver);
                     //console.log(`检测通用配置版本号`, switchOn, ret)
                     if (ret < 0) {
-                        this.selectUpdateMode(channelMode, isForce, apkVersion, ver, config.packageUrl)
-                        needUpdate = true
+                        this.selectUpdateMode(channelMode, isForce, apkVersion, ver, config.packageUrl);
+                        needUpdate = true;
                     }
                 }
             }
@@ -92,22 +75,6 @@ export default class HotUpdate extends UIScene {
         }
     }
 
-    private stopMock: boolean = false;
-    /**模拟进度条，对下个场景预加载时使用，避免进去时，下个场景出现卡顿现象 */
-    private mockProgress() {
-        if (this.stopMock) return;
-        let currPercent: number = this.getPercent();
-
-        this.scheduleOnce(
-            () => {
-                currPercent += 0.015
-                if (currPercent >= 1) this.stopMock = true;
-                this.setPercent(currPercent)
-                this.mockProgress()
-            },
-            0.015
-        )
-    }
 
     /**
      * 选择更新模式
@@ -273,10 +240,6 @@ export default class HotUpdate extends UIScene {
         } else {
             SendMgr.sendLogin(null, Login_SessionCmd);
         }
-    }
-
-    protected onEnable(): void {
-        this.mockProgress()
     }
 
 }

@@ -26,8 +26,6 @@ class SysConfig {
     isSettling: boolean = false;
     /**是否处于后台模式 */
     isHide: boolean = false;
-    /**是否为绿色版本 */
-    isGreen: boolean = true;
 
     sceneId: string = "appStart";
 

@@ -36,7 +36,9 @@ export const HALL_EVT = cc.Enum({
     /**打开弹窗 */
     OPEN_WINDOWS: "HE_16",
     /**更新手机号 */
-    UPDATE_PHONE: 'HE_17'
+    UPDATE_PHONE: 'HE_17',
+    /**修改提现信息 */
+    UPDATE_WITHDRAW: "HE_18"
 })
 
 /**手指动画，显示隐藏事件 */

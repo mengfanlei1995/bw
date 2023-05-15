@@ -3,10 +3,12 @@ import UserData from "../data/UserData";
 import { HALL_EVT } from "../enum/DeskEnum";
 import { SocketEvent } from "../enum/SocketEnum";
 import EventMgr from "../mgr/EventMgr";
+import LangMgr from "../mgr/LangMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
-import { Push_ActivityCmd, Push_ActivityNextDayCmd, Push_BonusCmd, Push_BonusRechargeCmd, Push_BonusWithdrawCmd, Push_MarqueeCmd, Push_MarqueeSubCmd, Push_VipCmd, Push_VipUpgradeCmd, Push_WalletCmd, Push_Wallet_ChangeCmd } from "./CmdData";
+import { Push_AccountCmd, Push_Account_OffCmd, Push_ActivityCmd, Push_ActivityNextDayCmd, Push_BonusCmd, Push_BonusRechargeCmd, Push_BonusWithdrawCmd, Push_MarqueeCmd, Push_MarqueeSubCmd, Push_VipCmd, Push_VipUpgradeCmd, Push_WalletCmd, Push_Wallet_ChangeCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
+import SocketMgr from "./SocketMgr";
 import { ExternalMessage } from "./proto/ExternalMessage";
 import { GameUserWalletNotifyVO, HallPopVO, decodeGameUserWalletNotifyVO, decodeHallPopVO } from "./proto/core";
 import { ActNextDayNotifyVO, LoginWalletVO, VipUpgradeNotifyVO, decodeActNextDayNotifyVO, decodeVipUpgradeNotifyVO } from "./proto/hall";
@@ -27,6 +29,7 @@ class WsPushMgr {
         } else if (data.cmdMerge == CmdMgr.getMergeCmd(Push_ActivityCmd, Push_ActivityNextDayCmd)) {
             //隔日充值通知
             let info: ActNextDayNotifyVO = decodeActNextDayNotifyVO(data.data);
+            EventMgr.emit(HALL_EVT.DESK_RELOAD);
             UIMgr.show('prefab/hall/RechargeIncome', 'RechargeIncome', { isClick: true, info: info.expand });
         } else if (data.cmdMerge == CmdMgr.getMergeCmd(Push_VipCmd, Push_VipUpgradeCmd)) {
             //vip升级
@@ -42,6 +45,15 @@ class WsPushMgr {
             //跑马灯
             let info: HallPopVO = decodeHallPopVO(data.data);
             MarqueeData.refresh(info);
+        } else if (data.cmdMerge == CmdMgr.getMergeCmd(Push_AccountCmd, Push_Account_OffCmd)) {
+            //账号被挤掉
+            UIMgr.goLogin(() => {
+                UIMgr.showToast(LangMgr.sentence('e0347'));
+            });
+            StorageMgr.sessionId = '';
+            StorageMgr.userId = '';
+            UserData.userInfo = {};
+            SocketMgr.close();
         } else {
             EventMgr.emit(SocketEvent.WS_MSG_PUSH, { mergeCmd: data.cmdMerge, code: data.responseStatus, data: data.data });
         }

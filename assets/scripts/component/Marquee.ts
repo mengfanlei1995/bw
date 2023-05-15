@@ -39,7 +39,7 @@ export default class Marquee extends UIFixed {
             this.diffX = 0;
             this.scheduleOnce(this.checkNext.bind(this), this.waitTime);
         } else {
-            this.lb_str.node.x -= .75;
+            this.lb_str.node.x -= .95;
         }
     }
 
@@ -61,7 +61,7 @@ export default class Marquee extends UIFixed {
         this.node.opacity = show ? 255 : 0;
 
         if (!show) {
-            this.scheduleOnce(this.checkNext.bind(this), 7);
+            this.scheduleOnce(this.checkNext.bind(this), 10);
         } else {
             this.lb_str.string = marqueInfo?.msg;
             this.scheduleOnce(() => {

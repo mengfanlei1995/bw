@@ -4,7 +4,7 @@ import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
-import { BetCmd, BindPhoneCmd, BindPhone_BindCmd, BindPhone_ChangeCmd, BindPhone_OTPCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_ForgetSubmitCmd, Login_OTPCmd, PopupCmd, Popup_InfoCmd, RechargeCmd, Recharge_InfoCmd, Recharge_RecordCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, Refer_Top20Cmd, SystemConfigCmd, SystemConfig_InfoCmd, TransactionCmd, Transaction_InfoCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd, WithdrawCmd, Withdraw_BindBankCmd, Withdraw_InfoCmd, Withdraw_RecordCmd } from "./CmdData";
+import { BetCmd, BindPhoneCmd, BindPhone_BindCmd, BindPhone_ChangeCmd, BindPhone_OTPCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_ForgetSubmitCmd, Login_OTPCmd, PayCmd, Pay_RechargeCmd, Pay_WithdrawCmd, PopupCmd, Popup_InfoCmd, RechargeCmd, Recharge_InfoCmd, Recharge_RecordCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, Refer_Top20Cmd, SystemConfigCmd, SystemConfig_InfoCmd, TransactionCmd, Transaction_InfoCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd, WithdrawCmd, Withdraw_BindBankCmd, Withdraw_InfoCmd, Withdraw_RecordCmd } from "./CmdData";
 import { HallCmd } from "./CmdData";
 import { LoginCmd, Login_GuestCmd, Login_PhoneCmd, Login_SessionCmd, UserCmd, User_ChangeHeadCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
@@ -100,11 +100,11 @@ class SendMgr {
     /**
      * 发送验证码
      */
-    public async sendSms(subCmd: number, params: LoginDTO = {}): Promise<string> {
+    public async sendSms(subCmd: number, params: LoginDTO = {}): Promise<boolean> {
         params = Object.assign(loginCommonParams(), params);
-        return new Promise<string>(resolve => {
+        return new Promise<boolean>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(LoginCmd, subCmd), encodeLoginDTO(params)), async (code: number, data: Uint8Array) => {
-                resolve(code == 0 ? decodeLoginMobileSmsVO(data).smsCode : null);
+                resolve(code == 0);
             })
         })
     }
@@ -402,7 +402,7 @@ class SendMgr {
         //     return;
         // }
         return new Promise<PayRechargeOrderVO>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(PopupCmd, Popup_InfoCmd), encodePayRechargeOrderDTO(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(PayCmd, Pay_RechargeCmd), encodePayRechargeOrderDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodePayRechargeOrderVO(data) : null);
             })
         })
@@ -411,17 +411,17 @@ class SendMgr {
     /**发起提现 */
     public async sendWithdraw(params: PayWithdrawOrderDTO): Promise<MyBaseActionVO> {
         return new Promise<MyBaseActionVO>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(PopupCmd, Popup_InfoCmd), encodePayWithdrawOrderDTO(params)), (code: number, data: Uint8Array) => {
+            this.send(commonParams(CmdMgr.getMergeCmd(PayCmd, Pay_WithdrawCmd), encodePayWithdrawOrderDTO(params)), (code: number, data: Uint8Array) => {
                 resolve(code === 0 ? decodeMyBaseActionVO(data) : null);
             })
         })
     }
 
     /**绑定 发送验证码 */
-    public async sendBindSms(params: PhoneSmsDTO): Promise<PhoneSmsVO> {
-        return new Promise<PhoneSmsVO>(resolve => {
+    public async sendBindSms(params: PhoneSmsDTO): Promise<boolean> {
+        return new Promise<boolean>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(BindPhoneCmd, BindPhone_OTPCmd), encodePhoneSmsDTO(params)), (code: number, data: Uint8Array) => {
-                resolve(code === 0 ? decodePhoneSmsVO(data) : null);
+                resolve(code === 0);
             })
         })
     }

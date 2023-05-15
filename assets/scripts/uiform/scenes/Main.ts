@@ -70,6 +70,7 @@ export default class Main extends UIScene {
             }
             SysConfig.policyUrl = config.policyUrl;
             SysConfig.tcUrl = config.tcUrl;
+            SysConfig.telegram = config.telegram;
         }
         return result;
     }

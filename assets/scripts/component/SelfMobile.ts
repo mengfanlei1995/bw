@@ -1,7 +1,6 @@
 import UserData from "../data/UserData";
 import { HALL_EVT } from "../enum/DeskEnum";
 import EventMgr from "../mgr/EventMgr";
-import StorageMgr from "../mgr/StorageMgr";
 
 const { ccclass, property } = cc._decorator;
 
@@ -21,6 +20,6 @@ export default class SelfMobile extends cc.Component {
     }
 
     updatePhone() {
-        this.node.getComponent(cc.Label).string = `${StorageMgr.phone}` || '';
+        this.node.getComponent(cc.Label).string = `${UserData.userInfo.phone}` || '';
     }
 }

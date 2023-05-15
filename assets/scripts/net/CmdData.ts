@@ -192,3 +192,7 @@ export const Push_BonusWithdrawCmd: number = 2;
 //跑马灯
 export const Push_MarqueeCmd: number = 1017;
 export const Push_MarqueeSubCmd: number = 1;
+
+//账号相关
+export const Push_AccountCmd: number = 1018;
+export const Push_Account_OffCmd: number = 1;

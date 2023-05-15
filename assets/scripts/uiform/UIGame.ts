@@ -194,8 +194,9 @@ export default class UIGame extends UIScene {
         let sourcePos = isSelf ? this.selfChipsSourcePos : this.chipsSourcePos;
         for (let i = 0; i < areaType.length; i++) {
             await CocosUtil.sleepSync(i * 0.01);
-            if (i % 5 == 0) SoundMgr.playEffectByBundle('common', 'audio/betchips');
+            if (!this.isBetTime) return;
             if (SysConfig.isHide) break;
+            if (i % 5 == 0) SoundMgr.playEffectByBundle('common', 'audio/betchips');
             if (!isSelf) this.getChipsSkel.setAnimation(0, "chu", false);
             if (!cc.isValid(this.node) || this.curTime <= 0) return;
             let targetAreaNode: cc.Node = this.getChipsAreaNode(areaType[i]);
@@ -377,7 +378,7 @@ export default class UIGame extends UIScene {
             this.isNotBet = false;
         }, deleayTime)
         let chips = this.betNums[this.betIndex];
-        let bonus: number = SysConfig.isGreen ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance
+        let bonus: number = StorageMgr.isGreen ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance
         if (chips * 100 > bonus) {
             // if (StorageMgr.clickAddCashTimes < 2) {
             //     StorageMgr.clickAddCashTimes++;

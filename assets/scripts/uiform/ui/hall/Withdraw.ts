@@ -1,4 +1,5 @@
 import UserData from "../../../data/UserData";
+import { HALL_EVT } from "../../../enum/DeskEnum";
 import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
@@ -45,7 +46,12 @@ export default class Withdraw extends UIScreen {
     private levelWithdraw = null;
 
     protected onEnable(): void {
+        EventMgr.on(HALL_EVT.UPDATE_WITHDRAW, this.initWithdrawInfo, this);
         this.initWithdrawInfo();
+    }
+
+    protected onDisable(): void {
+        EventMgr.off(HALL_EVT.UPDATE_WITHDRAW, this.initWithdrawInfo, this);
     }
 
     /** 
@@ -101,7 +107,7 @@ export default class Withdraw extends UIScreen {
 
     /**提现 */
     async onClickWithdraw() {
-        if (!StorageMgr.phone) {
+        if (!UserData.userInfo.phone) {
             UIMgr.show('prefab/hall/BindPhone', 'BindPhone', 1);
             return;
         }
@@ -175,7 +181,7 @@ export default class Withdraw extends UIScreen {
 
     /**绑定银行卡 */
     onClickAddCard() {
-        if (!StorageMgr.phone) {
+        if (!UserData.userInfo.phone) {
             UIMgr.show('prefab/hall/BindPhone', 'BindPhone', 1);
             return;
         }

@@ -1,3 +1,5 @@
+import { HALL_EVT } from "../../../enum/DeskEnum";
+import EventMgr from "../../../mgr/EventMgr";
 import LangMgr from "../../../mgr/LangMgr";
 import SendMgr from "../../../net/SendMgr";
 import CommonUtil from "../../../utils/CommonUtil";
@@ -40,6 +42,7 @@ export default class ConfirmInfo extends UIWindow {
         if (result) {
             this.hide();
             UIMgr.hide('Bank');
+            EventMgr.emit(HALL_EVT.UPDATE_WITHDRAW);
         }
     }
 
