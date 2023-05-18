@@ -38,8 +38,9 @@ export default class SwiperPage extends cc.Component {
                 UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: false, vipLevel: 0 });
                 break;
             case 2:
-                if (cc.sys.isNative) JsbUitl.openWebView(skipPage);
-                else cc.sys.openURL(skipPage);
+                cc.sys.openURL(skipPage);
+                // if (cc.sys.isNative) JsbUitl.openWebView(skipPage);
+                // else cc.sys.openURL(skipPage);
                 break;
             case 3:
                 UIMgr.show(`prefab/hall/${skipPage}`, skipPage);

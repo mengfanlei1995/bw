@@ -155,11 +155,12 @@ export default class AddCash extends UIScreen {
 
     /**打开充值链接 */
     openUrl(url: string = "") {
-        if (cc.sys.isBrowser) {
-            cc.sys.openURL(url);
-        } else {
-            JsbUitl.openWebView(url);
-        }
+        cc.sys.openURL(url);
+        // if (cc.sys.isBrowser) {
+        //     cc.sys.openURL(url);
+        // } else {
+        //     JsbUitl.openWebView(url);
+        // }
     }
 
     /**金额选择 */

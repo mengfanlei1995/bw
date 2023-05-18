@@ -1,4 +1,5 @@
 import SysConfig from "../../data/SysConfig";
+import { SocketEvent } from "../../enum/SocketEnum";
 import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
 import StorageMgr from "../../mgr/StorageMgr";
@@ -83,9 +84,23 @@ export default class Login extends UIScene {
 
     private isShowPass: boolean = false;
 
+    private loginFunc: Function = null;
+
     start(): void {
         this.resetContent();
         this._init();
+    }
+
+    onEnable(): void {
+        EventMgr.on(SocketEvent.WS_CONNECTED, this.wsConnected, this);
+    }
+
+    onDisable(): void {
+        EventMgr.off(SocketEvent.WS_CONNECTED, this.wsConnected, this);
+    }
+
+    wsConnected() {
+        this.loginFunc && this.loginFunc();
     }
 
     _init() {
@@ -167,6 +182,7 @@ export default class Login extends UIScene {
 
     async onGuestLogin(e: cc.Event.EventTouch) {
         this._setButtonVaild(false);
+        this.loginFunc = this.onGuestLogin;
         let result = await SendMgr.sendLogin();
         if (result) {
             this._loginSuccess();
@@ -205,6 +221,7 @@ export default class Login extends UIScene {
             return;
         }
         let code = this.ed_code.string;
+        this.loginFunc = this.onPhoneLogin;
         if (this.toggle_Login.isChecked) {
             this._setButtonVaild(false);
             let result = await SendMgr.sendLogin({ mobile, mobilePassword }, Login_PhoneCmd);

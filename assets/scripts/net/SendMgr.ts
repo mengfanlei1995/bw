@@ -2,6 +2,7 @@ import SysConfig from "../data/SysConfig";
 import UserData from "../data/UserData";
 import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
+import JsbUitl from "../utils/JsbUitl";
 import LogUtil from "../utils/LogUtil";
 import LongUtil from "../utils/LongUtil";
 import { BetCmd, BindPhoneCmd, BindPhone_BindCmd, BindPhone_ChangeCmd, BindPhone_OTPCmd, DailyBonusCmd, DailyBonus_InfoCmd, DailyBonus_SignCmd, DailyBonus_TaskReceiveCmd, EmailCmd, Email_CollectCmd, Email_DeleteCmd, Email_InfoCmd, Email_ReadCmd, ExitRoomCmd, GullakCmd, Gullak_InfoCmd, Hall_GameListCmd, Hall_InfoCmd, JoinRoomCmd, Login_ForgetSubmitCmd, Login_OTPCmd, PayCmd, Pay_RechargeCmd, Pay_WithdrawCmd, PopupCmd, Popup_InfoCmd, RechargeCmd, Recharge_InfoCmd, Recharge_RecordCmd, RecordListCmd, ReferCmd, Refer_InvitationCmd, Refer_InvitationLinkCmd, Refer_MyInvitationCmd, Refer_MyRewardCmd, Refer_Top20Cmd, SystemConfigCmd, SystemConfig_InfoCmd, TransactionCmd, Transaction_InfoCmd, User_ChangeNameCmd, User_InfoCmd, VipCmd, Vip_InfoCmd, WithdrawCmd, Withdraw_BindBankCmd, Withdraw_InfoCmd, Withdraw_RecordCmd } from "./CmdData";
@@ -40,7 +41,7 @@ const commonParams = function (mergeCmd: number, data: Uint8Array, cmdCode: numb
 const loginCommonParams = function (): LoginDTO {
     let common: LoginDTO = {
         channel: SysConfig.cid,
-        afChannel: StorageMgr.mediaId,
+        afData: StorageMgr.afLaunch,
         appVersion: SysConfig.version,
         bundleId: SysConfig.pkgName,
         // code: '11',
@@ -87,6 +88,7 @@ class SendMgr {
                     let userInfo: LoginVO = decodeLoginVO(data);
                     UserData.initUserInfo(userInfo);
                     UIMgr.goHall();
+                    JsbUitl.postAfEvent({ eventName: 'loginSuccess' });
                 } else {
                     UIMgr.goLogin(() => {
                         StorageMgr.sessionId = '';
@@ -403,8 +405,10 @@ class SendMgr {
         //     UIMgr.show('prefab/hall/BindPhone', 'BindPhone');
         //     return;
         // }
+        UIMgr.showLoading();
         return new Promise<PayRechargeOrderVO>(resolve => {
             this.send(commonParams(CmdMgr.getMergeCmd(PayCmd, Pay_RechargeCmd), encodePayRechargeOrderDTO(params)), (code: number, data: Uint8Array) => {
+                UIMgr.hideLoading();
                 resolve(code === 0 ? decodePayRechargeOrderVO(data) : null);
             })
         })

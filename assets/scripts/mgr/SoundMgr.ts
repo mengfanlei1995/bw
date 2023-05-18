@@ -6,7 +6,7 @@ class SoundMgr {
 
     private audioCache: { [key: string]: cc.AudioClip } = cc.js.createMap();
     private currEffectId: number = -1;
-    private currMusicId: number = -1;
+    private currMusicId: number = 0;
     public bundleAudioCache: { [key: string]: cc.AudioClip } = cc.js.createMap();
 
     init() {
@@ -18,7 +18,7 @@ class SoundMgr {
             this.volume.effectVolume = 1;
         }
         this.setVolumeToLocal();
-        this.playMusic();
+        // this.playMusic();
     }
 
     /** volume */
@@ -49,11 +49,12 @@ class SoundMgr {
 
     public stopMusic() {
         cc.audioEngine.stopMusic();
+        this.currMusicId = 0;
     }
 
     /** 播放背景音乐 */
     public async playMusic(url: string = "audio/bgm", loop = true) {
-        if (!url || url === '') return;
+        if (!url || url === '' || this.currMusicId) return;
         if (cc.audioEngine.isMusicPlaying()) return;
         if (this.audioCache[url]) {
             cc.audioEngine.playMusic(this.audioCache[url], loop);

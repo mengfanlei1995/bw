@@ -124,9 +124,9 @@ class JsbUitl {
                 let clipBoard: string = this.getClipBoard();
                 if (clipBoard) {
                     let inviteData = CommonUtil.paramsToJson(clipBoard);
-                    if (inviteData?.ic && inviteData?.it) {
-                        StorageMgr.invateCode = inviteData?.ic;
-                        StorageMgr.invateType = inviteData?.it;
+                    if (inviteData?.af_sub1 && inviteData?.af_sub2) {
+                        StorageMgr.invateCode = inviteData?.af_sub1;
+                        StorageMgr.invateType = inviteData?.af_sub2;
                     }
                 }
             }
@@ -201,11 +201,11 @@ class JsbUitl {
 
             ListenerMgr.create(
                 (launch: afLaunchData) => {
-                    let { ic, it, afid, af_status } = launch;
+                    let { af_sub1, af_sub2, afid, af_status } = launch;
                     if (!StorageMgr.invateCode)
-                        StorageMgr.invateCode = ic || '';
+                        StorageMgr.invateCode = af_sub1 || '';
                     if (!StorageMgr.invateType)
-                        StorageMgr.invateType = it || '';
+                        StorageMgr.invateType = af_sub2 || '';
                     if (!StorageMgr.afId)
                         StorageMgr.afId = afid || '';
                     if (StorageMgr.mediaId == 'Organic')
@@ -494,6 +494,7 @@ class JsbUitl {
      * @param info - {eventName,params}
      */
     public postAfEvent(info: any) {
+        if (!info.params) info.params = {};
         // info && (info.time = Date.now())
         callMethod(callBackEnum.postAfEvent, '(Ljava/lang/String;)V', info)
     }

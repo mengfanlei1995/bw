@@ -37,11 +37,10 @@ export default class GameHead extends UIScreen {
 
     start(): void {
         this.soundSpriteFrameChange = StorageMgr.effectPercent;
-        SoundMgr.resumeOrPauseMusic(false);
     }
 
     onDestroy(): void {
-        SoundMgr.resumeOrPauseMusic(true);
+        
     }
 
     private onHelpClick(e: cc.Event.EventTouch) {
@@ -68,6 +67,10 @@ export default class GameHead extends UIScreen {
 
     private set soundSpriteFrameChange(open: number) {
         this.btnSound.getComponent(cc.Sprite).spriteFrame = open ? this.soundOpenFrame : this.soundCloseFrame;
+    }
+
+    onClickAddCash() {
+        UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: false, vipLevel: 0 });
     }
 
     private async onBackClick(e: cc.Event.EventTouch) {

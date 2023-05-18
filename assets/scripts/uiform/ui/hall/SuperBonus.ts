@@ -138,11 +138,12 @@ export default class SuperBonus extends UIWindow {
 
     /**打开充值链接 */
     openUrl(url: string = "") {
-        if (cc.sys.isBrowser) {
-            cc.sys.openURL(url)
-        } else {
-            JsbUitl.openWebView(url)
-        }
+        cc.sys.openURL(url)
+        // if (cc.sys.isBrowser) {
+        //     cc.sys.openURL(url)
+        // } else {
+        //     JsbUitl.openWebView(url)
+        // }
     }
 
 }

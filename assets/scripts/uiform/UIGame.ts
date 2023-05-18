@@ -163,6 +163,7 @@ export default class UIGame extends UIScene {
     }
 
     setOnLineNumber(onlinePlayers: number) {
+        if (StorageMgr.isGreen) return;
         this.lbOnLine.string = `${onlinePlayers}`;
         this.lbOnLine.node.parent.active = onlinePlayers && onlinePlayers > 0;
     }

@@ -99,7 +99,7 @@ export default class VipItem extends cc.Component {
             amount: giftInfo.pay / 100,
             activityId: giftInfo.activityId
         }
-        let result = await SendMgr.sendPay(data)
+        let result = await SendMgr.sendPay(data);
         if (result) {
             this.openUrl(result.url);
         }
@@ -107,11 +107,12 @@ export default class VipItem extends cc.Component {
 
     /**打开充值链接 */
     openUrl(url: string = "") {
-        if (cc.sys.isBrowser) {
-            cc.sys.openURL(url)
-        } else {
-            JsbUitl.openWebView(url);
-        }
+        cc.sys.openURL(url)
+        // if (cc.sys.isBrowser) {
+        //     cc.sys.openURL(url)
+        // } else {
+        //     JsbUitl.openWebView(url);
+        // }
     }
 
 }
