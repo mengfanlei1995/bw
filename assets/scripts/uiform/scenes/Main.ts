@@ -87,12 +87,12 @@ export default class Main extends UIScene {
     /**模拟进度条，对下个场景预加载时使用，避免进去时，下个场景出现卡顿现象 */
     private mockProgress() {
         let currPercent: number = this.getPercent();
-        if (currPercent < 1)
+        if (currPercent < .9)
             this.scheduleOnce(
                 () => {
                     currPercent += 0.016;
                     this.setPercent(currPercent);
-                    currPercent < 1 && this.mockProgress();
+                    currPercent < .9 && this.mockProgress();
                 },
                 0.015
             );
@@ -117,6 +117,7 @@ export default class Main extends UIScene {
     private SystemInfo = false;
     private SystemInfoInitd: boolean = false;
     async wsConnected() {
+        this.setPercent(.95);
         let result = await this.getSystemInfo();
         this.SystemInfo = result;
         this.SystemInfoInitd = true;
