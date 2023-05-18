@@ -29,6 +29,8 @@ export default class TeenPattiWar extends UIGame {
     winQSkel: sp.Skeleton = null;
     @property({ tooltip: '牌型动画Q', type: sp.Skeleton })
     cardTypeQSkel: sp.Skeleton = null;
+    @property({ tooltip: 'vs动画', type: sp.Skeleton })
+    vsSkel: sp.Skeleton = null;
     @property({ tooltip: '扑克', type: cc.Node })
     poker: cc.Node[] = [];
     @property({ tooltip: '流水预制', type: cc.Prefab })
@@ -282,6 +284,8 @@ export default class TeenPattiWar extends UIGame {
         this.isBetTime = true;
         this._reset();
         this.setPokerSkel();
+        this.vsSkel.node.active = true;
+        this.vsSkel.setAnimation(0, "vs", false)
         this.gameStart(info);
     }
 

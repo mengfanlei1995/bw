@@ -43,7 +43,7 @@ class UserData {
     }
 
     initUserInfo(userInfo: LoginVO) {
-        let { userId, nickName, headPic, phone, accountType, firstDay, first, walletVO, green, sessionId } = userInfo;
+        let { userId, nickName, headPic, phone, accountType, firstDay, first, walletVO, green, sessionId, removeKey } = userInfo;
         this.userInfo.userId = userId;
         this.userInfo.nickName = nickName;
         this.userInfo.headPic = headPic;
@@ -51,6 +51,7 @@ class UserData {
         this.userInfo.accountType = accountType;
         this.userInfo.firstDay = LongUtil.longToNumber(firstDay);
         this.userInfo.first = first;
+        this.userInfo.removeKey = removeKey;
         phone && (StorageMgr.phone = phone);
         StorageMgr.userId = userId;
         StorageMgr.isGreen = green ? 1 : 0;
@@ -82,6 +83,7 @@ interface UserInfo {
     accountType?: number;
     firstDay?: number;
     first?: boolean;
+    removeKey?: string;
     walletInfo?: WalletInfo;
 }
 

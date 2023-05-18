@@ -1,62 +1,62 @@
 
 JhandiMunda.png
-size: 268,666
+size: 1205,1205
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 tex/12
-  rotate: false
-  xy: 2, 15
+  rotate: true
+  xy: 2, 1076
   size: 127, 181
   orig: 158, 182
   offset: 15, 0
   index: -1
 tex/13
-  rotate: false
-  xy: 131, 2
+  rotate: true
+  xy: 185, 1075
   size: 128, 194
   orig: 148, 195
   offset: 10, 0
   index: -1
 tex/tz/1
-  rotate: false
-  xy: 2, 510
-  size: 131, 154
+  rotate: true
+  xy: 518, 1072
+  size: 131, 136
   orig: 131, 154
-  offset: 0, 0
+  offset: 0, 9
   index: -1
 tex/tz/2
-  rotate: false
-  xy: 135, 510
-  size: 131, 154
+  rotate: true
+  xy: 656, 1072
+  size: 131, 136
   orig: 131, 154
-  offset: 0, 0
+  offset: 0, 9
   index: -1
 tex/tz/3
-  rotate: false
-  xy: 2, 354
-  size: 131, 154
+  rotate: true
+  xy: 381, 1073
+  size: 130, 135
   orig: 131, 154
-  offset: 0, 0
+  offset: 0, 10
   index: -1
 tex/tz/4
-  rotate: false
-  xy: 135, 354
-  size: 131, 154
+  rotate: true
+  xy: 794, 1072
+  size: 131, 135
   orig: 131, 154
-  offset: 0, 0
+  offset: 0, 10
   index: -1
 tex/tz/5
-  rotate: false
-  xy: 2, 198
-  size: 131, 154
+  rotate: true
+  xy: 931, 1072
+  size: 131, 135
   orig: 131, 154
-  offset: 0, 0
+  offset: 0, 9
   index: -1
 tex/tz/6
-  rotate: false
-  xy: 135, 198
-  size: 131, 154
+  rotate: true
+  xy: 1068, 1072
+  size: 131, 135
   orig: 131, 154
-  offset: 0, 0
+  offset: 0, 10
   index: -1

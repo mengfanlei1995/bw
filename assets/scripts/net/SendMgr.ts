@@ -12,7 +12,7 @@ import NetMgr from "./NetMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage, encodeExternalMessage } from "./proto/ExternalMessage";
 import { MyBaseActionVO, decodeMyBaseActionVO } from "./proto/core";
-import { BundleDTO, BundleVO, DailyBonusAwardDTO, DailyBonusLongVO, DailyBonusSignInVipAwardVO, DailyBonusVO, GullakMainInfoV2VO, HomepageVO, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, PayRechargeOrderDTO, PayRechargeOrderVO, PayWithdrawOrderDTO, PhoneDTO, PhoneSmsDTO, PhoneSmsVO, PopupDTO, PopupListVO, RechargeInfoResponseV2VO, RechargeInfoV2DTO, RechargePageDTO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneRechargeVO, TimezoneReferRewardVO, TimezoneTransactionVO, TimezoneWithdrawVO, TransactionDTO, VipInfoV2VO, WithdrawBankDTO, WithdrawInfoVO, WithdrawPageDTO, decodeBundleVO, decodeDailyBonusLongVO, decodeDailyBonusSignInVipAwardVO, decodeDailyBonusVO, decodeGullakMainInfoV2VO, decodeHomepageGameVO, decodeHomepageVO, decodeLoginMobileSmsVO, decodeMailPageVO, decodePayRechargeOrderVO, decodePhoneSmsVO, decodePopupListVO, decodeRechargeInfoResponseV2VO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneRechargeVO, decodeTimezoneReferRewardVO, decodeTimezoneTransactionVO, decodeTimezoneWithdrawVO, decodeVipInfoV2VO, decodeWithdrawInfoVO, encodeBundleDTO, encodeDailyBonusAwardDTO, encodeMailOptDTO, encodeMailPageDTO, encodePayRechargeOrderDTO, encodePayWithdrawOrderDTO, encodePhoneDTO, encodePhoneSmsDTO, encodePopupDTO, encodeRechargeInfoV2DTO, encodeRechargePageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO, encodeTransactionDTO, encodeWithdrawBankDTO, encodeWithdrawPageDTO } from "./proto/hall";
+import { BundleChannelDTO, BundleChannelVO, DailyBonusAwardDTO, DailyBonusLongVO, DailyBonusSignInVipAwardVO, DailyBonusVO, GullakMainInfoV2VO, HomepageVO, LoginMobileSmsVO, MailOptDTO, MailPageDTO, MailPageVO, PayRechargeOrderDTO, PayRechargeOrderVO, PayWithdrawOrderDTO, PhoneDTO, PhoneSmsDTO, PhoneSmsVO, PopupDTO, PopupListVO, RechargeInfoResponseV2VO, RechargeInfoV2DTO, RechargePageDTO, RedDotVO, ReferInvitationMapUrlVO, ReferInvitationNowVO, ReferInvitationTotalVO, ReferRankTop20DTO, ReferRankVO, ReferRewardPageDTO, ReferTotalPageDTO, TimezoneRechargeVO, TimezoneReferRewardVO, TimezoneTransactionVO, TimezoneWithdrawVO, TransactionDTO, VipInfoV2VO, WithdrawBankDTO, WithdrawInfoVO, WithdrawPageDTO, decodeBundleChannelVO, decodeDailyBonusLongVO, decodeDailyBonusSignInVipAwardVO, decodeDailyBonusVO, decodeGullakMainInfoV2VO, decodeHomepageGameVO, decodeHomepageVO, decodeLoginMobileSmsVO, decodeMailPageVO, decodePayRechargeOrderVO, decodePhoneSmsVO, decodePopupListVO, decodeRechargeInfoResponseV2VO, decodeRedDotVO, decodeReferInvitationMapUrlVO, decodeReferInvitationNowVO, decodeReferInvitationTotalVO, decodeReferRankVO, decodeTimezoneRechargeVO, decodeTimezoneReferRewardVO, decodeTimezoneTransactionVO, decodeTimezoneWithdrawVO, decodeVipInfoV2VO, decodeWithdrawInfoVO, encodeBundleChannelDTO, encodeDailyBonusAwardDTO, encodeMailOptDTO, encodeMailPageDTO, encodePayRechargeOrderDTO, encodePayWithdrawOrderDTO, encodePhoneDTO, encodePhoneSmsDTO, encodePopupDTO, encodeRechargeInfoV2DTO, encodeRechargePageDTO, encodeReferRankTop20DTO, encodeReferRewardPageDTO, encodeReferTotalPageDTO, encodeTransactionDTO, encodeWithdrawBankDTO, encodeWithdrawPageDTO } from "./proto/hall";
 import { encodeUserUpdateHeadPicDTO } from "./proto/hall";
 import { UserUpdateNicknameDTO } from "./proto/hall";
 import { HomepageGameDTO } from "./proto/hall";
@@ -39,7 +39,8 @@ const commonParams = function (mergeCmd: number, data: Uint8Array, cmdCode: numb
 
 const loginCommonParams = function (): LoginDTO {
     let common: LoginDTO = {
-        appChannel: StorageMgr.mediaId,
+        channel: SysConfig.cid,
+        afChannel: StorageMgr.mediaId,
         appVersion: SysConfig.version,
         bundleId: SysConfig.pkgName,
         // code: '11',
@@ -87,10 +88,11 @@ class SendMgr {
                     UserData.initUserInfo(userInfo);
                     UIMgr.goHall();
                 } else {
-                    StorageMgr.sessionId = '';
-                    StorageMgr.userId = '';
-                    UserData.userInfo = {};
-                    UIMgr.goLogin();
+                    UIMgr.goLogin(() => {
+                        StorageMgr.sessionId = '';
+                        StorageMgr.userId = '';
+                        UserData.userInfo = {};
+                    });
                 }
                 resolve(code == 0 ? decodeLoginVO(data) : null);
             })
@@ -454,10 +456,10 @@ class SendMgr {
     }
 
     /**获取系统配置 */
-    public async sendSystemInfo(params: BundleDTO): Promise<BundleVO> {
-        return new Promise<BundleVO>(resolve => {
-            this.send(commonParams(CmdMgr.getMergeCmd(SystemConfigCmd, SystemConfig_InfoCmd), encodeBundleDTO(params)), (code: number, data: Uint8Array) => {
-                resolve(code === 0 ? decodeBundleVO(data) : null);
+    public async sendSystemInfo(params: BundleChannelDTO): Promise<BundleChannelVO> {
+        return new Promise<BundleChannelVO>(resolve => {
+            this.send(commonParams(CmdMgr.getMergeCmd(SystemConfigCmd, SystemConfig_InfoCmd), encodeBundleChannelDTO(params)), (code: number, data: Uint8Array) => {
+                resolve(code === 0 ? decodeBundleChannelVO(data) : null);
             })
         })
     }

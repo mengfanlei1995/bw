@@ -5,11 +5,11 @@ import LongUtil from "../utils/LongUtil";
 
 class SysConfig {
     /**调试模式 */
-    readonly isDebug: number = 1;
+    readonly isDebug: number = 0;
     /**带有af统计的默认渠道值 */
     readonly defaultChannel: string = 'Organic';
     /**是否是测试环境 */
-    readonly isTest: number = 1;
+    readonly isTest: number = 0;
     /**包的时区，根据包运营的国家，配置相应的值 */
     readonly pkgTimeZone: string = 'Asia/Kolkata';
     /**包名，也就是网络请求的主域名 */
@@ -36,6 +36,8 @@ class SysConfig {
 
     /**默认telegram账号 */
     telegram: string = 'luckywinner001';
+
+    cid: string = '10102';
 
     //ws://192.168.124.13:1005/websocket 本地  http://192.168.124.13:9001
     //wss://test.bestbw.net/websocket 测试服
@@ -171,7 +173,7 @@ export interface afLaunchData {
     is_retargeting?: boolean
     adgroup?: string
     ic?: string
-    ict?: string
+    it?: string
     source?: string
     agent?: string
 }

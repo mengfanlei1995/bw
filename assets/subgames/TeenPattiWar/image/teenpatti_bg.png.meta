@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "820b5622-bfbd-419d-ab35-a1bfdfc2d9f5",
+  "uuid": "8da3739b-4361-4206-9a7a-b9c2ea8ed0fc",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -14,9 +14,9 @@
   "subMetas": {
     "teenpatti_bg": {
       "ver": "1.0.6",
-      "uuid": "d9244eef-6d10-4cb9-b2e6-ba0ec266a4d3",
+      "uuid": "d6c85c3f-f9ac-4318-b796-be9dbba9b1b0",
       "importer": "sprite-frame",
-      "rawTextureUuid": "820b5622-bfbd-419d-ab35-a1bfdfc2d9f5",
+      "rawTextureUuid": "8da3739b-4361-4206-9a7a-b9c2ea8ed0fc",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,

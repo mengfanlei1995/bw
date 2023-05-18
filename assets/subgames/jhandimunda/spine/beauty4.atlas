@@ -1,0 +1,83 @@
+
+beauty4.png
+size: 407,407
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Lshou
+  rotate: false
+  xy: 2, 208
+  size: 179, 166
+  orig: 179, 166
+  offset: 0, 0
+  index: -1
+Rshou
+  rotate: true
+  xy: 2, 30
+  size: 176, 166
+  orig: 176, 166
+  offset: 0, 0
+  index: -1
+body
+  rotate: true
+  xy: 212, 277
+  size: 128, 191
+  orig: 128, 191
+  offset: 0, 0
+  index: -1
+erhuan
+  rotate: false
+  xy: 183, 265
+  size: 12, 31
+  orig: 15, 33
+  offset: 2, 1
+  index: -1
+eye1
+  rotate: true
+  xy: 183, 319
+  size: 55, 23
+  orig: 57, 26
+  offset: 1, 2
+  index: -1
+light
+  rotate: false
+  xy: 183, 298
+  size: 21, 19
+  orig: 23, 21
+  offset: 1, 1
+  index: -1
+tf1
+  rotate: false
+  xy: 170, 70
+  size: 109, 136
+  orig: 109, 136
+  offset: 0, 0
+  index: -1
+tf2
+  rotate: true
+  xy: 281, 98
+  size: 44, 120
+  orig: 44, 120
+  offset: 0, 0
+  index: -1
+tf3
+  rotate: false
+  xy: 281, 144
+  size: 124, 131
+  orig: 124, 131
+  offset: 0, 0
+  index: -1
+tou
+  rotate: true
+  xy: 281, 22
+  size: 74, 98
+  orig: 76, 100
+  offset: 1, 1
+  index: -1
+touying
+  rotate: false
+  xy: 2, 376
+  size: 208, 29
+  orig: 210, 31
+  offset: 1, 1
+  index: -1

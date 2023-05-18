@@ -6,7 +6,7 @@ import EventMgr from "../mgr/EventMgr";
 import LangMgr from "../mgr/LangMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import UIMgr from "../uiform/UIMgr";
-import { Push_AccountCmd, Push_Account_OffCmd, Push_ActivityCmd, Push_ActivityNextDayCmd, Push_BonusCmd, Push_BonusRechargeCmd, Push_BonusWithdrawCmd, Push_MarqueeCmd, Push_MarqueeSubCmd, Push_VipCmd, Push_VipUpgradeCmd, Push_WalletCmd, Push_Wallet_ChangeCmd } from "./CmdData";
+import { Push_AccountCmd, Push_Account_OffCmd, Push_ActivityCmd, Push_ActivityNextDayCmd, Push_BonusCmd, Push_BonusRechargeCmd, Push_BonusWithdrawCmd, Push_MarqueeCmd, Push_MarqueeSubCmd, Push_TackOut_Cmd, Push_VipCmd, Push_VipUpgradeCmd, Push_WalletCmd, Push_Wallet_ChangeCmd } from "./CmdData";
 import CmdMgr from "./CmdMgr";
 import SocketMgr from "./SocketMgr";
 import { ExternalMessage } from "./proto/ExternalMessage";
@@ -49,11 +49,19 @@ class WsPushMgr {
             //账号被挤掉
             UIMgr.goLogin(() => {
                 UIMgr.showToast(LangMgr.sentence('e0347'));
+                StorageMgr.sessionId = '';
+                StorageMgr.userId = '';
+                UserData.userInfo = {};
+                SocketMgr.close();
             });
-            StorageMgr.sessionId = '';
-            StorageMgr.userId = '';
-            UserData.userInfo = {};
-            SocketMgr.close();
+        } else if (data.cmdMerge == CmdMgr.getMergeCmd(Push_AccountCmd, Push_TackOut_Cmd)) {
+            //踢出
+            UIMgr.goLogin(() => {
+                StorageMgr.sessionId = '';
+                StorageMgr.userId = '';
+                UserData.userInfo = {};
+                SocketMgr.close();
+            });
         } else {
             EventMgr.emit(SocketEvent.WS_MSG_PUSH, { mergeCmd: data.cmdMerge, code: data.responseStatus, data: data.data });
         }

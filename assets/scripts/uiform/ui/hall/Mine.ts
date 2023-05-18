@@ -3,6 +3,7 @@ import UserData from "../../../data/UserData";
 import SoundMgr from "../../../mgr/SoundMgr";
 import StorageMgr from "../../../mgr/StorageMgr";
 import SocketMgr from "../../../net/SocketMgr";
+import JsbUitl from "../../../utils/JsbUitl";
 import UIMgr from "../../UIMgr";
 import UIScreen from "../../UIScreen";
 
@@ -21,6 +22,9 @@ export default class Mine extends UIScreen {
     @property({ tooltip: '音乐开', type: cc.Node })
     openMusicSprite: cc.Node = null;
 
+    @property({ tooltip: '删除数据key', type: cc.Label })
+    keyLabel: cc.Label = null;
+
     @property({ tooltip: '版本', type: cc.Label })
     versionLabel: cc.Label = null;
 
@@ -36,6 +40,15 @@ export default class Mine extends UIScreen {
         this.isOpenMusic = StorageMgr.bgmPercent == 1;
         this.openMusicSprite.active = this.isOpenMusic;
         this.closeMusicSprite.active = !this.isOpenMusic;
+        let removeKey = UserData.userInfo.removeKey;
+        let ketStrStart: string = removeKey.substring(0, 4);
+        let ketStrEnd: string = removeKey.substring(removeKey.length - 4);
+        this.keyLabel.string = `Key:${ketStrStart}****${ketStrEnd}`;
+    }
+
+    onClickCopyKey() {
+        JsbUitl.ClipBoard(UserData.userInfo.removeKey);
+
     }
 
     onClickBack() {
@@ -80,11 +93,12 @@ export default class Mine extends UIScreen {
     }
 
     async onLogoutClick(e: cc.Event.EventTouch) {
-        UIMgr.goLogin();
-        StorageMgr.sessionId = '';
-        StorageMgr.userId = '';
-        UserData.userInfo = {};
-        SocketMgr.close();
+        UIMgr.goLogin(() => {
+            StorageMgr.sessionId = '';
+            StorageMgr.userId = '';
+            UserData.userInfo = {};
+            SocketMgr.close();
+        });
     }
 
 }

@@ -104,8 +104,8 @@ export default class MyInvitation extends cc.Component {
         let lb_total: cc.Label = children[3].getComponent(cc.Label);
         lb_uid.string = `${uid}`;
         lb_name.string = `${name}`;
-        lb_today.string = `₹${todayBonus}`;
-        lb_total.string = `₹${totalBonus}`;
+        lb_today.string = `₹${LongUtil.longToNumber(todayBonus) / 100}`;
+        lb_total.string = `₹${LongUtil.longToNumber(totalBonus) / 100}`;
     }
     private onRemove(index: number) {
         this.datas.splice(index, 1)

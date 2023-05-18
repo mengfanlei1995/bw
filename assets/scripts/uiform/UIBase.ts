@@ -1,6 +1,6 @@
 import SysConfig from "../data/SysConfig";
 import UIBundleMgr from "./UIBundleMgr";
-import UIMgr, { UIType } from "./UIMgr";
+import UIMgr from "./UIMgr";
 
 const { ccclass, property } = cc._decorator;
 

@@ -85,6 +85,7 @@ class BundleUtil {
             this.removeBundle(bundle);
         })
         this._usedBundle.clear();
+        cc.sys.garbageCollect();
     }
 
     /**移除bnudle */

@@ -26,8 +26,7 @@ export default class Customer extends UIWindow {
     }
 
     onClickCopy() {
-        JsbUitl.ClipBoard('');
-        UIMgr.showToast(LangMgr.sentence('e0078'));
+        JsbUitl.ClipBoard(SysConfig.telegram);
     }
 
 }

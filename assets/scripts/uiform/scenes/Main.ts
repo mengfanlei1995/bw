@@ -1,4 +1,5 @@
 import SysConfig from "../../data/SysConfig";
+import { APPS_FLYER } from "../../enum/DeskEnum";
 import { SocketEvent } from "../../enum/SocketEnum";
 import EventMgr from "../../mgr/EventMgr";
 import LangMgr from "../../mgr/LangMgr";
@@ -9,7 +10,7 @@ import { Login_SessionCmd } from "../../net/CmdData";
 import NetMgr from "../../net/NetMgr";
 import SendMgr from "../../net/SendMgr";
 import SocketMgr from "../../net/SocketMgr";
-import { BundleVO } from "../../net/proto/hall";
+import { BundleChannelVO } from "../../net/proto/hall";
 import SocketClient from "../../net/ws/SocketClient";
 import CommonUtil from "../../utils/CommonUtil";
 import JsbUitl from "../../utils/JsbUitl";
@@ -35,7 +36,15 @@ export default class Main extends UIScene {
         StorageMgr.initSetting();
         StorageMgr.refreshCrossDayData();
         EventMgr.on(SocketEvent.WS_CONNECTED, this.wsConnected, this);
+        EventMgr.on(APPS_FLYER.SDK_INITED, this.afCallBack, this);
         SocketMgr.connect();
+    }
+
+    //防止第一次启动拿AF数据比较慢 等一下af数据
+    private afInitd: boolean = cc.sys.isBrowser || StorageMgr.firstStart ? true : false;
+
+    afCallBack() {
+        this.afInitd = true;
     }
 
     getIpAddress() {
@@ -53,20 +62,20 @@ export default class Main extends UIScene {
 
     async getSystemInfo(): Promise<boolean> {
         let result: boolean = true;
-        let config: BundleVO = await SendMgr.sendSystemInfo({ bundleId: SysConfig.systemInfo.app_package_name });
+        let config: BundleChannelVO = await SendMgr.sendSystemInfo({ channel: SysConfig.cid });
         if (config) {
             let ret = CommonUtil.versionCompare(SysConfig.version, config.appVersion);
             if (ret < 0) {
                 result = false;
+                let isForce = CommonUtil.versionCompare(SysConfig.version, config.forceVersion);
                 UIMgr.showDialog({
                     word: LangMgr.sentence('e0346'),
-                    type: DialogType.OkBtnAndNoCloseBtn,
-                    okTxt: 'GO',
+                    type: isForce < 0 ? DialogType.OkBtnAndNoCloseBtn : DialogType.OkCancelBtn,
                     okCb: () => {
-                        JsbUitl.goStore();
+                        // JsbUitl.goStore();
+                        cc.sys.openURL(config.downloadUrl);
                     }
                 })
-                return;
             }
             SysConfig.policyUrl = config.policyUrl;
             SysConfig.tcUrl = config.tcUrl;
@@ -81,7 +90,7 @@ export default class Main extends UIScene {
         if (currPercent < 1)
             this.scheduleOnce(
                 () => {
-                    currPercent += 0.036;
+                    currPercent += 0.016;
                     this.setPercent(currPercent);
                     currPercent < 1 && this.mockProgress();
                 },
@@ -101,13 +110,28 @@ export default class Main extends UIScene {
     }
 
     onDestroy(): void {
-        EventMgr.off(SocketEvent.WS_CONNECTED, this.wsConnected, this)
+        EventMgr.off(SocketEvent.WS_CONNECTED, this.wsConnected, this);
+        EventMgr.off(APPS_FLYER.SDK_INITED, this.afCallBack, this);
     }
 
+    private SystemInfo = false;
+    private SystemInfoInitd: boolean = false;
     async wsConnected() {
-        this.setPercent(1);
         let result = await this.getSystemInfo();
+        this.SystemInfo = result;
+        this.SystemInfoInitd = true;
+    }
+
+    private isInitLogin: boolean = false;
+
+    protected update(dt: number): void {
+        if (!this.SystemInfoInitd || !this.afInitd || this.isInitLogin) return;
+        this.setPercent(1);
+        this.isInitLogin = true;
+        let result = this.SystemInfo;
         if (result) {
+            if (!StorageMgr.firstStart)
+                StorageMgr.firstStart = 1;
             if (StorageMgr.sessionId) {
                 SendMgr.sendLogin({}, Login_SessionCmd);
             } else {

@@ -196,3 +196,4 @@ export const Push_MarqueeSubCmd: number = 1;
 //账号相关
 export const Push_AccountCmd: number = 1018;
 export const Push_Account_OffCmd: number = 1;
+export const Push_TackOut_Cmd: number = 2;

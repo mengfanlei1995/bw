@@ -1,0 +1,83 @@
+
+beauty.png
+size: 397,397
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+body
+  rotate: true
+  xy: 212, 206
+  size: 189, 183
+  orig: 189, 183
+  offset: 0, 0
+  index: -1
+earring2
+  rotate: false
+  xy: 186, 330
+  size: 16, 34
+  orig: 16, 34
+  offset: 0, 0
+  index: -1
+earringsg
+  rotate: false
+  xy: 169, 244
+  size: 22, 19
+  orig: 24, 21
+  offset: 1, 1
+  index: -1
+eye3
+  rotate: false
+  xy: 107, 241
+  size: 60, 22
+  orig: 62, 25
+  offset: 1, 1
+  index: -1
+face
+  rotate: false
+  xy: 107, 265
+  size: 77, 99
+  orig: 79, 101
+  offset: 1, 1
+  index: -1
+hair1
+  rotate: false
+  xy: 2, 240
+  size: 103, 124
+  orig: 103, 124
+  offset: 0, 0
+  index: -1
+hair2
+  rotate: true
+  xy: 184, 55
+  size: 70, 157
+  orig: 70, 157
+  offset: 0, 0
+  index: -1
+hair3
+  rotate: false
+  xy: 95, 109
+  size: 87, 129
+  orig: 87, 129
+  offset: 0, 0
+  index: -1
+lhand
+  rotate: true
+  xy: 2, 64
+  size: 174, 91
+  orig: 174, 91
+  offset: 0, 0
+  index: -1
+rhand
+  rotate: false
+  xy: 184, 127
+  size: 174, 77
+  orig: 174, 77
+  offset: 0, 0
+  index: -1
+shadow
+  rotate: false
+  xy: 2, 366
+  size: 208, 29
+  orig: 210, 31
+  offset: 1, 1
+  index: -1

@@ -1,6 +1,6 @@
 import LangMgr from "../../../mgr/LangMgr";
 import SendMgr from "../../../net/SendMgr";
-import { TimezoneReferRewardVO } from "../../../net/proto/hall";
+import { ReferRewardDateVO, TimezoneReferRewardVO } from "../../../net/proto/hall";
 import CommonUtil from "../../../utils/CommonUtil";
 import LongUtil from "../../../utils/LongUtil";
 import UIMgr from "../../UIMgr";
@@ -40,9 +40,9 @@ export default class MyRewards extends cc.Component {
 
     @property(cc.Node) footer: cc.Node = null
 
-    private datas = [];
+    private datas: ReferRewardDateVO[] = [];
 
-    private rewardInfo: any;
+    private rewardInfo: TimezoneReferRewardVO;
 
     /**页数 */
     private pageNo: number = 1;
@@ -86,7 +86,7 @@ export default class MyRewards extends cc.Component {
             this.footer.scaleY = event.progress >= 1 ? 1 : event.progress
         }
         if (event.action) {
-            if (this.pageNo >= this.rewardInfo.total) {
+            if (this.pageNo >= LongUtil.longToNumber(this.rewardInfo.total)) {
                 UIMgr.showToast(LangMgr.sentence('e0009'))
                 this.layout.scrollView.release();
                 return;
@@ -102,11 +102,14 @@ export default class MyRewards extends cc.Component {
         if (!result || !cc.isValid(this.node)) return;
         let { total, rewardList, totalBonus, totalDepositBonus, totalInviteBonus } = result;
         this.rewardInfo = result;
-        this.lb_totalBonus.string = `₹${LongUtil.longToNumber(totalBonus)}`;
-        this.lb_inviteBonus.string = `₹${LongUtil.longToNumber(totalInviteBonus)}`;
-        this.lb_depositBonus.string = `₹${LongUtil.longToNumber(totalDepositBonus)}`;
+        this.lb_totalBonus.string = `₹${LongUtil.longToNumber(totalBonus) / 100}`;
+        this.lb_inviteBonus.string = `₹${LongUtil.longToNumber(totalInviteBonus) / 100}`;
+        this.lb_depositBonus.string = `₹${LongUtil.longToNumber(totalDepositBonus) / 100}`;
         if (rewardList && rewardList.length > 0) {
-            this.datas = rewardList;
+            // this.datas = rewardList;
+            for (let i = 0; i < rewardList.length; i++) {
+                this.datas.push(rewardList[i])
+            }
             this.node_noDetails.active = false;
         } else {
             this.node_noDetails.active = true;
@@ -142,17 +145,23 @@ export default class MyRewards extends cc.Component {
         let lb_totalBonus: cc.Label = cc.find("totalBonus", node).getComponent(cc.Label);
         let lb_inviteBonus: cc.Label = cc.find("inviteBonus", node).getComponent(cc.Label);
         let lb_depositBonus: cc.Label = cc.find("depositBonus", node).getComponent(cc.Label);
-        lb_time.string = CommonUtil.formatDate(time, "yyyy-MM-dd");
-        lb_totalBonus.string = `₹${totalBonus}`;
-        lb_inviteBonus.string = `₹${totalInviteBonus}`;
-        lb_depositBonus.string = `₹${totalDepositBonus}`;
+        lb_time.string = CommonUtil.formatDate(LongUtil.longToNumber(time), "yyyy-MM-dd");
+        lb_totalBonus.string = `₹${LongUtil.longToNumber(totalBonus) / 100}`;
+        lb_inviteBonus.string = `₹${LongUtil.longToNumber(totalInviteBonus) / 100}`;
+        lb_depositBonus.string = `₹${LongUtil.longToNumber(totalDepositBonus) / 100}`;
+    }
+
+    hideAllLable() {
+        this.datas = [];
+        this.pageNo = 1;
+        this.lblArr.forEach(
+            (node) => {
+                node.opacity = 0
+            }
+        )
     }
 
     protected onDisable(): void {
-        this.lblArr.forEach(
-            (node) => {
-                node.opacity = 0;
-            }
-        )
+        this.hideAllLable();
     }
 }

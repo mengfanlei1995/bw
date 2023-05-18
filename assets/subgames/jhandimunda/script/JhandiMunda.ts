@@ -114,6 +114,7 @@ export default class JhandiMunda extends UIGame {
         if (this.diceSkel.animation != "JhandiMunda_dice2") return;
         let gameNum = this.gameNum;
         let { dices, idRates } = gameResult;
+        if (!idRates) idRates = [];
         let track = this.diceSkel.setAnimation(0, "JhandiMunda_dice3", false)
         this.diceSkel.setTrackEventListener(track, (trackIdx, evt) => {
             let nodeArray: cc.Node[] = [];
@@ -121,13 +122,15 @@ export default class JhandiMunda extends UIGame {
             let awardFunc = () => {
                 if (this.isReturn(gameNum)) return;
                 let idArray: string[] = [];
-                for (let i = 0; i < idRates.length; i++) {
-                    idArray.push(`${idRates[i].id}`);
-                    this.awardNode[idRates[i].id - 1].active = true;
-                    json[idRates[i].id] = idRates[i].count;
-                    cc.tween(this.node).delay(0.5).call(() => {
-                        this.playWinRateAni(this.winRate[idRates[i].id - 1], idRates[i].rate);
-                    }).start()
+                if (idRates && idRates.length > 0) {
+                    for (let i = 0; i < idRates.length; i++) {
+                        idArray.push(`${idRates[i].id}`);
+                        this.awardNode[idRates[i].id - 1].active = true;
+                        json[idRates[i].id] = idRates[i].count;
+                        cc.tween(this.node).delay(0.5).call(() => {
+                            this.playWinRateAni(this.winRate[idRates[i].id - 1], idRates[i].rate);
+                        }).start()
+                    }
                 }
                 let array = [0, 0, 0, 0, 0, 0, 0];
                 let width = 100;
@@ -380,7 +383,7 @@ export default class JhandiMunda extends UIGame {
                 this.diceSkel.setAnimation(0, "JhandiMunda_dice2", true);
             }
         })
-        this.scheduleOnce(this.openAward.bind(this, gameResult), 3);
+        this.scheduleOnce(this.openAward.bind(this, gameResult), 2);
     }
 
     /**

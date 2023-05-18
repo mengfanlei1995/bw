@@ -7,6 +7,7 @@ import PoolMgr from "../mgr/PoolMgr";
 import SoundMgr from "../mgr/SoundMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import { DialogType } from "../model/DialogOptions";
+import { TPWarCmd } from "../net/CmdData";
 import SendMgr from "../net/SendMgr";
 import { AreaPointBetCoinsVO, PointBetCoinsVO, RoomBetDTO, RoomEnterDTO } from "../net/proto/room";
 import BundleUtil from "../utils/BundleUtil";
@@ -558,7 +559,7 @@ export default class UIGame extends UIScene {
         this.curTime = gameInfo?.leftOptSeconds;
         this.gameNum = gameInfo?.gameNum;
         this.gameResultList = gameInfo.gameResultList;
-        this.statusTipSkel.setAnimation(0, "start", false);
+        if (this.gameCmd != TPWarCmd) this.statusTipSkel.setAnimation(0, "start", false);
         this.timeTipLabel.string = LangMgr.sentence("e0320");
         this.updateChipsCircleSkel();
         let time = parseInt(`${this.curTime / 1000}`);

@@ -1,13 +1,10 @@
 import SysConfig, { AppSysInfo, afLaunchData } from "../data/SysConfig";
-import UserData from "../data/UserData";
 import { APPS_FLYER, HALL_EVT } from "../enum/DeskEnum";
-import { FirebaseEvent } from "../enum/FirebaseEnum";
 import { SYS_CONST } from "../enum/SysEventEnum";
 import EventMgr from "../mgr/EventMgr";
 import LangMgr from "../mgr/LangMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import { DialogType } from "../model/DialogOptions";
-import { Login_SessionCmd } from "../net/CmdData";
 import SendMgr from "../net/SendMgr";
 import SocketMgr from "../net/SocketMgr";
 import UIMgr from "../uiform/UIMgr";
@@ -82,7 +79,9 @@ const callBackEnum = cc.Enum({
     /**去google商店 */
     goStore: "goStore",
     /**获取剪切板内容 */
-    getClipBoard: "getClipBoard"
+    getClipBoard: "getClipBoard",
+    /**获取渠道id */
+    getCid: "getCid"
 })
 
 /**
@@ -115,11 +114,23 @@ class JsbUitl {
         }
         if (cc.sys.isNative) {
             let sysInfo: AppSysInfo = this.getSystemInfoSync();
-            let { device_id } = sysInfo;
+            let { device_id, afUid } = sysInfo;
             SysConfig.systemInfo = sysInfo;
             SysConfig.systemInfo.timezone = SysConfig.pkgTimeZone;
             StorageMgr.cocosVersion = SysConfig.version;
+            if (!StorageMgr.afId) StorageMgr.afId = afUid || "";
             if (StorageMgr.devId != device_id) StorageMgr.devId = device_id;
+            if (!StorageMgr.invateCode || !StorageMgr.invateType) {
+                let clipBoard: string = this.getClipBoard();
+                if (clipBoard) {
+                    let inviteData = CommonUtil.paramsToJson(clipBoard);
+                    if (inviteData?.ic && inviteData?.it) {
+                        StorageMgr.invateCode = inviteData?.ic;
+                        StorageMgr.invateType = inviteData?.it;
+                    }
+                }
+            }
+            SysConfig.cid = this.getCid();
             // this.postFirebaseEvent({
             //     eventName: FirebaseEvent.APP_OPEN,
             //     params: { deviceId: SysConfig.systemInfo.device_id, userId: StorageMgr.userId }
@@ -190,17 +201,17 @@ class JsbUitl {
 
             ListenerMgr.create(
                 (launch: afLaunchData) => {
-                    let { ic, ict, media_source, afid } = launch
+                    let { ic, it, afid, af_status } = launch;
                     if (!StorageMgr.invateCode)
-                        StorageMgr.invateCode = ic || ''
+                        StorageMgr.invateCode = ic || '';
                     if (!StorageMgr.invateType)
-                        StorageMgr.invateType = ict || ''
+                        StorageMgr.invateType = it || '';
                     if (!StorageMgr.afId)
-                        StorageMgr.afId = afid || ''
-                    if (StorageMgr.mediaId == 'organic')
-                        StorageMgr.mediaId = media_source || ''
-                    StorageMgr.afLaunch = JSON.stringify(launch)
-                    EventMgr.emit(APPS_FLYER.SDK_INITED, media_source || '')
+                        StorageMgr.afId = afid || '';
+                    if (StorageMgr.mediaId == 'Organic')
+                        StorageMgr.mediaId = af_status || '';
+                    StorageMgr.afLaunch = JSON.stringify(launch);
+                    EventMgr.emit(APPS_FLYER.SDK_INITED, af_status || '');
                 },
                 callBackEnum.appsflyerLaunchSuccess
             )
@@ -354,7 +365,10 @@ class JsbUitl {
      * 复制
      */
     public ClipBoard(txt: string) {
-        callMethod(callBackEnum.ClipBoard, '(Ljava/lang/String;)V', txt)
+        if (!txt) return;
+        if (cc.sys.isBrowser) CommonUtil.pcopyClipBoard(txt);
+        callMethod(callBackEnum.ClipBoard, '(Ljava/lang/String;)V', txt);
+        UIMgr.showToast(LangMgr.sentence('e0078'));
     }
 
     /**
@@ -491,6 +505,10 @@ class JsbUitl {
 
     public getClipBoard() {
         return callMethod(callBackEnum.getClipBoard, '()Ljava/lang/String;');
+    }
+
+    public getCid() {
+        return callMethod(callBackEnum.getCid, '()Ljava/lang/String;');
     }
 
 }
