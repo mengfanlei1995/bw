@@ -45,6 +45,7 @@ export default class Main extends UIScene {
 
     afCallBack() {
         this.afInitd = true;
+        this.goLogin();
     }
 
     getIpAddress() {
@@ -121,14 +122,13 @@ export default class Main extends UIScene {
         let result = await this.getSystemInfo();
         this.SystemInfo = result;
         this.SystemInfoInitd = true;
+        this.goLogin();
     }
 
-    private isInitLogin: boolean = false;
 
-    protected update(dt: number): void {
-        if (!this.SystemInfoInitd || !this.afInitd || this.isInitLogin) return;
+    private goLogin() {
+        if (!this.SystemInfoInitd || !this.afInitd) return;
         this.setPercent(1);
-        this.isInitLogin = true;
         let result = this.SystemInfo;
         if (result) {
             if (!StorageMgr.firstStart)
