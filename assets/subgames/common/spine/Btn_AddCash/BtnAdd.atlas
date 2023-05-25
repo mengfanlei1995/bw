@@ -1,0 +1,139 @@
+
+BtnAdd.png
+size: 268,268
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Btn
+  rotate: false
+  xy: 2, 196
+  size: 145, 70
+  orig: 148, 72
+  offset: 2, 1
+  index: -1
+Chip
+  rotate: false
+  xy: 2, 64
+  size: 62, 61
+  orig: 62, 62
+  offset: 0, 0
+  index: -1
+Light01_01
+  rotate: false
+  xy: 246, 181
+  size: 18, 31
+  orig: 22, 35
+  offset: 1, 2
+  index: -1
+Light01_02
+  rotate: false
+  xy: 231, 93
+  size: 29, 45
+  orig: 33, 48
+  offset: 1, 2
+  index: -1
+Light01_03
+  rotate: false
+  xy: 224, 214
+  size: 39, 52
+  orig: 42, 55
+  offset: 1, 2
+  index: -1
+Light01_04
+  rotate: false
+  xy: 197, 140
+  size: 47, 58
+  orig: 50, 60
+  offset: 1, 1
+  index: -1
+Light01_05
+  rotate: false
+  xy: 66, 65
+  size: 54, 60
+  orig: 56, 62
+  offset: 1, 1
+  index: -1
+Light01_06
+  rotate: false
+  xy: 122, 72
+  size: 58, 60
+  orig: 61, 62
+  offset: 1, 1
+  index: -1
+Light01_07
+  rotate: false
+  xy: 2, 2
+  size: 60, 60
+  orig: 62, 62
+  offset: 1, 1
+  index: -1
+Light01_08
+  rotate: false
+  xy: 64, 2
+  size: 60, 60
+  orig: 62, 62
+  offset: 1, 1
+  index: -1
+Light01_09
+  rotate: false
+  xy: 80, 134
+  size: 60, 60
+  orig: 62, 62
+  offset: 1, 1
+  index: -1
+Light01_10
+  rotate: false
+  xy: 126, 10
+  size: 58, 60
+  orig: 61, 62
+  offset: 2, 1
+  index: -1
+Light01_11
+  rotate: false
+  xy: 142, 134
+  size: 53, 60
+  orig: 56, 62
+  offset: 2, 1
+  index: -1
+Light01_12
+  rotate: false
+  xy: 182, 75
+  size: 47, 57
+  orig: 49, 60
+  offset: 1, 1
+  index: -1
+Light01_13
+  rotate: false
+  xy: 186, 21
+  size: 38, 52
+  orig: 41, 55
+  offset: 2, 1
+  index: -1
+Light01_14
+  rotate: false
+  xy: 226, 28
+  size: 29, 45
+  orig: 32, 47
+  offset: 2, 1
+  index: -1
+Light01_15
+  rotate: false
+  xy: 246, 149
+  size: 18, 30
+  orig: 21, 34
+  offset: 2, 1
+  index: -1
+Light02
+  rotate: false
+  xy: 149, 200
+  size: 73, 66
+  orig: 80, 69
+  offset: 1, 1
+  index: -1
+Light03
+  rotate: false
+  xy: 2, 127
+  size: 76, 67
+  orig: 86, 78
+  offset: 7, 7
+  index: -1
