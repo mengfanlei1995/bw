@@ -1839,8 +1839,8 @@
     "_color": {
       "__type__": "cc.Color",
       "r": 255,
-      "g": 207,
-      "b": 150,
+      "g": 255,
+      "b": 255,
       "a": 255
     },
     "_contentSize": {
@@ -3809,7 +3809,7 @@
     "_lineHeight": 30,
     "_enableWrapText": true,
     "_N$file": {
-      "__uuid__": "5cb2c775-4218-4538-8bfc-7cda1bfa8010"
+      "__uuid__": "9b377229-2a15-4a7f-8b86-d46453cca0dd"
     },
     "_isSystemFontUsed": false,
     "_spacingX": -5,

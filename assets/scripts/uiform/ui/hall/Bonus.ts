@@ -83,6 +83,7 @@ export default class Bonus extends UIWindow {
         if (!cash) return;
         let info = await SendMgr.sendGullak(Gullak_ReceiveCmd);
         this.init(info);
+        UIMgr.show('prefab/hall/RewardAni', 'RewardAni', cash / 100);
         EventMgr.emit(HALL_EVT.UPDATE_BONUS_RED, false);
     }
 

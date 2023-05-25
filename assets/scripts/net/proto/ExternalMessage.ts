@@ -5,6 +5,7 @@ export interface ExternalMessage {
   responseStatus?: number;
   validMsg?: string;
   data?: Uint8Array;
+  msgId?: number;
 }
 
 export function encodeExternalMessage(message: ExternalMessage): Uint8Array {
@@ -55,6 +56,13 @@ function _encodeExternalMessage(message: ExternalMessage, bb: ByteBuffer): void 
     writeVarint32(bb, 50);
     writeVarint32(bb, $data.length), writeBytes(bb, $data);
   }
+
+  // optional int32 msgId = 7;
+  let $msgId = message.msgId;
+  if ($msgId !== undefined) {
+    writeVarint32(bb, 56);
+    writeVarint64(bb, intToLong($msgId));
+  }
 }
 
 export function decodeExternalMessage(binary: Uint8Array): ExternalMessage {
@@ -104,6 +112,704 @@ function _decodeExternalMessage(bb: ByteBuffer): ExternalMessage {
       // optional bytes data = 6;
       case 6: {
         message.data = readBytes(bb, readVarint32(bb));
+        break;
+      }
+
+      // optional int32 msgId = 7;
+      case 7: {
+        message.msgId = readVarint32(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface IntValue {
+  value?: number;
+}
+
+export function encodeIntValue(message: IntValue): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeIntValue(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeIntValue(message: IntValue, bb: ByteBuffer): void {
+  // optional sint32 value = 1;
+  let $value = message.value;
+  if ($value !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint32ZigZag(bb, $value);
+  }
+}
+
+export function decodeIntValue(binary: Uint8Array): IntValue {
+  return _decodeIntValue(wrapByteBuffer(binary));
+}
+
+function _decodeIntValue(bb: ByteBuffer): IntValue {
+  let message: IntValue = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional sint32 value = 1;
+      case 1: {
+        message.value = readVarint32ZigZag(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface IntValueList {
+  values?: number[];
+}
+
+export function encodeIntValueList(message: IntValueList): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeIntValueList(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeIntValueList(message: IntValueList, bb: ByteBuffer): void {
+  // repeated sint32 values = 1;
+  let array$values = message.values;
+  if (array$values !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$values) {
+      writeVarint32ZigZag(packed, value);
+    }
+    writeVarint32(bb, 10);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+}
+
+export function decodeIntValueList(binary: Uint8Array): IntValueList {
+  return _decodeIntValueList(wrapByteBuffer(binary));
+}
+
+function _decodeIntValueList(bb: ByteBuffer): IntValueList {
+  let message: IntValueList = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated sint32 values = 1;
+      case 1: {
+        let values = message.values || (message.values = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint32ZigZag(bb));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint32ZigZag(bb));
+        }
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LongValue {
+  value?: Long;
+}
+
+export function encodeLongValue(message: LongValue): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLongValue(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLongValue(message: LongValue, bb: ByteBuffer): void {
+  // optional sint64 value = 1;
+  let $value = message.value;
+  if ($value !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64ZigZag(bb, $value);
+  }
+}
+
+export function decodeLongValue(binary: Uint8Array): LongValue {
+  return _decodeLongValue(wrapByteBuffer(binary));
+}
+
+function _decodeLongValue(bb: ByteBuffer): LongValue {
+  let message: LongValue = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional sint64 value = 1;
+      case 1: {
+        message.value = readVarint64ZigZag(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LongValueList {
+  values?: Long[];
+}
+
+export function encodeLongValueList(message: LongValueList): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLongValueList(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLongValueList(message: LongValueList, bb: ByteBuffer): void {
+  // repeated sint64 values = 1;
+  let array$values = message.values;
+  if (array$values !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$values) {
+      writeVarint64ZigZag(packed, value);
+    }
+    writeVarint32(bb, 10);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+}
+
+export function decodeLongValueList(binary: Uint8Array): LongValueList {
+  return _decodeLongValueList(wrapByteBuffer(binary));
+}
+
+function _decodeLongValueList(bb: ByteBuffer): LongValueList {
+  let message: LongValueList = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated sint64 values = 1;
+      case 1: {
+        let values = message.values || (message.values = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint64ZigZag(bb));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint64ZigZag(bb));
+        }
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface StringValue {
+  value?: string;
+}
+
+export function encodeStringValue(message: StringValue): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeStringValue(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeStringValue(message: StringValue, bb: ByteBuffer): void {
+  // optional string value = 1;
+  let $value = message.value;
+  if ($value !== undefined) {
+    writeVarint32(bb, 10);
+    writeString(bb, $value);
+  }
+}
+
+export function decodeStringValue(binary: Uint8Array): StringValue {
+  return _decodeStringValue(wrapByteBuffer(binary));
+}
+
+function _decodeStringValue(bb: ByteBuffer): StringValue {
+  let message: StringValue = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional string value = 1;
+      case 1: {
+        message.value = readString(bb, readVarint32(bb));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface StringValueList {
+  values?: string[];
+}
+
+export function encodeStringValueList(message: StringValueList): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeStringValueList(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeStringValueList(message: StringValueList, bb: ByteBuffer): void {
+  // repeated string values = 1;
+  let array$values = message.values;
+  if (array$values !== undefined) {
+    for (let value of array$values) {
+      writeVarint32(bb, 10);
+      writeString(bb, value);
+    }
+  }
+}
+
+export function decodeStringValueList(binary: Uint8Array): StringValueList {
+  return _decodeStringValueList(wrapByteBuffer(binary));
+}
+
+function _decodeStringValueList(bb: ByteBuffer): StringValueList {
+  let message: StringValueList = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated string values = 1;
+      case 1: {
+        let values = message.values || (message.values = []);
+        values.push(readString(bb, readVarint32(bb)));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface BoolValue {
+  value?: boolean;
+}
+
+export function encodeBoolValue(message: BoolValue): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeBoolValue(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeBoolValue(message: BoolValue, bb: ByteBuffer): void {
+  // optional bool value = 1;
+  let $value = message.value;
+  if ($value !== undefined) {
+    writeVarint32(bb, 8);
+    writeByte(bb, $value ? 1 : 0);
+  }
+}
+
+export function decodeBoolValue(binary: Uint8Array): BoolValue {
+  return _decodeBoolValue(wrapByteBuffer(binary));
+}
+
+function _decodeBoolValue(bb: ByteBuffer): BoolValue {
+  let message: BoolValue = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional bool value = 1;
+      case 1: {
+        message.value = !!readByte(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface BoolValueList {
+  values?: boolean[];
+}
+
+export function encodeBoolValueList(message: BoolValueList): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeBoolValueList(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeBoolValueList(message: BoolValueList, bb: ByteBuffer): void {
+  // repeated bool values = 1;
+  let array$values = message.values;
+  if (array$values !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$values) {
+      writeByte(packed, value ? 1 : 0);
+    }
+    writeVarint32(bb, 10);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+}
+
+export function decodeBoolValueList(binary: Uint8Array): BoolValueList {
+  return _decodeBoolValueList(wrapByteBuffer(binary));
+}
+
+function _decodeBoolValueList(bb: ByteBuffer): BoolValueList {
+  let message: BoolValueList = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated bool values = 1;
+      case 1: {
+        let values = message.values || (message.values = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(!!readByte(bb));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(!!readByte(bb));
+        }
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface ByteValueList {
+  values?: Uint8Array[];
+}
+
+export function encodeByteValueList(message: ByteValueList): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeByteValueList(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeByteValueList(message: ByteValueList, bb: ByteBuffer): void {
+  // repeated bytes values = 1;
+  let array$values = message.values;
+  if (array$values !== undefined) {
+    for (let value of array$values) {
+      writeVarint32(bb, 10);
+      writeVarint32(bb, value.length), writeBytes(bb, value);
+    }
+  }
+}
+
+export function decodeByteValueList(binary: Uint8Array): ByteValueList {
+  return _decodeByteValueList(wrapByteBuffer(binary));
+}
+
+function _decodeByteValueList(bb: ByteBuffer): ByteValueList {
+  let message: ByteValueList = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated bytes values = 1;
+      case 1: {
+        let values = message.values || (message.values = []);
+        values.push(readBytes(bb, readVarint32(bb)));
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface IntPb {
+  intValue?: number;
+}
+
+export function encodeIntPb(message: IntPb): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeIntPb(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeIntPb(message: IntPb, bb: ByteBuffer): void {
+  // optional sint32 intValue = 1;
+  let $intValue = message.intValue;
+  if ($intValue !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint32ZigZag(bb, $intValue);
+  }
+}
+
+export function decodeIntPb(binary: Uint8Array): IntPb {
+  return _decodeIntPb(wrapByteBuffer(binary));
+}
+
+function _decodeIntPb(bb: ByteBuffer): IntPb {
+  let message: IntPb = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional sint32 intValue = 1;
+      case 1: {
+        message.intValue = readVarint32ZigZag(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface IntListPb {
+  intValues?: number[];
+}
+
+export function encodeIntListPb(message: IntListPb): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeIntListPb(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeIntListPb(message: IntListPb, bb: ByteBuffer): void {
+  // repeated sint32 intValues = 1;
+  let array$intValues = message.intValues;
+  if (array$intValues !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$intValues) {
+      writeVarint32ZigZag(packed, value);
+    }
+    writeVarint32(bb, 10);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+}
+
+export function decodeIntListPb(binary: Uint8Array): IntListPb {
+  return _decodeIntListPb(wrapByteBuffer(binary));
+}
+
+function _decodeIntListPb(bb: ByteBuffer): IntListPb {
+  let message: IntListPb = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated sint32 intValues = 1;
+      case 1: {
+        let values = message.intValues || (message.intValues = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint32ZigZag(bb));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint32ZigZag(bb));
+        }
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LongPb {
+  longValue?: Long;
+}
+
+export function encodeLongPb(message: LongPb): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLongPb(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLongPb(message: LongPb, bb: ByteBuffer): void {
+  // optional sint64 longValue = 1;
+  let $longValue = message.longValue;
+  if ($longValue !== undefined) {
+    writeVarint32(bb, 8);
+    writeVarint64ZigZag(bb, $longValue);
+  }
+}
+
+export function decodeLongPb(binary: Uint8Array): LongPb {
+  return _decodeLongPb(wrapByteBuffer(binary));
+}
+
+function _decodeLongPb(bb: ByteBuffer): LongPb {
+  let message: LongPb = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // optional sint64 longValue = 1;
+      case 1: {
+        message.longValue = readVarint64ZigZag(bb);
+        break;
+      }
+
+      default:
+        skipUnknownField(bb, tag & 7);
+    }
+  }
+
+  return message;
+}
+
+export interface LongListPb {
+  longValues?: Long[];
+}
+
+export function encodeLongListPb(message: LongListPb): Uint8Array {
+  let bb = popByteBuffer();
+  _encodeLongListPb(message, bb);
+  return toUint8Array(bb);
+}
+
+function _encodeLongListPb(message: LongListPb, bb: ByteBuffer): void {
+  // repeated sint64 longValues = 1;
+  let array$longValues = message.longValues;
+  if (array$longValues !== undefined) {
+    let packed = popByteBuffer();
+    for (let value of array$longValues) {
+      writeVarint64ZigZag(packed, value);
+    }
+    writeVarint32(bb, 10);
+    writeVarint32(bb, packed.offset);
+    writeByteBuffer(bb, packed);
+    pushByteBuffer(packed);
+  }
+}
+
+export function decodeLongListPb(binary: Uint8Array): LongListPb {
+  return _decodeLongListPb(wrapByteBuffer(binary));
+}
+
+function _decodeLongListPb(bb: ByteBuffer): LongListPb {
+  let message: LongListPb = {} as any;
+
+  end_of_message: while (!isAtEnd(bb)) {
+    let tag = readVarint32(bb);
+
+    switch (tag >>> 3) {
+      case 0:
+        break end_of_message;
+
+      // repeated sint64 longValues = 1;
+      case 1: {
+        let values = message.longValues || (message.longValues = []);
+        if ((tag & 7) === 2) {
+          let outerLimit = pushTemporaryLength(bb);
+          while (!isAtEnd(bb)) {
+            values.push(readVarint64ZigZag(bb));
+          }
+          bb.limit = outerLimit;
+        } else {
+          values.push(readVarint64ZigZag(bb));
+        }
         break;
       }
 

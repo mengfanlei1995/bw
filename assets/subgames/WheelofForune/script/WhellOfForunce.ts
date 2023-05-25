@@ -171,6 +171,7 @@ export default class WhellOfForunce extends UIGame {
                 this.flyCenterArea(i.toString())
             }
         }
+        this.awardNode[+awardCode - 1].active = true;
         await CocosUtil.sleepSync(1.3)
         if (this.isReturn(gameNum)) return;
         this.flyWinArea(awardCode)

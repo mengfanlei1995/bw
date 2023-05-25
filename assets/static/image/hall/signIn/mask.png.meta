@@ -1,6 +1,6 @@
 {
   "ver": "2.3.7",
-  "uuid": "c402a053-24e0-450d-9c6f-ea2ee15e03ac",
+  "uuid": "a5c613f8-0f9d-4673-a819-1e88593de1dd",
   "importer": "texture",
   "type": "sprite",
   "wrapMode": "clamp",
@@ -8,15 +8,15 @@
   "premultiplyAlpha": false,
   "genMipmaps": false,
   "packable": true,
-  "width": 69,
-  "height": 72,
+  "width": 50,
+  "height": 50,
   "platformSettings": {},
   "subMetas": {
-    "记录Icon": {
+    "mask": {
       "ver": "1.0.6",
-      "uuid": "93a6c05e-5916-450b-85d8-f3bc8a18d0cb",
+      "uuid": "be5ef287-9cc0-41c7-bdee-f02279e67e50",
       "importer": "sprite-frame",
-      "rawTextureUuid": "c402a053-24e0-450d-9c6f-ea2ee15e03ac",
+      "rawTextureUuid": "a5c613f8-0f9d-4673-a819-1e88593de1dd",
       "trimType": "auto",
       "trimThreshold": 1,
       "rotated": false,
@@ -24,14 +24,14 @@
       "offsetY": 0,
       "trimX": 0,
       "trimY": 0,
-      "width": 69,
-      "height": 72,
-      "rawWidth": 69,
-      "rawHeight": 72,
-      "borderTop": 0,
-      "borderBottom": 0,
-      "borderLeft": 0,
-      "borderRight": 0,
+      "width": 50,
+      "height": 50,
+      "rawWidth": 50,
+      "rawHeight": 50,
+      "borderTop": 18,
+      "borderBottom": 14,
+      "borderLeft": 13,
+      "borderRight": 14,
       "subMetas": {}
     }
   }

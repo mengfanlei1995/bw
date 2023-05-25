@@ -1,5 +1,6 @@
 import SysConfig from "../data/SysConfig";
 import CocosUtil from "../utils/CocosUtil";
+import { ExternalMessage } from "./proto/ExternalMessage";
 import { NetCallFunc } from "./ws/NetInterface";
 import SocketClient from "./ws/SocketClient";
 
@@ -16,8 +17,8 @@ class SocketMgr {
     }
 
     /**发送消息 */
-    public send(mergeCmd: number, pbBuff: Uint8Array, callFunc: NetCallFunc): boolean {
-        return SocketClient.send(mergeCmd, pbBuff, callFunc);
+    public send(data: ExternalMessage, callFunc: NetCallFunc): boolean {
+        return SocketClient.send(data, callFunc);
     }
 
     /**

@@ -65,7 +65,7 @@ export default class ReferNow extends cc.Component {
         let { friendDeposit, friendReg, mutualFriendDeposit, mutualFriendReg } = info;
         this.info = info;
         this.lb_friendDeposit.string = `${friendDeposit}%`;
-        this.lb_friendReg.string = `${friendReg}`;
+        this.lb_friendReg.string = `${friendReg / 100}`;
         this.lb_mutualFriendDeposit.string = `${mutualFriendDeposit}%`;
         this.lb_mutualFriendReg.string = `${mutualFriendReg}`;
         this.lb_friendDeposit.node.parent.active = !!friendDeposit;

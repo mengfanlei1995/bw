@@ -26,14 +26,18 @@ import { LoginVO } from "./proto/hall";
 import { PointBetCoinsVO, RoomBetDTO, RoomEnterDTO, RoomExitDTO, RoomRecordDTO, decodePointBetCoinsVO, encodeRoomBetDTO, encodeRoomEnterDTO, encodeRoomExitDTO, encodeRoomRecordDTO } from "./proto/room";
 import { NetCallFunc } from "./ws/NetInterface";
 
+let msgId: number = 1;
+
 const commonParams = function (mergeCmd: number, data: Uint8Array, cmdCode: number = 1, protocolSwitch: number = 0): ExternalMessage {
+    msgId++;
     let param: ExternalMessage = {
         cmdCode: cmdCode,
         protocolSwitch: protocolSwitch,
         cmdMerge: mergeCmd,
         responseStatus: 0,
         validMsg: "",
-        data: data
+        data: data,
+        msgId: msgId
     }
     return param;
 }
@@ -470,7 +474,7 @@ class SendMgr {
 
     /**发送消息 */
     private send(data: ExternalMessage, callFunc: NetCallFunc): boolean {
-        return SocketMgr.send(data.cmdMerge, encodeExternalMessage(data), callFunc);
+        return SocketMgr.send(data, callFunc);
     }
 
 }

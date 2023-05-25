@@ -13,7 +13,7 @@ import HandleMgr from "../HandleMgr";
 import NetMgr from "../NetMgr";
 import SendMgr from "../SendMgr";
 import WsPushMgr from "../WsPushMgr";
-import { ExternalMessage, decodeExternalMessage } from "../proto/ExternalMessage";
+import { ExternalMessage, decodeExternalMessage, encodeExternalMessage } from "../proto/ExternalMessage";
 import { GameUserWalletNotifyVO, decodeGameUserWalletNotifyVO } from "../proto/core";
 import { ISocket, NetCallFunc } from "./NetInterface";
 
@@ -75,15 +75,16 @@ class SocketClient implements ISocket {
     }
 
     //发送消息
-    public send(mergeCmd: number, pbBuff: Uint8Array, callFunc: NetCallFunc): boolean {
+    public send(data: ExternalMessage, callFunc: NetCallFunc): boolean {
         // LogUtil.log("===send", mergeCmd, pbBuff)
+        let pbBuff: Uint8Array = encodeExternalMessage(data);
         if (this.webScoket && this.webScoket.readyState === this.SocketState_Connected) {
             if (!pbBuff) {
                 LogUtil.error("没有数据")
                 return false;
             }
             if (callFunc) {
-                HandleMgr.addHandler(mergeCmd, callFunc);
+                HandleMgr.addHandler(data.msgId, data.cmdMerge, callFunc);
             }
             this.webScoket.send(pbBuff);
             return true;
@@ -98,7 +99,7 @@ class SocketClient implements ISocket {
         if (SysConfig.isHide) return;
         let recvData: Uint8Array = new Uint8Array(<ArrayBuffer>event.data);
         let data: ExternalMessage = decodeExternalMessage(recvData);
-        let call = HandleMgr.packageHandler(data.cmdMerge, data.responseStatus, data.data);
+        let call = HandleMgr.packageHandler(data.msgId, data.cmdMerge, data.responseStatus, data.data);
         //返回错误
         if (data.responseStatus != 0) {
             if (data.cmdMerge != 0) LogUtil.log("onmessage", data);

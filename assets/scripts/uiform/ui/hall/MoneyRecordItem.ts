@@ -1,4 +1,5 @@
 import CommonUtil from "../../../utils/CommonUtil";
+import JsbUitl from "../../../utils/JsbUitl";
 import LongUtil from "../../../utils/LongUtil";
 
 const { ccclass, property } = cc._decorator;
@@ -32,6 +33,10 @@ export default class MoneyRecordItem extends cc.Component {
         this.lb_orderId.string = info.id;
         this.lb_tips.string = info.remark;
         this.lb_tips.node.parent.active = !!info.remark;
+    }
+
+    onClickCopy() {
+        JsbUitl.ClipBoard(this.lb_orderId.string);
     }
 
 }

@@ -80,13 +80,11 @@ export default class EmailItem extends cc.Component {
 
     /**删除邮件 */
     async onClickDelete() {
-        let isFirst: boolean = true;
         UIMgr.showDialog({
             word: LangMgr.sentence('e0046'),
             type: DialogType.OkCancelBtn,
             okCb: async () => {
-                if (!isFirst) return;
-                isFirst = false;
+                if (!cc.isValid(this.node) || !this.emailData || !this.emailData.id) return;
                 let data = await SendMgr.sendDeleteEmail({ id: this.emailData.id });
                 if (data != null) {
                     this.remove(this.index);
@@ -114,6 +112,7 @@ export default class EmailItem extends cc.Component {
     async onClickCollect() {
         let data = await SendMgr.sendEmailCollect({ id: this.emailData.id });
         if (data) {
+            UIMgr.show('prefab/hall/RewardAni', 'RewardAni', LongUtil.longToNumber(this.emailData.attachments[0].amount) / 100);
             this.emailData.attachmentState = 3;
             this.node_receive.getComponent(cc.Button).interactable = false;
         }

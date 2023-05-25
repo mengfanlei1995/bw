@@ -12,10 +12,10 @@ export default class Gift extends UIWindow {
     skel: sp.Skeleton = null;
 
     onEnable() {
-        this.skel.setAnimation(0, "animation_apper", false);
+        // this.skel.setAnimation(0, "animation1", false);
         this.skel.setCompleteListener(() => {
-            if (this.skel.animation == "animation_apper") {
-                this.skel.setAnimation(0, "animation_loop", true);
+            if (this.skel.animation == "animation1") {
+                this.skel.setAnimation(0, "animation2", true);
             }
         });
     }

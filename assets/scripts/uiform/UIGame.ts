@@ -366,6 +366,10 @@ export default class UIGame extends UIScene {
     /**延迟下注 */
     private isNotBet: boolean = false;
 
+    betAniNode(root: cc.Node) {
+        root.active = false;
+    }
+
     /**
      * 下注
      * @param areaType 
@@ -392,6 +396,10 @@ export default class UIGame extends UIScene {
             this.showWaitingTipAnim()
             return;
         }
+
+        let awardNode: cc.Node = this.awardNode[+areaType - 1];
+        awardNode.active = true;
+        this.scheduleOnce(this.betAniNode.bind(this, awardNode), 0.1);
         let params: RoomBetDTO = {
             roomId: this.roomId,
             betCoins: this.numberToLong(chips * 100),

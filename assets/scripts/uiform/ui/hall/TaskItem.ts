@@ -25,6 +25,14 @@ export default class TaskItem extends cc.Component {
     @property(cc.Sprite)
     sp_progress: cc.Sprite = null;
 
+    /**已领取 */
+    @property(cc.Node)
+    node_received: cc.Node = null;
+
+    /**可领取 */
+    @property(cc.Node)
+    node_receive: cc.Node = null;
+
     private data: DailyBonusEventVO = null;
 
     private isLoad: boolean = false;
@@ -46,9 +54,8 @@ export default class TaskItem extends cc.Component {
             cc.tween(root).delay(index * 0.1)
                 .to(0.5, { y: 0, opacity: 255 }, { easing: 'backOut' })
                 .call(() => {
-                    if (this.data.state == 2) {
-                        this.node.opacity = 155;
-                    }
+                    this.node_received.active = this.data.state == 2;
+                    this.node_receive.active = this.data.state == 1;
                 })
                 .start();
         }
@@ -63,7 +70,9 @@ export default class TaskItem extends cc.Component {
             if (result) {
                 UIMgr.showToast(LangMgr.sentence("e0040"));
                 this.data.state = 2;
-                this.node.opacity = 155;
+                this.node_received.active = this.data.state == 2;
+                this.node_receive.active = this.data.state == 1;
+                UIMgr.show('prefab/hall/RewardAni', 'RewardAni', LongUtil.longToNumber(this.data.awardAmount));
             }
         } else if (this.data.state == 2) {
             UIMgr.showToast(LangMgr.sentence("e0039"))

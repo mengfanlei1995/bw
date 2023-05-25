@@ -1,83 +1,55 @@
 
 StartStopWaiting.png
-size: 1024,1024
+size: 1911,1911
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
+tex/Aguardando
+  rotate: false
+  xy: 1132, 1726
+  size: 202, 40
+  orig: 256, 56
+  offset: 27, 8
+  index: -1
 tex/b
   rotate: false
-  xy: 2, 639
-  size: 638, 154
-  orig: 652, 157
-  offset: 7, 1
+  xy: 2, 1718
+  size: 754, 191
+  orig: 924, 195
+  offset: 50, 0
   index: -1
 tex/d
   rotate: false
-  xy: 685, 806
-  size: 18, 16
+  xy: 1336, 1751
+  size: 17, 15
   orig: 18, 16
-  offset: 0, 0
-  index: -1
-tex/for
-  rotate: false
-  xy: 428, 563
-  size: 69, 43
-  orig: 69, 43
-  offset: 0, 0
+  offset: 1, 1
   index: -1
 tex/g
   rotate: false
-  xy: 2, 795
+  xy: 758, 1768
   size: 681, 141
   orig: 681, 141
   offset: 0, 0
   index: -1
 tex/gt
   rotate: false
-  xy: 2, 501
-  size: 424, 136
+  xy: 1441, 1763
+  size: 468, 146
   orig: 512, 160
-  offset: 42, 10
-  index: -1
-tex/next
-  rotate: false
-  xy: 642, 653
-  size: 99, 36
-  orig: 99, 36
-  offset: 0, 0
-  index: -1
-tex/round
-  rotate: false
-  xy: 642, 691
-  size: 132, 43
-  orig: 132, 43
-  offset: 0, 0
+  offset: 44, 0
   index: -1
 tex/start
   rotate: false
-  xy: 685, 879
-  size: 251, 57
-  orig: 251, 57
+  xy: 758, 1713
+  size: 204, 53
+  orig: 204, 53
   offset: 0, 0
   index: -1
 tex/stop
   rotate: false
-  xy: 642, 736
-  size: 197, 57
+  xy: 964, 1713
+  size: 166, 53
   orig: 197, 57
-  offset: 0, 0
-  index: -1
-tex/the
-  rotate: false
-  xy: 642, 608
-  size: 75, 43
-  orig: 75, 43
-  offset: 0, 0
-  index: -1
-tex/waiting
-  rotate: false
-  xy: 685, 824
-  size: 180, 53
-  orig: 180, 53
-  offset: 0, 0
+  offset: 18, 2
   index: -1
