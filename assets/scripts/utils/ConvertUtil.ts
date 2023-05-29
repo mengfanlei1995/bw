@@ -7,7 +7,7 @@ class ConvertUtil {
      * node的原点在中心
      * @param {*} node 
      */
-    public  localConvertWorldPointAR(node: cc.Node) {
+    public localConvertWorldPointAR(node: cc.Node) {
         if (node) {
             return node.parent.convertToWorldSpaceAR(node.getPosition());
         }
@@ -19,7 +19,7 @@ class ConvertUtil {
      * node的原点在左下边
      * @param {*} node 
      */
-    public  localConvertWorldPoint(node: cc.Node) {
+    public localConvertWorldPoint(node: cc.Node) {
         if (node) {
             return node.convertToWorldSpace(cc.v2(0, 0));
         }
@@ -32,7 +32,7 @@ class ConvertUtil {
      * @param {*} node 
      * @param {*} worldPoint 
      */
-    public  worldConvertLocalPointAR(node: cc.Node, worldPoint: cc.Vec2) {
+    public worldConvertLocalPointAR(node: cc.Node, worldPoint: cc.Vec2) {
         if (node) {
             return node.convertToNodeSpaceAR(worldPoint);
         }
@@ -45,7 +45,7 @@ class ConvertUtil {
      * @param {*} node 
      * @param {*} worldPoint 
      */
-    public  worldConvertLocalPoint(node: cc.Node, worldPoint: cc.Vec2) {
+    public worldConvertLocalPoint(node: cc.Node, worldPoint: cc.Vec2) {
         if (node) {
             return node.convertToNodeSpace(worldPoint);
         }
@@ -57,7 +57,7 @@ class ConvertUtil {
      * @param {*} node 
      * @param {*} targetNode 
      */
-    public  convertOtherNodeSpace(node: cc.Node, targetNode: cc.Node) {
+    public convertOtherNodeSpace(node: cc.Node, targetNode: cc.Node) {
         if (!node || !targetNode) {
             return null;
         }
@@ -71,7 +71,7 @@ class ConvertUtil {
     * @param {*} node 
     * @param {*} targetNode 
     */
-    public  convertOtherNodeSpaceAR(node: cc.Node, targetNode: cc.Node) {
+    public convertOtherNodeSpaceAR(node: cc.Node, targetNode: cc.Node) {
         if (!node || !targetNode) {
             return null;
         }
@@ -87,7 +87,7 @@ class ConvertUtil {
      * @param pos 坐标
      * @param target 目标节点
      */
-    public  isPosOnNodeRect(pos: cc.Vec2, target: cc.Node): boolean {
+    public isPosOnNodeRect(pos: cc.Vec2, target: cc.Node): boolean {
         const rect = target.getBoundingBoxToWorld();
         return rect.contains(pos);
     }
@@ -98,7 +98,7 @@ class ConvertUtil {
      * @param node2 节点 2
      * @param contains 是否完全包含
      */
-    public  areNodesOverlap(node1: cc.Node, node2: cc.Node, contains: boolean = false): boolean {
+    public areNodesOverlap(node1: cc.Node, node2: cc.Node, contains: boolean = false): boolean {
         const rect1 = node1.getBoundingBoxToWorld(),
             rect2 = node2.getBoundingBoxToWorld();
         return contains ? rect1.containsRect(rect2) : rect1.intersects(rect2);

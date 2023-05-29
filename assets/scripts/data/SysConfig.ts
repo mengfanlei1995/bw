@@ -9,7 +9,7 @@ class SysConfig {
     /**带有af统计的默认渠道值 */
     readonly defaultChannel: string = 'Organic';
     /**是否是测试环境 */
-    readonly isTest: number = 1;
+    readonly isTest: number = 0;
     /**包的时区，根据包运营的国家，配置相应的值 */
     readonly pkgTimeZone: string = 'Asia/Kolkata';
     /**包名，也就是网络请求的主域名 */
@@ -35,7 +35,7 @@ class SysConfig {
     tcUrl: string = '';
 
     /**默认telegram账号 */
-    telegram: string = 'luckywinner001';
+    telegram: string = '';
 
     cid: string = '10102';
 
