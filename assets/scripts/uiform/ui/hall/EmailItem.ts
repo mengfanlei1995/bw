@@ -80,10 +80,13 @@ export default class EmailItem extends cc.Component {
 
     /**删除邮件 */
     async onClickDelete() {
+        let isFirst: boolean = true;
         UIMgr.showDialog({
             word: LangMgr.sentence('e0046'),
             type: DialogType.OkCancelBtn,
             okCb: async () => {
+                if (!isFirst) return;
+                isFirst = false;
                 if (!cc.isValid(this.node) || !this.emailData || !this.emailData.id) return;
                 let data = await SendMgr.sendDeleteEmail({ id: this.emailData.id });
                 if (data != null) {

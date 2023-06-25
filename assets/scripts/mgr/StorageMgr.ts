@@ -332,7 +332,6 @@ class StorageMgr {
         //以下比较todayDate与玩家上次游戏日期，然后做一些清除操作，一般app启动进入Loading时执行
         if (todayDate != lastDate) {
             this.openAddCashTimes = 0;
-            this.clickAddCashTimes = 0;
         }
         this.lastTime = Date.now();
     }

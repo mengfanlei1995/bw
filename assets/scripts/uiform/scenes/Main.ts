@@ -38,6 +38,11 @@ export default class Main extends UIScene {
         EventMgr.on(SocketEvent.WS_CONNECTED, this.wsConnected, this);
         EventMgr.on(APPS_FLYER.SDK_INITED, this.afCallBack, this);
         SocketMgr.connect();
+        this.scheduleOnce(() => {
+            if (!this.afInitd) {
+                this.afCallBack();
+            }
+        }, 5)
     }
 
     //防止第一次启动拿AF数据比较慢 等一下af数据

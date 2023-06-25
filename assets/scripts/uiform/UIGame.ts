@@ -7,7 +7,7 @@ import PoolMgr from "../mgr/PoolMgr";
 import SoundMgr from "../mgr/SoundMgr";
 import StorageMgr from "../mgr/StorageMgr";
 import { DialogType } from "../model/DialogOptions";
-import { TPWarCmd } from "../net/CmdData";
+import { LuckyBallCmd, TPWarCmd } from "../net/CmdData";
 import SendMgr from "../net/SendMgr";
 import { AreaPointBetCoinsVO, PointBetCoinsVO, RoomBetDTO, RoomEnterDTO } from "../net/proto/room";
 import BundleUtil from "../utils/BundleUtil";
@@ -174,6 +174,12 @@ export default class UIGame extends UIScene {
             let lb_chips: cc.Label = cc.find("lb_chips", node).getComponent(cc.Label);
             lb_chips.string = `${this.longToNumber(betCoinList[i]) / 100}`;
             this.betNums[i] = this.longToNumber(betCoinList[i]) / 100;
+        }
+        if (!StorageMgr.isGreen && this.longToNumber(betCoinList[0]) > UserData.userInfo?.walletInfo?.totalCashBalance && !StorageMgr.openAddCashTimes) {
+            StorageMgr.openAddCashTimes = 1;
+            this.scheduleOnce(() => {
+                this.onAddCashClick();
+            }, 1)
         }
     }
 
@@ -385,10 +391,12 @@ export default class UIGame extends UIScene {
         }, deleayTime)
         let chips = this.betNums[this.betIndex];
         let bonus: number = StorageMgr.isGreen ? UserData.userInfo.walletInfo.freeBalance : UserData.userInfo.walletInfo.totalCashBalance
-        if (chips * 100 > bonus) {
-            // if (StorageMgr.clickAddCashTimes < 2) {
-            //     StorageMgr.clickAddCashTimes++;
-            // }
+        if (chips * 100 > bonus ) {
+            if (!StorageMgr.isGreen && new Date().getTime() - StorageMgr.clickAddCashTimes > 5 * 60 * 1000) {
+                StorageMgr.clickAddCashTimes = new Date().getTime();
+                this.onAddCashClick();
+                return;
+            }
             UIMgr.showToast(LangMgr.sentence("e0055"))
             return;
         }
@@ -461,7 +469,7 @@ export default class UIGame extends UIScene {
     initRoomInfo(info) {
         // console.log('_enterRoom', info)
         let { betCoinList, betCoinMap, betList, betSelfCoinMap, gameInfo, roomInfo, onlinePlayers } = info;
-        if (betList && betList.length > 0) {
+        if (betList && betList.length > 0 && this.gameCmd != LuckyBallCmd) {
             this.initChips(betList);
         }
         if (betCoinList) this.initChipsNum(betCoinList);
@@ -647,7 +655,7 @@ export default class UIGame extends UIScene {
         UIBundleMgr.show(this.gameName, `prefab/${this.historyName}`, this.historyName, this.gameResultList);
     }
 
-    onAddCashClick(e: cc.Event.EventTouch) {
+    onAddCashClick() {
         UIMgr.show('prefab/hall/AddCash', 'AddCash', { vipInto: false, vipLevel: 0 });
     }
 

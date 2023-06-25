@@ -1,4 +1,6 @@
+import SocketClient from "../../../net/ws/SocketClient";
 import UIFixed from "../../UIFixed";
+import UIMgr from "../../UIMgr";
 
 const { ccclass, property } = cc._decorator;
 
@@ -10,6 +12,9 @@ export default class Loading extends UIFixed {
         this.scheduleOnce(() => {
             this.node.opacity = 255;
         }, 1)
+        this.scheduleOnce(() => {
+            if (SocketClient.isConnected()) UIMgr.hideLoading();
+        }, 5)
     }
 
 }

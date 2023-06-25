@@ -15,7 +15,9 @@ export default class RewardAni extends UIWindow {
         this.lb_deposit.string = `${deposit}`;
     }
 
-    onClickClose() {
+    onClickClose(e: cc.Event.EventTouch) {
+        let targer: cc.Node = e.target as cc.Node;
+        targer.getComponent(cc.Button).interactable = false;
         this.hide();
     }
 

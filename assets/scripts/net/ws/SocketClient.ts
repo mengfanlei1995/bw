@@ -144,6 +144,11 @@ class SocketClient implements ISocket {
         LogUtil.error("onerror", event)
         this.SocketState = this.SocketState_Closed;
     }
+
+    public isConnected(): boolean {
+        return this.SocketState == this.SocketState_Connected;
+    }
+
 }
 
 export default new SocketClient();

@@ -33,9 +33,12 @@ export default class GameIcon extends cc.Component {
     }
 
     async onClickEnterRoom(e: cc.Event.EventTouch) {
+        if (SysConfig.isEnterGaming) return;
+        SysConfig.isEnterGaming = true;
         this.node.getComponent(cc.Button).interactable = false;
         let result = await UIMgr.enterGame(this.gameData.name);
         if (!result) {
+            SysConfig.isEnterGaming = false;
             this.node.getComponent(cc.Button).interactable = true;
         }
     }

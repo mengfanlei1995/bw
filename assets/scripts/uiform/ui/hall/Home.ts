@@ -42,6 +42,7 @@ export default class Home extends UIScreen {
     private gullakInfo: GullakMainInfoV2VO = null;
 
     start() {
+        SysConfig.isEnterGaming = false;
         this.node.zIndex = 1;
         this.initHallInfo();
         this.initGameList();
